@@ -2,28 +2,12 @@ import { AList } from "./AList";
 import type { ListStruct } from "./AList";
 import type { SaveStruct } from "../types/Saveable";
 import type { LocalCopy } from "./LocalCopy";
+import type { ListCollection } from '../types/ListCollection';
 // import { MessageDistribution } from "./MessageDistribution";
 // import { RemoteStorage } from './RemoteStorage';
 import type { DistantStorable } from "../types/RemoteTypes";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
-
-export interface ListCollection {
-  catalog: Array<AList>;
-  remote: DistantStorable;
-  local: LocalCopy;
-
-  create(nom: string): number;
-  poll(): Promise<boolean>;
-  count(): number;
-  delete(id: number): boolean;
-  list(): Array<ListStruct>;
-  get(id: number): AList | undefined;
-  put(id: number, ret: AList): boolean;
-  store(ret: AList, offset: number): boolean;
-  saveAllLists(): boolean;
-  loadAllLists(): boolean;
-}
-
+ 
 export class ListService implements ListCollection {
   catalog: Array<AList>;
   remote: DistantStorable;

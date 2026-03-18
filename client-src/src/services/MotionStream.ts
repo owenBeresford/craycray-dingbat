@@ -2,10 +2,8 @@ import { Vector } from "vector2d/src/Vector";
 import { CBTYPE, Motionable } from "../types/Motionable";
 // its bad to import internal classes; but this package isn't compatible with modern bundlers/ classloaders
 import { isMobile, windowSize, rad2deg } from "./util";
+import { MOBILE_THRESHOLD, BIG_THRESHOLD, ANGLE_ACCURACY } from '../Constants';
 
-const MOBILE_THRESHOLD = 150;
-const BIG_THRESHOLD = 200;
-const ANGLE_ACCURACY = 20.0;
 
 // IOIO extension: grab timestamp from events, log with Vector,
 // allows computation of velocity

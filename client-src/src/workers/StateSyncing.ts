@@ -3,7 +3,7 @@ import type { SaveStruct, DelayCallbackType, DataPipeline } from "../types/Savea
 import type { ShippingStruct, ActionEnum } from "../types/Messagable";
 // import { PMQUE_TIMER, PMQUE_ATTEMPTS, MSG_DESTINATION, MSG_THREAD, createRemoteService } from "../Constants";
 import { createRemoteService } from "../Constants";
-import { SharedStateWorker, exponentialDelay } from "./SharedStateWorker";
+import { SharedStateWorker, exponentialDelay, useSSW } from "./SharedStateWorker";
 import { transform2text, transform2list } from "../services/Storable";
 
 export {};
@@ -13,7 +13,7 @@ if (global.Worker) {
   // I think this error report is too late, here.  BUT, if it is absent, still whine about it
   throw new Error("Runtime doesn't support Workers, FAIL, ABORT.");
 }
-const STATE: DataPipeline = new SharedStateWorker(createRemoteService(self.location), exponentialDelay);
+const STATE: DataPipeline = useSSW(self.location);
 // "self" refers to current thread, this should only be run after forking.
 // this module is a Worker object, and runs as a second thread in the browser.
 // The UI thread drives MessageDistribution

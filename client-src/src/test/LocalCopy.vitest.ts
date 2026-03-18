@@ -2,7 +2,7 @@ import { assert, describe, it, expect } from "vitest";
 import { LocalStorage } from "node-localstorage";
 
 import { APP_NAME } from "../Constants";
-import { KNOWN_PHONE, LocalCopy } from "../services/LocalCopy";
+import { LocalCopy } from "../services/LocalCopy";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
 
 global.localStorage = new LocalStorage("./build/scratch");

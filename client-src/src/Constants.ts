@@ -2,6 +2,7 @@ import type { RemoteConfig } from "./types/RemoteTypes";
 import { RemoteStorage } from "./services/RemoteStorage";
 // import type { Request as RequestType, Response as ResponseType } from 'node-fetch';
 
+// networking values + postMessages
 export const APP_NAME = "shopping";
 export const APP_VERSION = "0.0.1";
 export const REMOTE_HOST = location.hostname + ":" + location.port;
@@ -11,11 +12,22 @@ export const ROOT_NODE = "#app";
 // IOIO XXX add a real value to this.    try server ip or msgQueue channel name
 export const MSG_DESTINATION = "panic";
 
+// used in MessageDistribution
 export const PMQUE_TIMER = 300;
 export const PMQUE_ATTEMPTS = 10;
+
 // IOIO check base dir for conmpiled artefacts
 export const MSG_THREAD = new URL("worker1.min.mjs", import.meta.url);
 console.log("MSG THRAD ", MSG_THREAD, import.meta.url);
+
+// values for MotionStream
+const MOBILE_THRESHOLD = 150;
+const BIG_THRESHOLD = 200;
+const ANGLE_ACCURACY = 20.0;
+
+// localisation 
+export const SUPPORTED_LANGUAGE = "en-GB";
+export const KNOWN_PHONE = "shopping-known";
 
 if (typeof global.fetch === "undefined" || !global.fetch) {
   throw new Error("73453894563453 Fetch() not found.  BAILING OUT");

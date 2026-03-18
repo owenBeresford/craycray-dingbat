@@ -1,14 +1,8 @@
 import { createStore, useStore as originalUseStore } from "vuex";
 import type { Store } from "vuex";
 import { APP_NAME } from "../Constants";
+import type { ShopState } from '../types/ShopState';
 
-// current simple state, TBextended
-// IOIO also update Type file
-export interface ShopState {
-  currentURL: string;
-  showHelp: boolean;
-  currentId: number;
-}
 
 export const mapForHelp = (state: Store<ShopState>, specific: string): string => {
   let use = "";

@@ -12,9 +12,10 @@
 import { defineComponent } from "vue";
 import { useStore, mapForHelp } from "../services/Store";
 import { useUIText } from "../services/Localisation";
-import { useLocal, KNOWN_PHONE } from "../services/LocalCopy";
+import { useLocal } from "../services/LocalCopy";
 import { GuessEvent, StrictArray } from "../services/util";
 import { nextId } from "../services/util";
+import { KNOWN_PHONE } from '../Constants';
 
 const TEXT = useUIText();
 

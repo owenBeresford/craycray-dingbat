@@ -54,7 +54,7 @@ import { isMobile, clearSelection, GuessEvent } from "../services/util";
 import { MotionStream } from "../services/MotionStream";
 import { nextId } from "../services/util";
 // import { ListService } from "../services/ListService";
-import { Storable } from "../service/Storable";
+import { Storable } from "../types/Saveable";
 import { Motionable } from "../types/Motionable";
 
 import EnterInput from "./EnterInput.vue";

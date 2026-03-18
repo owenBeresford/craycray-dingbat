@@ -1,15 +1,10 @@
+import { SUPPORTED_LANGUAGE } from '../Constants';
+import type { UItext } from '../types/Localisation';
 /*
    IOIO If I add more languges, pull out the data definition sections
    into defineItems() and defineArrays()
    have map lookup in a base class
 */
-export interface UItext {
-  get(key: string): string;
-  getTemplate(key: string): Array<string>;
-  lang: string;
-}
-
-export const SUPPORTED_LANGUAGE = "en-GB";
 
 export class UI_EN_GB implements UItext {
   protected dat: Map<string, string>;

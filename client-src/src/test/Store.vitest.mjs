@@ -1,6 +1,7 @@
 import { assert, describe, it, expect, expectTypeOf } from "vitest";
 import { vuex } from "vuex";
 import { STORE, KEY, OnlyForTesting, useStore } from "../services/Store";
+import type { ShopState } from '../types/ShopState';
 
 const { mapForHelp } = OnlyForTesting;
 

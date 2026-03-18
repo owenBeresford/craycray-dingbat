@@ -1,6 +1,6 @@
 import type { SaveStruct } from "../types/Saveable";
 import { transform2text, transform2list } from "./Storable";
-import type { Storable } from "./Storable";
+import type { Storable } from "../types/Savable";
 import type { DistantStorable, RemoteConfig } from "../types/RemoteTypes";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
 // import type  { Request as RequestType, Response as ResponseType } from 'node-fetch';

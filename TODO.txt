@@ -16,6 +16,7 @@
 - DataFactory
 - check other means to engineer motionstream
 - think about best name for ShopState
+- may be need to re-add STORE.getters
 
 
 set NODE_ENV="TEST" for tests

@@ -10,3 +10,5 @@ export interface DOMStringList {
     [index: number]: string;
  
 }
+
+export type GuessEvent = TouchEvent | KeyboardEvent | MouseEvent;

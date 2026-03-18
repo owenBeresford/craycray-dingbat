@@ -10,7 +10,8 @@
 import { defineComponent, vue } from "vue";
 import { Store } from "vuex";
 
-import { useStore, ShopState } from "../services/Store";
+import type { ShopState } from '../types/ShopState';
+import { useStore } from "../services/Store";
 import { AList } from "../services/AList";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
 import ThisList from "./ThisList.vue";

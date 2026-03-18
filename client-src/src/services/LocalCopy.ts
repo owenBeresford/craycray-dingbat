@@ -1,5 +1,5 @@
 import { transform2text, transform2list } from "./Storable";
-import type { Storable } from "./Storable";
+import type { Storable } from "./Saveable";
 import type { SaveStruct } from "../types/Saveable";
 import { APP_NAME } from "../Constants";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
@@ -58,8 +58,6 @@ export class LocalCopy implements Storable {
     });
   }
 }
-
-export const KNOWN_PHONE = "shopping-known";
 
 let LOCAL: LocalCopy;
 export function useLocal(): LocalCopy {

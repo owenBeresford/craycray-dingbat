@@ -62,7 +62,7 @@ export function clearSelection(): void {
   }
 }
 
-export type GuessEvent = TouchEvent | KeyboardEvent | MouseEvent;
+
 export type StrictArray = Array<string>;
 
 let ID_OFFSET = 0;

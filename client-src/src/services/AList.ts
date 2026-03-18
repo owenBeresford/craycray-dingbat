@@ -27,6 +27,12 @@ export interface Listable {
   view(): ListStruct;
 }
 
+/**
+ * AList 
+ * An Entity to manage validation and serialisation for Shopping lists
+  
+ * @public
+ */
 export class AList extends JSONObject implements Listable, ListStruct {
   /*
   protected nom:string;
@@ -83,6 +89,14 @@ export class AList extends JSONObject implements Listable, ListStruct {
   @map("list")
   public éléments: Array<string>;
 
+  /**
+   * manual
+   * like a con'tor, named as the super class needs the con'tor slot.
+ 
+   * @param {string} nouveau
+   * @public
+   * @returns {AList}
+   */
   public static manual(nom: string, id: number): AList {
     return new AList({
       name: nom,
@@ -94,6 +108,14 @@ export class AList extends JSONObject implements Listable, ListStruct {
     });
   }
 
+  /**
+   * editName
+   * Alter the lists name
+ 
+   * @param {string} nouveau
+   * @public
+   * @returns {boolean}
+   */
   public editName(nouveau: string): boolean {
     if (nouveau.length === 0) {
       return false;
@@ -102,6 +124,14 @@ export class AList extends JSONObject implements Listable, ListStruct {
     return true;
   }
 
+  /**
+   * add
+   * Add another item to the current list
+ 
+   * @param  {string} nouveau
+   * @public
+   * @returns {boolean}
+   */
   public add(nouveau: string): boolean {
     this.éléments.push(nouveau);
     // lint complains when I use ++
@@ -110,6 +140,15 @@ export class AList extends JSONObject implements Listable, ListStruct {
     return true;
   }
 
+  /**
+   * edit
+   * change an entry in the list
+ 
+   * @param {number} offset
+   * @param {string} nouveau
+   * @public
+   * @returns {boolean}
+   */
   public edit(offset: number, nouveau: string): boolean {
     if (offset < 0 || offset > this.énumérer) {
       return false;
@@ -119,6 +158,14 @@ export class AList extends JSONObject implements Listable, ListStruct {
     return true;
   }
 
+  /**
+   * remove
+   * Remove an element ...
+ 
+   * @param offset: number
+   * @public
+   * @returns {boolean}
+   */
   public remove(offset: number): boolean {
     if (offset < 0 || offset > this.énumérer) {
       return false;
@@ -128,6 +175,14 @@ export class AList extends JSONObject implements Listable, ListStruct {
     return true;
   }
 
+  /**
+   * import
+   * Append a list of items to this list (as one call)
+ 
+   * @param {Array<string>} relevé 
+   * @public
+   * @returns {boolean}
+   */
   public import(relevé: Array<string>): boolean {
     this.éléments.push(...relevé);
     this.énumérer += relevé.length;
@@ -135,10 +190,24 @@ export class AList extends JSONObject implements Listable, ListStruct {
     return true;
   }
 
+  /**
+   * export
+   * Return a dupe of this list's items
+ 
+   * @public
+   * @returns {Array<string>}
+   */
   public export(): Array<string> {
     return [...this.éléments];
   }
 
+  /**
+   * unique
+   * Edit current list to remove dupes
+ 
+   * @public
+   * @returns {boolean}
+   */
   public unique(): boolean {
     const s: Set<string> = new Set(this.éléments);
     this.éléments.splice(0, this.éléments.length);
@@ -147,6 +216,13 @@ export class AList extends JSONObject implements Listable, ListStruct {
     return true;
   }
 
+  /**
+   * view
+   * Return a copy of the list as a ListStruct
+ 
+   * @public
+   * @returns {ListStruct}
+   */
   public view(): ListStruct {
     return { ...this } as ListStruct;
   }
