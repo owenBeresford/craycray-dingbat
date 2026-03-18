@@ -23,14 +23,17 @@ export default defineComponent({
   components: {},
   props: {
     ttl: { type: Number, default: 0 },
-    display: { type: String, required: true },  
+    display: { type: String, required: true },
     show: { type: Boolean, default: false },
-    currentStateKey: { type:[ String, Object], required: true },
+    currentStateKey: { type: [String, Object], required: true },
   },
   data() {
-    let tmp="";
-    if(typeof this.$props.currentStateKey === "string" ) { tmp=this.$props.currentStateKey; }
-    else { tmp=  this.$props.currentStateKey.betterId;  }
+    let tmp = "";
+    if (typeof this.$props.currentStateKey === "string") {
+      tmp = this.$props.currentStateKey;
+    } else {
+      tmp = this.$props.currentStateKey.betterId;
+    }
 
     return {
       instanceId: nextId(),

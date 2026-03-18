@@ -1,5 +1,5 @@
 <template>
-<ThisList currentStateKey={id} :shopStore="store" :factory="factory" ></ThisList>
+  <ThisList currentStateKey="{id}" :shopStore="store" :factory="factory"></ThisList>
 </template>
 <script lang="ts">
 //
@@ -12,11 +12,11 @@ import { Store } from "vuex";
 
 import { useStore, ShopState } from "../services/Store";
 import { AList } from "../services/AList";
-import type { PromiseSucceed, PromiseReject } from '../types/promises';
+import type { PromiseSucceed, PromiseReject } from "../types/promises";
 import ThisList from "./ThisList.vue";
 
-const FakeCollection= {
-/*  
+const FakeCollection = {
+  /*  
   create(nom: string): number {}
   poll(): Promise<boolean> {}
   count(): number {}
@@ -28,43 +28,56 @@ const FakeCollection= {
   saveAllLists(): boolean {}
   loadAllLists(): boolean {}
 */
-  create: function(nom ) { return this; },
-  count: function() { return 2; },
-  delete: function(id ) { return true; }, 
-  put: function(id, ret ) { return true; }, 
-  store: function(ret, offset) { return true; }, 
-  saveAllLists: function() { return true; },
-  loadAllLists: function() { return true; },
-
-  poll:function() {  
-    return new Promise((good:PromiseSucceed, bad:PromiseReject) => {
-        good(false);
-      });
+  create: function (nom) {
+    return this;
+  },
+  count: function () {
+    return 2;
+  },
+  delete: function (id) {
+    return true;
+  },
+  put: function (id, ret) {
+    return true;
+  },
+  store: function (ret, offset) {
+    return true;
+  },
+  saveAllLists: function () {
+    return true;
+  },
+  loadAllLists: function () {
+    return true;
   },
 
-  list: function() {
-      return [
-            {
-            nom: "test1",
-            créé: new Date(),
-            modifié: new Date(),
-            énumérer: 1,
-            id: 1,
-          }, 
-          {
-            nom: "test2",
-            créé: new Date(),
-            modifié: new Date(),
-            énumérer: 1,
-            id: 2,
-          },
-        ]; //  as Array<ListStruct>
+  poll: function () {
+    return new Promise((good: PromiseSucceed, bad: PromiseReject) => {
+      good(false);
+    });
   },
-  
-  get: function(id) { 
-    return AList.manual("test1", 1); 
-  }, 
 
+  list: function () {
+    return [
+      {
+        nom: "test1",
+        créé: new Date(),
+        modifié: new Date(),
+        énumérer: 1,
+        id: 1,
+      },
+      {
+        nom: "test2",
+        créé: new Date(),
+        modifié: new Date(),
+        énumérer: 1,
+        id: 2,
+      },
+    ]; //  as Array<ListStruct>
+  },
+
+  get: function (id) {
+    return AList.manual("test1", 1);
+  },
 } as Listable;
 // const getFakeFactory=function () { return FakeCollection.create(); };
 
@@ -72,22 +85,21 @@ const FakeCollection= {
 // export function createTestWrapper(id:string, store:Store<ShopState>, factory:ListCollection ) {
 
 export default defineComponent({
-       name: "PlaceholderThislist",
-       components: { ThisList },
-       provide: {
-  // https://v1.test-utils.vuejs.org/api/options.html#provide  
-  // this is "the slow syntax", but its a test not production code      
+  name: "PlaceholderThislist",
+  components: { ThisList },
+  provide: {
+    // https://v1.test-utils.vuejs.org/api/options.html#provide
+    // this is "the slow syntax", but its a test not production code
     helpText: "menu",
-    canSeeHelp: false ,
+    canSeeHelp: false,
     ttl: 5000,
-        },
-      data() {
-        return {
-          id:"test1",
-          store: useStore(), 
-          factory: FakeCollection.create(), 
-        };
-      }  
-    });
-
+  },
+  data() {
+    return {
+      id: "test1",
+      store: useStore(),
+      factory: FakeCollection.create(),
+    };
+  },
+});
 </script>

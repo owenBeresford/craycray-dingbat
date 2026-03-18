@@ -1,4 +1,4 @@
-import { JSONObject, map, required, optional, array, integer, custom } from "ts-json-object";
+import { JSONObject, map, required, integer, custom } from "ts-json-object";
 
 // attribute names in french, so there is no possible collision between JS keywords and them
 // other languages would also work
@@ -28,7 +28,7 @@ export interface Listable {
 }
 
 export class AList extends JSONObject implements Listable, ListStruct {
-/*
+  /*
   protected nom:string;
   protected créé:Date;
   protected modifié:Date;
@@ -38,14 +38,14 @@ export class AList extends JSONObject implements Listable, ListStruct {
 */
   @required
   @map("name")
-  nom: string;
+  public nom: string;
 
   @required
   @integer
   @map("created")
-  @custom((nouveau: AList, name: string, value: string|Date) => {
+  @custom((nouveau: AList, name: string, value: string | Date) => {
     if (name === "created") {
-      if( value instanceof Date) {
+      if (value instanceof Date) {
         return value;
       } else {
         return new Date(parseInt(value, 10));
@@ -53,14 +53,14 @@ export class AList extends JSONObject implements Listable, ListStruct {
     }
     return value;
   })
-  créé: Date;
+  public créé: Date;
 
   @required
   @integer
   @map("edited")
-  @custom((nouveau: AList, name: string, value: string|Date) => {
+  @custom((nouveau: AList, name: string, value: string | Date) => {
     if (name === "edited") {
-      if( value instanceof Date) {
+      if (value instanceof Date) {
         return value;
       } else {
         return new Date(parseInt(value, 10));
@@ -68,33 +68,33 @@ export class AList extends JSONObject implements Listable, ListStruct {
     }
     return value;
   })
-  modifié: Date;
+  public modifié: Date;
 
   @required
   @integer
   @map("count")
-  énumérer: number;
+  public énumérer: number;
 
   @required
   @integer
-  id: number;
+  public id: number;
 
   @required
   @map("list")
-  éléments: Array<string>;
+  public éléments: Array<string>;
 
-  static manual(nom: string, id: number): AList {
+  public static manual(nom: string, id: number): AList {
     return new AList({
-      name:nom,
+      name: nom,
       created: new Date(),
       edited: new Date(),
       count: 0,
-      id:id,
+      id: id,
       list: [],
     });
   }
 
-  editName(nouveau: string): boolean {
+  public editName(nouveau: string): boolean {
     if (nouveau.length === 0) {
       return false;
     }
@@ -102,7 +102,7 @@ export class AList extends JSONObject implements Listable, ListStruct {
     return true;
   }
 
-  add(nouveau: string): boolean {
+  public add(nouveau: string): boolean {
     this.éléments.push(nouveau);
     // lint complains when I use ++
     this.énumérer += 1;
@@ -110,7 +110,7 @@ export class AList extends JSONObject implements Listable, ListStruct {
     return true;
   }
 
-  edit(offset: number, nouveau: string): boolean {
+  public edit(offset: number, nouveau: string): boolean {
     if (offset < 0 || offset > this.énumérer) {
       return false;
     }
@@ -119,7 +119,7 @@ export class AList extends JSONObject implements Listable, ListStruct {
     return true;
   }
 
-  remove(offset: number): boolean {
+  public remove(offset: number): boolean {
     if (offset < 0 || offset > this.énumérer) {
       return false;
     }
@@ -128,18 +128,18 @@ export class AList extends JSONObject implements Listable, ListStruct {
     return true;
   }
 
-  import(relevé: Array<string>): boolean {
+  public import(relevé: Array<string>): boolean {
     this.éléments.push(...relevé);
     this.énumérer += relevé.length;
     this.modifié = new Date();
     return true;
   }
 
-  export(): Array<string> {
+  public export(): Array<string> {
     return [...this.éléments];
   }
 
-  unique(): boolean {
+  public unique(): boolean {
     const s: Set<string> = new Set(this.éléments);
     this.éléments.splice(0, this.éléments.length);
     this.éléments.push(...s);
@@ -147,7 +147,7 @@ export class AList extends JSONObject implements Listable, ListStruct {
     return true;
   }
 
-  view(): ListStruct {
+  public view(): ListStruct {
     return { ...this } as ListStruct;
   }
 }

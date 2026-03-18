@@ -1,5 +1,5 @@
 export type ActionEnum =
-   "error-payload"
+  | "error-payload"
   | "status-payload"
   | "save-payload"
   | "load-payload"

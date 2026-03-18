@@ -16,26 +16,26 @@ export class MotionStream implements Motionable {
 
   protected active: boolean;
 
-  constructor() {
+  public constructor() {
     this.stack = [];
     this.actions = {};
     this.active = false;
   }
 
-  addEvent(e: MouseEvent): boolean {
+  public addEvent(e: MouseEvent): boolean {
     if (this.active) {
       this.stack.push(new Vector(e.clientX, e.clientY));
     }
     return true;
   }
 
-  register(angle: string, CB: CBTYPE): boolean {
+  public register(angle: string, CB: CBTYPE): boolean {
     this.actions[angle] = CB;
     return true;
   }
 
   // currently only single direction actions supported...
-  end(e: MouseEvent): boolean {
+  public end(e: MouseEvent): boolean {
     if (!this.active) {
       return false;
     }
@@ -69,7 +69,7 @@ export class MotionStream implements Motionable {
     return false;
   }
 
-  clone(o1: number, o2: number): Vector {
+  public clone(o1: number, o2: number): Vector {
     const annoying = this.stack[o1].toArray();
     const cur: Vector = new Vector(annoying[0], annoying[1]);
     if (o2 >= this.stack.length || o2 < 1) {
@@ -78,7 +78,7 @@ export class MotionStream implements Motionable {
     return cur.subtract(this.stack[o2]);
   }
 
-  start(e: MouseEvent): boolean {
+  public start(e: MouseEvent): boolean {
     if (this.stack.length) {
       this.stack.splice(0, this.stack.length);
     }
@@ -87,7 +87,7 @@ export class MotionStream implements Motionable {
     return true;
   }
 
-  significant = (delta: Vector): boolean => {
+  public significant = (delta: Vector): boolean => {
     const [x, y] = delta.toArray();
     if (isMobile() === "") {
       return x > MOBILE_THRESHOLD || y > MOBILE_THRESHOLD;
@@ -100,7 +100,7 @@ export class MotionStream implements Motionable {
     vectors a = [xa, ya] , b = [xb, yb]
     angle = arccos[(xa * xb + ya * yb) / (√(xa2 + ya2) * √(xb2 + yb2))]
    */
-  angle = (delta1: Vector, delta2: Vector): number => {
+  public angle = (delta1: Vector, delta2: Vector): number => {
     const [x1, y1] = delta1.toArray();
     const [x2, y2] = delta2.toArray();
 
@@ -110,7 +110,7 @@ export class MotionStream implements Motionable {
     return Math.acos(thing1 / (thing2 * thing3));
   };
 
-  significantAsPercentage = (delta: Vector): boolean => {
+  public significantAsPercentage = (delta: Vector): boolean => {
     const [maxX, maxY] = windowSize();
     const [x, y] = delta.toArray();
     if (isMobile() === "") {

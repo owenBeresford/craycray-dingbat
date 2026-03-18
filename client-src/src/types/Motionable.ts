@@ -1,4 +1,4 @@
-import { Vector } from "vector2d/src/Vector";
+import type { Vector } from "vector2d/src/Vector";
 export type CBTYPE = () => void;
 
 export interface Motionable {

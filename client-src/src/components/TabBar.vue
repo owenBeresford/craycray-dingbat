@@ -55,7 +55,13 @@
         </li>
       </ul>
     </div>
-    <EnterInput :val="getInput" :visible="visible" :cb="CB" :data-testid="-1" :currentStateKey="inputTabBarfalse" ></EnterInput>
+    <EnterInput
+      :val="getInput"
+      :visible="visible"
+      :cb="CB"
+      :data-testid="-1"
+      :currentStateKey="inputTabBarfalse"
+    ></EnterInput>
   </div>
 </template>
 
@@ -80,7 +86,7 @@ const MENU_CLOSE = TEXT.get("cross");
 export default defineComponent({
   name: "TabBar",
   components: { EnterInput },
-  props:{
+  props: {
     currentStateKey: { type: String, required: true },
   },
   async data() {

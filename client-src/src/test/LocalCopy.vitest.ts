@@ -2,14 +2,14 @@ import { assert, describe, it, expect } from "vitest";
 import { LocalStorage } from "node-localstorage";
 
 import { APP_NAME } from "../Constants";
-import { KNOWN_PHONE, LocalCopy } from '../services/LocalCopy';
- import type { PromiseSucceed, PromiseReject } from '../types/promises'; 
- 
+import { KNOWN_PHONE, LocalCopy } from "../services/LocalCopy";
+import type { PromiseSucceed, PromiseReject } from "../types/promises";
+
 global.localStorage = new LocalStorage("./build/scratch");
 
 describe("I can use LocalCopy", () => {
-  it("I can create it", ():Promise<boolean> => {
-    return new Promise((good:PromiseSucceed<boolean>, bad:PromiseReject) => {
+  it("I can create it", (): Promise<boolean> => {
+    return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       expect(typeof LocalCopy).toBe("function");
       good(true);
     });
@@ -19,8 +19,8 @@ describe("I can use LocalCopy", () => {
     { name: "WWWW2", created: 12345678, edited: 23456789, count: 4, id: 2, list: ["aa", "bb", "cc", "dd", "ee"] },
   ];
 
-  it("I can load from localStorage", ():Promise<boolean>  => {
-    return new Promise((good:PromiseSucceed<boolean>, bad:PromiseReject) => {
+  it("I can load from localStorage", (): Promise<boolean> => {
+    return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       let tt = new LocalCopy();
       localStorage.setItem(APP_NAME, JSON.stringify(ORIG));
       const START = new Date();
@@ -39,8 +39,8 @@ describe("I can use LocalCopy", () => {
     });
   });
 
-  it("I can save to localStorage", ():Promise<boolean>  => {
-    return new Promise((good:PromiseSucceed<boolean>, bad:PromiseReject) => {
+  it("I can save to localStorage", (): Promise<boolean> => {
+    return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       let tt = new LocalCopy();
       localStorage.removeItem(APP_NAME);
       const START = new Date();
@@ -63,4 +63,3 @@ describe("I can use LocalCopy", () => {
     });
   });
 });
-

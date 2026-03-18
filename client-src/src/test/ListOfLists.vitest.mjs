@@ -5,7 +5,7 @@ import { shallowMount, Wrapper } from "@vue/test-utils";
 import Vuex, { useStore } from "vuex";
 import "reflect-metadata";
 import App from "../App.vue";
-import { useStore, STORE } from '../services/Store';
+import { useStore, STORE } from "../services/Store";
 import ListOfLists from "../components/ListOfLists.vue";
 
 // I accidentally worked out the types; this is JS
@@ -18,10 +18,10 @@ describe("I can use ListOfLists", () => {
   let wrapper; // :Wrapper<TESTListOfLists>;
 
   beforeEach(() => {
-    //	wrapper=<Wrapper<TESTListOfLists>>shallowMount(ListOfLists, 
-	// export const STORE = createStore<ShopState> 
+    //	wrapper=<Wrapper<TESTListOfLists>>shallowMount(ListOfLists,
+    // export const STORE = createStore<ShopState>
 
-/*
+    /*
     const store = new Vuex.Store({
       modules: {
         projects: {
@@ -37,7 +37,7 @@ describe("I can use ListOfLists", () => {
         },
       },
     });
-*/	
+*/
 
     wrapper = shallowMount(ListOfLists, {
       provide: { helpText: "menu", canSeeHelp: false, ttl: 5000 },

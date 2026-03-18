@@ -3,7 +3,7 @@ import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
 import jsdoc from "eslint-plugin-jsdoc";
 import vitest from "eslint-plugin-vitest";
-import jest from "eslint-plugin-jest";
+// import jest from "eslint-plugin-jest";
 import pluginPromise from "eslint-plugin-promise";
 //import * as ANNOY2 from "eslint-plugin-no-http-protocol";
 import * as ANNOY1 from "eslint-plugin-no-only-tests";
@@ -34,7 +34,7 @@ export default [
       },
     },
     //    plugins: { jsdoc, "no-floating-promise":NoFakePromises, vitest, jest },
-    plugins: { tseslint, jsdoc, vitest, jest, ANNOY1 },
+    plugins: { tseslint, jsdoc, vitest, ANNOY1 },
 
     rules: {
       complexity: ["warn", 10],
@@ -119,8 +119,7 @@ export default [
     },
     ignores: [
       "dist/*",
-      "src/fixtures/*.min.*",
-      "src/fixtures/*mjs",
+		"public/*",
       "node_modules/*",
       "package-lock.json",
       "vite.config*.ts",

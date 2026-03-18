@@ -17,30 +17,31 @@ port:string;
 protocol:string;
 search: string;
 
-assign: (url: string | URL) => void;
+assign (url: string | URL): void;
 reload:LocationCB;
-replace:(url: string | URL) => void;
-toString:()=>string;
-valueOf: ()=>MockLocation;
+replace(url: string | URL): void;
+toString():string;
+valueOf ():MockLocation;
 compare(b:TestLocation):boolean;
+
 }
 
-type LocationCB=null | ((a:any)=>void);
+type LocationCB=null | ((a:string)=>void);
 
 export class TestLocation implements MockLocation {
-ancestorOrigins:DOMStringList ={} as DOMStringList;
-hash:string="";
-host:string="";
-hostname:string= "";
-href:string= "";
-origin:string="";
-pathname:string="";
-port:string="";
-protocol:string="";
-search:string="";
+public ancestorOrigins:DOMStringList ={} as DOMStringList;
+public hash:string="";
+public host:string="";
+public hostname:string= "";
+public href:string= "";
+public origin:string="";
+public pathname:string="";
+public port:string="";
+public protocol:string="";
+public search:string="";
 // search: URLSearchParams=new URLSearchParams("");
 
-constructor(a:string|URL) {
+public constructor(a:string|URL) {
 	try {
 	let t=new URL(a);
 	this.hash=t.hash;
@@ -56,19 +57,19 @@ constructor(a:string|URL) {
 }
 
 // these two dont make sense in this Mock/ test.
-assign: (url: string | URL) => void = (a:string|URL):void =>{};
-reload:() => void = ():void =>{};
+private assign: (url: string | URL) => void = (a:string|URL):void =>{ return; };
+private reload:() => void = ():void =>{ return; };
 // This class doesn't interact with any DOM, 
 // this does return a new object with the correct state, as best fake choice
-replace: (url: string | URL) => void =(a: string | URL):void => {};
+public replace: (url: string | URL) => void =(a: string | URL):void => {};
 
 // huh?
-toString():string { return `<TestLocation value='${this.href}' />`; }  
+public toString():string { return `<TestLocation value='${this.href}' />`; }  
 
 // huh?
-valueOf():MockLocation { return this; }
+public valueOf():MockLocation { return this; }
 
-compare(b:TestLocation):boolean {
+public compare(b:TestLocation):boolean {
 	return this.toString() === b.toString();
 }
 }

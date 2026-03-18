@@ -7,12 +7,16 @@
 - check that values in AList are populated correctly
 - move interfaces out of random files
 - finish localisation / convert to import libs
+- update localisation to a better string storage 
 - finish moving all the types to types dir
 - work out what MSG_DESTINATION should be
 - workout if can installworker filelist to a manifest?
 - postMessage targets ~ set target address when known
-- StateSyncing test cober fiull state map.
+- StateSyncing test cover full state map. when threads work
 - DataFactory
+- check other means to engineer motionstream
+- think about best name for ShopState
+
 
 set NODE_ENV="TEST" for tests
 

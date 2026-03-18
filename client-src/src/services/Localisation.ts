@@ -18,13 +18,13 @@ export class UI_EN_GB implements UItext {
 
   public lang: string;
 
-  constructor(l: string) {
+  public constructor(l: string) {
     this.dat = new Map<string, string>();
     this.datA = new Map<string, Array<string>>();
     this.lang = l;
   }
 
-  add(key: string, val: string): void {
+  public add(key: string, val: string): void {
     if (this.dat.has(key)) {
       throw new TypeError(`Key ${key} already exists!`);
     } else {
@@ -32,7 +32,7 @@ export class UI_EN_GB implements UItext {
     }
   }
 
-  addArray(key: string, val: Array<string>): void {
+  public addArray(key: string, val: Array<string>): void {
     if (this.datA.has(key)) {
       throw new TypeError(`Key ${key} already exists!`);
     } else {
@@ -40,14 +40,14 @@ export class UI_EN_GB implements UItext {
     }
   }
 
-  get(key: string): string {
+  public get(key: string): string {
     if (this.dat.has(key)) {
       return this.dat.get(key) ?? this.errorStr(key);
     }
     return this.errorStr(key);
   }
 
-  getTemplate(key: string): Array<string> {
+  public getTemplate(key: string): Array<string> {
     if (this.datA.has(key)) {
       const tt = this.datA.get(key);
       if (Array.isArray(tt)) {
@@ -61,7 +61,7 @@ export class UI_EN_GB implements UItext {
     return [this.errorStr(key)];
   }
 
-  errorStr(key: string): string {
+  public errorStr(key: string): string {
     return `FAIL ${key}`;
   }
 }

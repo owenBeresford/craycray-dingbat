@@ -1,13 +1,19 @@
 <template>
   <div class="aList" :data-testid="instanceId" :key="currentStateKey">
-    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey={betterId} />
+    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="{ betterId }" />
     <ul class="buttonRow">
       <li class="bigger">{{ list.nom }}:</li>
       <li title="Add a new item to current list">
         <span v-touch.once="onAdd" @click.once="onAdd" class="button" @keypress.once="onAdd"> Add item </span>
       </li>
     </ul>
-    <EnterInput :val="getInput" :visible="canSeeInput" :cb="cb" :data-testid="-1" currentStateKey="inputThisListfalse" />
+    <EnterInput
+      :val="getInput"
+      :visible="canSeeInput"
+      :cb="cb"
+      :data-testid="-1"
+      currentStateKey="inputThisListfalse"
+    />
     <ul class="aList">
       <li v-for="(i, j) in actualList" :key="j" title="Desktop: long touch to edit, swipe left to delete.">
         <span
@@ -55,19 +61,19 @@ import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
 
 interface LocalData {
-      instanceId: string;
-      id: number;
-      list: AList;
-      getInput: string;
-      canSeeInput: boolean;
-      cb: Function;
-      stream: Motionable;
-      offset: number;
-      bisMobile: boolean;
+  instanceId: string;
+  id: number;
+  list: AList;
+  getInput: string;
+  canSeeInput: boolean;
+  cb: Function;
+  stream: Motionable;
+  offset: number;
+  bisMobile: boolean;
 }
 
 const NEW_LIST = -1;
-const DUMMY_LIST:AList = {} as AList;
+const DUMMY_LIST: AList = {} as AList;
 // this class is using a shared function pointer, as in vue2 the event bus is too slow
 // if you do parent state updates via it; they take 100ms to propagate, and you see flickers
 // it is possible that vue3 event bus is faster
@@ -94,21 +100,30 @@ function extractId(src: string | string[] | null): number {
 export default defineComponent({
   name: "ThisList",
   components: { EnterInput, InterstitialView },
-  props:{
+  props: {
     currentStateKey: { type: String, required: true },
-    shopStore:{ type: Object, default:() => { return useStore(); } }, // "Store<ShopState>"
-    factory: { type: Object, default:async () => { return await DataFactory(); } }, // "ListService"
+    shopStore: {
+      type: Object,
+      default: () => {
+        return useStore();
+      },
+    }, // "Store<ShopState>"
+    factory: {
+      type: Object,
+      default: async () => {
+        return await DataFactory();
+      },
+    }, // "ListService"
   },
-  created( ) {
-// console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW created()",  );
-    const ll = this.$props.factory ;
-// console.log("WWWWWWW created()", {"id": this.$route.params.index, "size":ll.count() });
+  created() {
+    // console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW created()",  );
+    const ll = this.$props.factory;
+    // console.log("WWWWWWW created()", {"id": this.$route.params.index, "size":ll.count() });
 
-//console.log("UIOUIOUIO", this.$route.params, extractId(this.$route.params.index) );
+    //console.log("UIOUIOUIO", this.$route.params, extractId(this.$route.params.index) );
     try {
       this.id = extractId(this.$route.params.index);
       this.list = ll.get(this.id) ?? DUMMY_LIST;
-
     } catch (e) {
       let backupId = ll.create("New list");
       // the second branch is stupid, but shouldnt be possible
@@ -127,12 +142,12 @@ export default defineComponent({
     }
   },
   mounted() {
-//console.log("WWWWWWW mounted()", this.$props.shopStore );
+    //console.log("WWWWWWW mounted()", this.$props.shopStore );
     this.$props.shopStore.commit("setPath", this.$route.path);
     this.$props.shopStore.commit("setId", this.id);
   },
   inject: ["helpText", "canSeeHelp", "ttl"],
-  data():LocalData {
+  data(): LocalData {
     const tt = new MotionStream();
     tt.register("0", this.finalise.bind(this));
     return {
@@ -145,18 +160,18 @@ export default defineComponent({
       stream: tt,
       offset: -1,
       bisMobile: isMobile() === "hide",
-    } as LocalData ;
+    } as LocalData;
   },
-  computed:{
-    betterId():string {
-      return this.$props.currentStateKey +"view" ;
+  computed: {
+    betterId(): string {
+      return this.$props.currentStateKey + "view";
     },
-    actualList():Array<SaveStruct> {
-      if (this.list instanceof AList ) {
+    actualList(): Array<SaveStruct> {
+      if (this.list instanceof AList) {
         return this.list.export();
       }
       return [] as Array<SaveStruct>;
-    }
+    },
   },
   methods: {
     onSave(e: GuessEvent): void {

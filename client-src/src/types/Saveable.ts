@@ -14,5 +14,5 @@ export type DelayCallbackType = (state: DataPipeline) => number;
 export interface DataPipeline {
   currentDelay: number;
   pullWhenAble(): Promise<Array<SaveStruct>>;
-  pushWhenAble(json: Array<SaveStruct>): Promise<boolean> ;
+  pushWhenAble(json: Array<SaveStruct>): Promise<boolean>;
 }

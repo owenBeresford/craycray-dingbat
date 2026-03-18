@@ -1,5 +1,5 @@
-import { SaveStruct } from "../types/Saveable";
-import { ShippingStruct, ActionEnum } from "../types/Messagable";
+import type { SaveStruct } from "../types/Saveable";
+import type { ShippingStruct, ActionEnum } from "../types/Messagable";
 
 export interface Storable {
   saveProperty(nom: string, dat: string): boolean;
@@ -9,7 +9,7 @@ export interface Storable {
   loadState(): Promise<Array<SaveStruct>>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any  @typescript-eslint/explicit-module-boundary-types
 export function transform2text(dat: any): string {
   if (typeof dat === "string") {
     return dat;
@@ -27,6 +27,6 @@ export function transform2list(dat: string): Array<SaveStruct> {
   return JSON.parse(dat) as Array<SaveStruct>;
 }
 
-export function packMsg(act:ActionEnum, dat:object ):ShippingStruct {
+export function packMsg(act: ActionEnum, dat: object): ShippingStruct {
   return { action: act, data: transform2text(dat) } as ShippingStruct;
 }

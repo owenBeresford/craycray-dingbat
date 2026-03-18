@@ -1,7 +1,6 @@
-import { RemoteConfig, DistantStorable } from "./types/RemoteTypes";
+import type { RemoteConfig } from "./types/RemoteTypes";
 import { RemoteStorage } from "./services/RemoteStorage";
-import type { Request as RequestType, Response as ResponseType } from 'node-fetch';
- 
+// import type { Request as RequestType, Response as ResponseType } from 'node-fetch';
 
 export const APP_NAME = "shopping";
 export const APP_VERSION = "0.0.1";
@@ -10,26 +9,25 @@ export const INSTALLED = "local-shopping";
 export const API_RETRY = 500;
 export const ROOT_NODE = "#app";
 // IOIO XXX add a real value to this.    try server ip or msgQueue channel name
-export const MSG_DESTINATION= "panic";
+export const MSG_DESTINATION = "panic";
 
 export const PMQUE_TIMER = 300;
 export const PMQUE_ATTEMPTS = 10;
 // IOIO check base dir for conmpiled artefacts
-export const MSG_THREAD =  new URL("worker1.min.mjs", import.meta.url);
-console.log("MSG THRAD ", MSG_THREAD, import.meta.url );
+export const MSG_THREAD = new URL("worker1.min.mjs", import.meta.url);
+console.log("MSG THRAD ", MSG_THREAD, import.meta.url);
 
-
-if(typeof global.fetch === "undefined" || !global.fetch) {
+if (typeof global.fetch === "undefined" || !global.fetch) {
   throw new Error("73453894563453 Fetch() not found.  BAILING OUT");
 }
 
-export function createRemoteService(loc:Location|WorkerLocation ): RemoteStorage {
-    if (process.env.NODE_ENV!=="TEST" && (!global || !global.addEventListener)) {
-      throw new Error("8674564632343 Message passing is only possible inside a reasonable browser.");
-    }
-    if (process.env.NODE_ENV!=="TEST" && (!global || (!global.Worker && !('worker_threads' in global)))) {
-      throw new Error("9757353545757 Message passing is only possible inside a reasonable browser.");
-    }
+export function createRemoteService(loc: Location | WorkerLocation): RemoteStorage {
+  if (process.env.NODE_ENV !== "TEST" && (!global || !global.addEventListener)) {
+    throw new Error("8674564632343 Message passing is only possible inside a reasonable browser.");
+  }
+  if (process.env.NODE_ENV !== "TEST" && (!global || (!global.Worker && !("worker_threads" in global)))) {
+    throw new Error("9757353545757 Message passing is only possible inside a reasonable browser.");
+  }
   let d3: RemoteConfig = {
     url: loc.protocol + "//" + loc.hostname + ":" + loc.port + "/api/shared-state",
     timeout: API_RETRY,
@@ -38,7 +36,7 @@ export function createRemoteService(loc:Location|WorkerLocation ): RemoteStorage
     method: "GET",
     credentials: "same-origin",
   };
-console.log("d3 RemoteConfig ", d3.url );
+  console.log("d3 RemoteConfig ", d3.url);
 
-  return new RemoteStorage(d3 );
+  return new RemoteStorage(d3);
 }

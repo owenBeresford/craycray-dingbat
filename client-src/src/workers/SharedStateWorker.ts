@@ -7,23 +7,23 @@
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers#about_thread_safety
 //
-import { RemoteStorage } from "../services/RemoteStorage";
-import { BasicThreadable } from "../types/BasicThreadable";
-import { SaveStruct, DelayCallbackType, DataPipeline } from "../types/Saveable";
-import type { PromiseSucceed, PromiseReject } from '../types/promises'; 
-import { createRemoteService } from '../Constants';
+import type { RemoteStorage } from "../services/RemoteStorage";
+// import type { BasicThreadable } from "../types/BasicThreadable";
+import type { SaveStruct, DelayCallbackType, DataPipeline } from "../types/Saveable";
+import type { PromiseSucceed, PromiseReject } from "../types/promises";
+import { createRemoteService } from "../Constants";
 
-export function useSSW(loc:Location ):DataPipeline {
-  return new SharedStateWorker(createRemoteService(loc), exponentialDelay );
+export function useSSW(loc: Location): DataPipeline {
+  return new SharedStateWorker(createRemoteService(loc), exponentialDelay);
 }
 
-// this is broadcast logic to push data to the server 
+// this is broadcast logic to push data to the server
 export class SharedStateWorker implements DataPipeline {
   private conn: RemoteStorage;
   public currentDelay: number;
-  protected delay:DelayCallbackType;
+  protected delay: DelayCallbackType;
 
-  constructor(rs: RemoteStorage, delay: DelayCallbackType) {
+  public constructor(rs: RemoteStorage, delay: DelayCallbackType) {
     this.conn = rs;
     this.delay = delay;
     this.currentDelay = 30000;
@@ -31,16 +31,17 @@ export class SharedStateWorker implements DataPipeline {
     this.pushWhenAble.bind(this);
   }
 
-  async pushWhenAble(json: Array<SaveStruct>): Promise<boolean> {
+  public async pushWhenAble(json: Array<SaveStruct>): Promise<boolean> {
     const SELF = this;
 
-    return new Promise(async (good:PromiseSucceed<boolean>, bad:PromiseReject) => {
+    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject): void => {
       const ATTEMPT = async () => {
         let access = await SELF.conn.poll();
         if (access) {
           SELF.conn
             .saveState(json)
-            .then((dat) => {
+            .then((dat: any) => {
+              console.log("save said " + dat);
               good(true);
             })
             .catch((err) => {
@@ -52,14 +53,14 @@ export class SharedStateWorker implements DataPipeline {
           setTimeout(ATTEMPT, SELF.delay(SELF));
         }
       };
-      await ATTEMPT();    
+      await ATTEMPT();
     });
   }
 
-  async pullWhenAble(): Promise<Array<SaveStruct>> {
+  public async pullWhenAble(): Promise<Array<SaveStruct>> {
     const SELF = this;
 
-    return  new Promise( async (good:PromiseSucceed<Array<SaveStruct>>, bad:PromiseReject) => {
+    return new Promise(async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject): void => {
       const ATTEMPT = async () => {
         let access = await SELF.conn.poll();
         if (access) {

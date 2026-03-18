@@ -1,4 +1,5 @@
-import { createStore, useStore as originalUseStore, Store } from "vuex";
+import { createStore, useStore as originalUseStore } from "vuex";
+import type { Store } from "vuex";
 import { APP_NAME } from "../Constants";
 
 // current simple state, TBextended
@@ -9,7 +10,7 @@ export interface ShopState {
   currentId: number;
 }
 
-export const mapForHelp = (state:Store<ShopState>, specific:string) => {
+export const mapForHelp = (state: Store<ShopState>, specific: string): string => {
   let use = "";
   if (specific.length <= 2) {
     use = "/";
@@ -29,7 +30,7 @@ export const mapForHelp = (state:Store<ShopState>, specific:string) => {
   return MM[use];
 };
 
-export const STORE = createStore<ShopState>({
+export const STORE: Strore<ShopState> = createStore<ShopState>({
   state: (): ShopState => {
     return {
       currentURL: "",
@@ -48,12 +49,10 @@ export const STORE = createStore<ShopState>({
       state.currentId = nn;
     },
   },
-//  getters: {
-//    mapForHelp,
-//  },
+  //  getters: {
+  //    mapForHelp,
+  //  },
 });
-
- 
 
 // I need an example, do I need to pull vuex.useStore into every single component?
 export function useStore(): Store<ShopState> {

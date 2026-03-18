@@ -13,9 +13,9 @@ import TabBar from "./components/TabBar.vue";
 export default defineComponent({
   name: "App",
   components: { TabBar },
-  props:{
-    currentStateKey: { type: String, default:"root1", },
-    instanceId:      { type:String, default:nextId(), },
+  props: {
+    currentStateKey: { type: String, default: "root1" },
+    instanceId: { type: String, default: nextId() },
   },
   provide: {
     helpText: "menu",

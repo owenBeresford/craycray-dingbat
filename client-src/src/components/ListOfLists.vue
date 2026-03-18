@@ -1,6 +1,6 @@
 <template>
   <div class="listage" :data-testid="instanceId" :key="currentStateKey">
-    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey={betterId} />
+    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="{ betterId }" />
     <ul>
       <li v-for="i in shoppingLists" :key="i.id" :title="`Display the ${i.nom} list.`">
         <span class="centre">
@@ -54,16 +54,16 @@ export default defineComponent({
       }, 500);
     }
   },
-  computed:{
+  computed: {
     betterId() {
-       return this.$props.currentStateKey +"view" ;
+      return this.$props.currentStateKey + "view";
     },
   },
   inject: ["helpText", "canSeeHelp", "ttl"],
-  props:{
-      currentStateKey: { type: String, required: true },
+  props: {
+    currentStateKey: { type: String, required: true },
   },
-  data():LocalData {
+  data(): LocalData {
     return {
       instanceId: nextId(),
       shoppingLists: DATA.list() ?? [],

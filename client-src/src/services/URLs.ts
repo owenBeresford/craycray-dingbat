@@ -20,7 +20,7 @@ export function mapURL(nom: string, id: number | null): string {
 
 // https://www.damirscorner.com/blog/posts/20180216-VariableNumberOfArgumentsInTypescript.html
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function mapURL_variodic(...args: Array<string>) {
+function mapURL_variodic(...args: Array<string>): string {
   const nom = args[0];
   if (!(nom in URLs)) {
     console.error(`Loading an unknown URL name: ${nom}`);

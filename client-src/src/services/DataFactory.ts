@@ -1,9 +1,11 @@
-import { ListService, ListCollection } from "./ListService";
+import { ListService } from "./ListService";
+import type { ListCollection } from "./ListService";
 import { useLocal } from "./LocalCopy";
-import { MessageDistribution, useMsgDistrib } from "./MessageDistribution";
+import { useMsgDistrib } from "./MessageDistribution";
+import type { MessageDistribution } from "./MessageDistribution";
 import { createRemoteService } from "../Constants";
-import type { DistantStorable } from '../types/RemoteTypes';
-import type { BasicThreadable } from '../types/BasicThreadable';
+import type { DistantStorable } from "../types/RemoteTypes";
+// import type { BasicThreadable } from '../types/BasicThreadable';
 
 /*                          
        on 4g    on wifi    best class  rebuild?
@@ -24,11 +26,11 @@ s8                 Y        remote        N
 let DATA: ListCollection | undefined;
 async function DataFactory(): Promise<ListCollection> {
   const d3 = useLocal();
-  const d2 = createRemoteService(global.location ); 
+  const d2 = createRemoteService(global.location);
   // Local has no state, so no extra loading data
   let d4: MessageDistribution;
   let data: ListService;
-  if (DATA && await DATA.poll()) {
+  if (DATA && (await DATA.poll())) {
     return DATA;
   }
 
@@ -38,7 +40,7 @@ async function DataFactory(): Promise<ListCollection> {
       DATA = data;
     }
   } else {
-    d4 =useMsgDistrib() as MessageDistribution; 
+    d4 = useMsgDistrib() as MessageDistribution;
     await d4.forkThread();
     data = new ListService(d4 as DistantStorable, d3);
     DATA = data;

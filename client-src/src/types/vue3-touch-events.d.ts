@@ -6,8 +6,7 @@
 //}
 
 declare module "vue3-touch-events" {
-  import { Plugin as VuePlugin } from "vue";
+  import type { Plugin as VuePlugin } from "vue";
   const plugin: VuePlugin;
   export default plugin;
 }
-

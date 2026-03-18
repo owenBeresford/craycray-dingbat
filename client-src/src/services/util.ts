@@ -31,10 +31,10 @@ export function rad2deg(i: number): number {
 }
 
 // AFAIK, unused
-export function deg2rad(i:number):number {
+export function deg2rad(i: number): number {
   throw new Error("Implement me!!!");
 }
- 
+
 // until the https is deployed; this is safer as /
 export function wrap_getMyIP(): string {
   if (location.protocol === "https:") {
