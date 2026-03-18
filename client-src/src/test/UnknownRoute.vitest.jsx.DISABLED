@@ -1,0 +1,51 @@
+import { directive, defineComponent, ref } from "vue";
+import { assert, describe, expect, it } from "vitest";
+import { mount, RouterLinkStub } from "@vue/test-utils";
+import Vue3TouchEvents from "vue3-touch-events";
+ 
+import UnknownRoute from "../components/UnknownRoute.vue";
+import { isMobile, GuessEvent, nextId } from "../services/util";
+import { UI_EN_GB, useUIText } from "../services/Localisation";
+ 
+// to avoid the injection warning, but I have no idea where to put it
+// https://stackoverflow.com/questions/71864831/how-to-avoid-vue-warn-injection-xxxx-not-found
+
+describe("Unkown URL componment test 1", () => {
+  it("Can load Component", () => {
+    const BLOB = mount(UnknownRoute, {
+      props: {
+          errpath: "/help-me" ,
+          currentStateKey: "test1",
+      },
+      sync: true,
+      global: {
+        stubs: { RouterLink: RouterLinkStub },  
+      },
+    });
+    //  screen.debug() says this isn't mounted to a DOM, but this is Node so that doesn't mean much..
+
+    expect(BLOB.find("div.unknownRoute[data-testid=obj1]").exists()).toBe(true);  
+    expect(BLOB.find("div.error").exists()).toBe(true);
+    expect(BLOB.vm.errpath).toEqual("/help-me");
+
+    // "cancel button that Vue sometimes mangles"
+    expect(BLOB.find("div.error").text()).toBe("❌");
+   });
+
+  it("test ids work", () => {
+    const BLOB = mount(UnknownRoute, {
+      props: {
+        errpath: "/im-lost" ,
+        currentStateKey: "test2",
+      },
+      sync: true,
+      global: {
+        stubs: { RouterLink: RouterLinkStub,  },  
+      },
+    });
+
+    expect(BLOB.find("div.unknownRoute[data-testid=obj2]").exists()).toBe(true);
+    expect(BLOB.find("p.bigger" ).text()).toBe("/im-lost");
+  });
+
+ });

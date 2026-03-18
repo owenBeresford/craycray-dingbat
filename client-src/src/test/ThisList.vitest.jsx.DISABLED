@@ -1,0 +1,114 @@
+import { directive, defineComponent, ref, vue } from "vue";
+import { assert, describe, expect, vi, it } from "vitest";
+import { mount, RouterLinkStub, config } from "@vue/test-utils";
+import Vue3TouchEvents from "vue3-touch-events";
+import { VueRouterMock, createRouterMock, injectRouterMock } from 'vue-router-mock';
+
+import { useStore } from "../services/Store";
+import { ListService, ListCollection } from '../services/ListService';
+import { AList, ListStruct, Listable } from '../services/AList';
+import ThisList from "../components/ThisList.vue";
+import PlaceholderThislist from "../components/PlaceholderThisList.vue";
+ // https://runthatline.com/vitest-mock-vue-router/
+
+const routeMock = {
+	params:{ index:1 },
+	path:"/help-me",
+  meta: {  },
+};
+
+/*
+const FakeCollection= {
+ 
+  create: function(nom ) { return this; },
+  count: function() { return 2; },
+  delete: function(id ) { return true; }, 
+  put: function(id, ret ) { return true; }, 
+  store: function(ret, offset) { return true; }, 
+  saveAllLists: function() { return true; },
+  loadAllLists: function() { return true; },
+
+  poll:function() {  
+  	return new Promise((good, bad) => {
+        good(false);
+      });
+  },
+
+  list: function() {
+ 	  return [
+ 		    {
+ 			nom: "test1",
+			créé: new Date(),
+  		modifié: new Date(),
+ 			énumérer: 1,
+			id: 1,
+  		  }, 
+  		  {
+ 			nom: "test2",
+			créé: new Date(),
+  		modifié: new Date(),
+ 			énumérer: 1,
+			id: 2,
+  		  },
+ 		]; //  as Array<ListStruct>
+  },
+  
+  get: function(id) { 
+  	return AList.manual("test1", 1); 
+  }, 
+
+}; // as Listable
+ const getFakeFactory=function () { return FakeCollection.create(); };
+*/
+
+// look at https://stackoverflow.com/questions/66382293/how-to-use-props-in-script-setup-in-vue3
+describe("test on ThisList", () => {
+//  useRoute.mockReturnValue( routeMock );
+	const ROUT=createRouterMock({ initialLocation: '/help-me',});
+  injectRouterMock(ROUT);
+  config.plugins.VueWrapper.install(VueRouterMock);
+//	config.plugins.VueWrapper.install( Vue3TouchEvents);
+
+  it("Can load Component", () => {
+ 
+    const BLOB = mount(PlaceholderThislist, {
+      props: { },
+      sync: true,
+      mocks: {
+          '$route': routeMock,
+      },
+      global: {
+      	directives: { vueTouchEvents: Vue3TouchEvents },
+        stubs: [ RouterLinkStub ],  
+		    plugins: [ Vue3TouchEvents ],
+      },
+    });
+  
+    expect(BLOB.find("div.unknownRoute[data-testid=obj1]").exists()).toBe(true);  
+// add test here
+ 
+   });
+
+/*
+  it("test ids work", () => {
+    const BLOB = mount(ThisList, {
+      props: {
+        errpath: "/im-lost" ,
+        currentStateKey: "test2",
+        shopStore:useStore(), 
+    	factory: FakeFactory.create(),  
+      },
+      sync: true,
+      mocks: {
+          '$route': routerMock,
+      },
+      global: {
+        stubs: { RouterLink: RouterLinkStub, },  
+      },
+    });
+
+    expect(BLOB.find("div.unknownRoute[data-testid=obj2]").exists()).toBe(true);
+
+   });
+*/
+ });

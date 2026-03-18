@@ -1,0 +1,99 @@
+// https://github.com/erspark2002/mobile-web-console-logger/blob/master/lib/mobileWebConsoleLogger.js
+(function () {
+  window.onerror = function (message, url, lineNumber) {
+    var message = arguments[0];
+    var url = arguments[1];
+    var lineNumber = arguments[2];
+    let err = ` ${message}`;
+    err += `<br/>Line: ${lineNumber}`;
+    err += `<br/>URL: ${url}`;
+    debugLog('ERROR', err);
+    return true;
+  };
+
+  // Convert js objects to their string representation
+  function _toString(obj) {
+    if (obj == Infinity) {
+      return 'Infinity';
+    } if (obj == NaN) {
+      return 'NaN';
+    } if (typeof obj === 'string' && obj.length === 0) {
+      return '&lt;empty string&gt;';
+    } if (typeof obj === 'undefined') {
+      // undefined needs to be checked before null, because checking if an undefined value is null returns true.
+      return 'undefined';
+    } if (obj == null) {
+      return 'null';
+    }
+    return obj;
+  }
+
+  function getObjectValues(obj) {
+    const arr = [];
+    for (const key in obj) {
+      arr.push(_toString(obj[key]));
+    }
+    return arr;
+  }
+
+  function debugLog(level, args) {
+    let msg = '';
+    if (typeof args === 'string') {
+      msg = args;
+    } else {
+      msg = getObjectValues(args);
+    }
+
+    if (!document.querySelectorAll('#debugMessages').length) {
+      const t = document.createElement('div');
+      document.querySelector('body').append(t);
+      t.outerHTML = '<div id="debugMessages" style="background:#fff; margin-top:10px; border:1px solid #000; color:#000; clear:both; padding: 2px;"><h4 style="color:#000;">DEBUG MESSAGES</h4></div>';
+    }
+    if (level === undefined) {
+      level = '';
+    }
+    let color = '#000';
+    switch (level.toUpperCase()) {
+      case 'INFO':
+        color = 'blue';
+        break;
+      case 'WARN':
+        color = 'orange';
+        break;
+      case 'ERROR':
+        color = 'red';
+        break;
+      default:
+        level = 'log';
+    }
+    const levelMsg = level === '' ? '' : `[${level.toUpperCase()}] `;
+    const t2 = document.createElement('p');
+    document.querySelector('#debugMessages').append(t2);
+    t2.outerHTML = `<p style="color:${color}; margin-top:5px; margin-bottom:5px;">${levelMsg}${msg}</p>`;
+  }
+
+  function reassignConsoleLogs() {
+    if (window.console) {
+      console.warn('NOTE: console.log() statements are being displayed on the page.');
+      console = {
+        log() {
+          debugLog('log', arguments);
+        },
+        debug() {
+          debugLog('debug', arguments);
+        },
+        info() {
+          debugLog('info', arguments);
+        },
+        warn() {
+          debugLog('warn', arguments);
+        },
+        error() {
+          debugLog('error', arguments);
+        },
+      };
+    }
+  }
+
+  reassignConsoleLogs();
+}());

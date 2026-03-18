@@ -1,0 +1,19 @@
+
+- migrate JS files to TS or MJS
+- increase tests
+- add code docs
+- check for alternatives for deps with non-standard packing
+- swap js-json-object with typedjson
+- check that values in AList are populated correctly
+- move interfaces out of random files
+- finish localisation / convert to import libs
+- finish moving all the types to types dir
+- work out what MSG_DESTINATION should be
+- workout if can installworker filelist to a manifest?
+- postMessage targets ~ set target address when known
+- StateSyncing test cober fiull state map.
+- DataFactory
+
+set NODE_ENV="TEST" for tests
+
+

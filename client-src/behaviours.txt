@@ -1,0 +1,71 @@
+If this was paid work, I would be using a more graphical and less indexable file, from one of:
+* [https://figma.com Figma]
+* [https://www.mockplus.com/blog/post/user-journey-map Mockplus]
+* [https://balsamiq.com/wireframes/cloud/ Balsamiq]
+* others
+
+User journeys:
+* user1 tries app by going to my LAN, opening supplied URL in phone
+* sees context help, likely skims, closes
+* sees lists
+* taps to open a list
+* plays with swiping
+* tries a long tap, and gets edit
+* looks at burger menu
+* closes the PWA
+
+* user2 actually uses app by opening it
+* starts a new list with the 'new' button
+* then spends 30min browsing cupboards, and adding items to list as necessary
+* hits save to persist this list; does not close the PWA app
+* engages transport to get to shops
+* buys items, and swipes the items off
+* closes app without saving it, so swiped list isn't persisted
+
+* next week, user2 opens the PWA, 
+* and sees the list of lists on loading; then loads the list they made previously
+* repeats shopping process
+
+* user1 returns to the PWA, and builds a christmas shopping list
+* then saves it
+
+* several months later; user1 goers shopping with the handily saved list
+
+
+To look at:
+
+On / or /list-all
+  * display lists that the client knows about
+    * each list should a name, a size, and a save date
+  * a tabbar, which holds
+    * "list all"
+    * "new"
+    * burger menu
+  * actions:
+    * std hovers
+    * triggering a list name should change to that screen
+    * triggering the burger menu a should display it (see own section)
+    * triggering the new button should load an empty list
+    * if no cookie (first-touch), will display help intro, set a cookie, then the menu help
+    * if in first-touch, display help for this screen
+
+On /list/$X
+  * displays items in that list 
+  * sets list name in tabbar header
+  * actions:
+    * std hovers
+    * long trigger on item open edittext small-screen
+    * swipe left on an item will remove it
+    * triggering "add item" will open edittext small-screen on a blank input
+    * if in first-touch, display help for this screen
+    
+On menu
+  * change symbol on menu button
+  * list of menu items
+  * actions
+    * each one of the buttons does as described
+    * items that change a list go to that list
+    * items that change all lists go to all lists
+    * show help show the help
+
+

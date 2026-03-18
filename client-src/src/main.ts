@@ -1,0 +1,16 @@
+// import "reflect-metadata";
+import { createApp } from "vue";
+import type { Plugin } from "vue";
+import Vue3TouchEvents from "vue3-touch-events";
+import { STORE } from "./services/Store";
+import { APP_NAME, ROOT_NODE } from "./Constants";
+import { StaticRoutes } from "./components/Routing";
+import App from "./App.vue";
+
+const TOOL = createApp(App, {});
+TOOL.use(StaticRoutes);
+TOOL.use(Vue3TouchEvents as Plugin);
+TOOL.use(STORE);
+
+STORE.install(TOOL, APP_NAME);
+TOOL.mount(ROOT_NODE);
