@@ -1,24 +1,55 @@
 import { SUPPORTED_LANGUAGE } from '../Constants';
 import type { UItext } from '../types/Localisation';
-/*
-   IOIO If I add more languges, pull out the data definition sections
+
+/**
+ * useUIText
+ * Access util.   Will read browser settings or user choice when languages are added
+ 
+ * @public
+ * @returns {UItext}
+ */
+export function useUIText(): UItext {
+  return UITextFactory(SUPPORTED_LANGUAGE);
+}
+
+/**
+ * UI_EN_GB 
+ * A class to supply PO structures.   
+ * Dynamic value mapping features not included as JS already has that on the language level.
+   If I add more languages, pull out the data definition sections
    into defineItems() and defineArrays()
    have map lookup in a base class
-*/
 
+ * @public
+ */
 export class UI_EN_GB implements UItext {
   protected dat: Map<string, string>;
-
   protected datA: Map<string, Array<string>>;
-
   public lang: string;
 
+  /**
+   * constructor
+   * A normal con'tor
+ 
+   * @param {string} l ~ maybe should add a smarter type for the language selection
+   * @public
+   * @returns {UI_EN_GB}
+   */
   public constructor(l: string) {
     this.dat = new Map<string, string>();
     this.datA = new Map<string, Array<string>>();
     this.lang = l;
   }
 
+  /**
+   * add
+   * Add a new value to this map.  Uniqueness on keys is enforced.  
+ 
+   * @param {string] key
+   * @param {string} val
+   * @public
+   * @returns {void}
+   */
   public add(key: string, val: string): void {
     if (this.dat.has(key)) {
       throw new TypeError(`Key ${key} already exists!`);
@@ -27,6 +58,15 @@ export class UI_EN_GB implements UItext {
     }
   }
 
+  /**
+   * addArray
+   * Add an array as a value.  Uniqueness on keys is enforced. 
+ 
+   * @param {string}
+   * @param {Array<string>} val
+   * @public
+   * @returns {void}
+   */
   public addArray(key: string, val: Array<string>): void {
     if (this.datA.has(key)) {
       throw new TypeError(`Key ${key} already exists!`);
@@ -35,6 +75,14 @@ export class UI_EN_GB implements UItext {
     }
   }
 
+  /**
+   * get
+   * Return a value
+ 
+   * @param {string} key
+   * @public
+   * @returns {string]
+   */
   public get(key: string): string {
     if (this.dat.has(key)) {
       return this.dat.get(key) ?? this.errorStr(key);
@@ -42,6 +90,14 @@ export class UI_EN_GB implements UItext {
     return this.errorStr(key);
   }
 
+  /**
+   * getTemplate
+   * Return a value / an array of strings
+ 
+   * @param {string} key
+   * @public
+   * @returns {Array<string>}
+   */
   public getTemplate(key: string): Array<string> {
     if (this.datA.has(key)) {
       const tt = this.datA.get(key);
@@ -56,12 +112,28 @@ export class UI_EN_GB implements UItext {
     return [this.errorStr(key)];
   }
 
+  /**
+   * errorStr
+   * a util to supply error messages
+ 
+   * @param {string} key
+   * @public
+   * @returns {string}
+   */
   public errorStr(key: string): string {
-    return `FAIL ${key}`;
+    return `FAIL to find ${key}`;
   }
 }
 
 let hiddenReference: UI_EN_GB;
+/**
+ * UITextFactory
+ * A static inline config of data.  Factory Impl to be changed if more languages are added
+ * 
+ * @param string} lang
+ * @public
+ * @returns {UItext}
+ */
 function UITextFactory(lang: string): UItext {
   if (!hiddenReference) {
     hiddenReference = new UI_EN_GB(lang);
@@ -111,6 +183,4 @@ function UITextFactory(lang: string): UItext {
   return hiddenReference;
 }
 
-export function useUIText(): UItext {
-  return UITextFactory(SUPPORTED_LANGUAGE);
-}
+

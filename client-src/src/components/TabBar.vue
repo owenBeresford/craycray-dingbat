@@ -67,6 +67,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+
 import { useStore } from "../services/Store";
 import { StaticRoutes } from "./Routing";
 import { AList } from "../services/AList";
@@ -82,7 +83,16 @@ import { nextId } from "../services/util";
 const TEXT = useUIText();
 const MENU_OPEN = TEXT.get("menu");
 const MENU_CLOSE = TEXT.get("cross");
+  /**
+   * TabBar
+   * A component for the top menu
+	- the params listed are props to the component.
+	- the functions below are described in the Vue docs, and they are predictable.
 
+   * @param {string} currentStateKey
+   * @public
+   * @return {string} - eventually :-)
+   */
 export default defineComponent({
   name: "TabBar",
   components: { EnterInput },

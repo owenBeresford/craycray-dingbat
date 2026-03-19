@@ -18,7 +18,20 @@ import { nextId } from "../services/util";
 import { KNOWN_PHONE } from '../Constants';
 
 const TEXT = useUIText();
+  /**
+   * InterstitialView
+   * A component to render an overlay with some help text
 
+	- the params listed are props to the component.
+	- the functions below are described in the Vue docs, and they are predictable.
+
+   * @param {Number =0} ttl 
+   * @param {String } display 
+   * @param {boolean =false} show
+   * @param {string} currentStateKey
+   * @public
+   * @return {string}
+   */
 export default defineComponent({
   name: "InterstitialView",
   components: {},

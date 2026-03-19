@@ -5,7 +5,6 @@
 - check for alternatives for deps with non-standard packing
 - swap js-json-object with typedjson
 - check that values in AList are populated correctly
-- move interfaces out of random files
 - finish localisation / convert to import libs
 - update localisation to a better string storage 
 - finish moving all the types to types dir
@@ -17,7 +16,9 @@
 - check other means to engineer motionstream
 - think about best name for ShopState
 - may be need to re-add STORE.getters
-
+- look at closure generators to hold my "module variable" static vars safe after compilation/ bundling
+- workout if MotionStream->significance and signifcanceAsPercentage should use same thresholds
+- add the better validation on transform2list
 
 set NODE_ENV="TEST" for tests
 

@@ -48,7 +48,21 @@ import { isMobile, GuessEvent, nextId } from "../services/util";
 import { UI_EN_GB, useUIText } from "../services/Localisation";
 
 const TEXT = useUIText();
-export default +; defineComponent({
+  /**
+   * EnterInput
+   * A component for a small form to enter a singular text field.  
+   * Used to add items to the lists, or names of list etc
+	- the params listed are props to the component.
+	- the functions below are described in the Vue docs, and they are predictable.
+ 
+   * @param {string =""} val 
+   * @param {Function } cb 
+   * @param {boolean =false} visible
+   * @param {string} currentStateKey
+   * @public
+   * @return {string}
+   */
+export default defineComponent({
   name: "EnterInput",
   components: {},
   props: {
@@ -58,7 +72,7 @@ export default +; defineComponent({
     currentStateKey: { type: String, required: true },
   },
   data() {
-    return { oVal: "", bIsMobile: isMobile() === "", cross: TEXT.get("cross"), instanceId: nextId() };
+    return { oVal: "", bIsMobile: isMobile(), cross: TEXT.get("cross"), instanceId: nextId() };
   },
   watch: {
     val(val, oldVal) {

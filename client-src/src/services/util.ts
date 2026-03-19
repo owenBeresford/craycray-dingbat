@@ -6,15 +6,30 @@
 //  }
 //};
 
-export function isMobile(): string {
+/**
+ * isMobile
+ * Simple guess about current HW platform
+ 
+ * @public
+ * @return {boolean}
+ */
+export function isMobile(): boolean {
   try {
-    return window.matchMedia("(any-pointer:coarse)").matches ? "hide" : "";
+    return window.matchMedia("(any-pointer:coarse)").matches ? false: true;
   } catch (e) {
-    return "";
+    return true;
   }
 }
 
-// https://stackoverflow.com/a/28241682
+
+/**
+ * windowSize
+ * Compute current window size
+ 
+ * @see [https://stackoverflow.com/a/28241682]
+ * @public
+ * @returns {Array<number>}
+ */
 export function windowSize(): Array<number> {
   try {
     const width: number = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -26,25 +41,55 @@ export function windowSize(): Array<number> {
   }
 }
 
+/**
+ * rad2deg
+ * As name says, convert angle unit type
+ 
+ * @param {number} i
+ * @public
+ * @return {number}
+ */
 export function rad2deg(i: number): number {
   return (i * 180) / Math.PI;
 }
 
+/**
+ * deg2rad
+ * As name says, convert angle unit type
 // AFAIK, unused
+ 
+ * @param {number} i
+ * @public
+ * @return {number}
+ */
 export function deg2rad(i: number): number {
   throw new Error("Implement me!!!");
 }
 
+/**
+ * wrap_getMyIP
+ * Generate correct base URL for app
 // until the https is deployed; this is safer as /
+ 
+ * @public
+ * @returns {string]
+ */
 export function wrap_getMyIP(): string {
   if (location.protocol === "https:") {
-    return "https://" + location.host + "/";
+    return "https://" + location.host + ":"+ location.port+ "/";
   } else {
     return "/";
   }
 }
 
-// https://stackoverflow.com/a/65445789
+/**
+ * clearSelection
+ * Clear user text selections, browser only
+ 
+ * @see [https://stackoverflow.com/a/65445789]
+ * @public
+ * @returns {void}
+ */
 export function clearSelection(): void {
   if (typeof process === "object") {
     // Node doesnt have selection as no screen Object
@@ -66,7 +111,7 @@ export function clearSelection(): void {
 export type StrictArray = Array<string>;
 
 let ID_OFFSET = 0;
-// assuming only one copy of this file is compiled, this should lead to globally uniqiue ids
+// assuming only one copy of this file is compiled, this should lead to globally unique ids
 export function nextId(): string {
   ID_OFFSET++;
   return "obj" + ID_OFFSET;

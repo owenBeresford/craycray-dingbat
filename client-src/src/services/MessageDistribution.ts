@@ -9,12 +9,24 @@ import type { PromiseSucceed, PromiseReject } from "../types/promises";
 
 type Timer = number;
 
+/**
+ * useMsgDistrib
+ * a util to create this service
+ 
+ * @public
+ * @returns { DistantStorable}
+ */
 export function useMsgDistrib(): DistantStorable {
   return new MessageDistribution();
 }
 
-// this class runs in the UI thread in the browser,
-// and sends/recvs mesages to the other worker thread that talks to the server
+/**
+ * MessageDistribution 
+ * Class to marshal state between the net-worker thread, and this UI thread 
+// Sends/recvs messages to the other worker thread that talks to the server
+ *
+ * @public
+ */
 export class MessageDistribution implements DistantStorable, BasicThreadable {
   private state: Array<SaveStruct>;
   //	private worker:WorkerHandle;
@@ -23,7 +35,14 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
   private running: boolean;
   protected goodSource: Readonly<string>;
 
-  constructor() {
+  /**
+   * constructor
+   * Con'tor, mostly setting default values
+ 
+   * @public
+   * @returns {MessageDistribution}
+   */
+  public constructor() {
     this.running = true;
     this.errMsgs = [];
     this.worker = null;

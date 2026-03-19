@@ -1,8 +1,14 @@
 import type { SaveStruct, Storable } from "../types/Saveable";
 import type { ShippingStruct, ActionEnum } from "../types/Messagable";
 
-
-
+/**
+ * transform2text
+ * As name says, create text from internal data structure
+ 
+ * @param {any} dat - yes any type.
+ * @public
+ * @returns {string}
+ */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any  @typescript-eslint/explicit-module-boundary-types
 export function transform2text(dat: any): string {
   if (typeof dat === "string") {
@@ -16,11 +22,29 @@ export function transform2text(dat: any): string {
   }
 }
 
+/**
+ * transform2list
+ * As name says, create internal data structure from text
 // IOIO TODO possible magic to make types work...
+ 
+ * @param {string} dat
+ * @public
+ * @returns {Array<SaveStruct>}
+ */
 export function transform2list(dat: string): Array<SaveStruct> {
   return JSON.parse(dat) as Array<SaveStruct>;
 }
 
+/**
+ * packMsg
+ * Pack data into a message blob
+ 
+ * @param {ActionEnum} act
+ * @param {object} dat
+ * @public
+ * @returns {ShippingStruct}
+ */
 export function packMsg(act: ActionEnum, dat: object): ShippingStruct {
   return { action: act, data: transform2text(dat) } as ShippingStruct;
 }
+

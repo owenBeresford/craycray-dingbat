@@ -44,6 +44,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+
 import { useStore } from "../services/Store";
 import { DataFactory } from "../services/DataFactory";
 import { ListService } from "../services/ListService";
@@ -53,24 +54,15 @@ import { UI_EN_GB } from "../services/Localisation";
 import { isMobile, clearSelection, GuessEvent } from "../services/util";
 import { MotionStream } from "../services/MotionStream";
 import { nextId } from "../services/util";
-// import { ListService } from "../services/ListService";
-import { Storable } from "../types/Saveable";
-import { Motionable } from "../types/Motionable";
 
+import type { Storable } from "../types/Saveable";
+import type { Motionable } from "../types/Motionable";
+import type { GuessEvent } from "../services/util";
+import type { ThisListProps } from '../types/ComponentsProps';
+
+// import { ListService } from "../services/ListService";
 import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
-
-interface LocalData {
-  instanceId: string;
-  id: number;
-  list: AList;
-  getInput: string;
-  canSeeInput: boolean;
-  cb: Function;
-  stream: Motionable;
-  offset: number;
-  bisMobile: boolean;
-}
 
 const NEW_LIST = -1;
 const DUMMY_LIST: AList = {} as AList;
@@ -97,6 +89,18 @@ function extractId(src: string | string[] | null): number {
   return cp - 1;
 }
 
+  /**
+   * Thislist
+   * A component to render the currently edited list.
+
+	- the params listed are props to the component.
+	- the functions below are described in the Vue docs, and they are predictable.
+   * @param {Object} shopStore 
+   * @param {Function } factory
+   * @param {string} currentStateKey
+   * @public
+   * @return {string}
+   */
 export default defineComponent({
   name: "ThisList",
   components: { EnterInput, InterstitialView },
@@ -159,7 +163,7 @@ export default defineComponent({
       cb: Function as any,
       stream: tt,
       offset: -1,
-      bisMobile: isMobile() === "hide",
+      bisMobile: isMobile(),
     } as LocalData;
   },
   computed: {

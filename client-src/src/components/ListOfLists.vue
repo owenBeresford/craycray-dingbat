@@ -16,22 +16,27 @@
 import { defineComponent } from "vue";
 import { DataFactory } from "../services/DataFactory";
 import { mapURL } from "../services/URLs";
-import InterstitialView from "./InterstitialView.vue";
 import { ListService } from "../services/ListService";
 import { AList, ListStruct } from "../services/AList";
 import { API_RETRY } from "../Constants";
 import { nextId } from "../services/util";
+import InterstitialView from "./InterstitialView.vue";
+import type { ListOfListsProps } from '../types/ComponentProps';
 // IOIO the first time you compile this; comment the link to routing; this is a dep loop
 // I will build a better solution
 // import {StaticRoutes} from './Routing';
 
-interface LocalData {
-  instanceId: string;
-  shoppingLists: Array<ListStruct>;
-  mapURL: (a: string, b: number | null) => string;
-}
 const DATA = await DataFactory();
-
+  /**
+   * ListOfLists
+   * A component for a small form to enter a singular text field.  
+   * Used to add items to the lists, or names of list etc
+	- the params listed are props to the component.  None here.
+	- the functions below are described in the Vue docs, and they are predictable.
+ 
+   * @public
+   * @return {string}
+   */
 export default defineComponent({
   name: "ListOfLists",
   components: { InterstitialView },

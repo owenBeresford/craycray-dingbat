@@ -1,33 +1,50 @@
-import type { SaveStruct } from "../types/Saveable";
 import { transform2text, transform2list } from "./Storable";
+import type { SaveStruct } from "../types/Saveable";
 import type { Storable } from "../types/Savable";
 import type { DistantStorable, RemoteConfig } from "../types/RemoteTypes";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
+import { FETCH_TIMEOUT } from '../Constants';
 // import type  { Request as RequestType, Response as ResponseType } from 'node-fetch';
 
 type NullableTimeout = ReturnType<typeof global.setTimeout> | undefined;
-/*
-this should be all the networking stuff; but none of the scheduling stuff
-just a simple fetch wrapper; EXCEPT that i'm fixing the maybe no WiFi issue in software
-*/
 
+/**
+ * RemoteStorage
+ * Service to message API servers, dealing with possible disabled Wifi.
+ * This should be all the networking stuff; but none of the scheduling stuff
+ 
+ * @public
+ */
 export class RemoteStorage implements Storable, DistantStorable {
   private url: string;
   private other: RemoteConfig;
 
+  /**
+   * constructor
+   * 
+   * @param {RemoteConfig} c
+   * @public
+   * @return {RemoteStorage} 
+   */
   public constructor(c: RemoteConfig) {
     this.url = c.url;
     this.other = { ...c };
   }
 
+ /**
+ * poll
+ * Test availability of remote API
   // try a OPTIONS or HEAD to see if available, short timeout
-  // code derived from https://davidwalsh.name/fetch-timeout
+ * @see [https://davidwalsh.name/fetch-timeout]
+ * 
+ * @public
+ * @returns Promise<boolean>
+ */
   public async poll(): Promise<boolean> {
     let didTimeOut = false;
-    const FETCH_TIMEOUT = 500;
     const REQT: RequestInit = Object.assign(this.other, { method: "HEAD", body: null }) as RequestInit;
     const EEE = new Error("Request timed out");
-    // named after the whine of over-used/ over-heated electrical equipment
+    // EEE is named after the whine of over-used/ over-heated electrical equipment
     const SELF = this;
 
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
@@ -60,6 +77,14 @@ export class RemoteStorage implements Storable, DistantStorable {
     });
   }
 
+  /**
+   * saveState
+   * Send current list of lists to the API server
+ 
+   * @param {Array<SaveStruct>} dat
+   * @public
+   * @return {Promise<boolean>}
+   */
   public async saveState(dat: Array<SaveStruct>): Promise<boolean> {
     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       const REQT: RequestInit = Object.assign(this.other, { method: "POST", body: transform2text(dat) }) as RequestInit;
@@ -98,7 +123,14 @@ export class RemoteStorage implements Storable, DistantStorable {
     });
   }
 
+  /**
+   * loadState
+   * Request current list of lists from remote API
   // call will happen just after page/ app open, so probably on network
+ 
+   * @public
+   * @return {Promise<Array<SaveStruct>>}
+   */
   public async loadState(): Promise<Array<SaveStruct>> {
     return new Promise((good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
       const REQT: RequestInit = Object.assign(this.other, { method: "GET", body: null }) as RequestInit;
@@ -122,7 +154,8 @@ export class RemoteStorage implements Storable, DistantStorable {
     });
   }
 
-  // no value in API point at the mo
+	// There is no value in the following API points at the mo
+	// so made private
   private saveProperty(): boolean {
     // saveProperty(nom:string, val:string):boolean {
     return true;
@@ -132,4 +165,6 @@ export class RemoteStorage implements Storable, DistantStorable {
     // loadProperty(nom:string):string {
     return "no impl";
   }
+
 }
+

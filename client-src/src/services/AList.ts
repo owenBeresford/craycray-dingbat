@@ -1,36 +1,11 @@
 import { JSONObject, map, required, integer, custom } from "ts-json-object";
-
-// attribute names in french, so there is no possible collision between JS keywords and them
-// other languages would also work
-export interface ListStruct {
-  nom: string;
-  // we have the creation date, as sorting my be needed in future
-  créé: Date;
-  modifié: Date;
-  // i.e. array length, as have no sight on array in this type
-  énumérer: number;
-  // no current value in knowing who makes a list
-  // also no planned login either
-  id: number;
-}
-
-export interface Listable {
-  éléments: Array<string>;
-
-  add(nouveau: string): boolean;
-  edit(offset: number, nouveau: string): boolean;
-  remove(offset: number): boolean;
-  import(relevé: Array<string>): boolean;
-  export(): Array<string>;
-  editName(nouveau: string): boolean;
-  unique(): boolean;
-  view(): ListStruct;
-}
+import type { Listable, ListStruct } from '../types/ListCollection';
 
 /**
  * AList 
  * An Entity to manage validation and serialisation for Shopping lists
-  
+ * Currently uses JSONObject for meta-data management.
+ 
  * @public
  */
 export class AList extends JSONObject implements Listable, ListStruct {

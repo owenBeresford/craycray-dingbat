@@ -3,8 +3,16 @@ import type { Store } from "vuex";
 import { APP_NAME } from "../Constants";
 import type { ShopState } from '../types/ShopState';
 
-
-export const mapForHelp = (state: Store<ShopState>, specific: string): string => {
+/**
+ * mapForHelp
+ * Convert a URN to the symbol for the relevant interstitial text
+ 
+ * @param {Store<ShopState>} state
+ * @param {string} specific
+ * @public
+ * @returns {string}
+ */
+export const mapForHelp(state: Store<ShopState>, specific: string): string => {
   let use = "";
   if (specific.length <= 2) {
     use = "/";
@@ -24,7 +32,8 @@ export const mapForHelp = (state: Store<ShopState>, specific: string): string =>
   return MM[use];
 };
 
-export const STORE: Strore<ShopState> = createStore<ShopState>({
+// A Vuex Store object, to hold the SPA stack state 
+export const STORE: Store<ShopState> = createStore<ShopState>({
   state: (): ShopState => {
     return {
       currentURL: "",
@@ -49,6 +58,14 @@ export const STORE: Strore<ShopState> = createStore<ShopState>({
 });
 
 // I need an example, do I need to pull vuex.useStore into every single component?
+
+/**
+ * useStore
+ * Another use function, blah
+ 
+ * @public
+ * @return {Store<ShopState>}
+ */
 export function useStore(): Store<ShopState> {
   originalUseStore(APP_NAME);
   return STORE;

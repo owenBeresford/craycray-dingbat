@@ -4,22 +4,40 @@ import { CBTYPE, Motionable } from "../types/Motionable";
 import { isMobile, windowSize, rad2deg } from "./util";
 import { MOBILE_THRESHOLD, BIG_THRESHOLD, ANGLE_ACCURACY } from '../Constants';
 
-
+/**
+ * MotionStream 
+ * OLD code to convert random move events into a coherent stream that can be acted on.
 // IOIO extension: grab timestamp from events, log with Vector,
 // allows computation of velocity
+ * I think I need to replace this with newer JS API.
+ 
+ * @public
+ */
 export class MotionStream implements Motionable {
   protected stack: Array<Vector>;
-
   protected actions: Record<string, CBTYPE>;
-
   protected active: boolean;
 
+  /**
+   * constructor
+   * Plain con'tor, nothing noteworthy
+ 
+   * @public
+   */
   public constructor() {
     this.stack = [];
     this.actions = {};
     this.active = false;
   }
 
+  /**
+   * addEvent
+   * Push new Input event fron the user onto local stack
+ 
+   * @param {MouseEvent} e
+   * @public
+   * @returns {boolean}
+   */
   public addEvent(e: MouseEvent): boolean {
     if (this.active) {
       this.stack.push(new Vector(e.clientX, e.clientY));
@@ -27,12 +45,32 @@ export class MotionStream implements Motionable {
     return true;
   }
 
+  /**
+   * register
+   * Register, for an angle of motion, what should happen 
+       eg swipe right remove item, swipe left add to current list
+	CB is short for callback. 
+
+   * @param {string} angle - Due to JS limitations on hashes, the value needs to be a string. I cast it to an number later
+   * @param {CBTYPE} CB
+   * @public
+   * @returns {boolean}
+   */
   public register(angle: string, CB: CBTYPE): boolean {
     this.actions[angle] = CB;
     return true;
   }
 
+  /**
+   * end
+   * Process the Last event in a gesture the JS engine sees.
+   * This triggers related actions
   // currently only single direction actions supported...
+ 
+   * @param {MouseEvent} e
+   * @public
+   * @returns {boolean}
+   */
   public end(e: MouseEvent): boolean {
     if (!this.active) {
       return false;
@@ -67,6 +105,15 @@ export class MotionStream implements Motionable {
     return false;
   }
 
+  /**
+   * clone
+   * Copy a section of the current event stack, and convert to a vector
+ 
+   * @param {number} o1
+   * @param {number} o2
+   * @public
+   * @returns {Vector}
+   */
   public clone(o1: number, o2: number): Vector {
     const annoying = this.stack[o1].toArray();
     const cur: Vector = new Vector(annoying[0], annoying[1]);
@@ -76,6 +123,14 @@ export class MotionStream implements Motionable {
     return cur.subtract(this.stack[o2]);
   }
 
+  /**
+   * start
+   * Start a gesture in the motion stream
+ 
+   * @param {MouseEvent}
+   * @public
+   * @returns {boolean}
+   */
   public start(e: MouseEvent): boolean {
     if (this.stack.length) {
       this.stack.splice(0, this.stack.length);
@@ -85,20 +140,36 @@ export class MotionStream implements Motionable {
     return true;
   }
 
-  public significant = (delta: Vector): boolean => {
+  /**
+   * significant
+   * Compute if delta is larger than thresholds
+   * See {MOBILE_THRESHOLD} and {BIG_THRESHOLD} 
+ 
+   * @param {Vector} delta
+   * @public
+   * @returns {boolean}
+   */
+  public significant(delta: Vector): boolean => {
     const [x, y] = delta.toArray();
-    if (isMobile() === "") {
+    if (isMobile()) {
       return x > MOBILE_THRESHOLD || y > MOBILE_THRESHOLD;
     }
     return x > BIG_THRESHOLD || y > BIG_THRESHOLD;
   };
 
   /**
-    * https://taskvio.com/maths/coordinate-geometry-calculators/angle-between-two-vectors-calculator/index.php
-    vectors a = [xa, ya] , b = [xb, yb]
-    angle = arccos[(xa * xb + ya * yb) / (√(xa2 + ya2) * √(xb2 + yb2))]
+   * angle
+   * Use maths to convert two samples into a angle of motion
+ 
+   * @see [https://taskvio.com/maths/coordinate-geometry-calculators/angle-between-two-vectors-calculator/index.php]
+     As maths notation: 
+		 angle = arccos[(xa * xb + ya * yb) / (√(xa2 + ya2) * √(xb2 + yb2))]
+   * @param {Vector} delta1
+   * @param {Vector} delta2
+   * @public
+   * @returns {number}
    */
-  public angle = (delta1: Vector, delta2: Vector): number => {
+  public angle(delta1: Vector, delta2: Vector): number => {
     const [x1, y1] = delta1.toArray();
     const [x2, y2] = delta2.toArray();
 
@@ -108,10 +179,18 @@ export class MotionStream implements Motionable {
     return Math.acos(thing1 / (thing2 * thing3));
   };
 
-  public significantAsPercentage = (delta: Vector): boolean => {
+  /**
+   * significantAsPercentage
+   * Determine significance of change, as a percentage
+ 
+   * @param  {Vector} delta
+   * @public
+   * @returns {boolean}
+   */
+  public significantAsPercentage(delta: Vector): boolean => {
     const [maxX, maxY] = windowSize();
     const [x, y] = delta.toArray();
-    if (isMobile() === "") {
+    if (isMobile()) {
       return (x * 100) / maxX > MOBILE_THRESHOLD || (y * 100) / maxY > MOBILE_THRESHOLD;
     }
     return (x * 100) / maxX > BIG_THRESHOLD || (y * 100) / maxY > BIG_THRESHOLD;

@@ -24,7 +24,15 @@ s8                 Y        remote        N
 */
 
 let DATA: ListCollection | undefined;
-async function DataFactory(): Promise<ListCollection> {
+
+/**
+ * DataFactory
+ * A "use function" to create ListCollections, which has different composition depending on network settings
+ 
+ * @public
+ * @return {Promise<ListCollection>}
+ */
+export async function DataFactory(): Promise<ListCollection> {
   const d3 = useLocal();
   const d2 = createRemoteService(global.location);
   // Local has no state, so no extra loading data
@@ -48,4 +56,3 @@ async function DataFactory(): Promise<ListCollection> {
   return data;
 }
 
-export { DataFactory };

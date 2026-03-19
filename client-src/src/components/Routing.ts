@@ -1,11 +1,19 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 import ListOfLists from "./ListOfLists.vue";
 import ThisList from "./ThisList.vue";
-import { useStore } from "../services/Store";
-import { DataFactory } from "../services/DataFactory";
 import UnknownRoute from "./UnknownRoute.vue";
 import { wrap_getMyIP } from "../services/util";
+import { useStore } from "../services/Store";
+import { DataFactory } from "../services/DataFactory";
 
+  /**
+   * StaticRoutes
+   * ilibrary standard file, holding the mspping of URN to Componment/ screen
+	- the functions below are described in the Vue docs, and they are predictable.
+ 
+   * @public
+   */
 export const StaticRoutes = createRouter({
   history: createWebHistory(wrap_getMyIP()),
   routes: [

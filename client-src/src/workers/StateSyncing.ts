@@ -19,6 +19,15 @@ const STATE: DataPipeline = useSSW(self.location);
 // The UI thread drives MessageDistribution
 const goodSource: Readonly<string> = self.location.protocol + "//" + self.location.hostname + ":" + self.location.port;
 console.log("CODE under TEST started " + process.pid, goodSource);
+
+/**
+ * self.onmessage
+ * An event handler
+ 
+ * @param {MessageEvent} ev
+ * @protected
+ * @return {void}
+ */
 self.onmessage = function (ev: MessageEvent): void {
   console.log(
     "TEST2 received MSG to " + ev.origin + " from " + ev.source,
@@ -59,6 +68,14 @@ self.onmessage = function (ev: MessageEvent): void {
   }
 };
 
+/**
+ * self.onmessageerror 
+ * An event handler
+ 
+ * @param {unknown} e
+ * @protected
+ * @return {void}
+ */
 self.onmessageerror = (e: unknown): void => {
   console.warn("WORKER: got bad message " + e);
 };

@@ -18,6 +18,17 @@ import { nextId } from "../services/util";
 import { useUIText } from "../services/Localisation";
 
 const TEXT = useUIText();
+   /**
+   * UnknownRoute
+   * A component to render bad URLs, with an error mesage
+	- the params listed are props to the component.
+	- the functions below are described in the Vue docs, and they are predictable.
+ 
+   * @param {string ="**UNKNOWN**"} errpath 
+   * @param {string} currentStateKey
+   * @public
+   * @return {string} - eventually
+   */
 export default defineComponent({
   name: "UnknownRoute",
   props: {

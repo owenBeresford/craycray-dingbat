@@ -3,8 +3,8 @@
 </template>
 <script lang="ts">
 //
-// this class exists as a one-hnd-clapping version of the App, to match the inject/provide thing
-//      as that was making errors in the unbit tests
+// this class exists as a one-hand-clapping version of the App, to match the inject/provide thing
+//      as that was making errors in the unit-tests
 // inject/ provide saves typing, but is horrid for tests
 //
 import { defineComponent, vue } from "vue";
@@ -83,7 +83,7 @@ const FakeCollection = {
 // const getFakeFactory=function () { return FakeCollection.create(); };
 
 // I can't find return type data
-// export function createTestWrapper(id:string, store:Store<ShopState>, factory:ListCollection ) {
+// export function createTestWrapper(id:string, store:Store<ShopState>, factory:ListCollection ) 
 
 export default defineComponent({
   name: "PlaceholderThislist",
