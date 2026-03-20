@@ -1,6 +1,6 @@
 import { assert, describe, it, expect, expectTypeOf } from "vitest";
-import { vuex } from "vuex";
-import { STORE, KEY, OnlyForTesting, useStore } from "../services/Store";
+import type { Store } from "vuex";
+import { STORE,  OnlyForTesting, useStore } from "../services/Store";
 import type { ShopState } from '../types/ShopState';
 
 const { mapForHelp } = OnlyForTesting;
@@ -15,15 +15,15 @@ describe("I can open Store", () => {
 
   it("The mapForHelp() seems to work", () => {
     STORE.commit("setPath", "/list-all");
-    assert.isTrue(mapForHelp(STORE) === "list-all", "API mapper test1 PASS");
+    assert.isTrue(mapForHelp(STORE, "/list-all") === "list-all", "API mapper test1 PASS");
     STORE.commit("setPath", "/");
-    assert.isTrue(mapForHelp(STORE) === "list-all", "API mapper test2 PASS");
+    assert.isTrue(mapForHelp(STORE, "/") === "list-all", "API mapper test2 PASS");
     STORE.commit("setPath", "/list");
-    assert.isTrue(mapForHelp(STORE) === "list-id", "API mapper test3 PASS " + mapForHelp(STORE)());
+    assert.isTrue(mapForHelp(STORE, "/list") === "list-id", "API mapper test3 PASS " + mapForHelp(STORE, "/list" ));
     STORE.commit("setPath", "/menu");
-    assert.isTrue(mapForHelp(STORE) === "menu", "API mapper test4 PASS");
+    assert.isTrue(mapForHelp(STORE, "/menu") === "menu", "API mapper test4 PASS");
     STORE.commit("setPath", "/sdfsdfsdf");
-    assert.isTrue(mapForHelp(STORE) === undefined, "API mapper test5 PASS " + mapForHelp(STORE)());
+    assert.isTrue(mapForHelp(STORE, "/sdfsdfsdf") === undefined, "API mapper test5 PASS " + mapForHelp(STORE, "/sdfsdfsdf"));
   });
 });
 

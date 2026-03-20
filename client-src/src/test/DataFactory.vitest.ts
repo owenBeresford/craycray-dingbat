@@ -4,14 +4,14 @@ import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vite
 import { DataFactory } from '../services/DataFactory';
 
 describe("test on DataFactory ", () => {
-	it("Can use DataFactory", () => {
+	it("Can use DataFactory", async () => {
  		let txt=await DataFactory();
  		expect(typeof txt ).toBe("object");
  		assertType<Function>(DataFactory);
  		expectTypeOf(txt).toExtend<ListCollection>(	);
 	});
 
-	it("Can use DataFactory", () => {
+	it("Can use DataFactory", async () => {
  		let txt=await DataFactory();
  		expect(typeof txt ).toBe("object");
 
