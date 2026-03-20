@@ -51,14 +51,14 @@ import { ListService } from "../services/ListService";
 import { SaveStruct } from "../types/Saveable";
 import { AList } from "../services/AList";
 import { UI_EN_GB } from "../services/Localisation";
-import { isMobile, clearSelection, GuessEvent } from "../services/util";
+import { isMobile, clearSelection } from "../services/util";
 import { MotionStream } from "../services/MotionStream";
 import { nextId } from "../services/util";
 
 import type { Storable } from "../types/Saveable";
 import type { Motionable } from "../types/Motionable";
-import type { GuessEvent } from "../services/util";
-import type { ThisListProps } from '../types/ComponentsProps';
+import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
+import type { ThisListProps } from '../types/ComponentProps';
 
 // import { ListService } from "../services/ListService";
 import EnterInput from "./EnterInput.vue";
@@ -147,11 +147,11 @@ export default defineComponent({
   },
   mounted() {
     //console.log("WWWWWWW mounted()", this.$props.shopStore );
-    this.$props.shopStore.commit("setPath", this.$route.path);
-    this.$props.shopStore.commit("setId", this.id);
+    this.$props.!shopStore.commit("setPath", this.$route.path);
+    this.$props.!shopStore.commit("setId", this.id);
   },
   inject: ["helpText", "canSeeHelp", "ttl"],
-  data(): LocalData {
+  data(): ThisListProps {
     const tt = new MotionStream();
     tt.register("0", this.finalise.bind(this));
     return {
@@ -164,17 +164,17 @@ export default defineComponent({
       stream: tt,
       offset: -1,
       bisMobile: isMobile(),
-    } as LocalData;
+    } as ThisListProps;
   },
   computed: {
     betterId(): string {
       return this.$props.currentStateKey + "view";
     },
-    actualList(): Array<SaveStruct> {
+    actualList(): Array<string> {
       if (this.list instanceof AList) {
         return this.list.export();
       }
-      return [] as Array<SaveStruct>;
+      return [] as Array< string>;
     },
   },
   methods: {

@@ -2,10 +2,10 @@ import { assert, describe, it, expect, expectTypeOf, assertType } from "vitest";
 import { LocalStorage } from "node-localstorage";
 
 import { APP_NAME } from "../Constants";
-import { ListCollection, ListService } from "../services/ListService";
+import { ListService } from "../services/ListService";
 import {  AList } from "../services/AList";
 import { DataFactory } from "../services/DataFactory";
-import type { ListStruct, Listable } from '../types/ListCollection';
+import type { ListStruct, Listable, ListCollection } from '../types/ListCollection';
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
 
 global.localStorage = new LocalStorage("./build/scratch");
@@ -122,11 +122,11 @@ describe("I can use ListService", () => {
       expect(ls.create("item2")).toBe(2);
       expect(ls.create("item3")).toBe(3);
 
-      expect(ls.store(AList.manual("item2", 2), 2)).toBe(true);
+      expect(ls.put(2, AList.manual("item2", 2))).toBe(true);
       // can overwrite
-      expect(ls.store(AList.manual("item2", 2), 2)).toBe(true);
+      expect(ls.put(2, AList.manual("item2", 2))).toBe(true);
 
-      expect(ls.store(AList.manual("item2", 1024), 1024)).toBe(true);
+      expect(ls.put(1024, AList.manual("item2", 1024))).toBe(true);
       good(true);
     });
   });

@@ -44,7 +44,8 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 // https://stackoverflow.com/questions/50617865/vue-v-model-input-change-mobile-chrome-not-work
-import { isMobile, GuessEvent, nextId } from "../services/util";
+import { isMobile, nextId } from "../services/util";
+import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
 import { UI_EN_GB, useUIText } from "../services/Localisation";
 
 const TEXT = useUIText();

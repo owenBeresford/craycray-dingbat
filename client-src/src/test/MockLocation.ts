@@ -17,11 +17,11 @@ port:string;
 protocol:string;
 search: string;
 
-assign (url: string | URL): void;
-reload:LocationCB;
-replace(url: string | URL): void;
+assign: (url: string | URL)=> void;
+reload:() => void;
+replace:(url: string | URL)=> void;
 toString():string;
-valueOf ():MockLocation;
+valueOf():MockLocation;
 compare(b:TestLocation):boolean;
 
 }
@@ -57,8 +57,8 @@ public constructor(a:string|URL) {
 }
 
 // these two dont make sense in this Mock/ test.
-private assign: (url: string | URL) => void = (a:string|URL):void =>{ return; };
-private reload:() => void = ():void =>{ return; };
+assign: (url: string | URL) => void = (a:string|URL):void =>{ return; };
+reload:() => void = ():void =>{ return; };
 // This class doesn't interact with any DOM, 
 // this does return a new object with the correct state, as best fake choice
 public replace: (url: string | URL) => void =(a: string | URL):void => {};
@@ -67,7 +67,7 @@ public replace: (url: string | URL) => void =(a: string | URL):void => {};
 public toString():string { return `<TestLocation value='${this.href}' />`; }  
 
 // huh?
-public valueOf():MockLocation { return this; }
+public valueOf():MockLocation { return this as MockLocation; }
 
 public compare(b:TestLocation):boolean {
 	return this.toString() === b.toString();

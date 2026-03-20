@@ -1,6 +1,6 @@
 import type { DistantStorable } from "./RemoteTypes";
 import type { LocalCopy } from "../services/LocalCopy";
-import type { ListStruct } from "./AList";
+import {AList} from '../services/AList'; 
 
 export interface ListCollection {
   catalog: Array<AList>;

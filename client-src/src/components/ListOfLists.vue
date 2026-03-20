@@ -17,10 +17,11 @@ import { defineComponent } from "vue";
 import { DataFactory } from "../services/DataFactory";
 import { mapURL } from "../services/URLs";
 import { ListService } from "../services/ListService";
-import { AList, ListStruct } from "../services/AList";
+import { AList } from "../services/AList";
 import { API_RETRY } from "../Constants";
 import { nextId } from "../services/util";
 import InterstitialView from "./InterstitialView.vue";
+import type { ListStruct } from '../types/ListCollection';
 import type { ListOfListsProps } from '../types/ComponentProps';
 // IOIO the first time you compile this; comment the link to routing; this is a dep loop
 // I will build a better solution

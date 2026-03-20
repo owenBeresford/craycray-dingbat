@@ -21,9 +21,9 @@ export const MSG_THREAD = new URL("worker1.min.mjs", import.meta.url);
 console.log("MSG THRAD ", MSG_THREAD, import.meta.url);
 
 // values for MotionStream
-const MOBILE_THRESHOLD = 150;
-const BIG_THRESHOLD = 200;
-const ANGLE_ACCURACY = 20.0;
+export const MOBILE_THRESHOLD = 150;
+export const BIG_THRESHOLD = 200;
+export const ANGLE_ACCURACY = 20.0;
 
 // localisation 
 export const SUPPORTED_LANGUAGE = "en-GB";

@@ -1,5 +1,5 @@
 import { ListService } from "./ListService";
-import type { ListCollection } from "./ListService";
+import type { ListCollection } from "../types/ListCollection";
 import { useLocal } from "./LocalCopy";
 import { useMsgDistrib } from "./MessageDistribution";
 import type { MessageDistribution } from "./MessageDistribution";

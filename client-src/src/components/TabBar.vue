@@ -75,7 +75,7 @@ import { ListService } from "../services/ListService";
 import { DataFactory } from "../services/DataFactory";
 import EnterInput from "./EnterInput.vue";
 import { useCacheWrapper } from "../workers/InstallWorker";
-import { GuessEvent } from "../services/util";
+import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
 import { mapURL } from "../services/URLs";
 import { UI_EN_GB, useUIText } from "../services/Localisation";
 import { nextId } from "../services/util";

@@ -1,11 +1,11 @@
 import { AList } from "./AList";
-import type { ListStruct } from "./AList";
 import type { SaveStruct } from "../types/Saveable";
 import type { LocalCopy } from "./LocalCopy";
 import type { ListCollection } from '../types/ListCollection';
 // import { MessageDistribution } from "./MessageDistribution";
 // import { RemoteStorage } from './RemoteStorage';
 import type { DistantStorable } from "../types/RemoteTypes";
+import type { Listable, ListStruct } from '../types/ListCollection';
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
  
 /**
@@ -248,7 +248,7 @@ export class ListService implements ListCollection {
    */
   public loadAllLists(): boolean {
     let out = true;
-    this.local.loadState().then((dat: Array<AList>): void => {
+    this.local.loadState().then((dat: Array<SaveStruct>): void => {
       if (!dat) {
         out = false;
         return;
@@ -260,7 +260,7 @@ export class ListService implements ListCollection {
       return;
     });
 
-    this.remote.loadState().then((dat: Array<AList>): void => {
+    this.remote.loadState().then((dat: Array<SaveStruct>): void => {
       if (!dat) {
         out = false;
         return;

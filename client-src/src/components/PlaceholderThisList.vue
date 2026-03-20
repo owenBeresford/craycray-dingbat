@@ -15,6 +15,7 @@ import { useStore } from "../services/Store";
 import { AList } from "../services/AList";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
 import ThisList from "./ThisList.vue";
+import type {  ListStruct } from '../types/ListCollection';
 
 const FakeCollection = {
   /*  

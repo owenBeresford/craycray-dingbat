@@ -28,7 +28,7 @@ console.log("CODE under TEST started " + process.pid, goodSource);
  * @protected
  * @return {void}
  */
-self.onmessage = function (ev: MessageEvent): void {
+self.onmessage = async function (ev: MessageEvent) {
   console.log(
     "TEST2 received MSG to " + ev.origin + " from " + ev.source,
     ev.data.action,

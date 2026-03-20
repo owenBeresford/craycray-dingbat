@@ -1,5 +1,7 @@
-import { ListStruct } from "../services/AList";
-
+import type { Listable, ListStruct } from './ListCollection';
+import type { Motionable } from './Motionable';
+import {AList} from '../services/AList';
+ 
 export interface ListOfListsProps {
   instanceId: string;
   shoppingLists: Array<ListStruct>;

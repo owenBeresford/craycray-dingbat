@@ -76,7 +76,7 @@ export function deg2rad(i: number): number {
  */
 export function wrap_getMyIP(): string {
   if (location.protocol === "https:") {
-    return "https://" + location.host + ":"+ location.port+ "/";
+    return "https://" + location.host + "/";
   } else {
     return "/";
   }

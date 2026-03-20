@@ -19,7 +19,7 @@ describe("test on Localisation", () => {
     // this checks the class and default language
     // i will add at least 1 test case that checks for presense of letter U.
     assert.isTrue(txt.get("intro") === "Hello. My name is...", "XXX 1");
-    assert.isTrue(txt.get("introWWWWW") === "FAIL introWWWWW", "XXX 2");
+    assert.isTrue(txt.get("introWWWWW") === "FAIL to find introWWWWW", "XXX 2");
   });
 
   it("Can use UITextFactory.getTemplate", () => {
@@ -29,6 +29,6 @@ describe("test on Localisation", () => {
     let tt = txt.getTemplate("firstUse");
     assert.isTrue(Array.isArray(tt) && tt.length > 1, "  XXX 3");
     assert.isTrue(typeof tt[0] === "string", " XXX 4");
-    expect(txt.getTemplate("introWWWWW")).toEqual(["FAIL introWWWWW"]);
+    expect(txt.getTemplate("introWWWWW")).toEqual(["FAIL to find introWWWWW"]);
   });
 });

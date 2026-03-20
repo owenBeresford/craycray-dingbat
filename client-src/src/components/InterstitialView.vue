@@ -13,7 +13,8 @@ import { defineComponent } from "vue";
 import { useStore, mapForHelp } from "../services/Store";
 import { useUIText } from "../services/Localisation";
 import { useLocal } from "../services/LocalCopy";
-import { GuessEvent, StrictArray } from "../services/util";
+import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
+import { StrictArray } from "../services/util";
 import { nextId } from "../services/util";
 import { KNOWN_PHONE } from '../Constants';
 
@@ -34,7 +35,7 @@ const TEXT = useUIText();
    */
 export default defineComponent({
   name: "InterstitialView",
-  components: {},
+  components: {}, 
   props: {
     ttl: { type: Number, default: 0 },
     display: { type: String, required: true },

@@ -5,7 +5,7 @@ import { RemoteConfig, DistantStorable } from "../types/RemoteTypes";
 import { RemoteStorage } from "../services/RemoteStorage";
 
 describe("I can create RemoteStorage", () => {
-  it("I can create it", () => {
+  it("I can create it", async () => {
     return new Promise((good, bad) => {
       assert(RemoteStorage, "this is an object");
       assertType <
@@ -16,7 +16,7 @@ describe("I can create RemoteStorage", () => {
     });
   });
 
-  it("I can GET data", () => {
+  it("I can GET data", async () => {
     return new Promise((good, bad) => {
       let conf = {
         url: "http://192.168.0.35:3001/api/shared-state",
@@ -58,7 +58,7 @@ describe("I can create RemoteStorage", () => {
     });
   });
 
-  it("I can POST data", () => {
+  it("I can POST data", async () => {
     return new Promise((good, bad) => {
       let conf = {
         url: "http://192.168.0.35:3001/api/shared-state",
@@ -109,7 +109,7 @@ describe("I can create RemoteStorage", () => {
     });
   });
 
-  it("I can POST data, BAD URL", () => {
+  it("I can POST data, BAD URL", async () => {
     return new Promise((good, bad) => {
       let conf = {
         url: "http://192.168.0.35:3001/sdfsdf+sdfsdfsdfs+fsdf_sd",
@@ -171,7 +171,7 @@ describe("I can create RemoteStorage", () => {
     });
   });
 
-  it("I can POST data, BAD headers", (done) => {
+  it("I can POST data, BAD headers", async (done) => {
     return new Promise((good, bad) => {
       let conf = {
         url: "http://192.168.0.35:3001/api/shared-state",

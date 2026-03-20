@@ -52,7 +52,7 @@ export class CacheWrapper {
     if (location.protocol !== "https:") {
       throw new Error("945636534234 Cache storage isn't working, the install button cannot work,");
     }
-  }
+  } 
 
   /**
    * install

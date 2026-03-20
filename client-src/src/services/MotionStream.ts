@@ -149,7 +149,7 @@ export class MotionStream implements Motionable {
    * @public
    * @returns {boolean}
    */
-  public significant(delta: Vector): boolean => {
+  public significant=(delta: Vector): boolean => {
     const [x, y] = delta.toArray();
     if (isMobile()) {
       return x > MOBILE_THRESHOLD || y > MOBILE_THRESHOLD;
@@ -169,7 +169,7 @@ export class MotionStream implements Motionable {
    * @public
    * @returns {number}
    */
-  public angle(delta1: Vector, delta2: Vector): number => {
+  public angle=(delta1: Vector, delta2: Vector): number => {
     const [x1, y1] = delta1.toArray();
     const [x2, y2] = delta2.toArray();
 
@@ -187,7 +187,7 @@ export class MotionStream implements Motionable {
    * @public
    * @returns {boolean}
    */
-  public significantAsPercentage(delta: Vector): boolean => {
+  public significantAsPercentage=(delta: Vector): boolean => {
     const [maxX, maxY] = windowSize();
     const [x, y] = delta.toArray();
     if (isMobile()) {

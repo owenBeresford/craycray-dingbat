@@ -1,6 +1,5 @@
 import { transform2text, transform2list } from "./Storable";
-import type { SaveStruct } from "../types/Saveable";
-import type { Storable } from "../types/Savable";
+import type { SaveStruct, Storable } from "../types/Saveable";
 import type { DistantStorable, RemoteConfig } from "../types/RemoteTypes";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
 import { FETCH_TIMEOUT } from '../Constants';
@@ -156,12 +155,12 @@ export class RemoteStorage implements Storable, DistantStorable {
 
 	// There is no value in the following API points at the mo
 	// so made private
-  private saveProperty(): boolean {
+  saveProperty(): boolean {
     // saveProperty(nom:string, val:string):boolean {
     return true;
   }
 
-  private loadProperty(): string {
+  loadProperty(): string {
     // loadProperty(nom:string):string {
     return "no impl";
   }

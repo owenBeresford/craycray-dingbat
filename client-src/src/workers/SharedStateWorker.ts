@@ -21,7 +21,7 @@ import { createRemoteService } from "../Constants";
  * @public
  * @returns {DataPipeline}
  */
-export function useSSW(loc: Location): DataPipeline {
+export function useSSW(loc: Location|WorkerLocation): DataPipeline {
   return new SharedStateWorker(createRemoteService(loc), exponentialDelay);
 }
 
@@ -64,7 +64,7 @@ export class SharedStateWorker implements DataPipeline {
   public async pushWhenAble(json: Array<SaveStruct>): Promise<boolean> {
     const SELF = this;
 
-    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject): void => {
+    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       const ATTEMPT = async () => {
         let access = await SELF.conn.poll();
         if (access) {
@@ -97,7 +97,7 @@ export class SharedStateWorker implements DataPipeline {
   public async pullWhenAble(): Promise<Array<SaveStruct>> {
     const SELF = this;
 
-    return new Promise(async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject): void => {
+    return new Promise(async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
       const ATTEMPT = async () => {
         let access = await SELF.conn.poll();
         if (access) {

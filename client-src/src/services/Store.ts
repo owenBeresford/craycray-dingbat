@@ -12,7 +12,7 @@ import type { ShopState } from '../types/ShopState';
  * @public
  * @returns {string}
  */
-export const mapForHelp(state: Store<ShopState>, specific: string): string => {
+export const mapForHelp=(state: Store<ShopState>, specific: string): string => {
   let use = "";
   if (specific.length <= 2) {
     use = "/";
