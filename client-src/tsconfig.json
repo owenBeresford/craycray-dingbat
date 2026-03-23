@@ -22,7 +22,7 @@
 	"skipLibCheck": true,
     "baseUrl": ".",
 	"outDir": "src/types",
-    "types": [ "node", "vitest", "vite" ],
+    "types": [ "node", "vitest", "vite", "storybook/test" ],
     "paths": {
       "@/*": [
         "src/*"
