@@ -2,8 +2,9 @@
   <dialog class="enterInput" id="enterinput" v-if="{ visible }" :data-testid="instanceId" :key="currentStateKey">
     <form action="" method="dialog">
       <div class="labelRow">
-        <label for="txt"> Enter your new value: </label>
-        <span class="cancel" @click="onCancel" @touch.prevent="onCancel" @keypress.once="onCancel" v-html="cross">
+        <label for="txt">{{ text.label1 }}</label>
+        <span class="cancel" @click="onCancel" @touch.prevent="onCancel" @keypress.once="onCancel" 
+          :title="text.title2" v-html="cross">
         </span>
       </div>
       <p>
@@ -12,7 +13,7 @@
           name="txt"
           id="txt"
           v-model="oVal"
-          placeholder="Enter value"
+          :placeholder="text.placeholder1"
           ref="enterIt"
           @keydown.enter="onUpdate"
           @keydown.esc="onCancel"
@@ -21,7 +22,7 @@
           v-else
           name="txt"
           id="txt"
-          placeholder="Enter value"
+          :placeholder="text.placeholder1"
           ref="enterIt"
           @keydown.enter="onUpdate"
           @keydown.esc="onCancel"
@@ -33,8 +34,8 @@
           type="button"
           @click.once.prevent="onUpdate"
           @touch.once.prevent="onUpdate"
-          title="Enter your new value.."
-          value="Set"
+          :title="text.title1" 
+          :value="text.value1"
         />
       </p>
     </form>
@@ -46,7 +47,7 @@ import { defineComponent, ref } from "vue";
 // https://stackoverflow.com/questions/50617865/vue-v-model-input-change-mobile-chrome-not-work
 import { isMobile, nextId } from "../services/util";
 import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
-import { UI_EN_GB, useUIText } from "../services/Localisation";
+import { useUIText } from "../services/Localisation";
 
 const TEXT = useUIText();
   /**
@@ -73,7 +74,14 @@ export default defineComponent({
     currentStateKey: { type: String, required: true },
   },
   data() {
-    return { oVal: "", bIsMobile: isMobile(), cross: TEXT.get("cross"), instanceId: nextId() };
+    return { oVal: "", bIsMobile: isMobile(), cross: TEXT.get("cross"), instanceId: nextId(), 
+             text:{ 
+              label1: TEXT.get("enter.label1"), 
+              placeholder1: TEXT.get("enter.placeholder1"),  
+              title1: TEXT.get( "enter.title1"), 
+              value1:TEXT.get( "enter.value1"), 
+              }
+     };
   },
   watch: {
     val(val, oldVal) {

@@ -17,8 +17,7 @@ export const PMQUE_TIMER = 300;
 export const PMQUE_ATTEMPTS = 10;
 
 // IOIO check base dir for conmpiled artefacts
-export const MSG_THREAD = new URL("worker1.min.mjs", import.meta.url);
-console.log("MSG THRAD ", MSG_THREAD, import.meta.url);
+export const MSG_THREAD = /* @vite-ignore */ new URL("worker1.min.mjs", import.meta.url);
 
 // values for MotionStream
 export const MOBILE_THRESHOLD = 150;

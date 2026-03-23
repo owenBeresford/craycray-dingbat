@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import  {expect, fn, userEvent, within } from 'storybook/test';
+import  {expect, within } from 'storybook/test';
+// import  {expect, fn, userEvent, within } from 'storybook/test';
 // import { expect, assert, it, describe } from 'vitest';
 // import {within} from '@testing-library/dom'
 // import { screen, fireEvent } from '@testing-library/vue';
@@ -14,7 +15,7 @@ I can import
 - playwright/???       ~ as storybook uses these libs.
 
 */
-const meta = {
+const meta:Meta<typeof UnknownRoute> = {
   component: UnknownRoute,
   title: 'error catching in UnknownRoute',
 } satisfies Meta<typeof UnknownRoute>;
@@ -22,14 +23,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof UnknownRoute>;
 
-export const Default: Story = {
+export const EntirelyPassive: Story = {
   args: {   // this is obj1
     currentStateKey:"test1",
     errpath:"/spam-for-me",
   },
 };
 
-export const WhatIsThis: Story = {
+export const ExpectedRendering: Story = {
   args: {  // this is obj2
     currentStateKey:"test2",
     errpath:"/spam-for-me",
@@ -37,23 +38,23 @@ export const WhatIsThis: Story = {
 
 // this test has no behaviour, its just a static report
     play: async ({ canvasElement }) => {
-// there might be issues induced by removing this line, unless threads=1 is set
     const canvas = within(canvasElement);
- // might need to add .resolves. to expect statements
+ // might need to add .resolves. to expect statements if they are slow to run
 
-      // erm, problem. the IDs
     const flakey1 = await canvas.getByTestId('obj2');
     expect(flakey1).toHaveClass('error');
     expect(await canvas.findByLabelText('❌')).toBeVisible();
     // expect(flakey1).queryByText("❌").toBeInTheDocument();
 
     expect(await canvas.findAllByText('Return to a valid URL')).toBeVisible();
-    // get relevant aria attribs...
+    // IOIO get relevant aria attribs...
     expect(await canvas.findAllByText("/spam-for-me")).toBeVisible();
     expect(await canvas.findAllByText("/spam-for-me")).toHaveClass('bigger');
 
  },
 };
+
+// export const AllActionsRunning: Story =
 
 /* DOCS for storybook/test are weak.   Move this to better location
 *** Expect allows ***  (I think uses testing-library features)

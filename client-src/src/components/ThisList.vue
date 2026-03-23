@@ -99,7 +99,7 @@ function extractId(src: string | string[] | null): number {
    * @param {Function } factory
    * @param {string} currentStateKey
    * @public
-   * @return {string}
+   * @return {string} - after rendering :-)
    */
 export default defineComponent({
   name: "ThisList",
@@ -111,13 +111,13 @@ export default defineComponent({
       default: () => {
         return useStore();
       },
-    }, // "Store<ShopState>"
+    }, // TS: "Store<ShopState>"
     factory: {
       type: Object,
       default: async () => {
         return await DataFactory();
       },
-    }, // "ListService"
+    }, // TS: "ListService"
   },
   created() {
     // console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW created()",  );

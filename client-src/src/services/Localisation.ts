@@ -81,11 +81,11 @@ export class UI_EN_GB implements UItext {
  
    * @param {string} key
    * @public
-   * @returns {string]
+   * @returns {string}
    */
   public get(key: string): string {
     if (this.dat.has(key)) {
-      return this.dat.get(key) ?? this.errorStr(key);
+      return (this.dat.get(key) ?? this.errorStr(key));
     }
     return this.errorStr(key);
   }
@@ -138,9 +138,23 @@ function UITextFactory(lang: string): UItext {
   if (!hiddenReference) {
     hiddenReference = new UI_EN_GB(lang);
     // if lang===en-GB...
+    // if the text is changed, change the storybook tests.
+    // Localisation MUST NOT include instanceId
     hiddenReference.add("intro", "Hello. My name is...");
     hiddenReference.add("cross", "❌");
     hiddenReference.add("menu", "☰");
+
+    hiddenReference.add("unknown.crossLabel", "Broken route");
+    hiddenReference.add("unknown.text1", "Unknown URL, did you manually type it?");
+    hiddenReference.add("unknown.text2", "Return to a valid URL");
+
+    hiddenReference.add("enter.label1",  "Enter your new value: ");
+    hiddenReference.add("enter.placeholder1",  "Enter value");
+    hiddenReference.add("enter.title1",  "Enter your new value..");
+    hiddenReference.add("enter.title2",  "Input here to close this small form");
+    hiddenReference.add("enter.value1",  "Set");
+      
+
 
     hiddenReference.addArray("firstUse", [
       "&nbsp; ",

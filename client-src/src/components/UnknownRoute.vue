@@ -5,14 +5,14 @@
       <p >{{ text.text1 }}</p>
       <p class="bigger">{{ errpath }}</p>
       <p>
-        <RouterLink :to="`${mapURL('allList', null)}`">{{ text.text2 }}</RouterLink>
+        <router-link :to="`${mapURL('allList', null)}`">{{ text.text2 }}</router-link>
       </p>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { RouterLink } from 'vue-router';
+import { RouterLink, createRouter } from 'vue-router';
 
 import { useStore } from "../services/Store";
 import { mapURL } from "../services/URLs";
@@ -49,6 +49,7 @@ export default defineComponent({
     return temp;        
   },
   mounted() {
+  //  createRouter();
     this.$store = useStore();
     this.$store.commit("setId", -1);
   },

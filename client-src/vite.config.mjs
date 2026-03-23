@@ -8,6 +8,7 @@ import { getGlobals } from 'common-es';
 const { __dirname, __filename } = getGlobals(import.meta.url);
 // import ts from 'vite-plugin-ts';
 import vue from '@vitejs/plugin-vue';
+// maybe try '@vitejs/plugin-vue-jsx' when have those files
 
 let mode='development';
 if(process.env && process.env.NODE_ENV) {
