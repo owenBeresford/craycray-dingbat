@@ -1,17 +1,19 @@
 <template>
   <div class="unknownRoute" id="unknownRoute" :data-testid="instanceId" :key="currentStateKey">
-    <div class="error" v-html="cross"></div>
+    <div :data-testid="crossId" class="error" :aria-label="text.crossLabel" v-html="cross"></div>
     <div>
-      <p>Unknown URL, did you manually type it?</p>
+      <p >{{ text.text1 }}</p>
       <p class="bigger">{{ errpath }}</p>
       <p>
-        <router-link :to="`${mapURL('allList', null)}`">Return to a valid URL</router-link>
+        <RouterLink :to="`${mapURL('allList', null)}`">{{ text.text2 }}</RouterLink>
       </p>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import { RouterLink } from 'vue-router';
+
 import { useStore } from "../services/Store";
 import { mapURL } from "../services/URLs";
 import { nextId } from "../services/util";
@@ -36,11 +38,20 @@ export default defineComponent({
     currentStateKey: { type: String, required: true },
   },
   data() {
-    return { mapURL, cross: TEXT.get("cross"), instanceId: nextId() };
+    let temp={ mapURL, cross: TEXT.get("cross"), instanceId: nextId(),
+              text:{ 
+                crossLabel:TEXT.get('unknown.crossLabel'),
+                text1:TEXT.get('unknown.text1'), 
+                text2:TEXT.get('unknown.text2'),
+              }
+            };
+    temp.crossId=temp.instanceId +"marker";
+    return temp;        
   },
   mounted() {
     this.$store = useStore();
     this.$store.commit("setId", -1);
   },
 });
+
 </script>
