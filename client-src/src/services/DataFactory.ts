@@ -30,7 +30,7 @@ let DATA: ListCollection | undefined;
  * A "use function" to create ListCollections, which has different composition depending on network settings
  
  * @public
- * @return {Promise<ListCollection>}
+ * @returns {Promise<ListCollection>}
  */
 export async function DataFactory(): Promise<ListCollection> {
   const d3 = useLocal();

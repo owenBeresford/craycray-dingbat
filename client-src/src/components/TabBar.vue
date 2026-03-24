@@ -91,7 +91,7 @@ const MENU_CLOSE = TEXT.get("cross");
 
    * @param {string} currentStateKey
    * @public
-   * @return {string} - eventually :-)
+   * @returns {string} - eventually :-)
    */
 export default defineComponent({
   name: "TabBar",

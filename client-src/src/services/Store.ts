@@ -64,7 +64,7 @@ export const STORE: Store<ShopState> = createStore<ShopState>({
  * Another use function, blah
  
  * @public
- * @return {Store<ShopState>}
+ * @returns {Store<ShopState>}
  */
 export function useStore(): Store<ShopState> {
   originalUseStore(APP_NAME);

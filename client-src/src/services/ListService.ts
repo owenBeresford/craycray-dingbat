@@ -45,7 +45,7 @@ export class ListService implements ListCollection {
  
    * @param {string} nom
    * @public
-   * @return {number]
+   * @returns {number]
    */
   public create(nom: string): number {
     const LEN = this.catalog.length;
@@ -75,7 +75,7 @@ export class ListService implements ListCollection {
  
    * @param {number} id
    * @public
-   * @return {boolean}
+   * @returns {boolean}
    */
   public isNotValidId(id: number): boolean {
     return !(Number.isInteger(id) && id >= 0 && id <= this.catalog.length);
@@ -86,7 +86,7 @@ export class ListService implements ListCollection {
    * Current number of Lists
  
    * @public
-   * @return {number}
+   * @returns {number}
    */
   public count(): number {
     return this.catalog.length;

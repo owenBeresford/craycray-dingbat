@@ -23,7 +23,7 @@ export class RemoteStorage implements Storable, DistantStorable {
    * 
    * @param {RemoteConfig} c
    * @public
-   * @return {RemoteStorage} 
+   * @returns {RemoteStorage} 
    */
   public constructor(c: RemoteConfig) {
     this.url = c.url;
@@ -82,7 +82,7 @@ export class RemoteStorage implements Storable, DistantStorable {
  
    * @param {Array<SaveStruct>} dat
    * @public
-   * @return {Promise<boolean>}
+   * @returns {Promise<boolean>}
    */
   public async saveState(dat: Array<SaveStruct>): Promise<boolean> {
     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
@@ -128,7 +128,7 @@ export class RemoteStorage implements Storable, DistantStorable {
   // call will happen just after page/ app open, so probably on network
  
    * @public
-   * @return {Promise<Array<SaveStruct>>}
+   * @returns {Promise<Array<SaveStruct>>}
    */
   public async loadState(): Promise<Array<SaveStruct>> {
     return new Promise((good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {

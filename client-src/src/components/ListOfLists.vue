@@ -36,7 +36,7 @@ const DATA = await DataFactory();
 	- the functions below are described in the Vue docs, and they are predictable.
  
    * @public
-   * @return {string}
+   * @returns {string}
    */
 export default defineComponent({
   name: "ListOfLists",
@@ -69,12 +69,12 @@ export default defineComponent({
   props: {
     currentStateKey: { type: String, required: true },
   },
-  data(): LocalData {
+  data(): ListOfListsProps {
     return {
       instanceId: nextId(),
       shoppingLists: DATA.list() ?? [],
       mapURL,
-    } as LocalData;
+    } as ListOfListsProps;
   },
 });
 </script>

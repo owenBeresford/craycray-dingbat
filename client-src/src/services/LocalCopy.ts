@@ -65,7 +65,7 @@ export class LocalCopy implements Storable {
  
    * @param {string} nom
    * @public
-   * @return {string]
+   * @returns {string}
    */
   public loadProperty(nom: string): string {
     let str: string;
