@@ -1,13 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import  {expect, fn, within } from 'storybook/test';
 
-// import  {expect, fn, userEvent, within } from 'storybook/test';
-// import { expect, assert, it, describe } from 'vitest';
-// import {within} from '@testing-library/dom'
-// import { screen, fireEvent } from '@testing-library/vue';
-
 import EnterInput from "../components/EnterInput.vue";
-import { isMobile, nextId } from "../services/util";
+import { isMobile } from "../services/util";
 
 const meta:Meta<typeof EnterInput> = {
   component: EnterInput,
@@ -18,36 +13,68 @@ export default meta;
 type Story = StoryObj<typeof EnterInput>;
 
 export const EntirelyPassive: Story = {
-  args: {   // this is obj1 or obj3
+  args: { 
     val: "",
     cb: fn,
     visible: true,
-    currentStateKey: "test3"
+    currentStateKey: "test3",
+    testId:"test3",
   },
-};
+ };
+
+export const Invisible1: Story = {
+  args: { 
+    val: "",
+    cb: fn,
+    visible: false,
+    currentStateKey: "test3.5",
+    testId:"test3.5",
+  },
+ };
 
 export const ExpectedRendering: Story = {
-  args: {  // this is obj2 or obj4
+  args: {   
     val: "heyyo",
     cb: fn,
     visible: true,
-    currentStateKey: "test4"
+    currentStateKey: "test4",
+     testId:"test4",
   },
 
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
  // might need to add .resolves. to expect statements
 
-    expect( await canvas.getByTestId('obj4')).toBeVisible();
+    expect( await canvas.getByTestId('test4')).toBeVisible();
     expect(await canvas.findByLabelText("Enter your new value: ")).toBeVisible();
     expect(await canvas.findByLabelText('❌')).toBeVisible();
     expect(await canvas.findAllByPlaceholderText("Enter value")).toBeVisible(); 
     expect(await canvas.findAllByText("Set")).toBeVisible();      
 
     if(isMobile()) {
- // add inputevents
+        expect( await canvas.getByTestId('test4mob1')).toBeVisible(); 
+        expect( await canvas.getByTestId('test4desk1')).not.toBeTruthy();
     } else {
-
+        expect( await canvas.getByTestId('test4mob1')).not.toBeTruthy(); 
+        expect( await canvas.getByTestId('test4desk1')).toBeVisible(); 
     }
+ },
+};
+
+export const ExpectedRendering2: Story = {
+  args: {   
+    val: "heyyo",
+    cb: fn,
+    visible: true,
+    currentStateKey: "test5",
+     testId:"test5",
+  },
+
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+ // might need to add .resolves. to expect statements
+    expect( await canvas.getByTestId('test5')).toBeVisible();
+      
+// check all the functions on the component 
  },
 };

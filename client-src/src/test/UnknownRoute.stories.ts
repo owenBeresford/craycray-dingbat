@@ -27,6 +27,7 @@ export const EntirelyPassive: Story = {
   args: {   // this is obj1
     currentStateKey:"test1",
     errpath:"/spam-for-me",
+    testId:"test1",
   },
 };
 
@@ -34,6 +35,7 @@ export const ExpectedRendering: Story = {
   args: {  // this is obj2
     currentStateKey:"test2",
     errpath:"/spam-for-me",
+    testId:"test2",
   },
 
 // this test has no behaviour, its just a static report
@@ -41,9 +43,9 @@ export const ExpectedRendering: Story = {
     const canvas = within(canvasElement);
  // might need to add .resolves. to expect statements if they are slow to run
 
-    const flakey1 = await canvas.getByTestId('obj2');
+    const flakey1 = await canvas.getByTestId('test2d1');
     expect(flakey1).toHaveClass('error');
-    expect(await canvas.findByLabelText('❌')).toBeVisible();
+    expect(await canvas.findByLabelText('❌')).toBeVisible(); 
     // expect(flakey1).queryByText("❌").toBeInTheDocument();
 
     expect(await canvas.findAllByText('Return to a valid URL')).toBeVisible();
