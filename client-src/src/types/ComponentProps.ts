@@ -20,3 +20,9 @@ export interface ThisListProps {
   bisMobile: boolean;
 };
 
+export interface MainAppProps {
+    currentStateKey: string,
+    instanceId: string,
+}
+
+export type StrictArray = Array<string>;
