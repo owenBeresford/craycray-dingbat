@@ -99,7 +99,7 @@ function extractId(src: string | string[] | null): number {
    * @param {Function } factory
    * @param {string} currentStateKey
    * @public
-   * @return {string} - after rendering :-)
+   * @returns {string} - after rendering :-)
    */
 export default defineComponent({
   name: "ThisList",
