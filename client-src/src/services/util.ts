@@ -11,7 +11,7 @@
  * Simple guess about current HW platform
  
  * @public
- * @return {boolean}
+ * @returns {boolean}
  */
 export function isMobile(): boolean {
   try {
@@ -21,6 +21,17 @@ export function isMobile(): boolean {
   }
 }
 
+/**
+ * delay
+ * a method for testing that pretends to be thread.sleep()
+ 
+ * @param {number} ms
+ * @public
+ * @returns {Promise<void>}
+ */
+export async function delay(ms: number): Promise<void> {
+  return new Promise((good, bad) => setTimeout(good, ms));
+}
 
 /**
  * windowSize
@@ -47,7 +58,7 @@ export function windowSize(): Array<number> {
  
  * @param {number} i
  * @public
- * @return {number}
+ * @returns {number}
  */
 export function rad2deg(i: number): number {
   return (i * 180) / Math.PI;
@@ -60,7 +71,7 @@ export function rad2deg(i: number): number {
  
  * @param {number} i
  * @public
- * @return {number}
+ * @returns {number}
  */
 export function deg2rad(i: number): number {
   throw new Error("Implement me!!!");
@@ -106,9 +117,6 @@ export function clearSelection(): void {
     console.error("Cannot use window.getSelection or document.selection; what browser is this? ");
   }
 }
-
-
-export type StrictArray = Array<string>;
 
 let ID_OFFSET = 0;
 // assuming only one copy of this file is compiled, this should lead to globally unique ids
