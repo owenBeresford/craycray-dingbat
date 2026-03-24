@@ -17,4 +17,12 @@ const preview = {
   },
 };
 
+export const decorators = [
+  (story) => ({
+    components: { story },
+    template: '<story />'
+  })
+];
+
+
 export default preview;
