@@ -1,10 +1,10 @@
 <template>
-  <dialog class="enterInput" id="enterinput" v-if="{ visible }" :data-testid="instanceId" :key="currentStateKey">
+  <dialog class="enterInput" id="enterinput" v-if="visible" :data-testid="instanceId" :key="currentStateKey" open >
     <form action="" method="dialog">
       <div class="labelRow">
         <label for="txt">{{ text.label1 }}</label>
         <span class="cancel" @click="onCancel" @touch.prevent="onCancel" @keypress.once="onCancel" 
-          :title="text.title2" v-html="cross">
+          :title="text.title2" v-html="cross" :data-testid="cancelId">
         </span>
       </div>
       <p>
@@ -17,6 +17,7 @@
           ref="enterIt"
           @keydown.enter="onUpdate"
           @keydown.esc="onCancel"
+        :data-testid="mobileId"
         />
         <input
           v-else
@@ -26,8 +27,9 @@
           ref="enterIt"
           @keydown.enter="onUpdate"
           @keydown.esc="onCancel"
-          :value="oVal"
+          v-model="oVal"
           @input.lazy="mapValue"
+          :data-testid="desktopId"
         />
 
         <input
@@ -36,6 +38,7 @@
           @touch.once.prevent="onUpdate"
           :title="text.title1" 
           :value="text.value1"
+          :data-testid="commitId"
         />
       </p>
     </form>
@@ -45,7 +48,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 // https://stackoverflow.com/questions/50617865/vue-v-model-input-change-mobile-chrome-not-work
-import { isMobile, nextId } from "../services/util";
+import { isMobile } from "../services/util";
 import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
 import { useUIText } from "../services/Localisation";
 
@@ -62,7 +65,7 @@ const TEXT = useUIText();
    * @param {boolean =false} visible
    * @param {string} currentStateKey
    * @public
-   * @return {string}
+   * @returns {string}
    */
 export default defineComponent({
   name: "EnterInput",
@@ -72,20 +75,26 @@ export default defineComponent({
     cb: { type: Function, required: true },
     visible: { type: Boolean, default: false },
     currentStateKey: { type: String, required: true },
+    testId: { type:String, default:"test0"},
   },
   data() {
-    return { oVal: "", bIsMobile: isMobile(), cross: TEXT.get("cross"), instanceId: nextId(), 
+//    let id=nextId();  
+     let id=this.$props.testId;
+    let temp= { oVal: "", bIsMobile: isMobile(), cross: TEXT.get("cross"), instanceId: id, 
+          desktopId:id+"desk1", commitId:id+"commit1", mobileId:id+"mob1", cancelId :id+"cancel1", 
              text:{ 
               label1: TEXT.get("enter.label1"), 
               placeholder1: TEXT.get("enter.placeholder1"),  
               title1: TEXT.get( "enter.title1"), 
               value1:TEXT.get( "enter.value1"), 
+              title2:TEXT.get("enter.title2"),
               }
-     };
+        };
+     return temp;
   },
   watch: {
     val(val, oldVal) {
-      console.warn("running watch");
+      console.log(`EnterInput: Running watch ${oldVal} => ${val}.`);
       this.oVal = val;
     },
     visible(val, oldVal) {

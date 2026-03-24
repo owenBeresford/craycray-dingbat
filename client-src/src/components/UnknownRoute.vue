@@ -1,5 +1,5 @@
 <template>
-  <div class="unknownRoute" id="unknownRoute" :data-testid="instanceId" :key="currentStateKey">
+  <div class="unknownRoute" id="unknownRoute" :data-testId="instanceId" :key="currentStateKey">
     <div :data-testid="crossId" class="error" :aria-label="text.crossLabel" v-html="cross"></div>
     <div>
       <p >{{ text.text1 }}</p>
@@ -16,7 +16,6 @@ import { RouterLink, createRouter } from 'vue-router';
 
 import { useStore } from "../services/Store";
 import { mapURL } from "../services/URLs";
-import { nextId } from "../services/util";
 import { useUIText } from "../services/Localisation";
 
 const TEXT = useUIText();
@@ -29,23 +28,25 @@ const TEXT = useUIText();
    * @param {string ="**UNKNOWN**"} errpath 
    * @param {string} currentStateKey
    * @public
-   * @return {string} - eventually
+   * @returns {string} - eventually
    */
 export default defineComponent({
   name: "UnknownRoute",
   props: {
     errpath: { type: String, default: "**UNKNOWN**" },
     currentStateKey: { type: String, required: true },
+    testId: {type:String, default:"test0" },
   },
   data() {
-    let temp={ mapURL, cross: TEXT.get("cross"), instanceId: nextId(),
-              text:{ 
+    let id=this.$props.testId;
+    let temp={ mapURL, cross: TEXT.get("cross"), instanceId: id,
+              crossId:id+"d1",
+               text:{ 
                 crossLabel:TEXT.get('unknown.crossLabel'),
                 text1:TEXT.get('unknown.text1'), 
                 text2:TEXT.get('unknown.text2'),
               }
             };
-    temp.crossId=temp.instanceId +"marker";
     return temp;        
   },
   mounted() {

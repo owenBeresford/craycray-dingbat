@@ -144,17 +144,18 @@ function UITextFactory(lang: string): UItext {
     hiddenReference.add("cross", "❌");
     hiddenReference.add("menu", "☰");
 
-    hiddenReference.add("unknown.crossLabel", "Broken route");
+    hiddenReference.add("unknown.crossLabel", "Broken route.");
     hiddenReference.add("unknown.text1", "Unknown URL, did you manually type it?");
-    hiddenReference.add("unknown.text2", "Return to a valid URL");
+    hiddenReference.add("unknown.text2", "Return to a valid URL.");
 
     hiddenReference.add("enter.label1",  "Enter your new value: ");
     hiddenReference.add("enter.placeholder1",  "Enter value");
     hiddenReference.add("enter.title1",  "Enter your new value..");
-    hiddenReference.add("enter.title2",  "Input here to close this small form");
+    hiddenReference.add("enter.title2",  "Input here to close this small form.");
     hiddenReference.add("enter.value1",  "Set");
-      
-
+    
+    hiddenReference.add('interstitial.close1', 'Close this interstitial.');
+    hiddenReference.add('interstitial.label1', 'X');
 
     hiddenReference.addArray("firstUse", [
       "&nbsp; ",
