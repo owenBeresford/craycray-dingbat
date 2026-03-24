@@ -24,3 +24,6 @@ pnpm-debug.log*
 
 package-lock.json
 
+
+*storybook.log
+storybook-static
