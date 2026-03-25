@@ -1,57 +1,58 @@
 <template>
   <div id="tabBar" class="tabBar buttonRow" :data-testid="instanceId" :key="currentStateKey">
     <div>
-      <p>Shopping list</p>
+      <p v-html="menu.header"></p>
     </div>
     <div>
-      <ul>
-        <li class="button" title="Render a list of current shopping lists">
-          <router-link :to="urls[0]">List All</router-link>
+      <ul role="navigation">
+        <li class="button" :title="menu.listAllTitle">
+          <router-link :to="urls[0]">{{ menu.listAllName }}</router-link>
         </li>
-        <li class="button" title="Start a new shopping list">
-          <router-link :to="urls[1]">New</router-link>
+        <li class="button" :title={{ menu.newTitle }}>
+          <router-link :to="urls[1]">{{ menu.newName }}</router-link>
         </li>
         <li style="text-align: right">
           <span
             class="obmenu bigger"
+            aria-haspopup="menu"
             @click="onMenu"
             v-touch="onMenu"
             @keypress="onMenu"
-            title="Show or hide the extra features."
-            v-html="menuLabel"
+            :title="menu.actualMenuTitle"
+            v-html="menu.symbol"
           ></span>
-          <ul :class="menuState">
+          <menu :class="menuState" role="navigation">
             <li
               :class="buttonEnabled"
-              title="Copy app to your phone, for offline usage. Needed once"
+              :title="menu.installTitle"
               @click="onInstall"
             >
-              Install
+              {{ menu.installName}}
             </li>
-            <li title="Show a help overlay...">
+            <li :title="menu.helpTitle">
               <a class="button" v-touch="onIntersitial" @click.once="onIntersitial" @keypress="onIntersitial"
-                >Show help</a
+                >{{ menu.helpName }}</a
               >
             </li>
-            <li title="Give the current list a name">
-              <a class="button" v-touch="onName" @click="onName" @keypress="onName"> Rename list</a>
+            <li :title="menu.renameTitle ">
+              <a class="button" v-touch="onName" @click="onName" @keypress="onName">{{ menu.renameName}}</a>
             </li>
-            <li title="Duplicate current list">
-              <a class="button" v-touch="onDuplicate" @click="onDuplicate" @keypress="onDuplicate"> Duplicate list</a>
+            <li :title="menu.dupeTitle">
+              <a class="button" v-touch="onDuplicate" @click="onDuplicate" @keypress="onDuplicate">{{ menu.dupeName }}</a>
             </li>
-            <li title="Feature to allow copying items from one list to another">
-              <a class="button" v-touch="onUnique" @click="onUnique" @keypress="onUnique"> Make unique</a>
+            <li :title="menu.uniqTitle">
+              <a class="button" v-touch="onUnique" @click="onUnique" @keypress="onUnique">{{ menu.uniqName }}</a>
             </li>
-            <li title="Save current lists">
-              <a class="button" v-touch="onSave" @click="onSave" @keypress="onSave"> Save all</a>
+            <li :title="menu.saveTitle">
+              <a class="button" v-touch="onSave" @click="onSave" @keypress="onSave">{{ menu.saveName }}</a>
             </li>
-            <li title="Change the list back to its initial state">
+            <li :title="menu.revertTitle">
               <a v-touch.once="onRevert" @click.once="onRevert" @keypress.once="onRevert" class="button">
-                Revert all
+               {{ menu.revertName }}
               </a>
             </li>
-            <li><br /><small>Add more as needed</small></li>
-          </ul>
+            <li><br /><small>{{ menu.outro }}</small></li>
+          </menu>
         </li>
       </ul>
     </div>
@@ -60,7 +61,7 @@
       :visible="visible"
       :cb="CB"
       :data-testid="-1"
-      :currentStateKey="inputTabBarfalse"
+      :currentStateKey="EIK"
     ></EnterInput>
   </div>
 </template>
@@ -81,7 +82,7 @@ import { UI_EN_GB, useUIText } from "../services/Localisation";
 import { nextId } from "../services/util";
 
 const TEXT = useUIText();
-const MENU_OPEN = TEXT.get("menu");
+const MENU_OPEN = TEXT.get("menu.symbol");
 const MENU_CLOSE = TEXT.get("cross");
   /**
    * TabBar
@@ -100,7 +101,7 @@ export default defineComponent({
     currentStateKey: { type: String, required: true },
   },
   async data() {
-    const CACHE = useCacheWrapper();
+    const CACHE:CacheWrapper = useCacheWrapper();
     let tt = "button";
     if (location.protocol !== "https:") {
       tt += " disabled";
@@ -118,9 +119,34 @@ export default defineComponent({
       visible: false,
       CB: Function as any,
       mapURL,
-      CACHE,
+      "CACHE":CACHE,
       buttonEnabled: tt,
+      EIK: this.$props.currentStateKey+"false",
       urls: [mapURL("allList", null), mapURL("aList", -1)],
+      menu: {
+        "header"  :TEXT.get("menu.header1"),
+        symbol    :TEXT.get("menu.symbol"),
+        listAllTitle:TEXT.get("menu.listAllTitle"),
+        listAllName:TEXT.get("menu.listAllName"),
+        newTitle  :TEXT.get("menu.newTitle"),
+        newName   :TEXT.get("menu.newName"),
+        actualMenuTitle:TEXT.get("menu.actualMenuTitle"),
+        installTitle:TEXT.get("menu.installTitle"),
+        installName:TEXT.get("menu.installName"),
+        helpTitle :TEXT.get("menu.helpTitle"),
+        helpName  :TEXT.get("menu.helpName"),
+        renameTitle:TEXT.get("menu.renameTitle"),
+        renameName:TEXT.get("menu.renameName"),
+        dupeTitle :TEXT.get("menu.dupeTitle"),
+        dupeName  :TEXT.get("menu.dupeName"),
+        uniqTitle :TEXT.get("menu.uniqTitle"),
+        uniqName  :TEXT.get("menu.uniqName"),
+        saveTitle :TEXT.get("menu.saveTitle"),
+        saveName  :TEXT.get("menu.saveName"),
+        revertTitle:TEXT.get("menu.revertTitle"),
+        revertName:TEXT.get("menu.revertName"),
+        outro     :TEXT.get("menu.outro"),
+      }
     };
   },
 
@@ -188,7 +214,7 @@ export default defineComponent({
         console.warn("EDIT NAME: got bad id, don't know how to proceed");
         return false;
       }
-      this.getInput = list.nom ?? "pls retype";
+      this.getInput = list.nom ?? TEXT.get("menu.renameSupport");
 
       this.CB = (d1: string | null): any => {
         if (d1 === null) {

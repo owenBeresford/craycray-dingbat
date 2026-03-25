@@ -142,8 +142,7 @@ function UITextFactory(lang: string): UItext {
     // Localisation MUST NOT include instanceId
     hiddenReference.add("intro", "Hello. My name is...");
     hiddenReference.add("cross", "❌");
-    hiddenReference.add("menu", "☰");
-
+  
     hiddenReference.add("unknown.crossLabel", "Broken route.");
     hiddenReference.add("unknown.text1", "Unknown URL, did you manually type it?");
     hiddenReference.add("unknown.text2", "Return to a valid URL.");
@@ -156,6 +155,30 @@ function UITextFactory(lang: string): UItext {
 
     hiddenReference.add('interstitial.close1', 'Close this interstitial.');
     hiddenReference.add('interstitial.label1', 'X');
+
+    hiddenReference.add("menu.header1", "Shopping list");
+    hiddenReference.add("menu.symbol", "☰");
+    hiddenReference.add("menu.listAllTitle", "Render a list of current shopping lists");
+    hiddenReference.add("menu.listAllName", "List All");
+    hiddenReference.add("menu.newTitle", "Start a new shopping list");
+    hiddenReference.add("menu.newName", "New"); 
+    hiddenReference.add("menu.actualMenuTitle", "Show or hide the extra features.");
+    hiddenReference.add("menu.installTitle", "Copy app to your phone, for offline usage. Needed once");
+    hiddenReference.add("menu.installName", "Install");   
+    hiddenReference.add("menu.helpTitle", "Show a help overlay...");
+    hiddenReference.add("menu.helpName", "Show help");
+    hiddenReference.add("menu.renameTitle", "Give the current list a name");
+    hiddenReference.add("menu.renameName", "Rename list");
+    hiddenReference.add("menu.dupeTitle", "Duplicate current list");
+    hiddenReference.add("menu.dupeName", "Duplicate list");
+    hiddenReference.add("menu.uniqTitle", "Feature to allow copying items from one list to another");
+    hiddenReference.add("menu.uniqName", "Make unique");
+    hiddenReference.add("menu.saveTitle", "Save current lists");
+    hiddenReference.add("menu.saveName", "Save all");
+    hiddenReference.add("menu.revertTitle", "Change the list back to its initial state");
+    hiddenReference.add("menu.revertName", "Revert all"); 
+    hiddenReference.add("menu.outro", "Add more as needed");
+    hiddenReference.add("menu.renameSupport", "pls retype");
 
     hiddenReference.addArray("firstUse", [
       "&nbsp; ",
