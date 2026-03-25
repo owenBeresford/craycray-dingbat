@@ -3,7 +3,7 @@
     <ul>
       <li class="closeUp" :title="text.close1">
         <input class="button" name="closeUp" @keypress="hide" @click="hide" :value="text.label1" 
-          :data-testId="closeId" :aria-label="text.close1" />
+          :data-testId="closeId" :aria-label="text.close1" role="button" type="button" />
       </li>
       <li v-for="(i, j) in list" :key="j" v-html="i"></li>
     </ul>
