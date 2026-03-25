@@ -47,4 +47,3 @@ export function transform2list(dat: string): Array<SaveStruct> {
 export function packMsg(act: ActionEnum, dat: object): ShippingStruct {
   return { action: act, data: transform2text(dat) } as ShippingStruct;
 }
-

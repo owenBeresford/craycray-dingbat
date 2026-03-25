@@ -2,7 +2,7 @@ import { transform2text, transform2list } from "./Storable";
 import type { SaveStruct, Storable } from "../types/Saveable";
 import type { DistantStorable, RemoteConfig } from "../types/RemoteTypes";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
-import { FETCH_TIMEOUT } from '../Constants';
+import { FETCH_TIMEOUT } from "../Constants";
 // import type  { Request as RequestType, Response as ResponseType } from 'node-fetch';
 
 type NullableTimeout = ReturnType<typeof global.setTimeout> | undefined;
@@ -20,17 +20,17 @@ export class RemoteStorage implements Storable, DistantStorable {
 
   /**
    * constructor
-   * 
+   *
    * @param {RemoteConfig} c
    * @public
-   * @returns {RemoteStorage} 
+   * @returns {RemoteStorage}
    */
   public constructor(c: RemoteConfig) {
     this.url = c.url;
     this.other = { ...c };
   }
 
- /**
+  /**
  * poll
  * Test availability of remote API
   // try a OPTIONS or HEAD to see if available, short timeout
@@ -153,8 +153,8 @@ export class RemoteStorage implements Storable, DistantStorable {
     });
   }
 
-	// There is no value in the following API points at the mo
-	// so made private
+  // There is no value in the following API points at the mo
+  // so made private
   saveProperty(): boolean {
     // saveProperty(nom:string, val:string):boolean {
     return true;
@@ -164,6 +164,4 @@ export class RemoteStorage implements Storable, DistantStorable {
     // loadProperty(nom:string):string {
     return "no impl";
   }
-
 }
-

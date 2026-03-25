@@ -21,14 +21,14 @@ import { createRemoteService } from "../Constants";
  * @public
  * @returns {DataPipeline}
  */
-export function useSSW(loc: Location|WorkerLocation): DataPipeline {
+export function useSSW(loc: Location | WorkerLocation): DataPipeline {
   return new SharedStateWorker(createRemoteService(loc), exponentialDelay);
 }
 
 /**
- * SharedStateWorker 
+ * SharedStateWorker
  * This is broadcast logic to push data to the server
- * 
+ *
  * @public
  */
 export class SharedStateWorker implements DataPipeline {
@@ -78,7 +78,7 @@ export class SharedStateWorker implements DataPipeline {
               console.error("Am connected to wifi; cannot save data ??\nImprove error handler here.");
               return bad(err);
             });
-        } else {	
+        } else {
           // I think I need to replace this section
           setTimeout(ATTEMPT, SELF.delay(SELF));
         }
@@ -123,7 +123,7 @@ export class SharedStateWorker implements DataPipeline {
 // I have currently made them seperate incase I need to expand to 10 implmentations
 // this would be a good place to ba C++ "friend function"
 // they should all match
-//    function(state: DataPipeline): number 
+//    function(state: DataPipeline): number
 
 export function linearDelay(state: DataPipeline): number {
   return state.currentDelay;

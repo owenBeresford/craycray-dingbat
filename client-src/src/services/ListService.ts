@@ -1,13 +1,13 @@
 import { AList } from "./AList";
 import type { SaveStruct } from "../types/Saveable";
 import type { LocalCopy } from "./LocalCopy";
-import type { ListCollection } from '../types/ListCollection';
+import type { ListCollection } from "../types/ListCollection";
 // import { MessageDistribution } from "./MessageDistribution";
 // import { RemoteStorage } from './RemoteStorage';
 import type { DistantStorable } from "../types/RemoteTypes";
-import type { Listable, ListStruct } from '../types/ListCollection';
+import type { Listable, ListStruct } from "../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
- 
+
 /**
  * ListService 
  * ListService, the class to mediate List storage
@@ -176,7 +176,7 @@ export class ListService implements ListCollection {
     return true;
   }
 
-/*
+  /*
   // dupe function
   public store(ret: AList, offset: number): boolean {
     if (this.isNotValidId(offset)) {

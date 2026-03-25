@@ -1,5 +1,5 @@
-import { SUPPORTED_LANGUAGE } from '../Constants';
-import type { UItext } from '../types/Localisation';
+import { SUPPORTED_LANGUAGE } from "../Constants";
+import type { UItext } from "../types/Localisation";
 
 /**
  * useUIText
@@ -85,7 +85,7 @@ export class UI_EN_GB implements UItext {
    */
   public get(key: string): string {
     if (this.dat.has(key)) {
-      return (this.dat.get(key) ?? this.errorStr(key));
+      return this.dat.get(key) ?? this.errorStr(key);
     }
     return this.errorStr(key);
   }
@@ -142,29 +142,29 @@ function UITextFactory(lang: string): UItext {
     // Localisation MUST NOT include instanceId
     hiddenReference.add("intro", "Hello. My name is...");
     hiddenReference.add("cross", "❌");
-  
+
     hiddenReference.add("unknown.crossLabel", "Broken route.");
     hiddenReference.add("unknown.text1", "Unknown URL, did you manually type it?");
     hiddenReference.add("unknown.text2", "Return to a valid URL.");
 
-    hiddenReference.add("enter.label1",  "Enter your new value: ");
-    hiddenReference.add("enter.placeholder1",  "Enter value");
-    hiddenReference.add("enter.title1",  "Enter your new value..");
-    hiddenReference.add("enter.title2",  "Input here to close this small form.");
-    hiddenReference.add("enter.value1",  "Set");
+    hiddenReference.add("enter.label1", "Enter your new value: ");
+    hiddenReference.add("enter.placeholder1", "Enter value");
+    hiddenReference.add("enter.title1", "Enter your new value..");
+    hiddenReference.add("enter.title2", "Input here to close this small form.");
+    hiddenReference.add("enter.value1", "Set");
 
-    hiddenReference.add('interstitial.close1', 'Close this interstitial.');
-    hiddenReference.add('interstitial.label1', 'X');
+    hiddenReference.add("interstitial.close1", "Close this interstitial.");
+    hiddenReference.add("interstitial.label1", "X");
 
     hiddenReference.add("menu.header1", "Shopping list");
     hiddenReference.add("menu.symbol", "☰");
     hiddenReference.add("menu.listAllTitle", "Render a list of current shopping lists");
     hiddenReference.add("menu.listAllName", "List All");
     hiddenReference.add("menu.newTitle", "Start a new shopping list");
-    hiddenReference.add("menu.newName", "New"); 
+    hiddenReference.add("menu.newName", "New");
     hiddenReference.add("menu.actualMenuTitle", "Show or hide the extra features.");
     hiddenReference.add("menu.installTitle", "Copy app to your phone, for offline usage. Needed once");
-    hiddenReference.add("menu.installName", "Install");   
+    hiddenReference.add("menu.installName", "Install");
     hiddenReference.add("menu.helpTitle", "Show a help overlay...");
     hiddenReference.add("menu.helpName", "Show help");
     hiddenReference.add("menu.renameTitle", "Give the current list a name");
@@ -176,7 +176,7 @@ function UITextFactory(lang: string): UItext {
     hiddenReference.add("menu.saveTitle", "Save current lists");
     hiddenReference.add("menu.saveName", "Save all");
     hiddenReference.add("menu.revertTitle", "Change the list back to its initial state");
-    hiddenReference.add("menu.revertName", "Revert all"); 
+    hiddenReference.add("menu.revertName", "Revert all");
     hiddenReference.add("menu.outro", "Add more as needed");
     hiddenReference.add("menu.renameSupport", "pls retype");
 
@@ -220,5 +220,3 @@ function UITextFactory(lang: string): UItext {
   }
   return hiddenReference;
 }
-
-

@@ -1,4 +1,4 @@
-// The small number of URLs and components that use them. 
+// The small number of URLs and components that use them.
 const URLs: Record<string, string> = {
   aList: "/list/[1]",
   allList: "/list-all",
@@ -52,4 +52,3 @@ export function mapURL_variodic(...args: Array<string>): string {
   }
   return tmp;
 }
-

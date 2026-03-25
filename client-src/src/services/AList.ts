@@ -1,5 +1,5 @@
 import { JSONObject, map, required, integer, custom } from "ts-json-object";
-import type { Listable, ListStruct } from '../types/ListCollection';
+import type { Listable, ListStruct } from "../types/ListCollection";
 
 /**
  * AList 

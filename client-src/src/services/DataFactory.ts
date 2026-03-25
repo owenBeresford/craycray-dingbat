@@ -55,4 +55,3 @@ export async function DataFactory(): Promise<ListCollection> {
   }
   return data;
 }
-

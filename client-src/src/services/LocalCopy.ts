@@ -27,7 +27,6 @@ export function useLocal(): LocalCopy {
  * @public
  */
 export class LocalCopy implements Storable {
-
   /**
    * constructor
    * a noop.
@@ -118,5 +117,3 @@ export class LocalCopy implements Storable {
     });
   }
 }
-
-

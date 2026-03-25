@@ -1,7 +1,7 @@
 import { createStore, useStore as originalUseStore } from "vuex";
 import type { Store } from "vuex";
 import { APP_NAME } from "../Constants";
-import type { ShopState } from '../types/ShopState';
+import type { ShopState } from "../types/ShopState";
 
 /**
  * mapForHelp
@@ -12,7 +12,7 @@ import type { ShopState } from '../types/ShopState';
  * @public
  * @returns {string}
  */
-export const mapForHelp=(state: Store<ShopState>, specific: string): string => {
+export const mapForHelp = (state: Store<ShopState>, specific: string): string => {
   let use = "";
   if (specific.length <= 2) {
     use = "/";
@@ -32,7 +32,7 @@ export const mapForHelp=(state: Store<ShopState>, specific: string): string => {
   return MM[use];
 };
 
-// A Vuex Store object, to hold the SPA stack state 
+// A Vuex Store object, to hold the SPA stack state
 export const STORE: Store<ShopState> = createStore<ShopState>({
   state: (): ShopState => {
     return {
