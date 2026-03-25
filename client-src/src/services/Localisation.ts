@@ -4,7 +4,7 @@ import type { UItext } from '../types/Localisation';
 /**
  * useUIText
  * Access util.   Will read browser settings or user choice when languages are added
- 
+
  * @public
  * @returns {UItext}
  */
@@ -13,8 +13,8 @@ export function useUIText(): UItext {
 }
 
 /**
- * UI_EN_GB 
- * A class to supply PO structures.   
+ * UI_EN_GB
+ * A class to supply PO structures.
  * Dynamic value mapping features not included as JS already has that on the language level.
    If I add more languages, pull out the data definition sections
    into defineItems() and defineArrays()
@@ -30,7 +30,7 @@ export class UI_EN_GB implements UItext {
   /**
    * constructor
    * A normal con'tor
- 
+
    * @param {string} l ~ maybe should add a smarter type for the language selection
    * @public
    * @returns {UI_EN_GB}
@@ -43,9 +43,9 @@ export class UI_EN_GB implements UItext {
 
   /**
    * add
-   * Add a new value to this map.  Uniqueness on keys is enforced.  
- 
-   * @param {string] key
+   * Add a new value to this map.  Uniqueness on keys is enforced.
+
+   * @param {string} key
    * @param {string} val
    * @public
    * @returns {void}
@@ -60,8 +60,8 @@ export class UI_EN_GB implements UItext {
 
   /**
    * addArray
-   * Add an array as a value.  Uniqueness on keys is enforced. 
- 
+   * Add an array as a value.  Uniqueness on keys is enforced.
+
    * @param {string}
    * @param {Array<string>} val
    * @public
@@ -78,7 +78,7 @@ export class UI_EN_GB implements UItext {
   /**
    * get
    * Return a value
- 
+
    * @param {string} key
    * @public
    * @returns {string}
@@ -93,7 +93,7 @@ export class UI_EN_GB implements UItext {
   /**
    * getTemplate
    * Return a value / an array of strings
- 
+
    * @param {string} key
    * @public
    * @returns {Array<string>}
@@ -115,7 +115,7 @@ export class UI_EN_GB implements UItext {
   /**
    * errorStr
    * a util to supply error messages
- 
+
    * @param {string} key
    * @public
    * @returns {string}
@@ -129,8 +129,8 @@ let hiddenReference: UI_EN_GB;
 /**
  * UITextFactory
  * A static inline config of data.  Factory Impl to be changed if more languages are added
- * 
- * @param string} lang
+ *
+ * @param {string} lang
  * @public
  * @returns {UItext}
  */
@@ -153,7 +153,7 @@ function UITextFactory(lang: string): UItext {
     hiddenReference.add("enter.title1",  "Enter your new value..");
     hiddenReference.add("enter.title2",  "Input here to close this small form.");
     hiddenReference.add("enter.value1",  "Set");
-    
+
     hiddenReference.add('interstitial.close1', 'Close this interstitial.');
     hiddenReference.add('interstitial.label1', 'X');
 

@@ -4,7 +4,7 @@
       <div class="labelRow">
         <label for="txt">{{ text.label1 }}</label>
         <span class="cancel" @click="onCancel" @touch.prevent="onCancel" @keypress.once="onCancel" 
-          :title="text.title2" v-html="cross" :data-testid="cancelId">
+          :title="text.title2" :aria-label="text.title2" v-html="cross" :data-testid="cancelId" role="button">
         </span>
       </div>
       <p>
@@ -34,6 +34,7 @@
 
         <input
           type="button"
+          role="button"
           @click.once.prevent="onUpdate"
           @touch.once.prevent="onUpdate"
           :title="text.title1" 
@@ -115,6 +116,8 @@ export default defineComponent({
     onCancel(e: GuessEvent): void {
       this.cb(null);
       this.oVal = "";
+      (document.querySelector('dialog#enterinput') as HTMLDialogElement).open=false;
+      this.visible=false;
       e.preventDefault();
     },
 

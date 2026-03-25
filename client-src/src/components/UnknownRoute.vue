@@ -12,7 +12,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { RouterLink, createRouter } from 'vue-router';
+// import { RouterLink, createRouter } from 'vue-router';
 
 import { useStore } from "../services/Store";
 import { mapURL } from "../services/URLs";
