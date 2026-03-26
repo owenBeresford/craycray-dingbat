@@ -3,9 +3,9 @@ import { LocalStorage } from "node-localstorage";
 
 import { APP_NAME } from "../Constants";
 import { ListService } from "../services/ListService";
-import {  AList } from "../services/AList";
+import { AList } from "../services/AList";
 import { DataFactory } from "../services/DataFactory";
-import type { ListStruct, Listable, ListCollection } from '../types/ListCollection';
+import type { ListStruct, Listable, ListCollection } from "../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
 
 global.localStorage = new LocalStorage("./build/scratch");

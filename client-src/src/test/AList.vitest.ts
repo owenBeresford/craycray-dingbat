@@ -5,7 +5,7 @@ import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vite
 import { mount, RouterLinkStub, config } from "@vue/test-utils";
 import Vue3TouchEvents from "vue3-touch-events";
 import { JSONObject, map, required, optional, array, integer, custom } from "ts-json-object";
-import type { ListStruct, Listable } from '../types/ListCollection'
+import type { ListStruct, Listable } from "../types/ListCollection";
 import { AList } from "../services/AList";
 import { SaveStruct } from "../types/Saveable";
 

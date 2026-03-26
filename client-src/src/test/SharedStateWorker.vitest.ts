@@ -14,7 +14,7 @@ describe("test on SharedStateWorker ", () => {
  		expectTypeOf(txt).toExtend<DataPipeline>(	);
 	});
 
-	it("Can use SharedStateWorker ", () => {
+	it("Can use SharedStateWorker ", async () => {
  		let txt=useSSW(location );
  		expect(typeof txt ).toBe("object");
  		
@@ -47,7 +47,7 @@ describe("test on SharedStateWorker ", () => {
 				"thing 3",
 				 ],
  					},
- 			 		{}
+ 			 		{
 			name: "list3 " ,
   			created: (new Date()).getTime(),
   			edited: (new Date()).getTime(),
@@ -58,6 +58,7 @@ describe("test on SharedStateWorker ", () => {
 				"thing 2",
 				"thing 3",
 				 ],
+				}
  			]; 
  		expect(await txt.pushWhenAble( dat)).equal(true);
 
@@ -74,7 +75,7 @@ describe("test on SharedStateWorker ", () => {
 				"thing 3",
 				 ],
  					},
- 			 		{}
+ 			 		{
 			name: "list5 " ,
   			created: (new Date()).getTime(),
   			edited: (new Date()).getTime(),
@@ -85,6 +86,7 @@ describe("test on SharedStateWorker ", () => {
 				"thing 2",
 				"thing 3",
 				 ],
+				}
  			]; 
  		// should fail as dupe ID	
  		expect(await txt.pushWhenAble( dat)).equal(true);
@@ -93,7 +95,7 @@ describe("test on SharedStateWorker ", () => {
  					{
 			name: "list6 " ,
   			created: (new Date()).getTime(),
-  			edited: (new	 Date()).getTime(),
+  			edited: (new Date()).getTime(),
   			count: 3,
   			id: 1,
 			list: [
@@ -102,7 +104,7 @@ describe("test on SharedStateWorker ", () => {
 				"thing 3",
 				 ],
  					},
- 			 		{}
+ 			 		{
 			name: "list7 " ,
   			created: (new Date()).getTime(),
   			edited: (new Date()).getTime(),
@@ -113,17 +115,18 @@ describe("test on SharedStateWorker ", () => {
 				"thing 2",
 				"thing 3",
 				 ],
+				}
  			]; 
  		// should fail as count of items is wrong	
  		expect(await txt.pushWhenAble( dat)).equal(true);
 
  	});
 
- 	it("Can use SharedStateWorker ", () => {
+ 	it("Can use SharedStateWorker ", async () => {
  		let txt=useSSW(location );
  		expect(typeof txt ).toBe("object");
  		
- 		dat=[
+ 		let dat=[
  				{
 			name: "list1 " ,
   			created: (new Date()).getTime(),
@@ -144,9 +147,9 @@ describe("test on SharedStateWorker ", () => {
 
 
 
-	it("Can use SharedStateWorker ", () => {
+	it("Can use SharedStateWorker ", async () => {
 		const url="";
- 		let txt=useSSW(TestLocation(url) );
+ 		let txt=useSSW( new TestLocation(url) );
  		expect(typeof txt ).toBe("object");
  // IOIO start thread first
  		let dat=[]; // IOIO

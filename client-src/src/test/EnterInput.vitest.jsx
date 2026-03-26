@@ -2,9 +2,9 @@ import { directive, defineComponent, ref } from "vue";
 import { assert, describe, expect, it } from "vitest";
 import { mount } from "@vue/test-utils";
 import Vue3TouchEvents from "vue3-touch-events";
- 
+
 import EnterInput from "../components/EnterInput.vue";
-import { isMobile,  nextId } from "../services/util";
+import { isMobile, nextId } from "../services/util";
 import { UI_EN_GB, useUIText } from "../services/Localisation";
 
 // IOIO docs say need to swap find() -> findComponent()
@@ -80,7 +80,7 @@ describe("Simple component test 1", () => {
     expect(BLOB.find("dialog[data-testid=obj2]").exists()).toBe(true);
   });
 
-/*
+  /*
   it("test content feedback works", async (done) => {
     const cb = (d1) => {
       if (d1 === null) {
@@ -181,5 +181,4 @@ describe("Simple component test 1", () => {
     });
   });
 */
-
- });
+});

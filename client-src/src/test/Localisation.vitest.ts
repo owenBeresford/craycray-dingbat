@@ -1,7 +1,7 @@
 // import 'reflect-metadata';
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 
-import type { UItext } from '../types/Localisation';
+import type { UItext } from "../types/Localisation";
 import { UI_EN_GB, useUIText } from "../services/Localisation";
 
 describe("test on Localisation", () => {
