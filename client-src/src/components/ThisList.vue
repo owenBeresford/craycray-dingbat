@@ -12,7 +12,7 @@
       :visible="canSeeInput"
       :cb="cb"
       :data-testid="-1"
-      currentStateKey="inputThisListfalse"
+      :currentStateKey="childKey"
     />
     <ul class="aList">
       <li v-for="(i, j) in actualList" :key="j" title="Desktop: long touch to edit, swipe left to delete.">
@@ -46,17 +46,17 @@
 import { defineComponent } from "vue";
 
 import { useStore } from "../services/Store";
-import { DataFactory } from "../services/DataFactory";
-import { ListService } from "../services/ListService";
-import { SaveStruct } from "../types/Saveable";
+import { ListData } from "../services/DataFactory";
+// import { ListService } from "../services/ListService";
+// import type { SaveStruct } from "../types/Saveable";
 import { AList } from "../services/AList";
-import { UI_EN_GB } from "../services/Localisation";
+// import { UI_EN_GB } from "../services/Localisation";
 import { isMobile, clearSelection } from "../services/util";
 import { MotionStream } from "../services/MotionStream";
 import { nextId } from "../services/util";
 
-import type { Storable } from "../types/Saveable";
-import type { Motionable } from "../types/Motionable";
+// import type { Storable } from "../types/Saveable";
+// import type { Motionable } from "../types/Motionable";
 import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
 import type { ThisListProps } from '../types/ComponentProps';
 
@@ -64,11 +64,13 @@ import type { ThisListProps } from '../types/ComponentProps';
 import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
 
+const { currentData, initData } = ListData; 
 const NEW_LIST = -1;
 const DUMMY_LIST: AList = {} as AList;
 // this class is using a shared function pointer, as in vue2 the event bus is too slow
 // if you do parent state updates via it; they take 100ms to propagate, and you see flickers
 // it is possible that vue3 event bus is faster
+ 
 
 // according to the manuals I found; doing it like this is the approved solution.
 // this type whoffle is because someone said this could be an array. #leSigh
@@ -95,15 +97,15 @@ function extractId(src: string | string[] | null): number {
 
 	- the params listed are props to the component.
 	- the functions below are described in the Vue docs, and they are predictable.
-   * @param {Object} shopStore 
-   * @param {Function } factory
+   * @param {Object} shopStore
    * @param {string} currentStateKey
    * @public
    * @returns {string} - after rendering :-)
    */
 export default defineComponent({
   name: "ThisList",
-  components: { EnterInput, InterstitialView },
+  components:
+   { EnterInput, InterstitialView },
   props: {
     currentStateKey: { type: String, required: true },
     shopStore: {
@@ -112,43 +114,50 @@ export default defineComponent({
         return useStore();
       },
     }, // TS: "Store<ShopState>"
-    factory: {
-      type: Object,
-      default: async () => {
-        return await DataFactory();
-      },
-    }, // TS: "ListService"
   },
   created() {
     // console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW created()",  );
-    const ll = this.$props.factory;
+ 
     // console.log("WWWWWWW created()", {"id": this.$route.params.index, "size":ll.count() });
 
     //console.log("UIOUIOUIO", this.$route.params, extractId(this.$route.params.index) );
     try {
       this.id = extractId(this.$route.params.index);
-      this.list = ll.get(this.id) ?? DUMMY_LIST;
+      this.list = DUMMY_LIST;
+      if (currentData) {this.list= currentData.get(this.id) ?? DUMMY_LIST }
     } catch (e) {
-      let backupId = ll.create("New list");
+      let backupId = 0;
+      if (currentData) { backupId=currentData.create("New list"); }
       // the second branch is stupid, but shouldnt be possible
-      this.list = ll.get(backupId) ?? DUMMY_LIST;
+      this.list = DUMMY_LIST;
+      if(currentData) { this.list= currentData.get(backupId) ?? DUMMY_LIST; }
       this.id = backupId;
     }
 
-    if (ll.count() === 0) {
+    if (!currentData || currentData.count() === 0) {
       // if this reference doesn't happen to be the first mention, it will have API content
       // I wish I could use Promises.then, but I can't really make the data() async
       // API should never take more than 500ms, as its not doing much, as its on LAN
 
       setTimeout(() => {
-        this.list = ll.get(this.id) ?? DUMMY_LIST;
+        if(! currentData) { 
+          console.warn("ThisList component has no data after 0.5s, load the API"); 
+          this.list = DUMMY_LIST;
+          return; 
+        }
+        this.list = currentData.get(this.id) ?? DUMMY_LIST;
       }, 500);
     }
   },
   mounted() {
     //console.log("WWWWWWW mounted()", this.$props.shopStore );
-    this.$props.!shopStore.commit("setPath", this.$route.path);
-    this.$props.!shopStore.commit("setId", this.id);
+    if( this.$props.shopStore ) {
+      this.$props.shopStore.commit("setPath", this.$route.path);
+      this.$props.shopStore.commit("setId", this.id);
+    } else if(this.shopStore) {
+      this.shopStore.commit("setPath", this.$route.path);
+      this.shopStore.commit("setId", this.id);
+    }
   },
   inject: ["helpText", "canSeeHelp", "ttl"],
   data(): ThisListProps {
@@ -163,6 +172,7 @@ export default defineComponent({
       cb: Function as any,
       stream: tt,
       offset: -1,
+      childKey: nextId()+"input1",
       bisMobile: isMobile(),
     } as ThisListProps;
   },
@@ -180,7 +190,9 @@ export default defineComponent({
   methods: {
     onSave(e: GuessEvent): void {
       e.preventDefault();
-      this.$props.factory.saveAllLists();
+      if(currentData) {
+         currentData.saveAllLists();
+      }
     },
 
     onAdd(e: GuessEvent): boolean {

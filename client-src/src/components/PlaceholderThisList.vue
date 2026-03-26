@@ -10,12 +10,12 @@
 import { defineComponent, vue } from "vue";
 import { Store } from "vuex";
 
-import type { ShopState } from '../types/ShopState';
+import type { ShopState } from "../types/ShopState";
 import { useStore } from "../services/Store";
 import { AList } from "../services/AList";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
 import ThisList from "./ThisList.vue";
-import type {  ListStruct } from '../types/ListCollection';
+import type { ListStruct } from "../types/ListCollection";
 
 const FakeCollection = {
   /*  
@@ -84,7 +84,7 @@ const FakeCollection = {
 // const getFakeFactory=function () { return FakeCollection.create(); };
 
 // I can't find return type data
-// export function createTestWrapper(id:string, store:Store<ShopState>, factory:ListCollection ) 
+// export function createTestWrapper(id:string, store:Store<ShopState>, factory:ListCollection )
 
 export default defineComponent({
   name: "PlaceholderThislist",

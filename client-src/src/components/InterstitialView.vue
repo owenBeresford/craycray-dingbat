@@ -2,8 +2,17 @@
   <div class="interstitial" v-if="iShow" @interstitial="changeText" :data-testid="instanceId" :key="currentStateKey2">
     <ul>
       <li class="closeUp" :title="text.close1">
-        <input class="button" name="closeUp" @keypress="hide" @click="hide" :value="text.label1" 
-          :data-testId="closeId" :aria-label="text.close1" role="button" type="button" />
+        <input
+          class="button"
+          name="closeUp"
+          @keypress="hide"
+          @click="hide"
+          :value="text.label1"
+          :data-testId="closeId"
+          :aria-label="text.close1"
+          role="button"
+          type="button"
+        />
       </li>
       <li v-for="(i, j) in list" :key="j" v-html="i"></li>
     </ul>
@@ -14,12 +23,12 @@ import { defineComponent } from "vue";
 import { useStore, mapForHelp } from "../services/Store";
 import { useUIText } from "../services/Localisation";
 import { useLocal } from "../services/LocalCopy";
-import { KNOWN_PHONE } from '../Constants';
+import { KNOWN_PHONE } from "../Constants";
 import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
 import type { StrictArray } from "../types/ComponentProps";
 
 const TEXT = useUIText();
-  /**
+/**
    * InterstitialView
    * A component to render an overlay with some help text
 
@@ -36,16 +45,16 @@ const TEXT = useUIText();
    */
 export default defineComponent({
   name: "InterstitialView",
-  components: {}, 
+  components: {},
   props: {
     ttl: { type: Number, default: 0 },
     display: { type: String, required: true },
     show: { type: Boolean, default: false },
     currentStateKey: { type: [String, Object], required: true },
-    testId: { type:String, default:"test0"},
+    testId: { type: String, default: "test0" },
   },
   data() {
-    let id=this.$props.testId;
+    let id = this.$props.testId;
     let tmp = "";
     if (typeof this.$props.currentStateKey === "string") {
       tmp = this.$props.currentStateKey;
@@ -53,26 +62,25 @@ export default defineComponent({
       tmp = this.$props.currentStateKey.betterId;
     }
 
-    console.log("Data() has run for "+this.$props.testId);
-    // this is an override, so the props are applied at loadtime if running inside Storybook, 
-            // which only applies a partial stack 
-    let shouldShow=false;
-    if('__STORYBOOK_MODULE_TEST__' in global && global.__STORYBOOK_MODULE_TEST__) {
-      shouldShow=true;
-    } 
+    // this is an override, so the props are applied at loadtime if running inside Storybook,
+    // which only applies a partial stack
+    let shouldShow = false;
+    if ("__STORYBOOK_MODULE_TEST__" in global && global.__STORYBOOK_MODULE_TEST__) {
+      shouldShow = true;
+    }
 
     return {
       instanceId: id,
-      closeId:id+"close1",
+      closeId: id + "close1",
       local: useLocal(),
-      iShow: shouldShow?this.$props.show:false,
+      iShow: shouldShow ? this.$props.show : false,
       list: [] as StrictArray,
       firstPass: false,
       urlsStack: [] as StrictArray,
-      text:{
-        'close1':TEXT.get('interstitial.close1'),
-        'label1':TEXT.get('interstitial.label1'),
-      },  
+      text: {
+        close1: TEXT.get("interstitial.close1"),
+        label1: TEXT.get("interstitial.label1"),
+      },
       currentStateKey2: tmp,
     };
   },
@@ -111,7 +119,6 @@ export default defineComponent({
         setTimeout(inner2, this.ttl);
       }
     }
-    console.log("Mount has run for "+this.$props.testId);
   },
   watch: {
     display(val, oldVal): void {

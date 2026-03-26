@@ -14,21 +14,21 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { DataFactory } from "../services/DataFactory";
+import { ListData } from "../services/DataFactory";
 import { mapURL } from "../services/URLs";
-import { ListService } from "../services/ListService";
-import { AList } from "../services/AList";
-import { API_RETRY } from "../Constants";
+// import { ListService } from "../services/ListService";
+// import { AList } from "../services/AList";
+// import { API_RETRY } from "../Constants";
 import { nextId } from "../services/util";
 import InterstitialView from "./InterstitialView.vue";
-import type { ListStruct } from '../types/ListCollection';
-import type { ListOfListsProps } from '../types/ComponentProps';
+import type { ListStruct } from "../types/ListCollection";
+import type { ListOfListsProps } from "../types/ComponentProps";
 // IOIO the first time you compile this; comment the link to routing; this is a dep loop
 // I will build a better solution
 // import {StaticRoutes} from './Routing';
 
-const DATA = await DataFactory();
-  /**
+const { currentData, initData } = ListData;
+/**
    * ListOfLists
    * A component for a small form to enter a singular text field.  
    * Used to add items to the lists, or names of list etc
@@ -47,15 +47,15 @@ export default defineComponent({
     //    }
     this.$store.commit("setPath", this.$route.path);
     this.$store.commit("setId", -1);
-    if (DATA.count() === 0) {
+    if (currentData && currentData.count() === 0) {
       // if this reference doesn't happen to be the first mention, it will have API content
       // I wish I could use Promises.then, but I can't really make the data() async
       // API should never take more than 500ms, as its not doing much, as its on LAN
       setTimeout(() => {
         if (this.$data.shoppingLists) {
-          this.$data.shoppingLists = [...DATA.list()];
+          this.$data.shoppingLists = [...currentData.list()];
         } else {
-          this.$data.shoppingLists = DATA.list();
+          this.$data.shoppingLists = currentData.list();
         }
       }, 500);
     }
@@ -70,9 +70,13 @@ export default defineComponent({
     currentStateKey: { type: String, required: true },
   },
   data(): ListOfListsProps {
+    let ll:Array<ListStruct>=[];
+    if(currentData) {
+      ll=currentData.list() ;
+    }
     return {
       instanceId: nextId(),
-      shoppingLists: DATA.list() ?? [],
+      shoppingLists: ll,
       mapURL,
     } as ListOfListsProps;
   },

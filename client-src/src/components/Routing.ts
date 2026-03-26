@@ -5,9 +5,10 @@ import ThisList from "./ThisList.vue";
 import UnknownRoute from "./UnknownRoute.vue";
 import { wrap_getMyIP } from "../services/util";
 import { useStore } from "../services/Store";
-import { DataFactory } from "../services/DataFactory";
+import { ListData } from "../services/DataFactory";
 
-  /**
+const { currentData, initData } = ListData;
+/**
    * StaticRoutes
    * ilibrary standard file, holding the mspping of URN to Componment/ screen
 	- the functions below are described in the Vue docs, and they are predictable.
@@ -39,7 +40,7 @@ export const StaticRoutes = createRouter({
       name: "a-list",
       component: ThisList,
       props: async (route) => {
-        return { shopStore: useStore(), factory: await DataFactory(), currentStateKey: "thislist1" };
+        return { shopStore: useStore(), factory: currentData, currentStateKey: "thislist1" };
       },
     },
     //    { path: '/install', name:'install', ...? },

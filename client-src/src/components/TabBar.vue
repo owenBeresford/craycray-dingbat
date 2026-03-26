@@ -1,5 +1,5 @@
 <template>
-  <div id="tabBar" class="tabBar buttonRow" :data-testid="instanceId" :key="currentStateKey">
+  <div id="tabBar" class="tabBar buttonRow" :key="currentStateKey" :data-testId="testId">
     <div>
       <p v-html="menu.header"></p>
     </div>
@@ -8,61 +8,56 @@
         <li class="button" :title="menu.listAllTitle">
           <router-link :to="urls[0]">{{ menu.listAllName }}</router-link>
         </li>
-        <li class="button" :title={{ menu.newTitle }}>
+        <li class="button" :title="menu.newTitle">
           <router-link :to="urls[1]">{{ menu.newName }}</router-link>
         </li>
         <li style="text-align: right">
           <span
             class="obmenu bigger"
             aria-haspopup="menu"
+            aria-role="button"
             @click="onMenu"
             v-touch="onMenu"
             @keypress="onMenu"
             :title="menu.actualMenuTitle"
             v-html="menu.symbol"
           ></span>
-          <menu :class="menuState" role="navigation">
-            <li
-              :class="buttonEnabled"
-              :title="menu.installTitle"
-              @click="onInstall"
-            >
-              {{ menu.installName}}
+          <menu :class="menuState" role="navigation" data-testId="menuId">
+            <li :class="buttonEnabled" :title="menu.installTitle" @click="onInstall">
+              {{ menu.installName }}
             </li>
             <li :title="menu.helpTitle">
-              <a class="button" v-touch="onIntersitial" @click.once="onIntersitial" @keypress="onIntersitial"
-                >{{ menu.helpName }}</a
-              >
+              <a class="button" v-touch="onIntersitial" @click.once="onIntersitial" @keypress="onIntersitial">{{
+                menu.helpName
+              }}</a>
             </li>
-            <li :title="menu.renameTitle ">
-              <a class="button" v-touch="onName" @click="onName" @keypress="onName">{{ menu.renameName}}</a>
+            <li :title="menu.renameTitle">
+              <a disabled={!currentData} class="button" v-touch="onName" @click="onName" @keypress="onName">{{ menu.renameName }}</a>
             </li>
             <li :title="menu.dupeTitle">
-              <a class="button" v-touch="onDuplicate" @click="onDuplicate" @keypress="onDuplicate">{{ menu.dupeName }}</a>
+              <a disabled={!currentData} class="button" v-touch="onDuplicate" @click="onDuplicate" @keypress="onDuplicate">{{
+                menu.dupeName
+              }}</a>
             </li>
             <li :title="menu.uniqTitle">
-              <a class="button" v-touch="onUnique" @click="onUnique" @keypress="onUnique">{{ menu.uniqName }}</a>
+              <a disabled={!currentData} class="button" v-touch="onUnique" @click="onUnique" @keypress="onUnique">{{ menu.uniqName }}</a>
             </li>
             <li :title="menu.saveTitle">
-              <a class="button" v-touch="onSave" @click="onSave" @keypress="onSave">{{ menu.saveName }}</a>
+              <a disabled={!currentData} class="button" v-touch="onSave" @click="onSave" @keypress="onSave">{{ menu.saveName }}</a>
             </li>
-            <li :title="menu.revertTitle">
+            <li disabled={!currentData} :title="menu.revertTitle">
               <a v-touch.once="onRevert" @click.once="onRevert" @keypress.once="onRevert" class="button">
-               {{ menu.revertName }}
+                {{ menu.revertName }}
               </a>
             </li>
-            <li><br /><small>{{ menu.outro }}</small></li>
+            <li>
+              <br /><small>{{ menu.outro }}</small>
+            </li>
           </menu>
         </li>
       </ul>
     </div>
-    <EnterInput
-      :val="getInput"
-      :visible="visible"
-      :cb="CB"
-      :data-testid="-1"
-      :currentStateKey="EIK"
-    ></EnterInput>
+    <EnterInput :val="getInput" :visible="visible" :cb="CB" :data-testid="-1" :currentStateKey="EIK"></EnterInput>
   </div>
 </template>
 
@@ -72,19 +67,21 @@ import { defineComponent } from "vue";
 import { useStore } from "../services/Store";
 import { StaticRoutes } from "./Routing";
 import { AList } from "../services/AList";
-import { ListService } from "../services/ListService";
-import { DataFactory } from "../services/DataFactory";
+//import { ListService } from "../services/ListService";
+import { ListData } from "../services/DataFactory";
 import EnterInput from "./EnterInput.vue";
-import { useCacheWrapper } from "../workers/InstallWorker";
+import { useCacheWrapper,  CacheWrapper } from "../workers/InstallWorker";
 import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
 import { mapURL } from "../services/URLs";
 import { UI_EN_GB, useUIText } from "../services/Localisation";
-import { nextId } from "../services/util";
+import { TabBarProps } from '../types/ComponentProps';
+//import { nextId } from "../services/util";
 
 const TEXT = useUIText();
+const { currentData, initData } = ListData;
 const MENU_OPEN = TEXT.get("menu.symbol");
 const MENU_CLOSE = TEXT.get("cross");
-  /**
+/**
    * TabBar
    * A component for the top menu
 	- the params listed are props to the component.
@@ -99,9 +96,10 @@ export default defineComponent({
   components: { EnterInput },
   props: {
     currentStateKey: { type: String, required: true },
+    testId: { type: String, default: "test0" },
   },
-  async data() {
-    const CACHE:CacheWrapper = useCacheWrapper();
+  data():TabBarProps {
+    const CACHE: CacheWrapper = useCacheWrapper();
     let tt = "button";
     if (location.protocol !== "https:") {
       tt += " disabled";
@@ -110,8 +108,6 @@ export default defineComponent({
     }
 
     return {
-      instanceId: nextId(),
-      conn: await DataFactory(),
       menuLabel: MENU_OPEN,
       menuState: "hide",
       getInput: "",
@@ -119,39 +115,41 @@ export default defineComponent({
       visible: false,
       CB: Function as any,
       mapURL,
-      "CACHE":CACHE,
+      CACHE: CACHE,
       buttonEnabled: tt,
-      EIK: this.$props.currentStateKey+"false",
+      EIK: this.$props.currentStateKey + "false",
+      menuId: this.testId + "Menu1",
       urls: [mapURL("allList", null), mapURL("aList", -1)],
       menu: {
-        "header"  :TEXT.get("menu.header1"),
-        symbol    :TEXT.get("menu.symbol"),
-        listAllTitle:TEXT.get("menu.listAllTitle"),
-        listAllName:TEXT.get("menu.listAllName"),
-        newTitle  :TEXT.get("menu.newTitle"),
-        newName   :TEXT.get("menu.newName"),
-        actualMenuTitle:TEXT.get("menu.actualMenuTitle"),
-        installTitle:TEXT.get("menu.installTitle"),
-        installName:TEXT.get("menu.installName"),
-        helpTitle :TEXT.get("menu.helpTitle"),
-        helpName  :TEXT.get("menu.helpName"),
-        renameTitle:TEXT.get("menu.renameTitle"),
-        renameName:TEXT.get("menu.renameName"),
-        dupeTitle :TEXT.get("menu.dupeTitle"),
-        dupeName  :TEXT.get("menu.dupeName"),
-        uniqTitle :TEXT.get("menu.uniqTitle"),
-        uniqName  :TEXT.get("menu.uniqName"),
-        saveTitle :TEXT.get("menu.saveTitle"),
-        saveName  :TEXT.get("menu.saveName"),
-        revertTitle:TEXT.get("menu.revertTitle"),
-        revertName:TEXT.get("menu.revertName"),
-        outro     :TEXT.get("menu.outro"),
-      }
+        header: TEXT.get("menu.header1"),
+        symbol: TEXT.get("menu.symbol"),
+        listAllTitle: TEXT.get("menu.listAllTitle"),
+        listAllName: TEXT.get("menu.listAllName"),
+        newTitle: TEXT.get("menu.newTitle"),
+        newName: TEXT.get("menu.newName"),
+        actualMenuTitle: TEXT.get("menu.actualMenuTitle"),
+        installTitle: TEXT.get("menu.installTitle"),
+        installName: TEXT.get("menu.installName"),
+        helpTitle: TEXT.get("menu.helpTitle"),
+        helpName: TEXT.get("menu.helpName"),
+        renameTitle: TEXT.get("menu.renameTitle"),
+        renameName: TEXT.get("menu.renameName"),
+        dupeTitle: TEXT.get("menu.dupeTitle"),
+        dupeName: TEXT.get("menu.dupeName"),
+        uniqTitle: TEXT.get("menu.uniqTitle"),
+        uniqName: TEXT.get("menu.uniqName"),
+        saveTitle: TEXT.get("menu.saveTitle"),
+        saveName: TEXT.get("menu.saveName"),
+        revertTitle: TEXT.get("menu.revertTitle"),
+        revertName: TEXT.get("menu.revertName"),
+        outro: TEXT.get("menu.outro"),
+      },
     };
   },
 
   methods: {
     onIntersitial(e: GuessEvent): boolean {
+      e.preventDefault();
       if (e.type && e.type === "mouseup") {
         return false;
       }
@@ -162,7 +160,6 @@ export default defineComponent({
         this.$store.commit("setPath", this.$route.path);
       }
       this.$store.commit("show", true);
-      e.preventDefault();
       return false;
     },
 
@@ -184,32 +181,39 @@ export default defineComponent({
     },
 
     onUnique(e: GuessEvent): boolean {
+      e.preventDefault();
+      if(!currentData) { return false; }
       console.log("TO TEST make unique");
 
-      const llist = this.conn.get(this.$store.state.currentId);
+      const llist = currentData.get(this.$store.state.currentId);
       if (llist) {
         llist.unique();
-        this.conn.put(this.$store.state.currentId, llist);
+        currentData.put(this.$store.state.currentId, llist);
       }
 
-      e.preventDefault();
       return false;
     },
 
     onDuplicate(e: GuessEvent): boolean {
-      const llist = this.conn.get(this.$store.state.currentId);
+      e.preventDefault();
+      if(!currentData) { return false; }
+      const llist = currentData.get(this.$store.state.currentId);
+
       if (llist) {
-        const extra = Object.assign(AList.manual(`DUP: ${llist.nom}`, this.conn.catalog.length), llist);
+        const extra = Object.assign(AList.manual(`DUP: ${llist.nom}`, currentData.count()), llist);
         extra.editName(`DUP: ${llist.nom}`);
-        this.conn.append(extra);
+        currentData.append(extra);
       }
       StaticRoutes.push({ name: "list-everything" });
-      e.preventDefault();
+
       return false;
     },
 
     onName(e: GuessEvent): boolean {
-      const list = this.conn.get(this.$store.state.currentId);
+      e.preventDefault();
+      if(!currentData) { return false; }
+
+      const list = currentData.get(this.$store.state.currentId);
       if (!list) {
         console.warn("EDIT NAME: got bad id, don't know how to proceed");
         return false;
@@ -222,28 +226,32 @@ export default defineComponent({
           return;
         }
         list.editName(d1);
-        this.conn.put(this.$store.state.currentId, list);
+        currentData.put(this.$store.state.currentId, list);
         this.visible = false;
         StaticRoutes.push({ name: "list-everything" });
       };
       this.visible = true;
-      e.preventDefault();
       return false;
     },
 
     onSave(e: GuessEvent): boolean {
-      console.log("Saving list to local cache list, for all lists");
-      this.conn.saveAllLists();
       e.preventDefault();
+      if(!currentData) { return false; }
+      console.log("Saving list to local cache list, for all lists");
+
+      currentData.saveAllLists();
       return false;
     },
     onRevert(e: GuessEvent): boolean {
-      console.log("Rebuilding data from cache for all lists");
-      this.conn.loadAllLists();
       e.preventDefault();
+      if(!currentData) { return false; }
+
+      console.log("Rebuilding data from cache for all lists");
+      currentData.loadAllLists();
       return false;
     },
     onMenu(e: GuessEvent): boolean {
+      e.preventDefault();
       if (e.type && e.type === "mouseup") {
         return false;
       }
@@ -254,7 +262,6 @@ export default defineComponent({
         this.menuLabel = MENU_OPEN;
         this.menuState = "hide";
       }
-      e.preventDefault();
       return false;
     },
   },
