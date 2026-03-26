@@ -1,12 +1,13 @@
-import type { Listable, ListStruct } from './ListCollection';
-import type { Motionable } from './Motionable';
-import {AList} from '../services/AList';
- 
+import type { Listable, ListStruct, ListCollection } from "./ListCollection";
+import type { Motionable } from "./Motionable";
+import { AList } from "../services/AList";
+import { CacheWrapper } from '../workers/InstallWorker';
+
 export interface ListOfListsProps {
   instanceId: string;
   shoppingLists: Array<ListStruct>;
   mapURL: (a: string, b: number | null) => string;
-};
+}
 
 export interface ThisListProps {
   instanceId: string;
@@ -17,12 +18,31 @@ export interface ThisListProps {
   cb: Function;
   stream: Motionable;
   offset: number;
+  childKey:string;
   bisMobile: boolean;
-};
+}
 
 export interface MainAppProps {
-    currentStateKey: string,
-    instanceId: string,
+  currentStateKey: string;
+  instanceId: string;
 }
+
+type MapUrlType=(nom: string, id: number | null)=> string ;
+
+export interface TabBarProps  {
+  menuLabel: string;
+  menuState: string;
+  getInput: string;
+  $store:object;  // IOIO XXX fixme
+  visible: boolean;
+  CB: Function ;
+  mapURL: MapUrlType;
+  CACHE: CacheWrapper;
+  buttonEnabled: string;
+  EIK: string;
+  menuId: string;
+  urls: Array<string>;
+  menu: Record<string, string>;  // l12n data
+};
 
 export type StrictArray = Array<string>;

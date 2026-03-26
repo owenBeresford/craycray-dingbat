@@ -1,4 +1,3 @@
-
 // current simple state, TBextended
 export interface ShopState {
   currentURL: string;

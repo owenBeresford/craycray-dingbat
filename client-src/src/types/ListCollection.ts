@@ -1,12 +1,8 @@
 import type { DistantStorable } from "./RemoteTypes";
 import type { LocalCopy } from "../services/LocalCopy";
-import {AList} from '../services/AList'; 
+import { AList } from "../services/AList";
 
 export interface ListCollection {
-  catalog: Array<AList>;
-  remote: DistantStorable;
-  local: LocalCopy;
-
   create(nom: string): number;
   poll(): Promise<boolean>;
   count(): number;
@@ -14,7 +10,8 @@ export interface ListCollection {
   list(): Array<ListStruct>;
   get(id: number): AList | undefined;
   put(id: number, ret: AList): boolean;
-//  store(ret: AList, offset: number): boolean;
+  append(ret: AList): boolean ;
+  //  store(ret: AList, offset: number): boolean;
   saveAllLists(): boolean;
   loadAllLists(): boolean;
 }
@@ -44,4 +41,13 @@ export interface Listable {
   editName(nouveau: string): boolean;
   unique(): boolean;
   view(): ListStruct;
+}
+
+export interface TestDataSchema {
+      nom:string,
+      created: Date,
+      edited: Date,
+      count: number,
+      id: number,
+      list: Array<string>,
 }

@@ -1,6 +1,6 @@
 import { JSONObject, map, required, integer, custom } from "ts-json-object";
-import type { Listable, ListStruct } from "../types/ListCollection";
-
+import type { Listable, ListStruct, TestDataSchema } from "../types/ListCollection";
+ 
 /**
  * AList 
  * An Entity to manage validation and serialisation for Shopping lists
@@ -80,6 +80,17 @@ export class AList extends JSONObject implements Listable, ListStruct {
       count: 0,
       id: id,
       list: [],
+    });
+  }
+
+  public static importTest(src:TestDataSchema):AList {
+      return new AList({
+      name: src.nom,
+      created: src.created,
+      edited: src.edited,
+      count: src.list.length,
+      id: src.id,
+      list: [...src.list],
     });
   }
 
