@@ -1,3 +1,7 @@
+import '../src/assets/shopping.css';
+import '../src/assets/foundation.min.css';
+
+
 /** @type { import('@storybook/vue3-vite').Preview } */
 const preview = {
   parameters: {
