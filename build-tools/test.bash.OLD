@@ -1,0 +1,165 @@
+#!/bin/bash
+EXECDIR=node_modules/.bin
+buildenv="test"
+if [ -n "$NODE_ENV" ]; then
+	buildenv=$NODE_ENV;
+fi
+what="all"
+if [ ! -z "$1" ]; then
+	what="$1"
+fi
+
+echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo "++                                                                          **"
+echo "++   Add code to backup the current stored data before running the tests.   ++"
+echo "++                                                                          **"
+echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo " also I need to port the FE mocha test to jest; they got made in the wrong tool"
+
+if [ "$what" == "--fe" -o "$what" == "all" ]; then
+	if [ `basename $PWD` !=  client-src ]; then
+		cd client-src
+	fi
+	/usr/bin/node --max_old_space_size=12184 $EXECDIR/rollup -c rollup.config.tests.js
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on $x"
+		exit 1
+	fi
+
+	# Annoyed that i still need to use sed...
+	sed -i -e 's/var test /module.exports /' ./build/test/MotionStream.iife.js 
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on ./build/test/MotionStream.iife.js "
+		exit 1
+	fi
+	sed -i -e 's/)({}, Vector);/;/' ./build/test/MotionStream.iife.js 
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on  ./build/test/MotionStream.iife.js "
+		exit 1
+	fi
+	sed -i -e 's/(function (exports, Vector/function (exports, Vector/' ./build/test/MotionStream.iife.js 
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on ./build/test/MotionStream.iife.js "
+		exit 1
+	fi
+	sed -i -e 's/var test /module.exports /' ./build/test/Store.iife.js
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on ./build/test/Store.iife.js"
+		exit 1
+	fi
+	sed -i -e 's/)({}, Vuex);/;/' ./build/test/Store.iife.js
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on ./build/test/Store.iife.js"
+		exit 1
+	fi
+	sed -i -e 's/(function/function/' ./build/test/Store.iife.js
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on ./build/test/Store.iife.js"
+		exit 1
+	fi
+	sed -i -e 's/var test /module.exports /' ./build/test/URLs.iife.js 
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on ./build/test/URLs.iife.js "
+		exit 1
+	fi
+	sed -i -e 's/var test = (/module.exports =/' ./build/test/RemoteStorage.iife.js 
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on ./build/test/RemoteStorage.iife.js"
+		exit 1
+	fi
+	sed -i -e 's/(exports)/( fetch)/' ./build/test/RemoteStorage.iife.js 
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on ./build/test/RemoteStorage.iife.js "
+		exit 1
+	fi
+	sed -i -e 's/)({});/;/' ./build/test/RemoteStorage.iife.js 
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on ./build/test/RemoteStorage.iife.js "
+		exit 1
+	fi
+	sed -i -e 's/var test = (/module.exports =/' ./build/test/LocalCopy.iife.js 
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on ./build/test/LocalCopy.iife.js "
+		exit 1
+	fi
+	sed -i -e 's/(exports)/( )/' ./build/test/RemoteStorage.iife.js 
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on ./build/test/RemoteStorage.iife.js "
+		exit 1
+	fi
+	sed -i -e 's/)({});/;/' ./build/test/LocalCopy.iife.js 
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on ./build/test/LocalCopy.iife.js "
+		exit 1
+	fi
+	sed -i -e 's/var test = (/module.exports = /' ./build/test/ListOfLists.iife.js 
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on ./build/test/ListOfLists.iife.js"
+		exit 1
+	fi
+	sed -i -e 's/)(Vue, null, vuex);/;/' ./build/test/ListOfLists.iife.js 
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on ./build/test/ListOfLists.iife.js"
+		exit 1
+	fi
+
+# node --experimental-modules 
+	$EXECDIR/mocha --check-leaks ./src/test/*.mocha.js
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on mocha for FE"
+		exit 1
+	fi
+
+    ./node_modules/.bin/jest --verbose
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on running jest"
+		exit 1
+	fi
+
+	# TODO IOIO get cypress running
+	# ./node_modules/.bin/cypress run --spec “<spec file path>”
+	cd ..
+
+
+elif [ "$what" == "--be" -o "$what" == "all" ]; then
+	cd server-src
+	if [ -z "`netstat -ant | grep 3001`" ]; then
+		echo -e "\b\b\bYou need to have the service running, to run the server side tests."
+		exit 11
+	fi
+
+	$EXECDIR/rollup -c rollup.config.tests.json --environment BUILD:$buildenv 
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on $x"
+		exit 1
+	fi
+
+# I can't use IIFE if I am running the server API on the same package.json
+	node --es-module-specifier-resolution=node $EXECDIR/mocha -t5000 --check-leaks ./test/*.mocha.js
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		echo "Tool exited $ret on $x"
+		exit 1
+	fi
+	cd ..
+fi
+
