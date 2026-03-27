@@ -26,16 +26,22 @@ export const TrackTextRendered: Story = {
 
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    // might need to add .resolves. to expect statements
-    expect(canvas.queryByTestId("test15menu1")).not.toBeVisible();
+    // I am defining this, as some browsers are damaging/ transliterating my UTF8 chars, 
+    // so the tests fail in an annoying fashion.
+    const EXTRACT_NON_ASCII:RegExp=/[^\x00-\x7F]+/gu;
 
-    await userEvent.click(canvas.getByRole("button", { name: /☰/i }));
+    // might need to add .resolves. to expect statements
+    expect(canvas.queryByTestId("test15")).toBeVisible();
+    expect(canvas.queryByTestId("test15Menu1")).not.toBeVisible();
+    
+    await userEvent.click(canvas.getByRole("button", { name:EXTRACT_NON_ASCII }));
     expect(canvas.queryByRole("button", { name: /❌/i })).toBeVisible();
-    expect(canvas.queryByTestId("test15menu1")).toBeVisible();
+    expect(canvas.queryByTestId("test15Menu1")).toBeVisible();
 
     await userEvent.click(canvas.getByRole("button", { name: /❌/i }));
-    expect(canvas.queryByRole("button", { name: /☰/i })).toBeVisible();
-    expect(canvas.queryByTestId("test15menu1")).not.toBeVisible();
+    expect(canvas.queryByRole("button", { name: EXTRACT_NON_ASCII })).toBeVisible();
+    expect(canvas.queryByTestId("test15Menu1")).not.toBeVisible();
+
   },
 };
 

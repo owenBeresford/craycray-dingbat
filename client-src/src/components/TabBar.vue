@@ -3,8 +3,8 @@
     <div>
       <p v-html="menu.header"></p>
     </div>
-    <div>
-      <ul role="navigation">
+    <div role="navigation">
+      <ul >
         <li class="button" :title="menu.listAllTitle">
           <router-link :to="urls[0]">{{ menu.listAllName }}</router-link>
         </li>
@@ -15,16 +15,18 @@
           <span
             class="obmenu bigger"
             aria-haspopup="menu"
-            aria-role="button"
+            role="button"
             @click="onMenu"
             v-touch="onMenu"
             @keypress="onMenu"
             :title="menu.actualMenuTitle"
-            v-html="menu.symbol"
+            v-html="menuLabel"
           ></span>
-          <menu :class="menuState" role="navigation" data-testId="menuId">
-            <li :class="buttonEnabled" :title="menu.installTitle" @click="onInstall">
+          <menu :class="menuState" role="navigation" :data-testId="menuId">
+            <li :title="menu.installTitle">
+              <a :class="buttonEnabled" v-touch="onInstall" @click.once="onInstall" @keypress="onInstall">
               {{ menu.installName }}
+              </a>
             </li>
             <li :title="menu.helpTitle">
               <a class="button" v-touch="onIntersitial" @click.once="onIntersitial" @keypress="onIntersitial">{{
@@ -45,8 +47,8 @@
             <li :title="menu.saveTitle">
               <a disabled={!currentData} class="button" v-touch="onSave" @click="onSave" @keypress="onSave">{{ menu.saveName }}</a>
             </li>
-            <li disabled={!currentData} :title="menu.revertTitle">
-              <a v-touch.once="onRevert" @click.once="onRevert" @keypress.once="onRevert" class="button">
+            <li :title="menu.revertTitle">
+              <a disabled={!currentData} v-touch.once="onRevert" @click.once="onRevert" @keypress.once="onRevert" class="button">
                 {{ menu.revertName }}
               </a>
             </li>
@@ -63,7 +65,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
+ 
 import { useStore } from "../services/Store";
 import { StaticRoutes } from "./Routing";
 import { AList } from "../services/AList";
@@ -75,7 +77,6 @@ import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
 import { mapURL } from "../services/URLs";
 import { UI_EN_GB, useUIText } from "../services/Localisation";
 import { TabBarProps } from '../types/ComponentProps';
-//import { nextId } from "../services/util";
 
 const TEXT = useUIText();
 const { currentData, initData } = ListData;
@@ -164,7 +165,8 @@ export default defineComponent({
     },
 
     onInstall(e: GuessEvent) {
-      if (e.type && e.type === "mouseup") {
+      e.preventDefault();
+      if (e.type && e.type === "mouseup") { // suppress dupe events
         return false;
       }
       if (location.protocol !== "https:") {
