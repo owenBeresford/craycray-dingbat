@@ -180,6 +180,10 @@ function UITextFactory(lang: string): UItext {
     hiddenReference.add("menu.outro", "Add more as needed");
     hiddenReference.add("menu.renameSupport", "pls retype");
 
+    hiddenReference.add("list.additemTitle", "Add a new item to current list.");
+    hiddenReference.add("list.curListsTitle", "Current lists.  Desktop: long touch to edit, swipe left to delete.");
+    hiddenReference.add("list.addItemName", "Add item");
+    
     hiddenReference.addArray("firstUse", [
       "&nbsp; ",
       "Hello, this is a shopping list hack, hosted locally on your phone.",
