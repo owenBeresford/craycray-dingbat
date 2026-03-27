@@ -65,10 +65,10 @@ export default defineComponent({
     // this is an override, so the props are applied at loadtime if running inside Storybook,
     // which only applies a partial stack
     let shouldShow = false;
-    if ("__STORYBOOK_MODULE_TEST__" in global && global.__STORYBOOK_MODULE_TEST__) {
+    if ("__STORYBOOK_MODULE_TEST__" in window && window.__STORYBOOK_MODULE_TEST__) {
       shouldShow = true;
     }
-
+ 
     return {
       instanceId: id,
       closeId: id + "close1",
