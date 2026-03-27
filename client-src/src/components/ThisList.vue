@@ -1,10 +1,10 @@
 <template>
   <div class="aList" :data-testid="instanceId" :key="currentStateKey">
-    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="{ betterId }" />
+    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="betterId" />
     <ul class="buttonRow">
       <li class="bigger">{{ list.nom }}:</li>
-      <li title="Add a new item to current list">
-        <span v-touch.once="onAdd" @click.once="onAdd" class="button" @keypress.once="onAdd"> Add item </span>
+      <li :title="text.addTitle">
+        <span v-touch.once="onAdd" @click.once="onAdd" class="button" @keypress.once="onAdd" v-html="text.addName"></span>
       </li>
     </ul>
     <EnterInput
@@ -15,7 +15,7 @@
       :currentStateKey="childKey"
     />
     <ul class="aList">
-      <li v-for="(i, j) in actualList" :key="j" title="Desktop: long touch to edit, swipe left to delete.">
+      <li v-for="(i, j) in actualList" :key="j" :title="text.currentTitle" >
         <span
           v-if="bisMobile"
           class="button info"
@@ -46,34 +46,46 @@
 import { defineComponent } from "vue";
 
 import { useStore } from "../services/Store";
+import { useUIText } from '../services/Localisation';
 import { ListData } from "../services/DataFactory";
-// import { ListService } from "../services/ListService";
-// import type { SaveStruct } from "../types/Saveable";
-import { AList } from "../services/AList";
-// import { UI_EN_GB } from "../services/Localisation";
-import { isMobile, clearSelection } from "../services/util";
-import { MotionStream } from "../services/MotionStream";
-import { nextId } from "../services/util";
-
-// import type { Storable } from "../types/Saveable";
-// import type { Motionable } from "../types/Motionable";
-import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
-import type { ThisListProps } from '../types/ComponentProps';
-
-// import { ListService } from "../services/ListService";
 import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
 
+import { AList } from "../services/AList";
+import { MotionStream } from "../services/MotionStream";
+
+import { isMobile, clearSelection } from "../services/util";
+import { nextId } from "../services/util";
+
+// import { ListService } from "../services/ListService";
+// import type { SaveStruct } from "../types/Saveable";
+// import { UI_EN_GB } from "../services/Localisation";
+// import type { Storable } from "../types/Saveable";
+// import type { Motionable } from "../types/Motionable";
+// import { ListService } from "../services/ListService";
+import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
+import type { ThisListProps } from '../types/ComponentProps';
+
+
+const TEXT=useUIText();
 const { currentData, initData } = ListData; 
 const NEW_LIST = -1;
 const DUMMY_LIST: AList = {} as AList;
 // this class is using a shared function pointer, as in vue2 the event bus is too slow
 // if you do parent state updates via it; they take 100ms to propagate, and you see flickers
 // it is possible that vue3 event bus is faster
- 
 
-// according to the manuals I found; doing it like this is the approved solution.
-// this type whoffle is because someone said this could be an array. #leSigh
+/**
+ * extractId
+ * Util to extract a List Id from an URL. 
+ * according to the manuals I found; doing it like this is the approved solution.
+ * this type whoffle is because someone said this could be an array. #leSigh
+ * #TODO Maybe should live in util
+ 
+ * @param {string | string[] | null} src
+ * @public
+ * @returns {number}
+ */
 function extractId(src: string | string[] | null): number {
   if (src === null) {
     throw new Error("Illegal shopping list id " + src);
@@ -117,9 +129,7 @@ export default defineComponent({
   },
   created() {
     // console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW created()",  );
- 
     // console.log("WWWWWWW created()", {"id": this.$route.params.index, "size":ll.count() });
-
     //console.log("UIOUIOUIO", this.$route.params, extractId(this.$route.params.index) );
     try {
       this.id = extractId(this.$route.params.index);
@@ -174,6 +184,11 @@ export default defineComponent({
       offset: -1,
       childKey: nextId()+"input1",
       bisMobile: isMobile(),
+      text:{
+        addTitle:TEXT.get('list.additemTitle'),
+        currentTitle:TEXT.get('list.curListsTitle'),
+        addName:TEXT.get('list.addItemName'),
+      }
     } as ThisListProps;
   },
   computed: {
@@ -184,7 +199,7 @@ export default defineComponent({
       if (this.list instanceof AList) {
         return this.list.export();
       }
-      return [] as Array< string>;
+      return [] as Array<string>;
     },
   },
   methods: {
