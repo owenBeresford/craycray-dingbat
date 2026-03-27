@@ -163,7 +163,7 @@ function UITextFactory(lang: string): UItext {
     hiddenReference.add("menu.newTitle", "Start a new shopping list");
     hiddenReference.add("menu.newName", "New");
     hiddenReference.add("menu.actualMenuTitle", "Show or hide the extra features.");
-    hiddenReference.add("menu.installTitle", "Copy app to your phone, for offline usage. Needed once");
+    hiddenReference.add("menu.installTitle", "Copy app to your phone, for offline usage. Needed once. Requires HTTPS to run");
     hiddenReference.add("menu.installName", "Install");
     hiddenReference.add("menu.helpTitle", "Show a help overlay...");
     hiddenReference.add("menu.helpName", "Show help");
