@@ -4,7 +4,7 @@ import { mount } from "@vue/test-utils";
 import Vue3TouchEvents from "vue3-touch-events";
 
 import EnterInput from "../components/EnterInput.vue";
-import { isMobile, nextId } from "../services/util";
+// import { isMobile, nextId } from "../services/util";
 import { UI_EN_GB, useUIText } from "../services/Localisation";
 
 // IOIO docs say need to swap find() -> findComponent()

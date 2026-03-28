@@ -24,10 +24,9 @@ export const MOBILE_THRESHOLD = 150;
 export const BIG_THRESHOLD = 200;
 export const ANGLE_ACCURACY = 20.0;
 
-// localisation 
+// localisation
 export const SUPPORTED_LANGUAGE = "en-GB";
 export const KNOWN_PHONE = "shopping-known";
-
 
 export const FETCH_TIMEOUT = 500;
 

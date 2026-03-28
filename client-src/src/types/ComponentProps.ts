@@ -10,16 +10,18 @@ export interface ListOfListsProps {
 }
 
 export interface ThisListProps {
-  instanceId: string;
-  id: number;
+   id: number;
   list: AList;
   getInput: string;
   canSeeInput: boolean;
   cb: Function;
   stream: Motionable;
   offset: number;
-  childKey:string;
+  childId:string;
+  nextTestId:string;
   bisMobile: boolean;
+  aListId:string;
+  text:Record<string, string>;
 }
 
 export interface MainAppProps {

@@ -1,7 +1,12 @@
 
-- migrate JS files to TS or MJS
 - increase tests
-- add code docs
+- EnterInput.val isn't applied, I think
+- EnterInput test, have a chain of open an close to show state is tidied correctly
+- this might be child components being ready before parent.  [Vue warn]: injection "shopping" not found.
+- resolve router-link not rendering
+- $store
+- move rest of text to localisation
+- check ARIA values 
 - check for alternatives for deps with non-standard packing
 - swap js-json-object with typedjson
 - check that values in AList are populated correctly
@@ -18,8 +23,13 @@
 - may be need to re-add STORE.getters
 - look at closure generators to hold my "module variable" static vars safe after compilation/ bundling
 - workout if MotionStream->significance and signifcanceAsPercentage should use same thresholds
+- edit clean.bash to current dir tree
 - add the better validation on transform2list
+- bash scripts need to check version of node
+https://www.npmjs.com/package/@vitejs/plugin-vue
+https://github.com/orimay/async-ts
 
 set NODE_ENV="TEST" for tests
+Yes, the storybook test use storybook/test module that currently I can't install.   Storybook seems to include it even though its doesn't exist in the correct version ~ mono-repo.   #WorksForMe, I hope it works-for-you.
 
 

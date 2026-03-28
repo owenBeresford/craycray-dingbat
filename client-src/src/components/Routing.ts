@@ -40,7 +40,7 @@ export const StaticRoutes = createRouter({
       name: "a-list",
       component: ThisList,
       props: async (route) => {
-        return { shopStore: useStore(), factory: currentData, currentStateKey: "thislist1" };
+        return { shopStore: useStore(), currentStateKey: "thislist1" };
       },
     },
     //    { path: '/install', name:'install', ...? },

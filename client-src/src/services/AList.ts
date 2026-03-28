@@ -83,15 +83,26 @@ export class AList extends JSONObject implements Listable, ListStruct {
     });
   }
 
+   /**
+   * importTest
+   * a util func to get Fixtures into the local AList[]
+ 
+   * @param {TestDataSchema} src
+   * @public
+   * @returns {AList}
+   */
   public static importTest(src:TestDataSchema):AList {
-      return new AList({
-      name: src.nom,
-      created: src.created,
-      edited: src.edited,
+console.log("ERWERWRWER ", JSON.stringify( src));  
+      const tmp= new AList({
+      name: src.name,
+      created: new Date(src.created),
+      edited: new Date(src.edited),
       count: src.list.length,
       id: src.id,
       list: [...src.list],
     });
+console.log("ERWERWRWER ", JSON.stringify( tmp)); 
+    return tmp;
   }
 
   /**

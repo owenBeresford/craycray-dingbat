@@ -10,6 +10,7 @@ export interface ListCollection {
   list(): Array<ListStruct>;
   get(id: number): AList | undefined;
   put(id: number, ret: AList): boolean;
+  merge(next:ListCollection):boolean; 
   append(ret: AList): boolean ;
   //  store(ret: AList, offset: number): boolean;
   saveAllLists(): boolean;
@@ -44,7 +45,7 @@ export interface Listable {
 }
 
 export interface TestDataSchema {
-      nom:string,
+      name:string,
       created: Date,
       edited: Date,
       count: number,

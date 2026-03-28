@@ -1,20 +1,21 @@
 <template>
-  <div class="aList" :data-testid="instanceId" :key="currentStateKey">
+  <div class="aList" :data-testid="testId" :key="currentStateKey">
     <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="betterId" />
     <ul class="buttonRow">
-      <li class="bigger">{{ list.nom }}:</li>
+      <li class="bigger">{{ list.nom }}</li>
       <li :title="text.addTitle">
-        <span v-touch.once="onAdd" @click.once="onAdd" class="button" @keypress.once="onAdd" v-html="text.addName"></span>
+        <span role="button" v-touch.once="onAdd" @click.once="onAdd" class="button" @keypress.once="onAdd" 
+          v-html="text.addName"></span>
       </li>
     </ul>
     <EnterInput
       :val="getInput"
       :visible="canSeeInput"
       :cb="cb"
-      :data-testid="-1"
-      :currentStateKey="childKey"
+      :data-testid="nextTestId"
+      :currentStateKey="childId"
     />
-    <ul class="aList">
+    <ul class="aList" :data-testId="aListId">
       <li v-for="(i, j) in actualList" :key="j" :title="text.currentTitle" >
         <span
           v-if="bisMobile"
@@ -44,18 +45,18 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-
+import { useRoute } from 'vue-router';
+ 
 import { useStore } from "../services/Store";
 import { useUIText } from '../services/Localisation';
 import { ListData } from "../services/DataFactory";
+
 import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
-
 import { AList } from "../services/AList";
 import { MotionStream } from "../services/MotionStream";
 
-import { isMobile, clearSelection } from "../services/util";
-import { nextId } from "../services/util";
+import { isMobile, clearSelection, extractId } from "../services/util";
 
 // import { ListService } from "../services/ListService";
 // import type { SaveStruct } from "../types/Saveable";
@@ -66,7 +67,6 @@ import { nextId } from "../services/util";
 import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
 import type { ThisListProps } from '../types/ComponentProps';
 
-
 const TEXT=useUIText();
 const { currentData, initData } = ListData; 
 const NEW_LIST = -1;
@@ -74,34 +74,6 @@ const DUMMY_LIST: AList = {} as AList;
 // this class is using a shared function pointer, as in vue2 the event bus is too slow
 // if you do parent state updates via it; they take 100ms to propagate, and you see flickers
 // it is possible that vue3 event bus is faster
-
-/**
- * extractId
- * Util to extract a List Id from an URL. 
- * according to the manuals I found; doing it like this is the approved solution.
- * this type whoffle is because someone said this could be an array. #leSigh
- * #TODO Maybe should live in util
- 
- * @param {string | string[] | null} src
- * @public
- * @returns {number}
- */
-function extractId(src: string | string[] | null): number {
-  if (src === null) {
-    throw new Error("Illegal shopping list id " + src);
-  }
-  let cp: number;
-
-  if (Array.isArray(src)) {
-    cp = parseInt(src[0], 10);
-  } else {
-    cp = parseInt(src, 10);
-  }
-  if (cp < 1) {
-    throw new Error("Illegal shopping list id " + src);
-  }
-  return cp - 1;
-}
 
   /**
    * Thislist
@@ -120,6 +92,7 @@ export default defineComponent({
    { EnterInput, InterstitialView },
   props: {
     currentStateKey: { type: String, required: true },
+    testId:{ type:String, default:"test0" },
     shopStore: {
       type: Object,
       default: () => {
@@ -130,11 +103,11 @@ export default defineComponent({
   created() {
     // console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW created()",  );
     // console.log("WWWWWWW created()", {"id": this.$route.params.index, "size":ll.count() });
-    //console.log("UIOUIOUIO", this.$route.params, extractId(this.$route.params.index) );
+    // console.log("UIOUIOUIO", this.$route.params, extractId(this.$route.params.index) );
     try {
       this.id = extractId(this.$route.params.index);
       this.list = DUMMY_LIST;
-      if (currentData) {this.list= currentData.get(this.id) ?? DUMMY_LIST }
+      if (currentData) { this.list= currentData.get(this.id) ?? DUMMY_LIST; }
     } catch (e) {
       let backupId = 0;
       if (currentData) { backupId=currentData.create("New list"); }
@@ -160,6 +133,7 @@ export default defineComponent({
     }
   },
   mounted() {
+  //  this.route = useRoute();
     //console.log("WWWWWWW mounted()", this.$props.shopStore );
     if( this.$props.shopStore ) {
       this.$props.shopStore.commit("setPath", this.$route.path);
@@ -173,8 +147,8 @@ export default defineComponent({
   data(): ThisListProps {
     const tt = new MotionStream();
     tt.register("0", this.finalise.bind(this));
+
     return {
-      instanceId: nextId(),
       id: NEW_LIST,
       list: DUMMY_LIST,
       getInput: "",
@@ -182,13 +156,15 @@ export default defineComponent({
       cb: Function as any,
       stream: tt,
       offset: -1,
-      childKey: nextId()+"input1",
       bisMobile: isMobile(),
       text:{
         addTitle:TEXT.get('list.additemTitle'),
         currentTitle:TEXT.get('list.curListsTitle'),
         addName:TEXT.get('list.addItemName'),
-      }
+      },
+      childId: this.$props.testId+"child1",
+      nextTestId: this.$props.testId+"input1",
+      aListId: this.$props.testId+"List1",
     } as ThisListProps;
   },
   computed: {

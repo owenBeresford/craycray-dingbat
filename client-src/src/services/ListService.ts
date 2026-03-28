@@ -1,13 +1,13 @@
 import { AList } from "./AList";
 
 import type { SaveStruct } from "../types/Saveable";
-// import type { LocalCopy } from "./LocalCopy";
 import type { ListCollection } from "../types/ListCollection";
+import type { Listable, ListStruct } from "../types/ListCollection";
+import type { PromiseSucceed, PromiseReject } from "../types/promises";
+// import type { LocalCopy } from "./LocalCopy";
 // import { MessageDistribution } from "./MessageDistribution";
 // import { RemoteStorage } from './RemoteStorage';
 // import type { DistantStorable } from "../types/RemoteTypes";
-import type { Listable, ListStruct } from "../types/ListCollection";
-import type { PromiseSucceed, PromiseReject } from "../types/promises";
 
 /**
  * ListService 
@@ -98,6 +98,14 @@ export class ListService implements ListCollection {
     this.catalog.splice(id, 1);
     return true;
   }
+
+public merge(next:ListCollection):boolean {
+  for(let i=0; i<next.count(); i++) {
+    let annoying=next.get(i);
+    if(annoying) {this.append( annoying); }
+  }
+  return true;
+}
 
   /**
    * list
