@@ -1,8 +1,8 @@
 import { Vector } from "vector2d/src/Vector";
-import { CBTYPE, Motionable } from "../types/Motionable";
 // its bad to import internal classes; but this package isn't compatible with modern bundlers/ classloaders
 import { isMobile, windowSize, rad2deg } from "./util";
 import { MOBILE_THRESHOLD, BIG_THRESHOLD, ANGLE_ACCURACY } from "../Constants";
+import type { CBTYPE, Motionable } from "../types/Motionable";
 
 /**
  * MotionStream 
@@ -127,7 +127,7 @@ export class MotionStream implements Motionable {
    * start
    * Start a gesture in the motion stream
  
-   * @param {MouseEvent}
+   * @param {MouseEvent} e
    * @public
    * @returns {boolean}
    */

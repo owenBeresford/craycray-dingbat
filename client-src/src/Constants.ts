@@ -34,6 +34,15 @@ if (typeof global.fetch === "undefined" || !global.fetch) {
   throw new Error("73453894563453 Fetch() not found.  BAILING OUT");
 }
 
+/**
+ * createRemoteService
+ * Create a remote HTTP client.  
+ * Will throw if Node/ browser lacks features 
+ 
+ * @param {Location | WorkerLocation} loc
+ * @public
+ * @returns {RemoteStorage}
+ */
 export function createRemoteService(loc: Location | WorkerLocation): RemoteStorage {
   if (process.env.NODE_ENV !== "TEST" && (!global || !global.addEventListener)) {
     throw new Error("8674564632343 Message passing is only possible inside a reasonable browser.");

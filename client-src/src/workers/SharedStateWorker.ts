@@ -8,14 +8,14 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers#about_thread_safety
 //
 import type { RemoteStorage } from "../services/RemoteStorage";
-// import type { BasicThreadable } from "../types/BasicThreadable";
 import type { SaveStruct, DelayCallbackType, DataPipeline } from "../types/Saveable";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
 import { createRemoteService } from "../Constants";
+// import type { BasicThreadable } from "../types/BasicThreadable";
 
 /**
  * useSSW
- * a util to create this service
+ * A util to create this service
  
  * @param {Location} loc
  * @public
@@ -43,7 +43,7 @@ export class SharedStateWorker implements DataPipeline {
    * @param {RemoteStorage} rs
    * @param {DelayCallbackType} delay
    * @public
-   * @return {SharedStateWorker}
+   * @returns {SharedStateWorker}
    */
   public constructor(rs: RemoteStorage, delay: DelayCallbackType) {
     this.conn = rs;
@@ -59,24 +59,25 @@ export class SharedStateWorker implements DataPipeline {
  
    * @param {Array<SaveStruct>} json
    * @public
-   * @return {Promise<boolean>}
+   * @returns {Promise<boolean>}
    */
   public async pushWhenAble(json: Array<SaveStruct>): Promise<boolean> {
     const SELF = this;
 
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const ATTEMPT = async () => {
+      const ATTEMPT = async ():Promise<void> => {
         let access = await SELF.conn.poll();
         if (access) {
           SELF.conn
             .saveState(json)
-            .then((dat: any) => {
+            .then((dat: boolean):boolean => {
               console.log("save said " + dat);
               good(true);
+              return true;
             })
-            .catch((err) => {
+            .catch((err:unknown):void => {
               console.error("Am connected to wifi; cannot save data ??\nImprove error handler here.");
-              return bad(err);
+              bad(err as Error);
             });
         } else {
           // I think I need to replace this section
@@ -92,13 +93,13 @@ export class SharedStateWorker implements DataPipeline {
    * initaite downloading data (async, phone maybe offnet)
  
    * @public
-   * @return {Promise<Array<SaveStruct>>}
+   * @returns {Promise<Array<SaveStruct>>}
    */
   public async pullWhenAble(): Promise<Array<SaveStruct>> {
     const SELF = this;
 
     return new Promise(async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
-      const ATTEMPT = async () => {
+      const ATTEMPT = async ():Promise<void> => {
         let access = await SELF.conn.poll();
         if (access) {
           SELF.conn
@@ -106,8 +107,8 @@ export class SharedStateWorker implements DataPipeline {
             .then((out: Array<SaveStruct>) => {
               return good(out);
             })
-            .catch((err) => {
-              return bad(err);
+            .catch((err:unknown) => { // #leSigh
+              return bad(err as Error);
             });
         } else {
           // I think I need to replace this section
@@ -119,16 +120,30 @@ export class SharedStateWorker implements DataPipeline {
   }
 }
 
-// these callbacks could be attached to the above object,
-// I have currently made them seperate incase I need to expand to 10 implmentations
-// this would be a good place to ba C++ "friend function"
-// they should all match
-//    function(state: DataPipeline): number
-
+/**
+ * linearDelay
+ * A separated function to compute the delay duration, which is used for networking retries.
+ * I have currently made them separate in-case I need to expand to 10 implementations.
+ * This would be a good place to be a C++ "friend function".
+ 
+ * @param {DataPipeline} state
+ * @public
+ * @returns {number}
+ */
 export function linearDelay(state: DataPipeline): number {
   return state.currentDelay;
 }
 
+/**
+ * exponentialDelay
+ * A separated function to compute the delay duration, which is used for networking retries
+ * I have currently made them separate in-case I need to expand to 10 implementations.
+ * This would be a good place to be a C++ "friend function".
+ 
+ * @param {DataPipeline} state
+ * @public
+ * @returns {number}
+ */
 export function exponentialDelay(state: DataPipeline): number {
   state.currentDelay *= 1.3;
   return state.currentDelay;

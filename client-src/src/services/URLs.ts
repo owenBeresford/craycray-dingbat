@@ -32,7 +32,7 @@ export function mapURL(nom: string, id: number | null): string {
  * Function to generate URN for App, mapping any replacement values, AS VARIODIC
  
  * @see [https://www.damirscorner.com/blog/posts/20180216-VariableNumberOfArgumentsInTypescript.html]
- * @param {Array<string>} ...args: 
+ * @param {Array<string>} args
  * @public
  * @returns {string}
  */

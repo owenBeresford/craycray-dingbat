@@ -47,7 +47,7 @@ export function windowSize(): Array<number> {
 
     const height: number = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     return [width, height];
-  } catch (e) {
+  } catch (e:unknown) {
     return [1000, 1000];
   }
 }
@@ -141,7 +141,7 @@ export function extractId(src: string | string[] | null): number {
     cp = parseInt(src, 10);
   }
   if (cp < 1) {
-    throw new Error("Illegal shopping list id " + src);
+    throw new Error("Illegal shopping list id " + JSON.stringify( src));
   }
   return cp - 1;
 }

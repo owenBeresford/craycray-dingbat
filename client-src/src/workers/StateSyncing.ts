@@ -1,9 +1,9 @@
-import type { SaveStruct, DelayCallbackType, DataPipeline } from "../types/Saveable";
-// import type { DistantStorable } from "../types/RemoteTypes";
+import type { SaveStruct, DataPipeline } from "../types/Saveable";
 import type { ShippingStruct, ActionEnum } from "../types/Messagable";
+// import type { DistantStorable } from "../types/RemoteTypes";
 // import { PMQUE_TIMER, PMQUE_ATTEMPTS, MSG_DESTINATION, MSG_THREAD, createRemoteService } from "../Constants";
-import { createRemoteService } from "../Constants";
-import { SharedStateWorker, exponentialDelay, useSSW } from "./SharedStateWorker";
+// import { createRemoteService } from "../Constants";
+import {  useSSW } from "./SharedStateWorker";
 import { transform2text, transform2list } from "../services/Storable";
 
 export {};
@@ -26,9 +26,9 @@ console.log("CODE under TEST started " + process.pid, goodSource);
  
  * @param {MessageEvent} ev
  * @protected
- * @return {void}
+ * @returns {void}
  */
-self.onmessage = async function (ev: MessageEvent) {
+self.onmessage = async function (ev: MessageEvent):Promise<void> {
   console.log(
     "TEST2 received MSG to " + ev.origin + " from " + ev.source,
     ev.data.action,
@@ -46,7 +46,7 @@ self.onmessage = async function (ev: MessageEvent) {
   let isDone = false;
 
   if (("save-payload" as ActionEnum) === payload.action) {
-    STATE.pushWhenAble(transform2list(payload.data));
+    await STATE.pushWhenAble(transform2list(payload.data));
     isDone = true;
   }
   if (("load-request" as ActionEnum) === payload.action) {
@@ -72,9 +72,9 @@ self.onmessage = async function (ev: MessageEvent) {
  * self.onmessageerror 
  * An event handler
  
- * @param {unknown} e
+ * @param {unknown} e - normal Error object, but TS states it must be unknoewn, guess compat with VB3 or something #leSigh. 
  * @protected
- * @return {void}
+ * @returns {void}
  */
 self.onmessageerror = (e: unknown): void => {
   console.warn("WORKER: got bad message " + e);

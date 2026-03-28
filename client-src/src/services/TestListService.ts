@@ -1,6 +1,6 @@
 import { AList } from "./AList";
 import { ListService } from "./ListService";
-import type { ListCollection, Listable, ListStruct, TestDataSchema } from "../types/ListCollection";
+import type { ListCollection, TestDataSchema } from "../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
 
 /**
@@ -49,7 +49,7 @@ export class TestListService extends ListService implements ListCollection {
    * @public
    * @returns {boolean}
    */
-  public saveAllLists(): boolean {
+  public async saveAllLists(): Promise<boolean> {
     return true;
   }
 

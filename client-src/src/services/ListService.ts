@@ -185,7 +185,7 @@ export class ListService implements ListCollection {
    * @public
    * @returns {boolean}
    */
-  public saveAllLists(): boolean {
+  public async saveAllLists(): Promise<boolean> {
     const tmp: Array<SaveStruct> = [];
     return true;
   }

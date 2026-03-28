@@ -1,4 +1,4 @@
-import type { SaveStruct, Storable } from "../types/Saveable";
+import type { SaveStruct  } from "../types/Saveable";
 import type { ShippingStruct, ActionEnum } from "../types/Messagable";
 
 /**

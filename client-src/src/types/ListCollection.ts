@@ -13,7 +13,7 @@ export interface ListCollection {
   merge(next: ListCollection): boolean;
   append(ret: AList): boolean;
   //  store(ret: AList, offset: number): boolean;
-  saveAllLists(): boolean;
+  saveAllLists(): Promise<boolean>;
   loadAllLists(): boolean;
 }
 

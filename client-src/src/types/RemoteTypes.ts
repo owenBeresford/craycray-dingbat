@@ -16,3 +16,8 @@ export interface RemoteConfig {
   method: string;
   credentials: string;
 }
+
+export interface APIResponseType {
+  statusCode:string;
+  result:string;
+}

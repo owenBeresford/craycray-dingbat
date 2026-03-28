@@ -10,7 +10,7 @@ import type { LocalCopy } from "../services/LocalCopy";
  * Another use function, blah
  
  * @public
- * @return {CacheWrapper}
+ * @returns {CacheWrapper}
  */
 export function useCacheWrapper(): CacheWrapper {
   return new CacheWrapper(useLocal());
@@ -69,10 +69,10 @@ export class CacheWrapper {
    * @returns {void}
    */
   public install(): void {
-    global.caches.open(APP_NAME + "_" + APP_VERSION).then((cache: Cache): Promise<void> => {
+    global.caches.open(APP_NAME + "_" + APP_VERSION).then(async (cache: Cache): Promise<void> => {
       this.local.saveProperty(INSTALLED, "1");
-      return cache.addAll(FILES);
-    });
+      return await cache.addAll(FILES);
+    }).catch((err:Error):void=>{ console.warn("App install: ", err); });
   }
 
   /**

@@ -61,10 +61,11 @@ export class NetworkedListService extends ListService implements ListCollection 
    * @public
    * @returns {boolean}
    */
-  public saveAllLists(): boolean {
+  public async saveAllLists(): Promise<boolean> {
     const tmp: Array<SaveStruct> = [];
 
-    //  eslint-disable-next-line no-restricted-syntax, guard-for-in
+    // IDs are chosen by the caller, there may be holes in the list
+    //  eslint-disable-next-line no-restricted-syntax, guard-for-in, no-for-in-array
     for (const i in this.catalog) {
       tmp.push({
         name: this.catalog[i].nom,
@@ -75,7 +76,8 @@ export class NetworkedListService extends ListService implements ListCollection 
         list: [...this.catalog[i].éléments],
       } as SaveStruct);
     }
-    Promise.resolve(this.local.saveState(tmp));
+  //  Promise.resolve( this.local.saveState(tmp) );
+    await this.local.saveState(tmp);
     return true;
   }
 
@@ -89,7 +91,7 @@ export class NetworkedListService extends ListService implements ListCollection 
    * @returns {void}
    */
   private mapper(dat: Array<SaveStruct>): void {
-    //  eslint-disable-next-line no-restricted-syntax, guard-for-in
+    //  eslint-disable-next-line no-restricted-syntax, guard-for-in, no-for-in-array
     for (const i in dat) {
       if (dat[i].name) {
         const tt = AList.manual(dat[i].name, dat[i].id);
@@ -139,7 +141,7 @@ export class NetworkedListService extends ListService implements ListCollection 
       return;
     });
 
-    // i hope this works
+    // i hope this works.  JS ha no spinlocks
     return out;
-  }
+  } 
 }

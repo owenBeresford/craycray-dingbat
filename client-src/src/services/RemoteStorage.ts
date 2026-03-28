@@ -1,6 +1,6 @@
 import { transform2text, transform2list } from "./Storable";
 import type { SaveStruct, Storable } from "../types/Saveable";
-import type { DistantStorable, RemoteConfig } from "../types/RemoteTypes";
+import type { DistantStorable, RemoteConfig, APIResponseType } from "../types/RemoteTypes";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
 import { FETCH_TIMEOUT } from "../Constants";
 // import type  { Request as RequestType, Response as ResponseType } from 'node-fetch';
@@ -54,7 +54,7 @@ export class RemoteStorage implements Storable, DistantStorable {
 
       global
         .fetch(SELF.url, REQT)
-        .then((resp: Response): void => {
+        .then((resp: Response): boolean => {
           clearTimeout(timeout);
           timeout = undefined;
           if (!didTimeOut) {
@@ -62,6 +62,7 @@ export class RemoteStorage implements Storable, DistantStorable {
           } else {
             bad(EEE);
           }
+          return (resp.status % 100 === 2);
         })
         .catch((err: Error): void => {
           if (!didTimeOut) {
@@ -85,7 +86,7 @@ export class RemoteStorage implements Storable, DistantStorable {
    * @returns {Promise<boolean>}
    */
   public async saveState(dat: Array<SaveStruct>): Promise<boolean> {
-    return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
+    return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject):void => {
       const REQT: RequestInit = Object.assign(this.other, { method: "POST", body: transform2text(dat) }) as RequestInit;
 
       global
@@ -102,9 +103,9 @@ export class RemoteStorage implements Storable, DistantStorable {
 
             dat
               .text()
-              .then(function (txt: string) {
-                const txt1 = JSON.parse(txt);
-                if ("statusCode" in txt1 && txt1.statusCode > 299) {
+              .then(function (txt: string):void {
+                const txt1 = JSON.parse(txt) as APIResponseType;
+                if ("statusCode" in txt1 && parseInt(txt1.statusCode, 10) > 299) {
                   // this branch here should not be used; as all the responses have a proper
                   // HTTP status code
                   return bad(new Error("Server sent an error http status " + txt1.statusCode));
@@ -113,11 +114,12 @@ export class RemoteStorage implements Storable, DistantStorable {
                 }
               })
               .catch((ee: Error) => {
-                return bad(new Error("Server sent an error http status " + ee));
+                return bad(new Error("Server sent an error http status " + ee.toString()));
               });
           } else {
             bad(new Error("Valid HTTP, but null response"));
           }
+          return "value for eslint "
         });
     });
   }
@@ -155,12 +157,12 @@ export class RemoteStorage implements Storable, DistantStorable {
 
   // There is no value in the following API points at the mo
   // so made private
-  saveProperty(): boolean {
+  protected saveProperty(): boolean {
     // saveProperty(nom:string, val:string):boolean {
     return true;
   }
 
-  loadProperty(): string {
+  protected loadProperty(): string {
     // loadProperty(nom:string):string {
     return "no impl";
   }
