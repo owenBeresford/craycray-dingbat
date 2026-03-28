@@ -163,7 +163,10 @@ function UITextFactory(lang: string): UItext {
     hiddenReference.add("menu.newTitle", "Start a new shopping list");
     hiddenReference.add("menu.newName", "New");
     hiddenReference.add("menu.actualMenuTitle", "Show or hide the extra features.");
-    hiddenReference.add("menu.installTitle", "Copy app to your phone, for offline usage. Needed once. Requires HTTPS to run");
+    hiddenReference.add(
+      "menu.installTitle",
+      "Copy app to your phone, for offline usage. Needed once. Requires HTTPS to run"
+    );
     hiddenReference.add("menu.installName", "Install");
     hiddenReference.add("menu.helpTitle", "Show a help overlay...");
     hiddenReference.add("menu.helpName", "Show help");
@@ -183,7 +186,7 @@ function UITextFactory(lang: string): UItext {
     hiddenReference.add("list.additemTitle", "Add a new item to current list.");
     hiddenReference.add("list.curListsTitle", "Current lists.  Desktop: long touch to edit, swipe left to delete.");
     hiddenReference.add("list.addItemName", "Add item");
-    
+
     hiddenReference.addArray("firstUse", [
       "&nbsp; ",
       "Hello, this is a shopping list hack, hosted locally on your phone.",

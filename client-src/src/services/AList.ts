@@ -1,6 +1,6 @@
 import { JSONObject, map, required, integer, custom } from "ts-json-object";
 import type { Listable, ListStruct, TestDataSchema } from "../types/ListCollection";
- 
+
 /**
  * AList 
  * An Entity to manage validation and serialisation for Shopping lists
@@ -83,7 +83,7 @@ export class AList extends JSONObject implements Listable, ListStruct {
     });
   }
 
-   /**
+  /**
    * importTest
    * a util func to get Fixtures into the local AList[]
  
@@ -91,9 +91,9 @@ export class AList extends JSONObject implements Listable, ListStruct {
    * @public
    * @returns {AList}
    */
-  public static importTest(src:TestDataSchema):AList {
-console.log("ERWERWRWER ", JSON.stringify( src));  
-      const tmp= new AList({
+  public static importTest(src: TestDataSchema): AList {
+    console.log("ERWERWRWER ", JSON.stringify(src));
+    const tmp = new AList({
       name: src.name,
       created: new Date(src.created),
       edited: new Date(src.edited),
@@ -101,7 +101,7 @@ console.log("ERWERWRWER ", JSON.stringify( src));
       id: src.id,
       list: [...src.list],
     });
-console.log("ERWERWRWER ", JSON.stringify( tmp)); 
+    console.log("ERWERWRWER ", JSON.stringify(tmp));
     return tmp;
   }
 

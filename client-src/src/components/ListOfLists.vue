@@ -70,9 +70,9 @@ export default defineComponent({
     currentStateKey: { type: String, required: true },
   },
   data(): ListOfListsProps {
-    let ll:Array<ListStruct>=[];
-    if(currentData) {
-      ll=currentData.list() ;
+    let ll: Array<ListStruct> = [];
+    if (currentData) {
+      ll = currentData.list();
     }
     return {
       instanceId: nextId(),

@@ -1,7 +1,7 @@
 import type { Listable, ListStruct, ListCollection } from "./ListCollection";
 import type { Motionable } from "./Motionable";
 import { AList } from "../services/AList";
-import { CacheWrapper } from '../workers/InstallWorker';
+import { CacheWrapper } from "../workers/InstallWorker";
 
 export interface ListOfListsProps {
   instanceId: string;
@@ -10,18 +10,18 @@ export interface ListOfListsProps {
 }
 
 export interface ThisListProps {
-   id: number;
+  id: number;
   list: AList;
   getInput: string;
   canSeeInput: boolean;
   cb: Function;
   stream: Motionable;
   offset: number;
-  childId:string;
-  nextTestId:string;
+  childId: string;
+  nextTestId: string;
   bisMobile: boolean;
-  aListId:string;
-  text:Record<string, string>;
+  aListId: string;
+  text: Record<string, string>;
 }
 
 export interface MainAppProps {
@@ -29,22 +29,22 @@ export interface MainAppProps {
   instanceId: string;
 }
 
-type MapUrlType=(nom: string, id: number | null)=> string ;
+type MapUrlType = (nom: string, id: number | null) => string;
 
-export interface TabBarProps  {
+export interface TabBarProps {
   menuLabel: string;
   menuState: string;
   getInput: string;
-  $store:object;  // IOIO XXX fixme
+  $store: object; // IOIO XXX fixme
   visible: boolean;
-  CB: Function ;
+  CB: Function;
   mapURL: MapUrlType;
   CACHE: CacheWrapper;
   buttonEnabled: string;
   EIK: string;
   menuId: string;
   urls: Array<string>;
-  menu: Record<string, string>;  // l12n data
-};
+  menu: Record<string, string>; // l12n data
+}
 
 export type StrictArray = Array<string>;

@@ -68,7 +68,7 @@ export default defineComponent({
     if ("__STORYBOOK_MODULE_TEST__" in window && window.__STORYBOOK_MODULE_TEST__) {
       shouldShow = true;
     }
- 
+
     return {
       instanceId: id,
       closeId: id + "close1",

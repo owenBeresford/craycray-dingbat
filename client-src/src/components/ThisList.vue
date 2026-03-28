@@ -4,19 +4,19 @@
     <ul class="buttonRow">
       <li class="bigger">{{ list.nom }}</li>
       <li :title="text.addTitle">
-        <span role="button" v-touch.once="onAdd" @click.once="onAdd" class="button" @keypress.once="onAdd" 
-          v-html="text.addName"></span>
+        <span
+          role="button"
+          v-touch.once="onAdd"
+          @click.once="onAdd"
+          class="button"
+          @keypress.once="onAdd"
+          v-html="text.addName"
+        ></span>
       </li>
     </ul>
-    <EnterInput
-      :val="getInput"
-      :visible="canSeeInput"
-      :cb="cb"
-      :data-testid="nextTestId"
-      :currentStateKey="childId"
-    />
+    <EnterInput :val="getInput" :visible="canSeeInput" :cb="cb" :data-testid="nextTestId" :currentStateKey="childId" />
     <ul class="aList" :data-testId="aListId">
-      <li v-for="(i, j) in actualList" :key="j" :title="text.currentTitle" >
+      <li v-for="(i, j) in actualList" :key="j" :title="text.currentTitle">
         <span
           v-if="bisMobile"
           class="button info"
@@ -45,10 +45,10 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRoute } from 'vue-router';
- 
+import { useRoute } from "vue-router";
+
 import { useStore } from "../services/Store";
-import { useUIText } from '../services/Localisation';
+import { useUIText } from "../services/Localisation";
 import { ListData } from "../services/DataFactory";
 
 import EnterInput from "./EnterInput.vue";
@@ -65,17 +65,17 @@ import { isMobile, clearSelection, extractId } from "../services/util";
 // import type { Motionable } from "../types/Motionable";
 // import { ListService } from "../services/ListService";
 import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
-import type { ThisListProps } from '../types/ComponentProps';
+import type { ThisListProps } from "../types/ComponentProps";
 
-const TEXT=useUIText();
-const { currentData, initData } = ListData; 
+const TEXT = useUIText();
+const { currentData, initData } = ListData;
 const NEW_LIST = -1;
 const DUMMY_LIST: AList = {} as AList;
 // this class is using a shared function pointer, as in vue2 the event bus is too slow
 // if you do parent state updates via it; they take 100ms to propagate, and you see flickers
 // it is possible that vue3 event bus is faster
 
-  /**
+/**
    * Thislist
    * A component to render the currently edited list.
 
@@ -88,11 +88,10 @@ const DUMMY_LIST: AList = {} as AList;
    */
 export default defineComponent({
   name: "ThisList",
-  components:
-   { EnterInput, InterstitialView },
+  components: { EnterInput, InterstitialView },
   props: {
     currentStateKey: { type: String, required: true },
-    testId:{ type:String, default:"test0" },
+    testId: { type: String, default: "test0" },
     shopStore: {
       type: Object,
       default: () => {
@@ -107,13 +106,19 @@ export default defineComponent({
     try {
       this.id = extractId(this.$route.params.index);
       this.list = DUMMY_LIST;
-      if (currentData) { this.list= currentData.get(this.id) ?? DUMMY_LIST; }
+      if (currentData) {
+        this.list = currentData.get(this.id) ?? DUMMY_LIST;
+      }
     } catch (e) {
       let backupId = 0;
-      if (currentData) { backupId=currentData.create("New list"); }
+      if (currentData) {
+        backupId = currentData.create("New list");
+      }
       // the second branch is stupid, but shouldnt be possible
       this.list = DUMMY_LIST;
-      if(currentData) { this.list= currentData.get(backupId) ?? DUMMY_LIST; }
+      if (currentData) {
+        this.list = currentData.get(backupId) ?? DUMMY_LIST;
+      }
       this.id = backupId;
     }
 
@@ -123,22 +128,22 @@ export default defineComponent({
       // API should never take more than 500ms, as its not doing much, as its on LAN
 
       setTimeout(() => {
-        if(! currentData) { 
-          console.warn("ThisList component has no data after 0.5s, load the API"); 
+        if (!currentData) {
+          console.warn("ThisList component has no data after 0.5s, load the API");
           this.list = DUMMY_LIST;
-          return; 
+          return;
         }
         this.list = currentData.get(this.id) ?? DUMMY_LIST;
       }, 500);
     }
   },
   mounted() {
-  //  this.route = useRoute();
+    //  this.route = useRoute();
     //console.log("WWWWWWW mounted()", this.$props.shopStore );
-    if( this.$props.shopStore ) {
+    if (this.$props.shopStore) {
       this.$props.shopStore.commit("setPath", this.$route.path);
       this.$props.shopStore.commit("setId", this.id);
-    } else if(this.shopStore) {
+    } else if (this.shopStore) {
       this.shopStore.commit("setPath", this.$route.path);
       this.shopStore.commit("setId", this.id);
     }
@@ -157,14 +162,14 @@ export default defineComponent({
       stream: tt,
       offset: -1,
       bisMobile: isMobile(),
-      text:{
-        addTitle:TEXT.get('list.additemTitle'),
-        currentTitle:TEXT.get('list.curListsTitle'),
-        addName:TEXT.get('list.addItemName'),
+      text: {
+        addTitle: TEXT.get("list.additemTitle"),
+        currentTitle: TEXT.get("list.curListsTitle"),
+        addName: TEXT.get("list.addItemName"),
       },
-      childId: this.$props.testId+"child1",
-      nextTestId: this.$props.testId+"input1",
-      aListId: this.$props.testId+"List1",
+      childId: this.$props.testId + "child1",
+      nextTestId: this.$props.testId + "input1",
+      aListId: this.$props.testId + "List1",
     } as ThisListProps;
   },
   computed: {
@@ -181,8 +186,8 @@ export default defineComponent({
   methods: {
     onSave(e: GuessEvent): void {
       e.preventDefault();
-      if(currentData) {
-         currentData.saveAllLists();
+      if (currentData) {
+        currentData.saveAllLists();
       }
     },
 

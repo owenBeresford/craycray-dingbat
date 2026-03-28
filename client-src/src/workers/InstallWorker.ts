@@ -46,12 +46,16 @@ export class CacheWrapper {
    */
   public constructor(ll: LocalCopy) {
     this.local = ll;
-    if ( !("__STORYBOOK_MODULE_TEST__" in window && window.__STORYBOOK_MODULE_TEST__) && 
-        !(global.caches instanceof CacheStorage)) {
+    if (
+      !("__STORYBOOK_MODULE_TEST__" in window && window.__STORYBOOK_MODULE_TEST__) &&
+      !(global.caches instanceof CacheStorage)
+    ) {
       throw new Error("234798674564 Cache storage isn't working, the install button cannot work,");
     }
-    if(!("__STORYBOOK_MODULE_TEST__" in window && window.__STORYBOOK_MODULE_TEST__) && 
-        (location.protocol !== "https:")) {
+    if (
+      !("__STORYBOOK_MODULE_TEST__" in window && window.__STORYBOOK_MODULE_TEST__) &&
+      location.protocol !== "https:"
+    ) {
       throw new Error("945636534234 Cache storage isn't working, the install button cannot work,");
     }
   }

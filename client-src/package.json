@@ -29,8 +29,8 @@
     "vector2d": "^3.0.0",
     "vue": "^3.2.33",
     "vue-router": "^4.0.15",
-    "vue3-touch-events": "^4.1.0",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "vue3-touch-events": "^5.0.15"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.2",

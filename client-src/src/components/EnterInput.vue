@@ -133,7 +133,7 @@ export default defineComponent({
       this.cb(null);
       this.oVal = "";
       (document.querySelector("dialog#enterinput") as HTMLDialogElement).open = false;
-     // this.visible = false;
+      // this.visible = false;
       e.preventDefault();
     },
 

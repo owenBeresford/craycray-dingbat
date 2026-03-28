@@ -1,5 +1,5 @@
 import { AList } from "./AList";
-import { ListService } from './ListService';
+import { ListService } from "./ListService";
 
 import type { SaveStruct } from "../types/Saveable";
 import type { LocalCopy } from "./LocalCopy";
@@ -111,8 +111,8 @@ export class NetworkedListService extends ListService implements ListCollection 
    * @public
    * @returns {boolean} 
    */
- // might need to make this a Promise, if the then() callbacks dont block the function return. 
- // public async loadAllLists(): Promise<boolean> {
+  // might need to make this a Promise, if the then() callbacks dont block the function return.
+  // public async loadAllLists(): Promise<boolean> {
   public loadAllLists(): boolean {
     let out = true;
     this.local.loadState().then((dat: Array<SaveStruct>): void => {

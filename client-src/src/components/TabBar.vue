@@ -4,7 +4,7 @@
       <p v-html="menu.header"></p>
     </div>
     <div role="navigation">
-      <ul >
+      <ul>
         <li class="button" :title="menu.listAllTitle">
           <router-link :to="urls[0]">{{ menu.listAllName }}</router-link>
         </li>
@@ -25,7 +25,7 @@
           <menu :class="menuState" role="navigation" :data-testId="menuId">
             <li :title="menu.installTitle">
               <a :class="buttonEnabled" v-touch="onInstall" @click.once="onInstall" @keypress="onInstall">
-              {{ menu.installName }}
+                {{ menu.installName }}
               </a>
             </li>
             <li :title="menu.helpTitle">
@@ -34,21 +34,38 @@
               }}</a>
             </li>
             <li :title="menu.renameTitle">
-              <a disabled={!currentData} class="button" v-touch="onName" @click="onName" @keypress="onName">{{ menu.renameName }}</a>
-            </li>
-            <li :title="menu.dupeTitle">
-              <a disabled={!currentData} class="button" v-touch="onDuplicate" @click="onDuplicate" @keypress="onDuplicate">{{
-                menu.dupeName
+              <a disabled="{!currentData}" class="button" v-touch="onName" @click="onName" @keypress="onName">{{
+                menu.renameName
               }}</a>
             </li>
+            <li :title="menu.dupeTitle">
+              <a
+                disabled="{!currentData}"
+                class="button"
+                v-touch="onDuplicate"
+                @click="onDuplicate"
+                @keypress="onDuplicate"
+                >{{ menu.dupeName }}</a
+              >
+            </li>
             <li :title="menu.uniqTitle">
-              <a disabled={!currentData} class="button" v-touch="onUnique" @click="onUnique" @keypress="onUnique">{{ menu.uniqName }}</a>
+              <a disabled="{!currentData}" class="button" v-touch="onUnique" @click="onUnique" @keypress="onUnique">{{
+                menu.uniqName
+              }}</a>
             </li>
             <li :title="menu.saveTitle">
-              <a disabled={!currentData} class="button" v-touch="onSave" @click="onSave" @keypress="onSave">{{ menu.saveName }}</a>
+              <a disabled="{!currentData}" class="button" v-touch="onSave" @click="onSave" @keypress="onSave">{{
+                menu.saveName
+              }}</a>
             </li>
             <li :title="menu.revertTitle">
-              <a disabled={!currentData} v-touch.once="onRevert" @click.once="onRevert" @keypress.once="onRevert" class="button">
+              <a
+                disabled="{!currentData}"
+                v-touch.once="onRevert"
+                @click.once="onRevert"
+                @keypress.once="onRevert"
+                class="button"
+              >
                 {{ menu.revertName }}
               </a>
             </li>
@@ -65,18 +82,18 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
- 
+
 import { useStore } from "../services/Store";
 import { StaticRoutes } from "./Routing";
 import { AList } from "../services/AList";
 //import { ListService } from "../services/ListService";
 import { ListData } from "../services/DataFactory";
 import EnterInput from "./EnterInput.vue";
-import { useCacheWrapper,  CacheWrapper } from "../workers/InstallWorker";
+import { useCacheWrapper, CacheWrapper } from "../workers/InstallWorker";
 import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
 import { mapURL } from "../services/URLs";
 import { UI_EN_GB, useUIText } from "../services/Localisation";
-import { TabBarProps } from '../types/ComponentProps';
+import { TabBarProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 const { currentData, initData } = ListData;
@@ -99,7 +116,7 @@ export default defineComponent({
     currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
   },
-  data():TabBarProps {
+  data(): TabBarProps {
     const CACHE: CacheWrapper = useCacheWrapper();
     let tt = "button";
     if (location.protocol !== "https:") {
@@ -166,7 +183,8 @@ export default defineComponent({
 
     onInstall(e: GuessEvent) {
       e.preventDefault();
-      if (e.type && e.type === "mouseup") { // suppress dupe events
+      if (e.type && e.type === "mouseup") {
+        // suppress dupe events
         return false;
       }
       if (location.protocol !== "https:") {
@@ -184,7 +202,9 @@ export default defineComponent({
 
     onUnique(e: GuessEvent): boolean {
       e.preventDefault();
-      if(!currentData) { return false; }
+      if (!currentData) {
+        return false;
+      }
       console.log("TO TEST make unique");
 
       const llist = currentData.get(this.$store.state.currentId);
@@ -198,7 +218,9 @@ export default defineComponent({
 
     onDuplicate(e: GuessEvent): boolean {
       e.preventDefault();
-      if(!currentData) { return false; }
+      if (!currentData) {
+        return false;
+      }
       const llist = currentData.get(this.$store.state.currentId);
 
       if (llist) {
@@ -213,7 +235,9 @@ export default defineComponent({
 
     onName(e: GuessEvent): boolean {
       e.preventDefault();
-      if(!currentData) { return false; }
+      if (!currentData) {
+        return false;
+      }
 
       const list = currentData.get(this.$store.state.currentId);
       if (!list) {
@@ -238,7 +262,9 @@ export default defineComponent({
 
     onSave(e: GuessEvent): boolean {
       e.preventDefault();
-      if(!currentData) { return false; }
+      if (!currentData) {
+        return false;
+      }
       console.log("Saving list to local cache list, for all lists");
 
       currentData.saveAllLists();
@@ -246,7 +272,9 @@ export default defineComponent({
     },
     onRevert(e: GuessEvent): boolean {
       e.preventDefault();
-      if(!currentData) { return false; }
+      if (!currentData) {
+        return false;
+      }
 
       console.log("Rebuilding data from cache for all lists");
       currentData.loadAllLists();

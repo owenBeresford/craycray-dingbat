@@ -3,11 +3,14 @@ import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
 import jsdoc from "eslint-plugin-jsdoc";
 import vitest from "eslint-plugin-vitest";
+//import vueParser from "vue-eslint-parser";
 // import jest from "eslint-plugin-jest";
 import pluginPromise from "eslint-plugin-promise";
 //import * as ANNOY2 from "eslint-plugin-no-http-protocol";
 import * as ANNOY1 from "eslint-plugin-no-only-tests";
-import * as parser from "@typescript-eslint/parser";
+// import * as parser from "@typescript-eslint/parser";
+import tsParser from "@typescript-eslint/parser";
+//import prettierConfig from "@vue/eslint-config-prettier";
 // If appropriate eslint-plugin-cypress
 // eslint-plugin-jsx-a11y, eslint-plugin-vuejs-accessibility, eslint-plugin-react-native-a11y, eslint-plugin-styled-components-a11y
 // when version of Node is aligned add   "@eslint/css";
@@ -19,7 +22,7 @@ import * as parser from "@typescript-eslint/parser";
 
 export default [
   pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
   pluginPromise.configs["flat/recommended"],
   // I may want to add a new config for the tests, AND MOST-DEF THE tools/test-browser script
   {
@@ -115,7 +118,7 @@ export default [
         fetch: "readonly",
       },
       parser: tseslint.parser,
-      parserOptions: { programs: [parser.createProgram("./tsconfig.json")] },
+      parserOptions: { programs: [ tsParser.createProgram("./tsconfig.json")] },
     },
     ignores: [
       "dist/*",

@@ -70,7 +70,7 @@ span.bigger {
   color: #0a0a0a;
   width: 4em;
   margin: 1em;
- display:inline-block;
+  display: inline-block;
 }
 p.bigger {
   font-size: 120%;

@@ -26,22 +26,21 @@ export const TrackTextRendered: Story = {
 
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    // I am defining this, as some browsers are damaging/ transliterating my UTF8 chars, 
+    // I am defining this, as some browsers are damaging/ transliterating my UTF8 chars,
     // so the tests fail in an annoying fashion.
-    const EXTRACT_NON_ASCII:RegExp=/[^\x00-\x7F]+/gu;
+    const EXTRACT_NON_ASCII: RegExp = /[^\x00-\x7F]+/gu;
 
     // might need to add .resolves. to expect statements
     expect(canvas.queryByTestId("test15")).toBeVisible();
     expect(canvas.queryByTestId("test15Menu1")).not.toBeVisible();
-    
-    await userEvent.click(canvas.getByRole("button", { name:EXTRACT_NON_ASCII }));
+
+    await userEvent.click(canvas.getByRole("button", { name: EXTRACT_NON_ASCII }));
     expect(canvas.queryByRole("button", { name: /❌/i })).toBeVisible();
     expect(canvas.queryByTestId("test15Menu1")).toBeVisible();
 
     await userEvent.click(canvas.getByRole("button", { name: /❌/i }));
     expect(canvas.queryByRole("button", { name: EXTRACT_NON_ASCII })).toBeVisible();
     expect(canvas.queryByTestId("test15Menu1")).not.toBeVisible();
-
   },
 };
 

@@ -17,7 +17,7 @@ import type { PromiseSucceed, PromiseReject } from "../types/promises";
  */
 export class ListService implements ListCollection {
   protected catalog: Array<AList>;
- 
+
   /**
    * constructor
    * Normal Con'tor
@@ -27,7 +27,7 @@ export class ListService implements ListCollection {
    * @public
    * @returns {ListService}
    */
-  public constructor( ) {
+  public constructor() {
     this.catalog = [];
   }
 
@@ -54,9 +54,9 @@ export class ListService implements ListCollection {
    * @returns {Promise<boolean>}
    */
   public poll(): Promise<boolean> {
-     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-        good(false);
-      });
+    return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
+      good(false);
+    });
   }
 
   /**
@@ -99,13 +99,15 @@ export class ListService implements ListCollection {
     return true;
   }
 
-public merge(next:ListCollection):boolean {
-  for(let i=0; i<next.count(); i++) {
-    let annoying=next.get(i);
-    if(annoying) {this.append( annoying); }
+  public merge(next: ListCollection): boolean {
+    for (let i = 0; i < next.count(); i++) {
+      let annoying = next.get(i);
+      if (annoying) {
+        this.append(annoying);
+      }
+    }
+    return true;
   }
-  return true;
-}
 
   /**
    * list
@@ -198,6 +200,6 @@ public merge(next:ListCollection):boolean {
    */
   public loadAllLists(): boolean {
     let out = true;
-     return out;
+    return out;
   }
 }

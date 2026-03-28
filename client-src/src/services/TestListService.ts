@@ -1,8 +1,8 @@
 import { AList } from "./AList";
-import { ListService } from './ListService';
+import { ListService } from "./ListService";
 import type { ListCollection, Listable, ListStruct, TestDataSchema } from "../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
- 
+
 /**
  * TestListService 
  * TestListService, the class to mediate List storage
@@ -10,7 +10,6 @@ import type { PromiseSucceed, PromiseReject } from "../types/promises";
  * @public
  */
 export class TestListService extends ListService implements ListCollection {
-
   /**
    * constructor
    * Normal Con'tor
@@ -19,10 +18,10 @@ export class TestListService extends ListService implements ListCollection {
    * @public
    * @returns {ListService}
    */
-  public constructor(src:Array<TestDataSchema> ) {
+  public constructor(src: Array<TestDataSchema>) {
     super();
-    for(let i=0; i<src.length; i++) {
-      this.append( AList.importTest(src[i]) );
+    for (let i = 0; i < src.length; i++) {
+      this.append(AList.importTest(src[i]));
     }
     console.log(`Imported a initial state of ${src.length} TEST items.`);
   }
@@ -37,8 +36,8 @@ export class TestListService extends ListService implements ListCollection {
    */
   public poll(): Promise<boolean> {
     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-        good(true);
-            });
+      good(true);
+    });
   }
 
   /**
@@ -54,7 +53,7 @@ export class TestListService extends ListService implements ListCollection {
     return true;
   }
 
- /**
+  /**
    * loadAllLists
    * Request data from both remote sources, cache response in local states
    * NULL IMPLEMEMENTATION
