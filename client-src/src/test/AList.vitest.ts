@@ -4,35 +4,34 @@ import { Directive, defineComponent, ref } from "vue";
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 import { mount, RouterLinkStub, config } from "@vue/test-utils";
 import Vue3TouchEvents from "vue3-touch-events";
-import { JSONObject, map, required, optional, array, integer, custom } from "ts-json-object";
+import { JsonSerializer, throwError, JsonProperty, JsonObject } from 'typescript-json-serializer';
 import type { ListStruct, Listable } from "../types/ListCollection";
 import { AList } from "../services/AList";
 import { SaveStruct } from "../types/Saveable";
 
 // This is just a test object.
-// some TS tools strip meta data, and that invaldates my use of "ts-json-object"
-// So I fail here, early, with a less confusing error message,
-class Book extends JSONObject {
-  @required
-  @map("name")
+@JsonObject()
+class Book {
+  @JsonProperty({ name:'name', required: true, type: String})
   name: string;
 
-  @required
-  @integer
-  @map("publishYear")
+  @JsonProperty({ name:'publishYear', required: true, type: Number}) 
   publishYear: number;
 }
 
 describe("test on json object (to see if tech works)", () => {
   it("Can load service", () => {
-    const book: Book = new Book({ name: "Moby Dick", publishYear: 1892 });
+    const book: Book = new Book();
+    book.name= "Moby Dick"; 
+    book.publishYear= 1892;
     expect(typeof book).toBe("object");
     console.log("working book (check values):", book);
     assertType<Book>(book);
 
     let book2: Book;
     try {
-      book2 = new Book({ name: "FAIL" });
+      book2 = new Book();
+      book2.name= "FAIL";
       expect(typeof book2).toBe("object");
     } catch (e: unknown) {
       console.warn("Partial data object is expected to fail, and...BOOM!", (e as Error).message);
@@ -47,10 +46,14 @@ describe("test on AList", () => {
     // https://github.com/vitest-dev/vitest/issues/8387
     assertType<ListStruct>(AList.manual("test0", 1));
     expect(AList.manual("test1", 1)).toBeTruthy();
-    expect(
-      new AList(
-        { name: "fgdf", created: new Date(), edited: new Date(), count: 2, id: 1, list: [] as Array<string> } // as SaveStruct
-      )
-    ).toBeTruthy();
+
+    let tt=new AList();
+    tt.nom= "fgdf";
+      tt.créé = new Date();
+      tt.modifié = new Date();
+     tt.énumérer= 2;
+      tt.id=1;
+      tt.éléments= [] as Array<string>;
+    expect( tt ).toBeTruthy();
   });
 });
