@@ -194,7 +194,7 @@ span.cancel:hover {
   width: 4em;
   background-color: white;
   margin-top: 0.5em;
-  filter: alpha(opacity=100);
+  filter: opacity(100%);
 }
 .interstitial ul li.closeUp .button {
   padding: 1em;
@@ -202,7 +202,7 @@ span.cancel:hover {
   width: 4em;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
-  filter: alpha(opacity=100);
+  filter: opacity(100%);
   opacity: 1;
 }
 
