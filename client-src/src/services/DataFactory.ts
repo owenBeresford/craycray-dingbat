@@ -3,7 +3,7 @@ import type {  RouteLocationNormalizedLoadedGeneric } from "vue-router";
 import { useRoute } from "vue-router";
 
 import { isMobile, clearSelection, extractId } from "../services/util";
-import { AList } from '../services/AList';
+import { AList, EMPTY_LIST } from '../services/AList';
 import { DELAY_FOR_API } from '../Constants';
 
 import { ListService } from "./ListService";
@@ -181,10 +181,10 @@ export const ListData: FactoryArtefact = createDataFactory(undefined);
  * @public
  * @returns {Promise<AList>}
  */
-export function setupCurrentList(itinéraire:undefined|RouteLocationNormalizedLoadedGeneric,  ):AList {
-  const DUMMY_LIST: AList = AList.manual("New Empty list", 1); 
+export function setupCurrentList(itinéraire:undefined|RouteLocationNormalizedLoadedGeneric, ):AList {
+ 
   let id:number = 0;
-  let liste =DUMMY_LIST;
+  let liste =EMPTY_LIST;
   let currentData:ListCollection|undefined ;
   // let currentData:ListCollection|undefined =ListData.currentData;
   try {
@@ -197,7 +197,7 @@ export function setupCurrentList(itinéraire:undefined|RouteLocationNormalizedLo
 console.log("COMPONENT should be 1 (one)", itinéraire.params, id, "current data is currently:", currentData );    
 console.dir( itinéraire);
     if (currentData) {
-        liste = currentData.get(id) ?? DUMMY_LIST;
+        liste = currentData.get(id) ?? EMPTY_LIST;
 console.log("WWWW ", liste); 
     }
     if(currentData) {
@@ -210,9 +210,9 @@ console.log("WWWW ", liste);
       backupId = currentData.create("New list");
     }
       // the second branch is stupid, but shouldnt be possible
-      liste = DUMMY_LIST;
+      liste = EMPTY_LIST;
       if (currentData) {
-        liste = currentData.get(backupId) ?? DUMMY_LIST;
+        liste = currentData.get(backupId) ?? EMPTY_LIST;
       }
       id = backupId;
       if(currentData) {
@@ -222,7 +222,7 @@ console.log("WWWW ", liste);
 
   if (!currentData || currentData.count() === 0) {
     console.warn("Local components have no data, check the API is running.");
-    return DUMMY_LIST;
+    return EMPTY_LIST;
   } else {
     return liste;
   }

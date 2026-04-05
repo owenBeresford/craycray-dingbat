@@ -5,6 +5,7 @@ function convertEpoch2Date(i:number):Date {
   return new Date(i);
 }
  
+
 /**
  * AList 
  * An Entity to manage validation and serialisation for Shopping lists
@@ -198,3 +199,5 @@ export class AList  implements Listable, ListStruct {
     return { ...this } as ListStruct;
   }
 }
+
+export const EMPTY_LIST= AList.manual("New Empty list", 1);

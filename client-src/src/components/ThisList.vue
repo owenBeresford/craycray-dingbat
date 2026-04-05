@@ -53,7 +53,7 @@ import { ListData, setupCurrentList, idOf } from "../services/DataFactory";
 
 import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
-import { AList } from "../services/AList";
+import { AList, EMPTY_LIST } from "../services/AList";
 import { MotionStream } from "../services/MotionStream";
 
 import { isMobile, clearSelection, extractId } from "../services/util";
@@ -75,7 +75,6 @@ if(ListData.currentData) {
 console.log("KKK ThisList global scope ListData id:", idOf(ListData));
 
 const NEW_LIST = -1;
-const DUMMY_LIST: AList = {} as AList;
 // this class is using a shared function pointer, as in vue2 the event bus is too slow
 // if you do parent state updates via it; they take 100ms to propagate, and you see flickers
 // it is possible that vue3 event bus is faster
@@ -132,7 +131,7 @@ console.log("WWWWWWW mounted()", this.list, this.$props.shopStore );
 
     return {
       id: NEW_LIST,
-      list: DUMMY_LIST,
+      list: EMPTY_LIST,
       getInput: "",
       canSeeInput: false,
       cb: Function as any,
