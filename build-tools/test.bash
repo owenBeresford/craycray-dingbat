@@ -28,6 +28,11 @@ if [ "$what" = "fe" -o "$what" = "all" ]; then
 	# I see no way to look at an exit value, it doesn't set it.
 	node $SEXECDIR/storybook build
 	node $SEXECDIR/storybook dev -p 6006 
+	node $SEXECDIR/storybook build -c .storybook-suspence/
+	node $SEXECDIR/storybook dev -p 6006 -c .storybook-suspence/
+
+
+
 	cd ..
 fi
 
