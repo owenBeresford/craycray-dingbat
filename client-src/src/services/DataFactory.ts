@@ -1,4 +1,10 @@
 import { ref } from "vue";
+import type {  RouteLocationNormalizedLoadedGeneric } from "vue-router";
+import { useRoute } from "vue-router";
+
+import { isMobile, clearSelection, extractId } from "../services/util";
+import { AList } from '../services/AList';
+import { DELAY_FOR_API } from '../Constants';
 
 import { ListService } from "./ListService";
 import { useLocal } from "./LocalCopy";
@@ -7,9 +13,11 @@ import { createRemoteService } from "../Constants";
 import { TestListService } from "./TestListService";
 import { NetworkedListService } from "./NetworkedListService";
 
+
 import type { ListCollection, TestDataSchema } from "../types/ListCollection";
 import type { DistantStorable } from "../types/RemoteTypes";
 import type { MessageDistribution } from "./MessageDistribution";
+
 // import type { BasicThreadable } from '../types/BasicThreadable';
 
 /*                     TRUTH TABLE
@@ -37,8 +45,16 @@ Note **: MesaggeDistribution class will ensure the data gets to the phone,
 // This interface should be kept here, as I think it will mutate
 export interface FactoryArtefact {
   currentData: ListCollection | undefined;
-  update: (a: ListCollection) => void;
+  updateData: (a: ListCollection) => void;
   initData: () => void;
+}
+
+export const debugId = new WeakMap<object, number>();
+let _idCounter = 1;
+
+export function idOf(obj: object) {
+  if (!debugId.has(obj)) debugId.set(obj, _idCounter++);
+  return debugId.get(obj);
 }
 
 /*
@@ -57,18 +73,22 @@ export interface FactoryArtefact {
   @returns {FactoryArtefact} - see above tuple interface
  */
 export function createDataFactory(override: Array<TestDataSchema> | undefined): FactoryArtefact {
-  let currentData: ListCollection | undefined = undefined;
-  if (override) {
-    currentData = new TestListService(override);
-
-    return {
-      currentData,
-      update,
-      initData: function () {},
-    } as Readonly<FactoryArtefact>;
+  let ret:FactoryArtefact ={} as FactoryArtefact;
+  ret.currentData=undefined;
+  ret.updateData=updateData;
+  ret.initData=initData;
+  
+  if (Array.isArray(override)) {
+    ret.currentData = new TestListService(override);
+console.log("Creating local TEST data", ret.currentData);
+    if(ret.currentData) {
+      console.log("KKK createDataFactory (with a mock) ListData.currentData id:", idOf(ret.currentData));
+    }
+    ret.initData= function () {};
+    return ret as  Readonly<FactoryArtefact>;
   }
 
-  /**
+/**
  * currentNetworkConfig
  * A "use function" to create ListCollections, which has different composition depending on network settings
 
@@ -78,7 +98,8 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
   async function currentNetworkConfig(): Promise<void> {
     let d4: MessageDistribution;
     let data: ListService;
-    if (currentData && (await currentData.poll())) {
+console.log("MARKER 1 ");    
+    if (ret.currentData && (await ret.currentData.poll())) {
       return;
     }
 
@@ -86,15 +107,14 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
     const d3 = useLocal();
     const d2 = createRemoteService(global.location);
     if (await d2.poll()) {
-      data = new NetworkedListService(d2, d3);
-      if (!currentData) {
-        currentData = data;
-      }
+      ret.currentData =  new NetworkedListService(d2, d3);
+console.log("MARKER 2 ", d2 );   
+
     } else {
       d4 = useMsgDistrib() as MessageDistribution;
       await d4.forkThread();
-      data = new NetworkedListService(d4 as DistantStorable, d3);
-      currentData = data;
+      ret.currentData = new NetworkedListService(d4 as DistantStorable, d3);
+console.log("MARKER 2 ", d4) 
     }
   }
 
@@ -109,37 +129,162 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
     void currentNetworkConfig();
   }
 
-  // slap mutex on now.
-
-  /**
- * update
+/**
+ * updateData
  * A util to replace the shared buffer with new content,
- * BUT NOT CHANGE THE POINTER
+ * BUT NOT CHANGE THE POINTER.
+ * "slap mutex on now!", only do not need to, as its JS.
 
  * @param {ListCollection} next
  * @public
  * @returns {void}
  */
-  function update(next: ListCollection): void {
-    if (!currentData) {
-      currentData = next;
+  function updateData(next: ListCollection): void {
+console.log("Copying data into this modular scope data,", next, ret.currentData);
+     if(ret.currentData) {
+        console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
+     }
+    if (!ret.currentData) {
+      ret.currentData = next;
+console.log( "current data is now ", ret.currentData);    
       return;
     }
-    for (let i = 0; i < currentData.count(); i++) {
-      currentData.delete(i);
+    for (let i = 0; i < ret.currentData.count(); i++) {
+      ret.currentData.delete(i);
     }
-    currentData.merge(next);
+    ret.currentData.merge(next);
+    if(ret.currentData) {
+      console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
+    }
   }
 
-  // outer function return values
-  return {
-    currentData,
-    initData, // sync method
-    update,
-  } as Readonly<FactoryArtefact>;
+  if(ret.currentData) {
+    console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
+  }
+    
+  initData();
+  return ret;
 }
 
 // What external modules (aside from test) will gain from accessing.
 // If the module thinks the network situation has changed, it can run initData() again.
 export const ListData: FactoryArtefact = createDataFactory(undefined);
-// export TestDataSchema;
+
+/**
+ * setupCurrentList
+ * THIS VERSION DOESNT WAIT FOR ANYTHING
+ * Setup the current AList, rather than the known lists.
+ * May add further ways to set the list id in later editions.
+ 
+ * @param {undefined|RouteLocationNormalizedLoadedGeneric} itinéraire ~ huge great big type is from vue-router
+// currentData:ListCollection | undefined
+ * @public
+ * @returns {Promise<AList>}
+ */
+export function setupCurrentList(itinéraire:undefined|RouteLocationNormalizedLoadedGeneric,  ):AList {
+  const DUMMY_LIST: AList = AList.manual("New Empty list", 1); 
+  let id:number = 0;
+  let liste =DUMMY_LIST;
+  let currentData:ListCollection|undefined ;
+  // let currentData:ListCollection|undefined =ListData.currentData;
+  try {
+    if(! itinéraire) {
+      itinéraire = useRoute(); 
+    }
+          
+    id = extractId(itinéraire.params.index);
+    currentData =ListData.currentData;
+console.log("COMPONENT should be 1 (one)", itinéraire.params, id, "current data is currently:", currentData );    
+console.dir( itinéraire);
+    if (currentData) {
+        liste = currentData.get(id) ?? DUMMY_LIST;
+console.log("WWWW ", liste); 
+    }
+    if(currentData) {
+      console.log("KKK setupCurrentList currentData id:", idOf(currentData));
+    }  
+    
+  } catch (e) {
+    let backupId = 0;
+    if (currentData) {
+      backupId = currentData.create("New list");
+    }
+      // the second branch is stupid, but shouldnt be possible
+      liste = DUMMY_LIST;
+      if (currentData) {
+        liste = currentData.get(backupId) ?? DUMMY_LIST;
+      }
+      id = backupId;
+      if(currentData) {
+         console.log("KKK setupCurrentList ERROR clause currentData id:", idOf(currentData));
+      }     
+  }
+
+  if (!currentData || currentData.count() === 0) {
+    console.warn("Local components have no data, check the API is running.");
+    return DUMMY_LIST;
+  } else {
+    return liste;
+  }
+}
+
+/**
+ * setupCurrentList_BLOCKING
+ * Setup the current AList, rather than the known lists.
+ * May add further ways to set the list id in later editions.
+ 
+ * @param {undefined|RouteLocationNormalizedLoadedGeneric} itinéraire ~ huge great big type is from vue-router
+ * @public
+ * @returns {Promise<AList>}
+ */
+function setupCurrentList_BLOCKING(itinéraire:undefined|RouteLocationNormalizedLoadedGeneric ):Promise<AList> {
+  const DUMMY_LIST: AList = AList.manual("Empty list", 1); 
+  let id:number = 0;
+  let liste =DUMMY_LIST;
+  let currentData:ListCollection|undefined =ListData.currentData;
+  try {
+    if(! itinéraire) {
+      itinéraire = useRoute(); 
+    }
+          
+    id = extractId(itinéraire.params.index);
+    liste =DUMMY_LIST;
+  let currentData:ListCollection|undefined =ListData.currentData;
+console.log("COMPONENT should be 1 (one)", itinéraire.params, id, "current data is currently:",currentData );    
+console.dir( itinéraire);
+    if (currentData) {
+        liste = currentData.get(id) ?? DUMMY_LIST;
+console.log("WWWW ", liste); 
+    }
+  } catch (e) {
+    let backupId = 0;
+    if (currentData) {
+      backupId = currentData.create("New list");
+    }
+      // the second branch is stupid, but shouldnt be possible
+      liste = DUMMY_LIST;
+      if (currentData) {
+        liste = currentData.get(backupId) ?? DUMMY_LIST;
+      }
+      id = backupId;
+  }
+
+  if (!currentData || currentData.count() === 0) {
+      // if this reference doesn't happen to be the first mention, it will have API content
+      // I wish I could use Promises.then, but I can't really make the data() async
+      // API should never take more than 500ms, as its not doing much, and its on LAN
+
+    setTimeout(() => {
+        if (!currentData) {
+          console.warn("ThisList component has no data after 0.5s, check the API is running.");
+          liste = DUMMY_LIST;
+          return Promise.resolve( DUMMY_LIST);
+        }
+        liste = currentData.get(id) ?? DUMMY_LIST;
+        return Promise.resolve(liste);
+    }, DELAY_FOR_API);
+  } else {
+    return Promise.resolve(liste) ;
+  }
+  // typescript demands I add an extra return value here
+}

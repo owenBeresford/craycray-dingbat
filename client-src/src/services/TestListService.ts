@@ -21,7 +21,7 @@ export class TestListService extends ListService implements ListCollection {
   public constructor(src: Array<TestDataSchema>) {
     super();
     for (let i = 0; i < src.length; i++) {
-      this.append(AList.importTest(src[i]));
+      this.put(src[i].id, AList.importTest(src[i]));
     }
     console.log(`Imported a initial state of ${src.length} TEST items.`);
   }

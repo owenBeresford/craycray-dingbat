@@ -28,7 +28,8 @@ export const ANGLE_ACCURACY = 20.0;
 export const SUPPORTED_LANGUAGE = "en-GB";
 export const KNOWN_PHONE = "shopping-known";
 
-export const FETCH_TIMEOUT = 500;
+export const FETCH_TIMEOUT = 500; // ms
+export const DELAY_FOR_API = 500; // ms
 
 if (typeof global.fetch === "undefined" || !global.fetch) {
   throw new Error("73453894563453 Fetch() not found.  BAILING OUT");

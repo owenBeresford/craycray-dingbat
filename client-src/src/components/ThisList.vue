@@ -49,7 +49,7 @@ import { useRoute } from "vue-router";
 
 import { useStore } from "../services/Store";
 import { useUIText } from "../services/Localisation";
-import { ListData } from "../services/DataFactory";
+import { ListData, setupCurrentList, idOf } from "../services/DataFactory";
 
 import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
@@ -68,7 +68,12 @@ import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
 import type { ThisListProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
-const { currentData, initData } = ListData;
+const { currentData, updateData, initData } = ListData;
+if(ListData.currentData) {
+  console.log("KKK ThisList global scope ListData.currentData id:", idOf(ListData.currentData));
+}
+console.log("KKK ThisList global scope ListData id:", idOf(ListData));
+
 const NEW_LIST = -1;
 const DUMMY_LIST: AList = {} as AList;
 // this class is using a shared function pointer, as in vue2 the event bus is too slow
@@ -99,52 +104,24 @@ export default defineComponent({
       },
     }, // TS: "Store<ShopState>"
   },
-  created() {
-    // console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW created()",  );
-    // console.log("WWWWWWW created()", {"id": this.$route.params.index, "size":ll.count() });
-    // console.log("UIOUIOUIO", this.$route.params, extractId(this.$route.params.index) );
-    try {
-      this.id = extractId(this.$route.params.index);
-      this.list = DUMMY_LIST;
-      if (currentData) {
-        this.list = currentData.get(this.id) ?? DUMMY_LIST;
-      }
-    } catch (e) {
-      let backupId = 0;
-      if (currentData) {
-        backupId = currentData.create("New list");
-      }
-      // the second branch is stupid, but shouldnt be possible
-      this.list = DUMMY_LIST;
-      if (currentData) {
-        this.list = currentData.get(backupId) ?? DUMMY_LIST;
-      }
-      this.id = backupId;
-    }
+  async created() {
+console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW created()" );
+    this.list= setupCurrentList(undefined );
+if(currentData) {
+  console.log("KKK thisList.created  ListData.currentData id:", idOf(currentData));
+}
+console.log("KKK ThisList global scope ListData id:", idOf(ListData));
 
-    if (!currentData || currentData.count() === 0) {
-      // if this reference doesn't happen to be the first mention, it will have API content
-      // I wish I could use Promises.then, but I can't really make the data() async
-      // API should never take more than 500ms, as its not doing much, as its on LAN
-
-      setTimeout(() => {
-        if (!currentData) {
-          console.warn("ThisList component has no data after 0.5s, load the API");
-          this.list = DUMMY_LIST;
-          return;
-        }
-        this.list = currentData.get(this.id) ?? DUMMY_LIST;
-      }, 500);
-    }
+console.log("help? ", this.list); 
   },
   mounted() {
-    //  this.route = useRoute();
-    //console.log("WWWWWWW mounted()", this.$props.shopStore );
+    const itinéraire = useRoute();
+console.log("WWWWWWW mounted()", this.list, this.$props.shopStore );
     if (this.$props.shopStore) {
-      this.$props.shopStore.commit("setPath", this.$route.path);
+      this.$props.shopStore.commit("setPath", itinéraire.path);
       this.$props.shopStore.commit("setId", this.id);
     } else if (this.shopStore) {
-      this.shopStore.commit("setPath", this.$route.path);
+      this.shopStore.commit("setPath", itinéraire.path);
       this.shopStore.commit("setId", this.id);
     }
   },

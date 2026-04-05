@@ -28,7 +28,9 @@ export class ListService implements ListCollection {
    * @returns {ListService}
    */
   public constructor() {
-    this.catalog = [];
+    this.catalog = [ 
+               {} as AList,
+                  ];
   }
 
   /**
@@ -68,6 +70,10 @@ export class ListService implements ListCollection {
    * @returns {boolean}
    */
   public isNotValidId(id: number): boolean {
+    if(this.catalog.length===0) {
+      // adding special case here, otherwise empty lists remain empty
+      return id===0;
+    }
     return !(Number.isInteger(id) && id >= 0 && id <= this.catalog.length);
   }
 
@@ -99,6 +105,14 @@ export class ListService implements ListCollection {
     return true;
   }
 
+  /**
+   * merge
+   * Copy a remote collection into this object
+ 
+   * @param {ListCollection} next
+   * @public
+   * @returns {boolean}
+   */
   public merge(next: ListCollection): boolean {
     for (let i = 0; i < next.count(); i++) {
       let annoying = next.get(i);
@@ -111,7 +125,7 @@ export class ListService implements ListCollection {
 
   /**
    * list
-   * Return views() of the current Lists in this collection
+   * Return views() of the current Lists in this collection.
  
    * @public
    * @returns {Array<ListStruct> }
@@ -127,7 +141,7 @@ export class ListService implements ListCollection {
 
   /**
    * get
-   * Return a item (ie a list) from this List collection
+   * Return a item (ie a list) from this List collection.
  
    * @param {number} id
    * @public

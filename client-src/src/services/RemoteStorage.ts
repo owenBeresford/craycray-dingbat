@@ -157,12 +157,12 @@ export class RemoteStorage implements Storable, DistantStorable {
 
   // There is no value in the following API points at the mo
   // so made private
-  protected saveProperty(): boolean {
+  public saveProperty(): boolean {
     // saveProperty(nom:string, val:string):boolean {
     return true;
   }
 
-  protected loadProperty(): string {
+  public loadProperty(): string {
     // loadProperty(nom:string):string {
     return "no impl";
   }
