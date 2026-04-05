@@ -104,19 +104,16 @@ export default defineComponent({
     }, // TS: "Store<ShopState>"
   },
   async created() {
-console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW created()" );
-    this.list= setupCurrentList(undefined );
+     this.list= setupCurrentList(undefined );
 if(currentData) {
   console.log("KKK thisList.created  ListData.currentData id:", idOf(currentData));
 }
 console.log("KKK ThisList global scope ListData id:", idOf(ListData));
 
-console.log("help? ", this.list); 
-  },
+   },
   mounted() {
     const itinéraire = useRoute();
-console.log("WWWWWWW mounted()", this.list, this.$props.shopStore );
-    if (this.$props.shopStore) {
+     if (this.$props.shopStore) {
       this.$props.shopStore.commit("setPath", itinéraire.path);
       this.$props.shopStore.commit("setId", this.id);
     } else if (this.shopStore) {

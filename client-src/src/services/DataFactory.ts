@@ -80,8 +80,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
   
   if (Array.isArray(override)) {
     ret.currentData = new TestListService(override);
-console.log("Creating local TEST data", ret.currentData);
-    if(ret.currentData) {
+     if(ret.currentData) {
       console.log("KKK createDataFactory (with a mock) ListData.currentData id:", idOf(ret.currentData));
     }
     ret.initData= function () {};
@@ -98,8 +97,7 @@ console.log("Creating local TEST data", ret.currentData);
   async function currentNetworkConfig(): Promise<void> {
     let d4: MessageDistribution;
     let data: ListService;
-console.log("MARKER 1 ");    
-    if (ret.currentData && (await ret.currentData.poll())) {
+     if (ret.currentData && (await ret.currentData.poll())) {
       return;
     }
 
@@ -108,14 +106,12 @@ console.log("MARKER 1 ");
     const d2 = createRemoteService(global.location);
     if (await d2.poll()) {
       ret.currentData =  new NetworkedListService(d2, d3);
-console.log("MARKER 2 ", d2 );   
-
+ 
     } else {
       d4 = useMsgDistrib() as MessageDistribution;
       await d4.forkThread();
       ret.currentData = new NetworkedListService(d4 as DistantStorable, d3);
-console.log("MARKER 2 ", d4) 
-    }
+     }
   }
 
   /**
@@ -140,14 +136,12 @@ console.log("MARKER 2 ", d4)
  * @returns {void}
  */
   function updateData(next: ListCollection): void {
-console.log("Copying data into this modular scope data,", next, ret.currentData);
-     if(ret.currentData) {
+      if(ret.currentData) {
         console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
      }
     if (!ret.currentData) {
       ret.currentData = next;
-console.log( "current data is now ", ret.currentData);    
-      return;
+       return;
     }
     for (let i = 0; i < ret.currentData.count(); i++) {
       ret.currentData.delete(i);
@@ -194,12 +188,9 @@ export function setupCurrentList(itinéraire:undefined|RouteLocationNormalizedLo
           
     id = extractId(itinéraire.params.index);
     currentData =ListData.currentData;
-console.log("COMPONENT should be 1 (one)", itinéraire.params, id, "current data is currently:", currentData );    
-console.dir( itinéraire);
     if (currentData) {
         liste = currentData.get(id) ?? EMPTY_LIST;
-console.log("WWWW ", liste); 
-    }
+     }
     if(currentData) {
       console.log("KKK setupCurrentList currentData id:", idOf(currentData));
     }  
@@ -250,12 +241,9 @@ function setupCurrentList_BLOCKING(itinéraire:undefined|RouteLocationNormalized
     id = extractId(itinéraire.params.index);
     liste =DUMMY_LIST;
   let currentData:ListCollection|undefined =ListData.currentData;
-console.log("COMPONENT should be 1 (one)", itinéraire.params, id, "current data is currently:",currentData );    
-console.dir( itinéraire);
-    if (currentData) {
+     if (currentData) {
         liste = currentData.get(id) ?? DUMMY_LIST;
-console.log("WWWW ", liste); 
-    }
+     }
   } catch (e) {
     let backupId = 0;
     if (currentData) {

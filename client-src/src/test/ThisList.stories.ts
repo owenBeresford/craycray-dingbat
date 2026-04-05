@@ -82,8 +82,7 @@ export const TrackTextRendered2: Story = {
     setup() {
         const { currentData, initData, updateData } = ListData ;
 
-console.log("IOIO XXX thislist.story test with action has: (store:)", currentData, location, ListData.currentData );  
-if(currentData) {
+ if(currentData) {
   console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
 } 
 if( ListData.currentData ) {
@@ -135,7 +134,6 @@ if(ListData.currentData) {
 if( currentData) {
   console.log("KKK Story.play:: decomposed currentData id:", idOf( currentData));
 }
-console.log("XXX in unit-test", currentData);    
 
     const list = canvas.getByTestId("test17List1");
     expect(list).toBeVisible();

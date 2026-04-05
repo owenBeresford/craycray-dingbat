@@ -76,8 +76,7 @@ export class AList  implements Listable, ListStruct {
       tmp.énumérer= src.count;
       tmp.id=src.id;
       tmp.éléments= [...src.list];
-    console.log("ERWERWRWER ", JSON.stringify(tmp));
-    return tmp;
+     return tmp;
   }
 
   /**
