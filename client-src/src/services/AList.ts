@@ -1,6 +1,10 @@
-import { JSONObject, map, required, integer, custom } from "ts-json-object";
-import type { Listable, ListStruct, TestDataSchema } from "../types/ListCollection";
+ import { JsonSerializer, throwError, JsonProperty, JsonObject } from 'typescript-json-serializer';
+ import type { Listable, ListStruct, TestDataSchema } from "../types/ListCollection";
 
+function convertEpoch2Date(i:number):Date {
+  return new Date(i);
+}
+ 
 /**
  * AList 
  * An Entity to manage validation and serialisation for Shopping lists
@@ -8,7 +12,8 @@ import type { Listable, ListStruct, TestDataSchema } from "../types/ListCollecti
  
  * @public
  */
-export class AList extends JSONObject implements Listable, ListStruct {
+JsonObject()
+export class AList  implements Listable, ListStruct {
   /*
   protected nom:string;
   protected créé:Date;
@@ -17,51 +22,22 @@ export class AList extends JSONObject implements Listable, ListStruct {
   protected id:number;
   protected éléments: Array<string>;
 */
-  @required
-  @map("name")
+  @JsonProperty({name: 'name', required: true})
   public nom: string;
 
-  @required
-  @integer
-  @map("created")
-  @custom((nouveau: AList, name: string, value: string | Date) => {
-    if (name === "created") {
-      if (value instanceof Date) {
-        return value;
-      } else {
-        return new Date(parseInt(value, 10));
-      }
-    }
-    return value;
-  })
+  @JsonProperty({name: 'created', required: true, type: Number, beforeDeserialize:convertEpoch2Date })
   public créé: Date;
 
-  @required
-  @integer
-  @map("edited")
-  @custom((nouveau: AList, name: string, value: string | Date) => {
-    if (name === "edited") {
-      if (value instanceof Date) {
-        return value;
-      } else {
-        return new Date(parseInt(value, 10));
-      }
-    }
-    return value;
-  })
+  @JsonProperty({name: 'edited', required: true, type: Number, beforeDeserialize:convertEpoch2Date })
   public modifié: Date;
 
-  @required
-  @integer
-  @map("count")
+  @JsonProperty({name: 'count', required: true, type: Number})
   public énumérer: number;
 
-  @required
-  @integer
+  @JsonProperty({name: 'id', required: true, type: Number})
   public id: number;
 
-  @required
-  @map("list")
+  @JsonProperty({name: 'list', required: true, type: Array})
   public éléments: Array<string>;
 
   /**
@@ -73,14 +49,14 @@ export class AList extends JSONObject implements Listable, ListStruct {
    * @returns {AList}
    */
   public static manual(nom: string, id: number): AList {
-    return new AList({
-      name: nom,
-      created: new Date(),
-      edited: new Date(),
-      count: 0,
-      id: id,
-      list: [],
-    });
+    let tmp=new AList();
+      tmp.nom=nom;
+      tmp.créé = new Date();
+      tmp.modifié = new Date();
+      tmp.énumérer= 0;
+      tmp.id=id;
+      tmp.éléments= [] as Array<string>;
+    return tmp;
   }
 
   /**
@@ -92,15 +68,13 @@ export class AList extends JSONObject implements Listable, ListStruct {
    * @returns {AList}
    */
   public static importTest(src: TestDataSchema): AList {
-    console.log("ERWERWRWER ", JSON.stringify(src));
-    const tmp = new AList({
-      name: src.name,
-      created: new Date(src.created),
-      edited: new Date(src.edited),
-      count: src.list.length,
-      id: src.id,
-      list: [...src.list],
-    });
+    const tmp = new AList();
+      tmp.nom=src.name;
+      tmp.créé = src.created;
+      tmp.modifié = src.edited;
+      tmp.énumérer= src.count;
+      tmp.id=src.id;
+      tmp.éléments= [...src.list];
     console.log("ERWERWRWER ", JSON.stringify(tmp));
     return tmp;
   }
@@ -159,7 +133,7 @@ export class AList extends JSONObject implements Listable, ListStruct {
    * remove
    * Remove an element ...
  
-   * @param offset: number
+   * @param {number} offset
    * @public
    * @returns {boolean}
    */
