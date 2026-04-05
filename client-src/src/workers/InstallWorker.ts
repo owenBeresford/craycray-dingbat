@@ -69,10 +69,15 @@ export class CacheWrapper {
    * @returns {void}
    */
   public install(): void {
-    global.caches.open(APP_NAME + "_" + APP_VERSION).then(async (cache: Cache): Promise<void> => {
-      this.local.saveProperty(INSTALLED, "1");
-      return await cache.addAll(FILES);
-    }).catch((err:Error):void=>{ console.warn("App install: ", err); });
+    global.caches
+      .open(APP_NAME + "_" + APP_VERSION)
+      .then(async (cache: Cache): Promise<void> => {
+        this.local.saveProperty(INSTALLED, "1");
+        return await cache.addAll(FILES);
+      })
+      .catch((err: Error): void => {
+        console.warn("App install: ", err);
+      });
   }
 
   /**

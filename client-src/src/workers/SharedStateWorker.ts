@@ -65,17 +65,17 @@ export class SharedStateWorker implements DataPipeline {
     const SELF = this;
 
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const ATTEMPT = async ():Promise<void> => {
+      const ATTEMPT = async (): Promise<void> => {
         let access = await SELF.conn.poll();
         if (access) {
           SELF.conn
             .saveState(json)
-            .then((dat: boolean):boolean => {
+            .then((dat: boolean): boolean => {
               console.log("save said " + dat);
               good(true);
               return true;
             })
-            .catch((err:unknown):void => {
+            .catch((err: unknown): void => {
               console.error("Am connected to wifi; cannot save data ??\nImprove error handler here.");
               bad(err as Error);
             });
@@ -99,7 +99,7 @@ export class SharedStateWorker implements DataPipeline {
     const SELF = this;
 
     return new Promise(async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
-      const ATTEMPT = async ():Promise<void> => {
+      const ATTEMPT = async (): Promise<void> => {
         let access = await SELF.conn.poll();
         if (access) {
           SELF.conn
@@ -107,7 +107,8 @@ export class SharedStateWorker implements DataPipeline {
             .then((out: Array<SaveStruct>) => {
               return good(out);
             })
-            .catch((err:unknown) => { // #leSigh
+            .catch((err: unknown) => {
+              // #leSigh
               return bad(err as Error);
             });
         } else {

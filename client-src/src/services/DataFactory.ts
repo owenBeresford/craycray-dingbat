@@ -1,10 +1,10 @@
 import { ref } from "vue";
-import type {  RouteLocationNormalizedLoadedGeneric } from "vue-router";
+import type { RouteLocationNormalizedLoadedGeneric } from "vue-router";
 import { useRoute } from "vue-router";
 
 import { isMobile, clearSelection, extractId } from "../services/util";
-import { AList, EMPTY_LIST } from '../services/AList';
-import { DELAY_FOR_API } from '../Constants';
+import { AList, EMPTY_LIST } from "../services/AList";
+import { DELAY_FOR_API } from "../Constants";
 
 import { ListService } from "./ListService";
 import { useLocal } from "./LocalCopy";
@@ -12,7 +12,6 @@ import { useMsgDistrib } from "./MessageDistribution";
 import { createRemoteService } from "../Constants";
 import { TestListService } from "./TestListService";
 import { NetworkedListService } from "./NetworkedListService";
-
 
 import type { ListCollection, TestDataSchema } from "../types/ListCollection";
 import type { DistantStorable } from "../types/RemoteTypes";
@@ -73,21 +72,21 @@ export function idOf(obj: object) {
   @returns {FactoryArtefact} - see above tuple interface
  */
 export function createDataFactory(override: Array<TestDataSchema> | undefined): FactoryArtefact {
-  let ret:FactoryArtefact ={} as FactoryArtefact;
-  ret.currentData=undefined;
-  ret.updateData=updateData;
-  ret.initData=initData;
-  
+  let ret: FactoryArtefact = {} as FactoryArtefact;
+  ret.currentData = undefined;
+  ret.updateData = updateData;
+  ret.initData = initData;
+
   if (Array.isArray(override)) {
     ret.currentData = new TestListService(override);
-     if(ret.currentData) {
+    if (ret.currentData) {
       console.log("KKK createDataFactory (with a mock) ListData.currentData id:", idOf(ret.currentData));
     }
-    ret.initData= function () {};
-    return ret as  Readonly<FactoryArtefact>;
+    ret.initData = function () {};
+    return ret as Readonly<FactoryArtefact>;
   }
 
-/**
+  /**
  * currentNetworkConfig
  * A "use function" to create ListCollections, which has different composition depending on network settings
 
@@ -97,7 +96,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
   async function currentNetworkConfig(): Promise<void> {
     let d4: MessageDistribution;
     let data: ListService;
-     if (ret.currentData && (await ret.currentData.poll())) {
+    if (ret.currentData && (await ret.currentData.poll())) {
       return;
     }
 
@@ -105,13 +104,12 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
     const d3 = useLocal();
     const d2 = createRemoteService(global.location);
     if (await d2.poll()) {
-      ret.currentData =  new NetworkedListService(d2, d3);
- 
+      ret.currentData = new NetworkedListService(d2, d3);
     } else {
       d4 = useMsgDistrib() as MessageDistribution;
       await d4.forkThread();
       ret.currentData = new NetworkedListService(d4 as DistantStorable, d3);
-     }
+    }
   }
 
   /**
@@ -125,7 +123,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
     void currentNetworkConfig();
   }
 
-/**
+  /**
  * updateData
  * A util to replace the shared buffer with new content,
  * BUT NOT CHANGE THE POINTER.
@@ -136,26 +134,26 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
  * @returns {void}
  */
   function updateData(next: ListCollection): void {
-      if(ret.currentData) {
-        console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
-     }
+    if (ret.currentData) {
+      console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
+    }
     if (!ret.currentData) {
       ret.currentData = next;
-       return;
+      return;
     }
     for (let i = 0; i < ret.currentData.count(); i++) {
       ret.currentData.delete(i);
     }
     ret.currentData.merge(next);
-    if(ret.currentData) {
+    if (ret.currentData) {
       console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
     }
   }
 
-  if(ret.currentData) {
+  if (ret.currentData) {
     console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
   }
-    
+
   initData();
   return ret;
 }
@@ -175,40 +173,38 @@ export const ListData: FactoryArtefact = createDataFactory(undefined);
  * @public
  * @returns {Promise<AList>}
  */
-export function setupCurrentList(itinéraire:undefined|RouteLocationNormalizedLoadedGeneric, ):AList {
- 
-  let id:number = 0;
-  let liste =EMPTY_LIST;
-  let currentData:ListCollection|undefined ;
+export function setupCurrentList(itinéraire: undefined | RouteLocationNormalizedLoadedGeneric): AList {
+  let id: number = 0;
+  let liste = EMPTY_LIST;
+  let currentData: ListCollection | undefined;
   // let currentData:ListCollection|undefined =ListData.currentData;
   try {
-    if(! itinéraire) {
-      itinéraire = useRoute(); 
+    if (!itinéraire) {
+      itinéraire = useRoute();
     }
-          
+
     id = extractId(itinéraire.params.index);
-    currentData =ListData.currentData;
+    currentData = ListData.currentData;
     if (currentData) {
-        liste = currentData.get(id) ?? EMPTY_LIST;
-     }
-    if(currentData) {
+      liste = currentData.get(id) ?? EMPTY_LIST;
+    }
+    if (currentData) {
       console.log("KKK setupCurrentList currentData id:", idOf(currentData));
-    }  
-    
+    }
   } catch (e) {
     let backupId = 0;
     if (currentData) {
       backupId = currentData.create("New list");
     }
-      // the second branch is stupid, but shouldnt be possible
-      liste = EMPTY_LIST;
-      if (currentData) {
-        liste = currentData.get(backupId) ?? EMPTY_LIST;
-      }
-      id = backupId;
-      if(currentData) {
-         console.log("KKK setupCurrentList ERROR clause currentData id:", idOf(currentData));
-      }     
+    // the second branch is stupid, but shouldnt be possible
+    liste = EMPTY_LIST;
+    if (currentData) {
+      liste = currentData.get(backupId) ?? EMPTY_LIST;
+    }
+    id = backupId;
+    if (currentData) {
+      console.log("KKK setupCurrentList ERROR clause currentData id:", idOf(currentData));
+    }
   }
 
   if (!currentData || currentData.count() === 0) {
@@ -228,51 +224,51 @@ export function setupCurrentList(itinéraire:undefined|RouteLocationNormalizedLo
  * @public
  * @returns {Promise<AList>}
  */
-function setupCurrentList_BLOCKING(itinéraire:undefined|RouteLocationNormalizedLoadedGeneric ):Promise<AList> {
-  const DUMMY_LIST: AList = AList.manual("Empty list", 1); 
-  let id:number = 0;
-  let liste =DUMMY_LIST;
-  let currentData:ListCollection|undefined =ListData.currentData;
+function setupCurrentList_BLOCKING(itinéraire: undefined | RouteLocationNormalizedLoadedGeneric): Promise<AList> {
+  const DUMMY_LIST: AList = AList.manual("Empty list", 1);
+  let id: number = 0;
+  let liste = DUMMY_LIST;
+  let currentData: ListCollection | undefined = ListData.currentData;
   try {
-    if(! itinéraire) {
-      itinéraire = useRoute(); 
+    if (!itinéraire) {
+      itinéraire = useRoute();
     }
-          
+
     id = extractId(itinéraire.params.index);
-    liste =DUMMY_LIST;
-  let currentData:ListCollection|undefined =ListData.currentData;
-     if (currentData) {
-        liste = currentData.get(id) ?? DUMMY_LIST;
-     }
+    liste = DUMMY_LIST;
+    let currentData: ListCollection | undefined = ListData.currentData;
+    if (currentData) {
+      liste = currentData.get(id) ?? DUMMY_LIST;
+    }
   } catch (e) {
     let backupId = 0;
     if (currentData) {
       backupId = currentData.create("New list");
     }
-      // the second branch is stupid, but shouldnt be possible
-      liste = DUMMY_LIST;
-      if (currentData) {
-        liste = currentData.get(backupId) ?? DUMMY_LIST;
-      }
-      id = backupId;
+    // the second branch is stupid, but shouldnt be possible
+    liste = DUMMY_LIST;
+    if (currentData) {
+      liste = currentData.get(backupId) ?? DUMMY_LIST;
+    }
+    id = backupId;
   }
 
   if (!currentData || currentData.count() === 0) {
-      // if this reference doesn't happen to be the first mention, it will have API content
-      // I wish I could use Promises.then, but I can't really make the data() async
-      // API should never take more than 500ms, as its not doing much, and its on LAN
+    // if this reference doesn't happen to be the first mention, it will have API content
+    // I wish I could use Promises.then, but I can't really make the data() async
+    // API should never take more than 500ms, as its not doing much, and its on LAN
 
     setTimeout(() => {
-        if (!currentData) {
-          console.warn("ThisList component has no data after 0.5s, check the API is running.");
-          liste = DUMMY_LIST;
-          return Promise.resolve( DUMMY_LIST);
-        }
-        liste = currentData.get(id) ?? DUMMY_LIST;
-        return Promise.resolve(liste);
+      if (!currentData) {
+        console.warn("ThisList component has no data after 0.5s, check the API is running.");
+        liste = DUMMY_LIST;
+        return Promise.resolve(DUMMY_LIST);
+      }
+      liste = currentData.get(id) ?? DUMMY_LIST;
+      return Promise.resolve(liste);
     }, DELAY_FOR_API);
   } else {
-    return Promise.resolve(liste) ;
+    return Promise.resolve(liste);
   }
   // typescript demands I add an extra return value here
 }

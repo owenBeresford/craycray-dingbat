@@ -59,6 +59,6 @@ export function createRemoteService(loc: Location | WorkerLocation): RemoteStora
     method: "GET",
     credentials: "same-origin",
   };
- 
+
   return new RemoteStorage(d3);
 }

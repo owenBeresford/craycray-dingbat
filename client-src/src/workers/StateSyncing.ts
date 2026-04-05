@@ -3,7 +3,7 @@ import type { ShippingStruct, ActionEnum } from "../types/Messagable";
 // import type { DistantStorable } from "../types/RemoteTypes";
 // import { PMQUE_TIMER, PMQUE_ATTEMPTS, MSG_DESTINATION, MSG_THREAD, createRemoteService } from "../Constants";
 // import { createRemoteService } from "../Constants";
-import {  useSSW } from "./SharedStateWorker";
+import { useSSW } from "./SharedStateWorker";
 import { transform2text, transform2list } from "../services/Storable";
 
 export {};
@@ -28,7 +28,7 @@ console.log("CODE under TEST started " + process.pid, goodSource);
  * @protected
  * @returns {void}
  */
-self.onmessage = async function (ev: MessageEvent):Promise<void> {
+self.onmessage = async function (ev: MessageEvent): Promise<void> {
   console.log(
     "TEST2 received MSG to " + ev.origin + " from " + ev.source,
     ev.data.action,

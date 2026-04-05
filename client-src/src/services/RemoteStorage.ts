@@ -62,7 +62,7 @@ export class RemoteStorage implements Storable, DistantStorable {
           } else {
             bad(EEE);
           }
-          return (resp.status % 100 === 2);
+          return resp.status % 100 === 2;
         })
         .catch((err: Error): void => {
           if (!didTimeOut) {
@@ -86,7 +86,7 @@ export class RemoteStorage implements Storable, DistantStorable {
    * @returns {Promise<boolean>}
    */
   public async saveState(dat: Array<SaveStruct>): Promise<boolean> {
-    return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject):void => {
+    return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject): void => {
       const REQT: RequestInit = Object.assign(this.other, { method: "POST", body: transform2text(dat) }) as RequestInit;
 
       global
@@ -103,7 +103,7 @@ export class RemoteStorage implements Storable, DistantStorable {
 
             dat
               .text()
-              .then(function (txt: string):void {
+              .then(function (txt: string): void {
                 const txt1 = JSON.parse(txt) as APIResponseType;
                 if ("statusCode" in txt1 && parseInt(txt1.statusCode, 10) > 299) {
                   // this branch here should not be used; as all the responses have a proper
@@ -119,7 +119,7 @@ export class RemoteStorage implements Storable, DistantStorable {
           } else {
             bad(new Error("Valid HTTP, but null response"));
           }
-          return "value for eslint "
+          return "value for eslint ";
         });
     });
   }

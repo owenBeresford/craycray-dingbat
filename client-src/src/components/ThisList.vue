@@ -69,7 +69,7 @@ import type { ThisListProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 const { currentData, updateData, initData } = ListData;
-if(ListData.currentData) {
+if (ListData.currentData) {
   console.log("KKK ThisList global scope ListData.currentData id:", idOf(ListData.currentData));
 }
 console.log("KKK ThisList global scope ListData id:", idOf(ListData));
@@ -104,16 +104,15 @@ export default defineComponent({
     }, // TS: "Store<ShopState>"
   },
   async created() {
-     this.list= setupCurrentList(undefined );
-if(currentData) {
-  console.log("KKK thisList.created  ListData.currentData id:", idOf(currentData));
-}
-console.log("KKK ThisList global scope ListData id:", idOf(ListData));
-
-   },
+    this.list = setupCurrentList(undefined);
+    if (currentData) {
+      console.log("KKK thisList.created  ListData.currentData id:", idOf(currentData));
+    }
+    console.log("KKK ThisList global scope ListData id:", idOf(ListData));
+  },
   mounted() {
     const itinéraire = useRoute();
-     if (this.$props.shopStore) {
+    if (this.$props.shopStore) {
       this.$props.shopStore.commit("setPath", itinéraire.path);
       this.$props.shopStore.commit("setId", this.id);
     } else if (this.shopStore) {

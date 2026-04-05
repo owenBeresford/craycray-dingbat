@@ -76,7 +76,7 @@ export class NetworkedListService extends ListService implements ListCollection 
         list: [...this.catalog[i].éléments],
       } as SaveStruct);
     }
-  //  Promise.resolve( this.local.saveState(tmp) );
+    //  Promise.resolve( this.local.saveState(tmp) );
     await this.local.saveState(tmp);
     return true;
   }
@@ -143,5 +143,5 @@ export class NetworkedListService extends ListService implements ListCollection 
 
     // i hope this works.  JS ha no spinlocks
     return out;
-  } 
+  }
 }

@@ -1,4 +1,4 @@
-import { AList } from "./AList";
+import { AList, EMPTY_LIST } from "./AList";
 
 import type { SaveStruct } from "../types/Saveable";
 import type { ListCollection } from "../types/ListCollection";
@@ -28,9 +28,7 @@ export class ListService implements ListCollection {
    * @returns {ListService}
    */
   public constructor() {
-    this.catalog = [ 
-               {} as AList,
-                  ];
+    this.catalog = [ EMPTY_LIST ];
   }
 
   /**
@@ -70,9 +68,9 @@ export class ListService implements ListCollection {
    * @returns {boolean}
    */
   public isNotValidId(id: number): boolean {
-    if(this.catalog.length===0) {
+    if (this.catalog.length === 0) {
       // adding special case here, otherwise empty lists remain empty
-      return id===0;
+      return id === 0;
     }
     return !(Number.isInteger(id) && id >= 0 && id <= this.catalog.length);
   }

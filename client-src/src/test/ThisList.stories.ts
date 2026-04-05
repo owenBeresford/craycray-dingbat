@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
-import { vueRouter, asyncVueRouter } from 'storybook-vue3-router';
-import type { Decorator, StoryContext } from '@storybook/vue3';
-import { createRouter, createMemoryHistory, useRoute, routeLocationKey } from 'vue-router';
+import { vueRouter, asyncVueRouter } from "storybook-vue3-router";
+import type { Decorator, StoryContext } from "@storybook/vue3";
+import { createRouter, createMemoryHistory, useRoute, routeLocationKey } from "vue-router";
 import { expect, fn, within, userEvent } from "storybook/test";
-import type { NavigationGuard, RouteRecordRaw } from 'vue-router';
+import type { NavigationGuard, RouteRecordRaw } from "vue-router";
 
 import ThisList from "../components/ThisList.vue";
 // import type { Store } from "vuex";
@@ -14,28 +14,28 @@ import { createDataFactory, ListData, idOf } from "../services/DataFactory";
 import type { TestDataSchema } from "../types/ListCollection";
 
 // https://storybook.js.org/addons/storybook-vue3-router
-const customRoutes:Array<RouteRecordRaw>=[
+const customRoutes: Array<RouteRecordRaw> = [
   {
-    path: '/list/:index',
-    name: 'viewList',
+    path: "/list/:index",
+    name: "viewList",
     component: ThisList,
   },
-   {
-    path: '/*',
-    name: 'errorHandler',
-    component: UnknownRoute
+  {
+    path: "/*",
+    name: "errorHandler",
+    component: UnknownRoute,
   },
 ];
 
 const meta: Meta<typeof ThisList> = {
   component: ThisList,
   title: "a current List, ThisList",
-  decorators : [
-        vueRouter(customRoutes),
-         asyncVueRouter(customRoutes, {
-          initialRoute: '/list/2'
-                 })
-            ],
+  decorators: [
+    vueRouter(customRoutes),
+    asyncVueRouter(customRoutes, {
+      initialRoute: "/list/2",
+    }),
+  ],
 
   /*        
     // https://storybook.js.org/docs/api/arg-types
@@ -44,7 +44,7 @@ const meta: Meta<typeof ThisList> = {
         testId: String,
         shopStore: Store<ShopState> ,
      },
- */  
+ */
 } satisfies Meta<typeof ThisList>;
 
 export default meta;
@@ -60,7 +60,7 @@ export const EntirelyPassive: Story = {
 
 export const TrackTextRendered2: Story = {
   render: (args, { loaded }) => {
-/*
+    /*
     const router = createRouter({
       history: createMemoryHistory(),
       routes: [
@@ -78,45 +78,43 @@ export const TrackTextRendered2: Story = {
 */
     // https://router.vuejs.org/api/interfaces/Router.html#isReady-
     return {
-    components: { ThisList },
-    setup() {
-        const { currentData, initData, updateData } = ListData ;
+      components: { ThisList },
+      setup() {
+        const { currentData, initData, updateData } = ListData;
 
- if(currentData) {
-  console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
-} 
-if( ListData.currentData ) {
-  console.log("KKK Story.render ListData.currentData id:", idOf( ListData.currentData));
-} 
+        if (currentData) {
+          console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
+        }
+        if (ListData.currentData) {
+          console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
+        }
 
-      return { args, 
-                currentStateKey: "test17",
-                testId: "test17",
-                shopStore: STORE,  
-            };
-    },
-    // inject Suspense, I guess here?
-    template: `<ThisList currentStateKey="test17" testId="test17" :shopStore="shopStore" ></ThisList>`, 
-    }
+        return { args, currentStateKey: "test17", testId: "test17", shopStore: STORE };
+      },
+      // inject Suspense, I guess here?
+      template: `<ThisList currentStateKey="test17" testId="test17" :shopStore="shopStore" ></ThisList>`,
+    };
   },
   // https://storybook.js.org/docs/writing-stories/loaders
   loaders: [
     () => {
-    const { currentData, initData, updateData } = createDataFactory(fixture1());
-if(currentData) {
-  console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
-} 
-if(ListData.currentData) {
-  console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
-} 
-    if(!currentData ) { throw new Error(); }
-    ListData.updateData(currentData );
+      const { currentData, initData, updateData } = createDataFactory(fixture1());
+      if (currentData) {
+        console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
+      }
+      if (ListData.currentData) {
+        console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
+      }
+      if (!currentData) {
+        throw new Error();
+      }
+      ListData.updateData(currentData);
 
-    return {
-      currentData,
-      shopStore: STORE
-    };
-  },
+      return {
+        currentData,
+        shopStore: STORE,
+      };
+    },
     /*
     async () => ({
       currentData: () => { const { currentData, updateData, initData } = createDataFactory(fixture1()); return currentData; },
@@ -124,16 +122,16 @@ if(ListData.currentData) {
     }),
     */
   ],
-   play: async ({ canvasElement }) => {
- //   window.history.pushState({}, '/list/2', '');
+  play: async ({ canvasElement }) => {
+    //   window.history.pushState({}, '/list/2', '');
     const canvas = within(canvasElement);
     const { currentData, initData, updateData } = ListData;
-if(ListData.currentData) {
-  console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
-} 
-if( currentData) {
-  console.log("KKK Story.play:: decomposed currentData id:", idOf( currentData));
-}
+    if (ListData.currentData) {
+      console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
+    }
+    if (currentData) {
+      console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
+    }
 
     const list = canvas.getByTestId("test17List1");
     expect(list).toBeVisible();
@@ -150,24 +148,21 @@ if( currentData) {
   },
 };
 
-
-
-
 const DISABLED_TrackTextRendered2: Story = {
   args: {
-   currentStateKey: "test17",
-   testId: "test17",
-   shopStore: STORE,  
+    currentStateKey: "test17",
+    testId: "test17",
+    shopStore: STORE,
   },
-// https://storybook.js.org/addons/@storybook/addon-queryparams
+  // https://storybook.js.org/addons/@storybook/addon-queryparams
   parameters: {
     query: {
-      index: '1',
+      index: "1",
     },
   },
 
   play: async ({ canvasElement }) => {
- /*   
+    /*   
     const { currentData, updateData, initData } = createDataFactory(fixture1());
     if (!currentData) {
       console.log("somehow have no data from inital populate, need to QUIT");
@@ -176,7 +171,7 @@ const DISABLED_TrackTextRendered2: Story = {
     console.log("storybook test:", location, currentData.get(0) );
     const mainUpdate = ListData.updateData;
     mainUpdate(currentData); // this means the component-under-test should have data.
-   */ 
+   */
     const canvas = within(canvasElement);
 
     const list = canvas.getByTestId("test17List1");

@@ -18,6 +18,6 @@ export interface RemoteConfig {
 }
 
 export interface APIResponseType {
-  statusCode:string;
-  result:string;
+  statusCode: string;
+  result: string;
 }
