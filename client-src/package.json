@@ -25,12 +25,12 @@
     "common-es": "^1.0.1",
     "foundation-sites": "^6.7.4",
     "reflect-metadata": "^0.2.2",
-    "ts-json-object": "^0.2.10",
+    "typescript-json-serializer": "^6.0.1",
     "vector2d": "^3.0.0",
     "vue": "^3.2.33",
     "vue-router": "^4.0.15",
-    "vuex": "^4.0.2",
-    "vue3-touch-events": "^5.0.15"
+    "vue3-touch-events": "^5.0.15",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.2",
@@ -47,6 +47,7 @@
     "@types/node": "^25.4.0",
     "@types/node-fetch": "^2.6.13",
     "@types/node-localstorage": "^1.3.3",
+    "@types/vue-router": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
     "@typescript-eslint/typescript-estree": "^6.2.1",
@@ -79,6 +80,7 @@
     "prettier": "^2.6.2",
     "prettier-plugin-vue": "^1.1.6",
     "storybook": "^10.3.1",
+    "storybook-vue3-router": "^7.0.0",
     "testing-library": "^0.0.2",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
