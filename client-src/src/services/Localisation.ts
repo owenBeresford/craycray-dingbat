@@ -62,7 +62,7 @@ export class UI_EN_GB implements UItext {
    * addArray
    * Add an array as a value.  Uniqueness on keys is enforced.
 
-   * @param {string}
+   * @param {string} key
    * @param {Array<string>} val
    * @public
    * @returns {void}

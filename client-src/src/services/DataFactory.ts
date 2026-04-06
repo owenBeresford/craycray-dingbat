@@ -1,12 +1,12 @@
-import { ref } from "vue";
+// Router imported to access the URL.  Maybe refactored to be prettier in future
 import type { RouteLocationNormalizedLoadedGeneric } from "vue-router";
 import { useRoute } from "vue-router";
 
-import { isMobile, clearSelection, extractId } from "../services/util";
+import { extractId } from "../services/util";
 import { AList, EMPTY_LIST } from "../services/AList";
 import { DELAY_FOR_API } from "../Constants";
 
-import { ListService } from "./ListService";
+// import { ListService } from "./ListService";
 import { useLocal } from "./LocalCopy";
 import { useMsgDistrib } from "./MessageDistribution";
 import { createRemoteService } from "../Constants";
@@ -16,8 +16,6 @@ import { NetworkedListService } from "./NetworkedListService";
 import type { ListCollection, TestDataSchema } from "../types/ListCollection";
 import type { DistantStorable } from "../types/RemoteTypes";
 import type { MessageDistribution } from "./MessageDistribution";
-
-// import type { BasicThreadable } from '../types/BasicThreadable';
 
 /*                     TRUTH TABLE
 ----------------------------------------------------------
@@ -48,12 +46,25 @@ export interface FactoryArtefact {
   initData: () => void;
 }
 
-export const debugId = new WeakMap<object, number>();
+
+/** A module-wide collection of known variables 
+ */
+const debugId = new WeakMap<object, number>();
 let _idCounter = 1;
 
-export function idOf(obj: object) {
+/**
+ * idOf
+ * A hashing function to convert <Structures> to unique-ids
+ * Due to small scale here, returns number, not UUID
+ * DO NOT USE IN PRODUCTION BUILDS, OR FOR FEATURES
+ 
+ * @param {object} obj
+ * @public
+ * @returns {number}
+ */
+export function idOf(obj: object):number {
   if (!debugId.has(obj)) debugId.set(obj, _idCounter++);
-  return debugId.get(obj);
+  return debugId.get(obj) ?? -1;
 }
 
 /*
@@ -95,7 +106,6 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
  */
   async function currentNetworkConfig(): Promise<void> {
     let d4: MessageDistribution;
-    let data: ListService;
     if (ret.currentData && (await ret.currentData.poll())) {
       return;
     }
@@ -107,7 +117,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
       ret.currentData = new NetworkedListService(d2, d3);
     } else {
       d4 = useMsgDistrib() as MessageDistribution;
-      await d4.forkThread();
+      d4.forkThread();
       ret.currentData = new NetworkedListService(d4 as DistantStorable, d3);
     }
   }
@@ -119,7 +129,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
    * @public
    * @returns {void}
    */
-  function initData() {
+  function initData():void {
     void currentNetworkConfig();
   }
 
@@ -213,62 +223,4 @@ export function setupCurrentList(itinéraire: undefined | RouteLocationNormalize
   } else {
     return liste;
   }
-}
-
-/**
- * setupCurrentList_BLOCKING
- * Setup the current AList, rather than the known lists.
- * May add further ways to set the list id in later editions.
- 
- * @param {undefined|RouteLocationNormalizedLoadedGeneric} itinéraire ~ huge great big type is from vue-router
- * @public
- * @returns {Promise<AList>}
- */
-function setupCurrentList_BLOCKING(itinéraire: undefined | RouteLocationNormalizedLoadedGeneric): Promise<AList> {
-  const DUMMY_LIST: AList = AList.manual("Empty list", 1);
-  let id: number = 0;
-  let liste = DUMMY_LIST;
-  let currentData: ListCollection | undefined = ListData.currentData;
-  try {
-    if (!itinéraire) {
-      itinéraire = useRoute();
-    }
-
-    id = extractId(itinéraire.params.index);
-    liste = DUMMY_LIST;
-    let currentData: ListCollection | undefined = ListData.currentData;
-    if (currentData) {
-      liste = currentData.get(id) ?? DUMMY_LIST;
-    }
-  } catch (e) {
-    let backupId = 0;
-    if (currentData) {
-      backupId = currentData.create("New list");
-    }
-    // the second branch is stupid, but shouldnt be possible
-    liste = DUMMY_LIST;
-    if (currentData) {
-      liste = currentData.get(backupId) ?? DUMMY_LIST;
-    }
-    id = backupId;
-  }
-
-  if (!currentData || currentData.count() === 0) {
-    // if this reference doesn't happen to be the first mention, it will have API content
-    // I wish I could use Promises.then, but I can't really make the data() async
-    // API should never take more than 500ms, as its not doing much, and its on LAN
-
-    setTimeout(() => {
-      if (!currentData) {
-        console.warn("ThisList component has no data after 0.5s, check the API is running.");
-        liste = DUMMY_LIST;
-        return Promise.resolve(DUMMY_LIST);
-      }
-      liste = currentData.get(id) ?? DUMMY_LIST;
-      return Promise.resolve(liste);
-    }, DELAY_FOR_API);
-  } else {
-    return Promise.resolve(liste);
-  }
-  // typescript demands I add an extra return value here
 }

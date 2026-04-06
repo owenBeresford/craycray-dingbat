@@ -1,5 +1,5 @@
 export interface BasicThreadable {
-  forkThread(): Promise<boolean>;
+  forkThread(): boolean;
   reapThread(): boolean;
 
   poll(): Promise<boolean>;

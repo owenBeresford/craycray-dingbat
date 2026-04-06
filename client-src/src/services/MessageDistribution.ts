@@ -51,10 +51,11 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
     this.goodSource = location.protocol + "//" + location.hostname + ":" + location.port;
   }
 
-  public async forkThread(): Promise<boolean> {
+  public forkThread(): boolean {
     try {
       if (typeof global.Worker === "object") {
-        this.worker = await new Worker(MSG_THREAD, { credentials: "same-origin", name: "NUDGE", type: "module" });
+        // eslint says not to await on this...??
+        this.worker = new Worker(MSG_THREAD, { credentials: "same-origin", name: "NUDGE", type: "module" });
       }
       if (!this.worker) {
         throw Error("84564234234266 I'm sooo confuuuuzed error (see code) ");
@@ -63,8 +64,8 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
       this.worker.onmessage = this.receipt.bind(this);
       this.running = true;
       return true;
-    } catch (ee) {
-      console.warn("Thread: " + typeof ee + " " + ee, "\n", this.goodSource);
+    } catch (ee:unknown) {
+      console.warn("Thread: " + (typeof ee )+ " " + (ee as Error).message, "\n", this.goodSource);
       return false;
     }
   }
@@ -84,10 +85,11 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
   }
 
   protected receipt(ev: MessageEvent): void {
+    const local: ShippingStruct= ev.data as  ShippingStruct;
     console.log(
-      "TEST recieved MSG to " + ev.origin + " from " + ev.source,
-      ev.data.action,
-      ev.data.data,
+      "TEST recieved MSG to " + ev.origin + " from " +( ev.source ?? "[unknown]"),
+      local.action,
+      local.data,
       "isolated",
       typeof crossOriginIsolated,
       crossOriginIsolated
@@ -97,29 +99,29 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
       return;
     }
 
-    if (!ev.data.action) {
-      console.warn("Received bad message; not processed ", ev.data);
+    if (!local.action) {
+      console.warn("Received bad message; not processed ", local);
       return;
     }
     let used = false;
-    if (ev.data.action === ("load-payload" as ActionEnum)) {
+    if (local.action === ("load-payload" as ActionEnum)) {
       // maybe IOIO TODO a smarter/stronger type conversion.  I control sender and receiver
-      this.state = transform2list(ev.data.data) as Array<SaveStruct>;
+      this.state = transform2list(local.data) as Array<SaveStruct>;
       if (this.state.length === 0) {
         console.warn("Loaded an empty dataset from worker thread.");
       }
       used = true;
     }
-    if (ev.data.action === ("error-payload" as ActionEnum) && ev.data.data.length > 0) {
-      this.errMsgs.push(ev.data.data as string);
+    if (local.action === ("error-payload" as ActionEnum) && local.data.length > 0) {
+      this.errMsgs.push(local.data as string);
       used = true;
     }
-    if (ev.data.action === ("status-payload" as ActionEnum)) {
-      console.log("TEST **Add more code here**\n[ STATUS REPORT ]=", ev.data.data);
+    if (local.action === ("status-payload" as ActionEnum)) {
+      console.log("TEST **Add more code here**\n[ STATUS REPORT ]=", local.data);
       used = true;
     }
     if (!used) {
-      console.warn("Received bad message; not processed ", ev.data);
+      console.warn("Received bad message; not processed ", local);
     }
   }
 
@@ -182,14 +184,14 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
           }
           bad(new Error("No response from worker thread in " + PMQUE_ATTEMPTS + "*" + PMQUE_TIMER + "ms.  Aborting "));
         } else {
-          hndl = await +setTimeout(ATTEMPT, PMQUE_TIMER);
+          hndl = +setTimeout(ATTEMPT, PMQUE_TIMER);
         }
       }
     };
 
     return new Promise((good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
       hndl = +setTimeout(() => {
-        return ATTEMPT(good, bad);
+        ATTEMPT(good, bad);
       }, PMQUE_TIMER);
     });
   }

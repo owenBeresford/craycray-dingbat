@@ -92,7 +92,7 @@ describe("test on MesageDistribution ", () => {
   it("Can use MessageDistribution ", async () => {
     let obj: BasicThreadable = useMsgDistrib() as unknown as BasicThreadable;
     assertType<BasicThreadable>(obj);
-    await (obj as unknown as MessageDistribution).forkThread();
+    (obj as unknown as MessageDistribution).forkThread();
 
     expect(await obj.poll()).toBe(true);
     expect(await obj.reapThread()).toBe(true);
@@ -102,7 +102,7 @@ describe("test on MesageDistribution ", () => {
   it("Can use MessageDistribution saveState (2)", async () => {
     let obj = useMsgDistrib();
     expect(obj instanceof MessageDistribution).toBe(true);
-    await (obj as unknown as MessageDistribution).forkThread();
+    (obj as unknown as MessageDistribution).forkThread();
 
     const msg1 = {
       name: "empty list",
@@ -156,10 +156,10 @@ describe("test on MesageDistribution ", () => {
     expect(await obj.saveState([msg1, msg2, msg3])).toBe(true);
   });
 
-  it("Can use MessageDistribution loadState (2)", async () => {
+  it("Can use MessageDistribution loadState (2)", () => {
     let obj = useMsgDistrib();
     expect(obj instanceof MessageDistribution).toBe(true);
-    await (obj as unknown as MessageDistribution).forkThread();
+    (obj as unknown as MessageDistribution).forkThread();
 
     const DAT = await obj.loadState();
     expect(typeof DAT).toBe("object");

@@ -2,7 +2,7 @@ import { AList, EMPTY_LIST } from "./AList";
 
 import type { SaveStruct } from "../types/Saveable";
 import type { ListCollection } from "../types/ListCollection";
-import type { Listable, ListStruct } from "../types/ListCollection";
+import type { ListStruct } from "../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
 // import type { LocalCopy } from "./LocalCopy";
 // import { MessageDistribution } from "./MessageDistribution";

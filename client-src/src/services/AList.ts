@@ -1,6 +1,14 @@
 import { JsonSerializer, throwError, JsonProperty, JsonObject } from "typescript-json-serializer";
 import type { Listable, ListStruct, TestDataSchema } from "../types/ListCollection";
 
+/**
+ * convertEpoch2Date
+ * Just type conversion function
+ 
+ * @param {number} i
+ * @public
+ * @returns {Date}
+ */
 function convertEpoch2Date(i: number): Date {
   return new Date(i);
 }
@@ -179,7 +187,7 @@ export class AList implements Listable, ListStruct {
    * @returns {boolean}
    */
   public unique(): boolean {
-    const s: Set<string> = new Set(this.éléments);
+    const s: Set<string> = new Set<string>(this.éléments);
     this.éléments.splice(0, this.éléments.length);
     this.éléments.push(...s);
     this.modifié = new Date();

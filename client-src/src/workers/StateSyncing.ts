@@ -30,9 +30,9 @@ console.log("CODE under TEST started " + process.pid, goodSource);
  */
 self.onmessage = async function (ev: MessageEvent): Promise<void> {
   console.log(
-    "TEST2 received MSG to " + ev.origin + " from " + ev.source,
-    ev.data.action,
-    ev.data.data,
+    "TEST2 received MSG to " + ev.origin + " from " , ev.source,
+    (ev.data as ShippingStruct).action,
+    (ev.data as ShippingStruct).data,
     "isolated",
     typeof crossOriginIsolated,
     crossOriginIsolated
@@ -42,7 +42,7 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
     return;
   }
 
-  const payload: ShippingStruct = ev.data;
+  const payload: ShippingStruct = ev.data as ShippingStruct;
   let isDone = false;
 
   if (("save-payload" as ActionEnum) === payload.action) {
@@ -77,7 +77,7 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
  * @returns {void}
  */
 self.onmessageerror = (e: unknown): void => {
-  console.warn("WORKER: got bad message " + e);
+  console.warn("WORKER: got bad message " , (e as Error));
 };
 
 console.log("CODE under TEST end module ", typeof self);

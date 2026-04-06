@@ -8,7 +8,7 @@ import { wrap_getMyIP } from "../services/util";
 import { useStore } from "../services/Store";
 import { ListData } from "../services/DataFactory";
 
-const { currentData, initData } = ListData;
+const { currentData, updateData, initData } = ListData;
 /**
    * StaticRoutes
    * ilibrary standard file, holding the mspping of URN to Componment/ screen
