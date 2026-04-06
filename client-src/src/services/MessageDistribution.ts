@@ -24,7 +24,8 @@ export function useMsgDistrib(): DistantStorable {
  * MessageDistribution 
  * Class to marshal state between the net-worker thread, and this UI thread 
 // Sends/recvs messages to the other worker thread that talks to the server
- *
+ * This class is chatty, as it is highly likely to slow the UI in a fashion I cannot prohibit.
+
  * @public
  */
 export class MessageDistribution implements DistantStorable, BasicThreadable {
@@ -51,6 +52,14 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
     this.goodSource = location.protocol + "//" + location.hostname + ":" + location.port;
   }
 
+  /**
+   * forkThread
+   * Attempt to fork a new thread.
+
+   * @throws Exception - if not in HTTPS, so no Worker allowed
+   * @public
+   * @returns {boolean}
+   */
   public forkThread(): boolean {
     try {
       if (typeof global.Worker === "object") {
@@ -70,6 +79,13 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
     }
   }
 
+  /**
+   * reapThread
+   * Cautiously terminates any threads
+ 
+   * @public
+   * @returns {boolean}
+   */
   public reapThread(): boolean {
     if (!this.running) {
       console.warn("No Thread to kill");
@@ -84,6 +100,15 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
     return true;
   }
 
+  /**
+   * receipt
+   * A typical JS on* event handler, for MSG from the other thread/ worker
+ 
+   * WARN: is chatty.
+   * @param {MessageEvent} ev
+   * @public
+   * @returns {void}
+   */
   protected receipt(ev: MessageEvent): void {
     const local: ShippingStruct= ev.data as  ShippingStruct;
     console.log(
@@ -125,18 +150,41 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
     }
   }
 
+  /**
+   * poll
+   * Replies if connected to a running server. 
+   * has good odds of being positive
+ 
+   * @public
+   * @return {Promise<boolean>}
+   */
   public poll(): Promise<boolean> {
-    // has good odds of being positive
     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       return good(this.running);
     });
   }
 
+  /**
+   * getErrors
+   * Return a copy of any errors
+ 
+   * @public
+   * @returns {Array<string> }
+   */
   public getErrors(): Array<string> {
     return [...this.errMsgs];
   }
 
+  /**
+   * saveState
+   * Push current state to thead so can be uploaded to server at a point.
+ 
+   * @param {Array<SaveStruct>} dat
+   * @public
+   * @returns {Promise<boolean>}
+   */
   public saveState(dat: Array<SaveStruct>): Promise<boolean> {
+    
     console.log("TEST sending MSG from the UI to the worker");
     if (!this.worker) {
       console.assert(this.worker != null, "986634563523, Worker thread should be active now");
@@ -153,6 +201,13 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
     });
   }
 
+/**
+ * loadState
+ * Request state from server via thread.
+ 
+ * @public
+ * @returns {Promise<Array<SaveStruct>> }
+ */
   public async loadState(): Promise<Array<SaveStruct>> {
     const LOCAL: ShippingStruct = packMsg("load-request", []);
     if (!this.worker) {
@@ -195,6 +250,9 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
       }, PMQUE_TIMER);
     });
   }
+
+
+
 
   // saveProperty(nom:string, dat:string):boolean
   private saveProperty(): boolean {
