@@ -1,5 +1,3 @@
-import type { DistantStorable } from "./RemoteTypes";
-import type { LocalCopy } from "../services/LocalCopy";
 import { AList } from "../services/AList";
 
 export interface ListCollection {

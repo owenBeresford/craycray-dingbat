@@ -139,8 +139,8 @@ export default defineComponent({
         currentTitle: TEXT.get("list.curListsTitle"),
         addName: TEXT.get("list.addItemName"),
       },
-      childId: this.$props.testId + "child1",
-      nextTestId: this.$props.testId + "input1",
+      childId: this.$props.testId + "Child1",
+      nextTestId: this.$props.testId + "Input1",
       aListId: this.$props.testId + "List1",
     } as ThisListProps;
   },

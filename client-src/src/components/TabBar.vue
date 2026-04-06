@@ -76,7 +76,7 @@
         </li>
       </ul>
     </div>
-    <EnterInput :val="getInput" :visible="visible" :cb="CB" :data-testid="-1" :currentStateKey="EIK"></EnterInput>
+    <EnterInput :val="getInput" :visible="visible" :cb="CB" :data-testid="inputId" :currentStateKey="EIK"></EnterInput>
   </div>
 </template>
 
@@ -136,6 +136,7 @@ export default defineComponent({
       CACHE: CACHE,
       buttonEnabled: tt,
       EIK: this.$props.currentStateKey + "false",
+      inputId: this.testId +"input1",
       menuId: this.testId + "Menu1",
       urls: [mapURL("allList", null), mapURL("aList", -1)],
       menu: {

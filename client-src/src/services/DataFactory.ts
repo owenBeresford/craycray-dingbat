@@ -55,7 +55,7 @@ let _idCounter = 1;
 /**
  * idOf
  * A hashing function to convert <Structures> to unique-ids
- * Due to small scale here, returns number, not UUID
+ * Due to small scale here, returns number, not a UUID
  * DO NOT USE IN PRODUCTION BUILDS, OR FOR FEATURES
  
  * @param {object} obj

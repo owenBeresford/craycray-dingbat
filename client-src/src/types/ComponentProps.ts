@@ -43,6 +43,7 @@ export interface TabBarProps {
   buttonEnabled: string;
   EIK: string;
   menuId: string;
+  inputId:string;
   urls: Array<string>;
   menu: Record<string, string>; // l12n data
 }

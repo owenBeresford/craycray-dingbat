@@ -118,7 +118,7 @@ export default defineComponent({
       if (val) {
         setTimeout(() => {
           const theField: HTMLInputElement = this.$refs.enterIt as HTMLInputElement;
-          theField.focus();
+          theField && theField.focus();
         }, 100);
       }
     },

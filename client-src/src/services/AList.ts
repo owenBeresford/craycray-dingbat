@@ -121,6 +121,7 @@ export class AList implements Listable, ListStruct {
   /**
    * edit
    * change an entry in the list
+   * Maybe should rename to editItem() ?
  
    * @param {number} offset
    * @param {string} nouveau
