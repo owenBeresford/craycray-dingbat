@@ -154,3 +154,37 @@ export function fixture4(): Array<TestDataSchema> {
     } as TestDataSchema,
   ];
 }
+
+export function simple_fixture1( ):Array<TestDataSchema> {
+  return [
+     {
+      name: "list 1",
+      created: new Date(),
+      edited: new Date(),
+      count: 3,
+      id: 1,
+      list: [
+        "thing 1",
+        "thing 2",
+        "thing 3",
+      ],
+    } as TestDataSchema,   
+  ];
+}
+
+export function simple_fixture2( ):Array<TestDataSchema> {
+  return [
+     {
+      name: "list 2",
+      created: new Date(),
+      edited: new Date(),
+      count: 3,
+      id: 100,
+      list: [
+        "thing 1b",
+        "thing 2b",
+        "thing 3b",
+      ],
+    } as TestDataSchema,   
+  ];
+}
