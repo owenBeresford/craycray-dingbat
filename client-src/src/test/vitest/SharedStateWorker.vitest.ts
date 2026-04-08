@@ -3,6 +3,7 @@ import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vite
 
 import { SharedStateWorker, useSSW } from "../../workers/SharedStateWorker";
 import type { SaveStruct, DelayCallbackType, DataPipeline } from "../../types/Saveable";
+
 import { TestLocation } from "../MockLocation";
 
 describe("test on SharedStateWorker ", () => {
@@ -18,7 +19,7 @@ describe("test on SharedStateWorker ", () => {
     let txt = useSSW(location);
     expect(typeof txt).toBe("object");
 
-    let dat = [
+    let dat:Array<SaveStruct> = [
       {
         name: "list1 ",
         created: new Date().getTime(),
@@ -97,7 +98,7 @@ describe("test on SharedStateWorker ", () => {
     let txt = useSSW(location);
     expect(typeof txt).toBe("object");
 
-    let dat = [
+    let dat:Array<SaveStruct> = [
       {
         name: "list1 ",
         created: new Date().getTime(),
@@ -115,7 +116,7 @@ describe("test on SharedStateWorker ", () => {
     let txt = useSSW(new TestLocation(url));
     expect(typeof txt).toBe("object");
     // IOIO start thread first
-    let dat = []; // IOIO
+    let dat:Array<SaveStruct> = []; // IOIO
     expect(await txt.pushWhenAble(dat)).equal(true);
 
     dat = [];
