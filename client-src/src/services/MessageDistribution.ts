@@ -156,7 +156,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
    * has good odds of being positive
  
    * @public
-   * @return {Promise<boolean>}
+   * @returns {Promise<boolean>}
    */
   public poll(): Promise<boolean> {
     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {

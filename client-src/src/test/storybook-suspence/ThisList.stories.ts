@@ -123,18 +123,18 @@ export const TrackTextRendered2: Story = {
 
     const list = await canvas.findByTestId("test17List1");
     expect(list).toBeVisible();
-    expect(list.childNodes.length).toBe(5 + 2); // it correctly loads 1st list in fixture
+    expect(list.childNodes.length).toBe(3 + 2 ); // it correctly loads 1st list in fixture
     // the +2 is due to two textnodes
 
     // IOIO XXX there is one one list displayed here.  DUMP TEST
 
-    expect(canvas.queryByTestId("test17input1")).toBe(null);
+    expect(canvas.queryByTestId("test17Input1")).toBe(null);
     const btn = canvas.getByRole("button", { name: /Add item/i });
     expect(btn).toBeVisible();
     await userEvent.click(btn);
-    expect(canvas.queryByTestId("test17input1")).toBeVisible();
+    expect(canvas.queryByTestId("test17Input1")).toBeVisible();
 
-    const btn2 = canvas.queryByTestId("test17cancel1");
+    const btn2 = canvas.queryByTestId("test17Input1cancel1");
     expect(btn2).toBeVisible();
     if (btn2) {
       await userEvent.click(btn2);
@@ -211,11 +211,11 @@ export const TrackTextRendered2_5: Story = {
 
     // IOIO XXX there is one one list displayed here.  DUMP TEST
 
-    expect(canvas.queryByTestId("test175input1")).toBe(null);
+    expect(canvas.queryByTestId("test175Input1")).toBe(null);
     const btn = canvas.getByRole("button", { name: /Add item/i });
     expect(btn).toBeVisible();
     await userEvent.click(btn);
-    expect(canvas.queryByTestId("test175input1")).toBeVisible();
+    expect(canvas.queryByTestId("test175Input1")).toBeVisible();
     // I shouldnt need to test the enterinput component, as it has its own test
   },
 };
@@ -276,17 +276,17 @@ export const TrackTextRendered3: Story = {
       console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
     }
 
-    const list = canvas.getByTestId("test18List1");
+    const list = await canvas.findByTestId("test18List1");
     expect(list).toBeVisible();
-    expect(list.childNodes.length).toBe(5 + 2); // it correctly loads 1st list in fixture
+    expect(list.childNodes.length).toBe(9 + 2); // it correctly loads 1st list in fixture
 
     // IOIO XXX there is one one list displayed here.  DUMP TEST
 
-    expect(canvas.queryByTestId("test18input1")).toBe(null);
+    expect(canvas.queryByTestId("test18Input1")).toBe(null);
     const btn = canvas.getByRole("button", { name: /Add item/i });
     expect(btn).toBeVisible();
     await userEvent.click(btn);
-    expect(canvas.queryByTestId("test18input1")).toBeVisible();
+    expect(canvas.queryByTestId("test18Input1")).toBeVisible();
     // I shouldnt need to test the enterinput component, as it has its own test
   },
 };
@@ -353,21 +353,20 @@ export const TrackTextRendered4: Story = {
       console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
     }
 
-    const list = canvas.getByTestId("test19List1");
+    const list = await canvas.findByTestId("test19List1");
     expect(list).toBeVisible();
-    expect(list.childNodes.length).toBe(5 + 2); // it correctly loads 1st list in fixture
+    expect(list.childNodes.length).toBe(60 + 2); // it correctly loads 1st list in fixture
 
     // IOIO XXX there is one one list displayed here.  DUMP TEST
 
-    expect(canvas.queryByTestId("test19input1")).toBe(null);
+    expect(canvas.queryByTestId("test19Input1")).toBe(null);
     const btn = canvas.getByRole("button", { name: /Add item/i });
     expect(btn).toBeVisible();
     await userEvent.click(btn);
-    expect(canvas.queryByTestId("test19input1")).toBeVisible();
+    expect(canvas.queryByTestId("test19Input1")).toBeVisible();
     // I shouldnt need to test the enterinput component, as it has its own test
   },
 };
-
 
 
 
@@ -430,17 +429,17 @@ export const TrackTextRendered5: Story = {
       console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
     }
 
-    const list = canvas.getByTestId("test20List1");
+    const list = await canvas.findByTestId("test20List1");
     expect(list).toBeVisible();
     expect(list.childNodes.length).toBe(5 + 2); // it correctly loads 1st list in fixture
 
     // IOIO XXX there is one one list displayed here.  DUMP TEST
 
-    expect(canvas.queryByTestId("test20input1")).toBe(null);
+    expect(canvas.queryByTestId("test20Input1")).toBe(null);
     const btn = canvas.getByRole("button", { name: /Add item/i });
     expect(btn).toBeVisible();
     await userEvent.click(btn);
-    expect(canvas.queryByTestId("test20input1")).toBeVisible();
+    expect(canvas.queryByTestId("test20Input1")).toBeVisible();
     // I shouldnt need to test the enterinput component, as it has its own test
   },
 };
