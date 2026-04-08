@@ -58,17 +58,21 @@ export const EntirelyPassive: Story = {
     testId: "test16",
     shopStore: STORE,
   },
-}; //  await waitFor(() => expect(args.onSubmit).toHaveBeenCalled());
+}; 
+
+//  await waitFor(() => expect(args.onSubmit).toHaveBeenCalled());
+
 
 export const TrackTextRendered2: Story = {
   //////////////////////////////////////////////////////////////////////////////
   // https://github.com/storybookjs/storybook/blob/a3cdabb025524822807318bc137f69be006596c2/docs/snippets/web-components/api-doc-block-story-parameter.ts.mdx#L17
-
+  /*
   parameters: {
     docs: {
       story: { autoplay: true },
     },
   },
+  */
   ///////////////////////////////////////////////////////////////////////////////
   render: (args, { loaded }) => {
     // https://router.vuejs.org/api/interfaces/Router.html#isReady-

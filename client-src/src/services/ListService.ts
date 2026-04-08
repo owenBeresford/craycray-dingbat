@@ -147,7 +147,7 @@ export class ListService implements ListCollection {
    */
   public get(id: number): AList | undefined {
     if (this.isNotValidId(id) || !(id in this.catalog)) {
-      console.warn("ERROR: Cannot load list with id=" + id + " " + JSON.stringify(this.catalog));
+      console.warn("ERROR: Cannot load list with id=" + id + " " + JSON.stringify(this.catalog.keys()));
       return undefined;
     }
     let tmp = this.catalog[id];

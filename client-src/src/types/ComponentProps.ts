@@ -7,6 +7,8 @@ export interface ListOfListsProps {
   instanceId: string;
   shoppingLists: Array<ListStruct>;
   mapURL: (a: string, b: number | null) => string;
+  viewId:string;
+  listId:string;
 }
 
 export interface ThisListProps {
@@ -21,6 +23,7 @@ export interface ThisListProps {
   nextTestId: string;
   bisMobile: boolean;
   aListId: string;
+  viewId:string;
   text: Record<string, string>;
 }
 
