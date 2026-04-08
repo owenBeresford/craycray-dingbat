@@ -2,10 +2,10 @@
 // chatbot wanted this, its not actually needed, so I commented it :-)
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 
-import { MessageDistribution, useMsgDistrib } from "../services/MessageDistribution";
-import type { DistantStorable } from "../types/RemoteTypes";
-import type { BasicThreadable } from "../types/BasicThreadable";
-import type { SaveStruct } from "../types/Saveable";
+import { MessageDistribution, useMsgDistrib } from "../../services/MessageDistribution";
+import type { DistantStorable } from "../../types/RemoteTypes";
+import type { BasicThreadable } from "../../types/BasicThreadable";
+import type { SaveStruct } from "../../types/Saveable";
 
 describe("test on MesageDistribution ", () => {
   it("Can use useMsgDistrib", () => {
@@ -156,7 +156,7 @@ describe("test on MesageDistribution ", () => {
     expect(await obj.saveState([msg1, msg2, msg3])).toBe(true);
   });
 
-  it("Can use MessageDistribution loadState (2)", () => {
+  it("Can use MessageDistribution loadState (2)", async () => {
     let obj = useMsgDistrib();
     expect(obj instanceof MessageDistribution).toBe(true);
     (obj as unknown as MessageDistribution).forkThread();

@@ -1,16 +1,16 @@
 // import 'reflect-metadata';
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 
-import { SharedStateWorker, useSSW } from "../workers/SharedStateWorker";
-import { SaveStruct, DelayCallbackType, DataPipeline } from "../types/Saveable";
-import { TestLocation } from "./MockLocation";
+import { SharedStateWorker, useSSW } from "../../workers/SharedStateWorker";
+import type { SaveStruct, DelayCallbackType, DataPipeline } from "../../types/Saveable";
+import { TestLocation } from "../MockLocation";
 
 describe("test on SharedStateWorker ", () => {
   it("Can create SharedStateWorker ", () => {
     let txt = useSSW(location);
     expect(typeof txt).toBe("object");
 
-    assertType<SharedStateWorker>(txt);
+    assertType<DataPipeline>(txt);
     expectTypeOf(txt).toExtend<DataPipeline>();
   });
 

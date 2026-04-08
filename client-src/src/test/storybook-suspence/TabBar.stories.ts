@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { expect, fn, within, userEvent } from "storybook/test";
 
-import TabBar from "../components/TabBar.vue";
+import TabBar from "../../components/TabBar.vue";
+// this needs suspence
+
 
 const meta: Meta<typeof TabBar> = {
   component: TabBar,

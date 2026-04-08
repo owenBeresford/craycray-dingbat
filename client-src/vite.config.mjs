@@ -55,4 +55,23 @@ export default defineConfig({
   },
 });
 
+/*
+export default defineConfig({
+  optimizeDeps: { // remove spaces from regex
+    exclude: ["tests /* * / * .stories. * "],
+  },
+  plugins: [
+    {
+      name: "exclude-storybook-tests",
+      enforce: "pre",
+      transform(_, id) {
+        if (id.match(/\.stories\./)) {
+          return { code: "", map: null };
+        }
+      },
+    },
+  ],
+});
+*/
+
 // vim: syn=javascript nospell

@@ -1,6 +1,6 @@
 import { assert, describe, it, expect } from "vitest";
 
-import { mapURL } from "../services/URLs";
+import { mapURL } from "../../services/URLs";
 
 describe("I can run URLs", () => {
   it("I can create it", () => {

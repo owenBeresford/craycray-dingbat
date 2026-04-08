@@ -1,8 +1,8 @@
 import { assert, describe, it, expect } from "vitest";
 
-import { transform2list, transform2text } from "../services/Storable";
-import type { PromiseSucceed, PromiseReject } from "../types/promises";
-import { SaveStruct } from "../types/Saveable";
+import { transform2list, transform2text } from "../../services/Storable";
+import type { PromiseSucceed, PromiseReject } from "../../types/promises";
+import type { SaveStruct } from "../../types/Saveable";
 
 describe("I can run Storable", () => {
   it("I can transform2list", (): Promise<boolean> => {

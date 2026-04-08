@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { expect, fn, within, waitFor, userEvent } from "storybook/test";
 
-import IntersttitialView from "../components/InterstitialView.vue";
-import { isMobile, delay } from "../services/util";
+import IntersttitialView from "../../components/InterstitialView.vue";
+import { isMobile, delay } from "../../services/util";
 
 const meta: Meta<typeof IntersttitialView> = {
   component: IntersttitialView,

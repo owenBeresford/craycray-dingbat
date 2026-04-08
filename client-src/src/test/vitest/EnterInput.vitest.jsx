@@ -3,9 +3,9 @@ import { assert, describe, expect, it } from "vitest";
 import { mount } from "@vue/test-utils";
 import Vue3TouchEvents from "vue3-touch-events";
 
-import EnterInput from "../components/EnterInput.vue";
-// import { isMobile, nextId } from "../services/util";
-import { UI_EN_GB, useUIText } from "../services/Localisation";
+import EnterInput from "../../components/EnterInput.vue";
+// import { isMobile, nextId } from "../../services/util";
+import { UI_EN_GB, useUIText } from "../../services/Localisation";
 
 // IOIO docs say need to swap find() -> findComponent()
 // https://v1.test-utils.vuejs.org/api/wrapper/getComponent.html
@@ -31,6 +31,7 @@ describe("Simple component test 1", () => {
         visible: canSeeInput,
         cb: cb,
         currentStateKey: "test1",
+        testid: "nextTestId" ,
       },
       sync: true,
       global: {
@@ -41,7 +42,7 @@ describe("Simple component test 1", () => {
     });
     //  screen.debug() says this isn't mounted to a DOM, but this is Node so that doesnt mean much..
 
-    expect(BLOB.find("dialog[data-testid=obj1]").exists()).toBe(true);
+    expect(BLOB.find("dialog[data-testid=nextTestId]").exists()).toBe(true);
     expect(BLOB.find("span.cancel").exists()).toBe(true);
     expect(BLOB.find('input[type="button"]').exists()).toBe(true);
     expect(BLOB.vm.oVal).toEqual("");
@@ -69,6 +70,7 @@ describe("Simple component test 1", () => {
         visible: canSeeInput,
         cb: cb,
         currentStateKey: "test1",
+        testid: "nextTestId2" ,      
       },
       global: {
         stubs: ["vue3-touch-events"],
@@ -77,7 +79,7 @@ describe("Simple component test 1", () => {
       },
     });
 
-    expect(BLOB.find("dialog[data-testid=obj2]").exists()).toBe(true);
+    expect(BLOB.find("dialog[data-testid=nextTestId2]").exists()).toBe(true);
   });
 
   /*

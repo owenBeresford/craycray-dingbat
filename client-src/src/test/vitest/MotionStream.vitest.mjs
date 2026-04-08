@@ -1,7 +1,7 @@
 import { assert, describe, it, expect } from "vitest";
 
 import { Vector } from "vector2d";
-import { MotionStream } from "../services/MotionStream";
+import { MotionStream } from "../../services/MotionStream";
 
 describe("I can run MotionStream", () => {
   it("I can create it", () => {

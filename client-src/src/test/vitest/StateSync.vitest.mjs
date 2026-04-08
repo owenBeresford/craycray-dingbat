@@ -9,10 +9,10 @@ import {
   expectTypeOf,
   assertType,
 } from "vitest";
-import { ShippingStruct, ActionEnum } from "../types/Messagable";
-import { transform2list, packMsg } from "../services/Storable";
+import { ShippingStruct, ActionEnum } from "../../types/Messagable";
+import { transform2list, packMsg } from "../../services/Storable";
 
-import * as StateSync from "../workers/StateSyncing";
+import * as StateSync from "../../workers/StateSyncing";
 
 defineWebWorkers({ clone: "none" });
 

@@ -1,0 +1,162 @@
+import { assert, describe, it, expect, expectTypeOf, assertType } from "vitest";
+import { LocalStorage } from "node-localstorage";
+
+import { ListService } from "../../services/ListService";
+import { AList } from "../../services/AList";
+import { createDataFactory } from "../../services/DataFactory";
+import type {FactoryArtefact} from "../../services/DataFactory";
+import type { ListStruct, Listable, ListCollection } from "../../types/ListCollection";
+import type { PromiseSucceed, PromiseReject } from "../../types/promises";
+import { fixture1, fixture2, fixture3, fixture4 } from '../fixture-lists';
+
+global.localStorage = new LocalStorage("./build/scratch");
+
+// the createDataFactory with args is tested via storybook tests, which is why it exists.
+describe("I can use ListService", () => {
+  // this ought to be run multiple times in different network settings
+  // or maybe leave that to DataFactory test
+  it("I can create it", (): Promise<boolean> => {
+    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
+      expect(typeof ListService).toBe("function");
+      let tt: FactoryArtefact = await createDataFactory( fixture1() );
+      expect(typeof tt).toBe("object");
+      if(!tt.currentData ) { bad(new Error("#toFix Fixture returned null?")); return; }
+      assertType<FactoryArtefact>(tt);
+      assertType<ListCollection>(tt.currentData );
+      
+      good(true);
+    });
+  });
+
+  it("I can create items", (): Promise<boolean> => {
+    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
+      const FACT:FactoryArtefact = await createDataFactory(fixture1() );
+      if(!FACT.currentData ) { bad(new Error("#toFix Fixture returned null?"));  return; }
+      const ls: ListCollection =FACT.currentData ;
+      
+      expect(ls.create("item1")).toBe(1);
+      expect(ls.create("item2")).toBe(2);
+      expect(ls.count()).toBe(2);
+
+      const FACT2:FactoryArtefact = await createDataFactory( fixture3() );
+      if(!FACT2.currentData ) { bad(new Error("#toFix Fixture returned null?"));  return; }
+      const ls2: ListCollection =FACT2.currentData;
+      
+      expect(ls2.create("item3")).toBe(3);
+      expect(ls2.create("item4")).toBe(4);
+      expect(ls2.count()).toBe(4);
+      good(true);
+    });
+  });
+
+  // i'm skipping  count(): number;
+
+  it("I can poll", (): Promise<boolean> => {
+    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
+      const FACT:FactoryArtefact = await createDataFactory(fixture1() );
+      if(!FACT.currentData ) { bad(new Error("#toFix Fixture returned null?"));  return; }
+      const ls: ListCollection =FACT.currentData;
+      expect(ls.poll()).toBe(true);
+      // something to enumerate other states
+      good(true);
+    });
+  });
+
+  it("I can delete", (): Promise<boolean> => {
+    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {      
+      const FACT:FactoryArtefact= await createDataFactory( fixture1() );
+      if(!FACT.currentData ) { bad(new Error("#toFix Fixture returned null?")); return; }      
+      const ls: ListCollection = FACT.currentData ;
+      expect(ls.create("item1")).toBe(1);
+      expect(ls.create("item2")).toBe(2);
+      expect(ls.create("item3")).toBe(3);
+
+      console.log("WERWER ", JSON.stringify(ls.list().keys()));
+      expect(ls.delete(1)).toBe(true);
+      console.log("WERWER2", JSON.stringify(ls.list().keys()));
+      expect(ls.count()).toBe(3);
+
+      console.log("WERWER ", JSON.stringify(ls.list().keys()));
+      expect(ls.delete(2)).toBe(true);
+      console.log("WERWER2", JSON.stringify(ls.list().keys()));
+      expect(ls.count()).toBe(3);
+
+      good(true);
+    });
+  });
+
+  it("I can get", (): Promise<boolean> => {
+    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
+      const FACT= await createDataFactory( fixture2() );
+      if(!FACT.currentData ) { bad(new Error("#toFix Fixture returned null?")); return; }
+
+      const ls: ListCollection = FACT.currentData ;
+      expect(ls.create("item1")).toBe(1);
+      expect(ls.create("item2")).toBe(2);
+      expect(ls.create("item3")).toBe(3);
+
+      let tmp: AList | undefined = ls.get(2);
+      expect(tmp instanceof AList).toBe(true);
+      tmp = ls.get(3);
+      expect(tmp instanceof AList).toBe(true);
+
+      tmp = ls.get(144);
+      expect(typeof tmp === "undefined").toBe(true);
+      good(true);
+    });
+  });
+
+  it("I can put", (): Promise<boolean> => {
+    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
+      const FACT= await createDataFactory( fixture1() );
+      if(!FACT.currentData ) { bad(new Error("#toFix Fixture returned null?")); return; }
+
+      const ls: ListCollection = FACT.currentData;
+      expect(ls.create("item1")).toBe(1);
+
+      expect(ls.put(2, AList.manual("item2", 2))).toBe(true);
+      // can overwrite
+      expect(ls.put(2, AList.manual("item2", 2))).toBe(true);
+
+      expect(ls.put(1024, AList.manual("item2", 1024))).toBe(true);
+      good(true);
+    });
+  });
+
+  it("I can list", (): Promise<boolean> => {
+    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
+      const FACT= await createDataFactory( fixture1() );
+      if(!FACT.currentData ) { bad(new Error("#toFix Fixture returned null?")); return; } 
+
+      const ls: ListCollection = FACT.currentData;
+      expect(ls.create("item1")).toBe(1);
+      expect(ls.create("item2")).toBe(2);
+      expect(ls.create("item3")).toBe(3);
+
+      expect(ls.list()).toBe(true);
+
+      good(true);
+    });
+  });
+
+  it("I can store ", (): Promise<boolean> => {
+    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
+      const FACT= await createDataFactory( fixture1() );
+      if(!FACT.currentData ) { bad(new Error("#toFix Fixture returned null?")); return; } 
+      const ls: ListCollection = FACT.currentData ;
+
+      expect(ls.create("item1")).toBe(1);
+      expect(ls.create("item2")).toBe(2);
+      expect(ls.create("item3")).toBe(3);
+
+      expect(ls.put(2, AList.manual("item2", 2))).toBe(true);
+      // can overwrite
+      expect(ls.put(2, AList.manual("item2", 2))).toBe(true);
+
+      expect(ls.put(1024, AList.manual("item2", 1024))).toBe(true);
+      good(true);
+    });
+  });
+
+  //  loadAllLists(): boolean ;
+});

@@ -1,21 +1,23 @@
 // import 'reflect-metadata';
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 
-import { DataFactory } from "../services/DataFactory";
+import { createDataFactory } from "../../services/DataFactory";
+import type { FactoryArtefact } from "../../services/DataFactory";
 
 describe("test on DataFactory ", () => {
   it("Can use DataFactory", async () => {
-    let txt = await DataFactory();
+    let txt = await createDataFactory(undefined);
     expect(typeof txt).toBe("object");
-    assertType<Function>(DataFactory);
-    expectTypeOf(txt).toExtend<ListCollection>();
+    assertType<Function>(createDataFactory);
+    expectTypeOf(txt).toExtend<FactoryArtefact>();
   });
 
   it("Can use DataFactory", async () => {
-    let txt = await DataFactory();
+    let txt = await createDataFactory(undefined);
     expect(typeof txt).toBe("object");
 
     // async function DataFactory(): Promise<ListCollection>
     console.log("IOIO XXX Networking objects, run dataFactory again, and show its different.");
   });
 });
+

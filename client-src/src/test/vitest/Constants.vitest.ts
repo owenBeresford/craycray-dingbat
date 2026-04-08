@@ -1,7 +1,7 @@
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 
-import { RemoteStorage } from "../services/RemoteStorage";
-import { createRemoteService } from "../Constants";
+import { RemoteStorage } from "../../services/RemoteStorage";
+import { createRemoteService } from "../../Constants";
 
 describe("test on Localisation", () => {
   it("Can use createRemoteService", () => {

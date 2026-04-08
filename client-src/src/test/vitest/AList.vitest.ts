@@ -48,7 +48,7 @@ describe("test on AList", () => {
     expect(AList.manual("test1", 1)).toBeTruthy();
 
     let tt = new AList();
-    tt.nom = "fgdf";
+    tt.nom = "NEWNAME";
     tt.créé = new Date();
     tt.modifié = new Date();
     tt.énumérer = 2;
@@ -56,4 +56,34 @@ describe("test on AList", () => {
     tt.éléments = [] as Array<string>;
     expect(tt).toBeTruthy();
   });
+
+  it("attempt2 ", () => {
+    let obj=AList.manual("test1", 1);
+    expect(obj).toBeTruthy();
+    obj.énumérer = 2;
+    obj.id = 1;
+    obj.éléments = ["werwerw", "dgdfgdfg"] as Array<string>;
+    expect(obj).toBeTruthy();
+
+    obj.add("adasd");
+    expect(obj.éléments).toEqual([ "werwerw", "dgdfgdfg", "adasd" ]);
+    expect(obj.export()).toEqual([ "werwerw", "dgdfgdfg", "adasd" ]);
+
+    expect(obj.view()).toBeTruthy();
+
+    obj.add("adasd");
+    obj.add("werwerw");
+    expect(obj.unique() ).toBeTruthy();
+    expect(obj.éléments).toEqual([ "werwerw", "dgdfgdfg", "adasd" ]);
+
+    expect(obj.editName("NEWNAME2" ) ).toBeTruthy();
+    expect(obj.editName("" ) ).not.toBeTruthy();
+    expect(obj.nom==="NEWNAME2").toBeTruthy();
+
+    obj.import( [ "dgdfgdfg", "adasd", "werwerw", "test1", ] );
+    expect(obj.énumérer).toEqual( 4);
+
+  });
+
+
 });

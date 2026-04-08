@@ -1,8 +1,8 @@
 // import 'reflect-metadata';
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 
-import { CacheWrapper, useCacheWrapper } from "../workers/InstallWorker";
-import { APP_NAME, APP_VERSION, REMOTE_HOST, INSTALLED } from "../Constants";
+import { CacheWrapper, useCacheWrapper } from "../../workers/InstallWorker";
+import { APP_NAME, APP_VERSION, REMOTE_HOST, INSTALLED } from "../../Constants";
 
 // WARN: this test is destructive !!
 

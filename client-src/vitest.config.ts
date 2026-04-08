@@ -6,22 +6,51 @@ import typescript from "@rollup/plugin-typescript";
 import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
-  plugins: [ vue(), typescript()],
+  plugins: [ vue(), typescript() ],
   test: {
     globals: true,
     include: [
-      "src/test/*.vitest.ts",
-      "src/test/*.vitest.jsx",
-      "src/test/*.vitest.js",
-      "src/test/*.vitest.mjs",
+      "src/test/vitest/*.vitest.ts",
+      "src/test/vitest/*.vitest.jsx",
+      "src/test/vitest/*.vitest.js",
+      "src/test/vitest/*.vitest.mjs",
     ],
+    exclude:[
+      "src/test/**/*.stories.*",
+    ],
+    typecheck: {
+      include: ["src/test/vitest/*.vitest.*", ],
+      exclude: [ "src/**/*.stories.*", ],
+
+    },
     environment: "jsdom",
     bail: 0,
     watch: false,
+    coverage: {
+      provider: 'v8' // or 'istanbul'
+    },
+
+    // https://github.com/vitest-dev/vitest/discussions/9246
+    reporters: [
+      "default",
+      {
+        onProcessTimeout() {
+          process.exitCode = 127;
+        },
+      },
+    ],
+
+  },
+  optimizeDeps:{
+     exclude:[
+      "src/test/**/*.stories.*",
+    ],
   },
   css:true,
   browser: { enabled: true, name: "/snap/bin/chromium" },
 });
-
+// can create own runner if needed
+// https://main.vitest.dev/guide/advanced/
+//
 // vim: syn=typescript nospell
 

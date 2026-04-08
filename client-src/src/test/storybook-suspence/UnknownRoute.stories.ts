@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { expect, within } from "storybook/test";
 
-import UnknownRoute from "../components/UnknownRoute.vue";
+import UnknownRoute from "../../components/UnknownRoute.vue";
+// this needs suspence
 
 const meta: Meta<typeof UnknownRoute> = {
   component: UnknownRoute,

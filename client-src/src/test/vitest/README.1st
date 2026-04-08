@@ -1,0 +1,2 @@
+I moved 'the Vitests' to this directory, to stop Vitest evaluating Storybook tests without Storybook libraries loaded.  Otherwise it makes loads of warning that are not constructive but will block automation.
+
