@@ -1,6 +1,6 @@
 <template>
   <div class="aList" :data-testid="testId" :key="currentStateKey">
-    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="betterId" />
+    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="betterId" :testId="viewId" />
     <ul class="buttonRow">
       <li class="bigger">{{ list.nom }}</li>
       <li :title="text.addTitle">
@@ -14,7 +14,7 @@
         ></span>
       </li>
     </ul>
-    <EnterInput :val="getInput" :visible="canSeeInput" :cb="cb" :data-testid="nextTestId" :currentStateKey="childId" />
+    <EnterInput :val="getInput" :visible="canSeeInput" :cb="cb" :testId="nextTestId" :currentStateKey="childId" />
     <ul class="aList" :data-testId="aListId">
       <li v-for="(i, j) in actualList" :key="j" :title="text.currentTitle">
         <span
@@ -47,25 +47,24 @@
 import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
 
+import EnterInput from "./EnterInput.vue";
+import InterstitialView from "./InterstitialView.vue";
+
 import { useStore } from "../services/Store";
 import { useUIText } from "../services/Localisation";
 import { ListData, setupCurrentList, idOf } from "../services/DataFactory";
-
-import EnterInput from "./EnterInput.vue";
-import InterstitialView from "./InterstitialView.vue";
 import { AList, EMPTY_LIST } from "../services/AList";
 import { MotionStream } from "../services/MotionStream";
-
 import { isMobile, clearSelection, extractId } from "../services/util";
 
+import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
+import type { ThisListProps } from "../types/ComponentProps";
 // import { ListService } from "../services/ListService";
 // import type { SaveStruct } from "../types/Saveable";
 // import { UI_EN_GB } from "../services/Localisation";
 // import type { Storable } from "../types/Saveable";
 // import type { Motionable } from "../types/Motionable";
 // import { ListService } from "../services/ListService";
-import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
-import type { ThisListProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 const { currentData, updateData, initData } = ListData;
@@ -142,6 +141,7 @@ export default defineComponent({
       childId: this.$props.testId + "Child1",
       nextTestId: this.$props.testId + "Input1",
       aListId: this.$props.testId + "List1",
+      viewId: this.$props.testId + "View1",
     } as ThisListProps;
   },
   computed: {

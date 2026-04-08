@@ -1,6 +1,6 @@
 <template>
   <div class="listage" :data-testid="instanceId" :key="currentStateKey">
-    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="{ betterId }" />
+    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="{ betterId }" :testId="viewId" />
     <ul>
       <li v-for="i in shoppingLists" :key="i.id" :title="`Display the ${i.nom} list.`">
         <span class="centre">
@@ -14,15 +14,16 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+
 import { ListData } from "../services/DataFactory";
 import { mapURL } from "../services/URLs";
-// import { ListService } from "../services/ListService";
-// import { AList } from "../services/AList";
-// import { API_RETRY } from "../Constants";
-import { nextId } from "../services/util";
 import InterstitialView from "./InterstitialView.vue";
 import type { ListStruct } from "../types/ListCollection";
 import type { ListOfListsProps } from "../types/ComponentProps";
+// import { ListService } from "../services/ListService";
+// import { AList } from "../services/AList";
+// import { API_RETRY } from "../Constants";
+
 // IOIO the first time you compile this; comment the link to routing; this is a dep loop
 // I will build a better solution
 // import {StaticRoutes} from './Routing';
@@ -30,11 +31,11 @@ import type { ListOfListsProps } from "../types/ComponentProps";
 const { currentData, initData } = ListData;
 /**
    * ListOfLists
-   * A component for a small form to enter a singular text field.  
+   * A component for a small form to enter a singular text field.
    * Used to add items to the lists, or names of list etc
 	- the params listed are props to the component.  None here.
 	- the functions below are described in the Vue docs, and they are predictable.
- 
+
    * @public
    * @returns {string}
    */
@@ -68,6 +69,7 @@ export default defineComponent({
   inject: ["helpText", "canSeeHelp", "ttl"],
   props: {
     currentStateKey: { type: String, required: true },
+    testId: { type:String, default:"test0"},
   },
   data(): ListOfListsProps {
     let ll: Array<ListStruct> = [];
@@ -75,7 +77,9 @@ export default defineComponent({
       ll = currentData.list();
     }
     return {
-      instanceId: nextId(),
+      instanceId: this.$props.testId,
+      viewId: this.$props.testId +"View1",
+
       shoppingLists: ll,
       mapURL,
     } as ListOfListsProps;
