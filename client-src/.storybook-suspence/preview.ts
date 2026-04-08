@@ -4,23 +4,23 @@ import { setup, definePreview } from "@storybook/vue3-vite";
 import { createRouter, createWebHistory } from "vue-router";
 import { Suspense } from "vue";
 import Vue3TouchEvents from "vue3-touch-events";
-import { vueRouter } from 'storybook-vue3-router'
+import { vueRouter } from "storybook-vue3-router";
 
 //https://storybook.js.org/docs/api/csf/csf-next
-const preview= definePreview({
-// addons: [ ],
- decorators : [
-//    vueRouter(),
-  (story) => ({
-    components: { story },
-    template: "<Suspense><story /></Suspense>",
-//    template: "<story />",
-  }) ,
-    ],
+const preview = definePreview({
+  // addons: [ ],
+  decorators: [
+    //    vueRouter(),
+    (story) => ({
+      components: { story },
+      template: "<Suspense><story /></Suspense>",
+      //    template: "<story />",
+    }),
+  ],
   parameters: {
     a11y: {
       options: { xpath: true },
-		test:"todo",
+      test: "todo",
     },
     controls: {
       matchers: {
@@ -28,10 +28,9 @@ const preview= definePreview({
         date: /Date$/i,
       },
     },
-
-  }
+  },
 });
-console.log("IOIO WWWWW SUSPENCE VERSION (local preview) ", preview );
+console.log("XXXX XXXX XXXX separator version with SUSPENSE , (just started storybook preview) XXXX XXXXX XXXXX" );
 
 /*
 export const decorators = [
@@ -65,4 +64,3 @@ setup((app) => {
 });
 
 export default preview;
-

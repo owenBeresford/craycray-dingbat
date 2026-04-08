@@ -5,12 +5,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import Vue3TouchEvents from "vue3-touch-events";
 
 //https://storybook.js.org/docs/api/csf/csf-next
-const preview= definePreview({
-// addons: [ addonQueryParams() ],
+const preview = definePreview({
+  // addons: [ addonQueryParams() ],
   parameters: {
     a11y: {
       options: { xpath: true },
-		test:"todo",
+      test: "todo",
     },
     controls: {
       matchers: {
@@ -18,8 +18,7 @@ const preview= definePreview({
         date: /Date$/i,
       },
     },
-
-  }
+  },
 });
 
 export const decorators = [
@@ -49,6 +48,6 @@ setup((app) => {
     console.error("I do not expect to see this", e);
   }
 });
+console.log("XXXX XXXX XXXX separator, (just started storybook preview) XXXX XXXXX XXXXX" );
 
 export default preview;
-
