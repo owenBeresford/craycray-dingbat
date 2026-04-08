@@ -12,6 +12,7 @@
     "build:app": "export pop='0'; if [ `basename $PWD` != 'client-src' ]; then export pop='1'; cd client-src; fi; node14 ./node_modules/.bin/vite build; if [ $pop -eq 1 ]; then cd -; ./build-tools/build.bash --be; cd client-src; else cd ..; ./build-tools/build.bash --be; cd -; fi  ",
     "build": "export pop='0'; if [ `basename $PWD` != 'client-src' ]; then export pop='1'; cd client-src; fi; node14 ./node_modules/.bin/vite build; if [ $pop -eq 1 ]; then cd ..; fi ",
     "test:fe": "tsc -p ./tsconfig.release.json; node14 --es-module-specifier-resolution=node ./node_modules/.bin/jest --env=node ; node14 ./node_modules/.bin/vitest --run --isolate ;  echo 'Add more vitest!!!'",
+	"coverage":"node ./node_modules/.bin/vitest --typecheck --coverage",
     "lint": "../build-tools/lint.bash",
     "clean": "../build-tools/clean.bash",
     "start": "export CURSERVICE=0; if [ -f ./shopping.pid ]; then export CURSERVICE=`cat ./shopping.pid`; fi; if [ $CURSERVICE -gt 100 ]; then kill $CURSERVICE; fi; cd ../server-src; node14 --es-module-specifier-resolution=node dist/main.js & echo $! > ../client-src/shopping.pid; cd -",
