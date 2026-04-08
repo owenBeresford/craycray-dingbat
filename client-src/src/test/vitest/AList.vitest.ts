@@ -5,9 +5,10 @@ import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vite
 import { mount, RouterLinkStub, config } from "@vue/test-utils";
 import Vue3TouchEvents from "vue3-touch-events";
 import { JsonSerializer, throwError, JsonProperty, JsonObject } from "typescript-json-serializer";
-import type { ListStruct, Listable } from "../types/ListCollection";
-import { AList } from "../services/AList";
-import { SaveStruct } from "../types/Saveable";
+
+import type { ListStruct, Listable } from "../../types/ListCollection";
+import { AList } from "../../services/AList";
+import { SaveStruct } from "../../types/Saveable";
 
 // This is just a test object.
 @JsonObject()
@@ -58,7 +59,7 @@ describe("test on AList", () => {
   });
 
   it("attempt2 ", () => {
-    let obj=AList.manual("test1", 1);
+    let obj = AList.manual("test1", 1);
     expect(obj).toBeTruthy();
     obj.énumérer = 2;
     obj.id = 1;
@@ -66,24 +67,21 @@ describe("test on AList", () => {
     expect(obj).toBeTruthy();
 
     obj.add("adasd");
-    expect(obj.éléments).toEqual([ "werwerw", "dgdfgdfg", "adasd" ]);
-    expect(obj.export()).toEqual([ "werwerw", "dgdfgdfg", "adasd" ]);
+    expect(obj.éléments).toEqual(["werwerw", "dgdfgdfg", "adasd"]);
+    expect(obj.export()).toEqual(["werwerw", "dgdfgdfg", "adasd"]);
 
     expect(obj.view()).toBeTruthy();
 
     obj.add("adasd");
     obj.add("werwerw");
-    expect(obj.unique() ).toBeTruthy();
-    expect(obj.éléments).toEqual([ "werwerw", "dgdfgdfg", "adasd" ]);
+    expect(obj.unique()).toBeTruthy();
+    expect(obj.éléments).toEqual(["werwerw", "dgdfgdfg", "adasd"]);
 
-    expect(obj.editName("NEWNAME2" ) ).toBeTruthy();
-    expect(obj.editName("" ) ).not.toBeTruthy();
-    expect(obj.nom==="NEWNAME2").toBeTruthy();
+    expect(obj.editName("NEWNAME2")).toBeTruthy();
+    expect(obj.editName("")).not.toBeTruthy();
+    expect(obj.nom === "NEWNAME2").toBeTruthy();
 
-    obj.import( [ "dgdfgdfg", "adasd", "werwerw", "test1", ] );
-    expect(obj.énumérer).toEqual( 4);
-
+    obj.import(["dgdfgdfg", "adasd", "werwerw", "test1"]);
+    expect(obj.énumérer).toEqual(4);
   });
-
-
 });

@@ -2,10 +2,10 @@ import { assert, describe, it, expect } from "vitest";
 // import { LocalStorage } from "node-localstorage";
 
 // only functions that make sense outside of a browser are in this test
-import { rad2deg, wrap_getMyIP, nextId, resetId, pollId } from "../services/util";
-import { TestLocation } from "./MockLocation";
+import { rad2deg, wrap_getMyIP, nextId, resetId, pollId } from "../../services/util";
+import { TestLocation } from "../MockLocation";
 // import type { MockLocation } from './MockLocation';
-import type { PromiseSucceed, PromiseReject } from "../types/promises";
+import type { PromiseSucceed, PromiseReject } from "../../types/promises";
 
 describe("I can use the flat util functions", () => {
   it("run rad2deg", (): Promise<boolean> => {

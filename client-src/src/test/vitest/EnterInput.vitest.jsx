@@ -31,7 +31,7 @@ describe("Simple component test 1", () => {
         visible: canSeeInput,
         cb: cb,
         currentStateKey: "test1",
-        testid: "nextTestId" ,
+        testid: "nextTestId",
       },
       sync: true,
       global: {
@@ -70,7 +70,7 @@ describe("Simple component test 1", () => {
         visible: canSeeInput,
         cb: cb,
         currentStateKey: "test1",
-        testid: "nextTestId2" ,      
+        testid: "nextTestId2",
       },
       global: {
         stubs: ["vue3-touch-events"],

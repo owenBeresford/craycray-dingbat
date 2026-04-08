@@ -17,9 +17,9 @@ describe("I can use NetworkedListService", () => {
       let tt: FactoryArtefact = await createDataFactory(undefined);
       expect(typeof tt).toBe("object");
       assertType<FactoryArtefact>(tt);
-      if(! tt.currentData ) return;
+      if (!tt.currentData) return;
       assertType<ListCollection>(tt.currentData);
-      
+
       good(true);
     });
   });
@@ -27,7 +27,9 @@ describe("I can use NetworkedListService", () => {
   it("I can saveAllLists", (): Promise<boolean> => {
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       const ls: FactoryArtefact = await createDataFactory(undefined);
-      if(! ls.currentData) {return; }
+      if (!ls.currentData) {
+        return;
+      }
 
       expect(ls.currentData.create("item1")).toBe(1);
       expect(ls.currentData.create("item2")).toBe(2);
@@ -45,7 +47,9 @@ describe("I can use NetworkedListService", () => {
   it("I can loadAllLists", (): Promise<boolean> => {
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       const ls: FactoryArtefact = await createDataFactory(undefined);
-      if(! ls.currentData) {return; }
+      if (!ls.currentData) {
+        return;
+      }
 
       expect(ls.currentData.create("item1")).toBe(1);
       expect(ls.currentData.create("item2")).toBe(2);
@@ -54,16 +58,18 @@ describe("I can use NetworkedListService", () => {
       expect(global.localStorage.length).toBe(0);
       expect(ls.currentData.loadAllLists()).toBe(true);
       expect(ls.currentData.count()).toBe(1);
-// IOIO
+      // IOIO
 
       good(true);
     });
   });
-  
+
   it("I can poll", (): Promise<boolean> => {
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       const ls: FactoryArtefact = await createDataFactory(undefined);
-      if(! ls.currentData) {return; }
+      if (!ls.currentData) {
+        return;
+      }
 
       expect(ls.currentData.create("item1")).toBe(1);
       expect(ls.currentData.create("item2")).toBe(2);
@@ -72,11 +78,9 @@ describe("I can use NetworkedListService", () => {
       expect(global.localStorage.length).toBe(0);
       expect(ls.currentData.poll()).toBe(true);
       expect(ls.currentData.count()).toBe(1);
-// IOIO
+      // IOIO
 
       good(true);
     });
   });
-
-
 });
