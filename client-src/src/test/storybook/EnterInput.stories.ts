@@ -102,7 +102,7 @@ export const ExpectedRendering3: Story = {
     // https://markaicode.com/storybook-interaction-tests/#
     const input1 = canvas.getByTestId("test6desk1");
     await userEvent.type(input1, "a new thing");
-    await userEvent.click( canvas.getByDisplayValue("Set") );
+    await userEvent.click(canvas.getByDisplayValue("Set"));
 
     expect((canvas.queryByTestId("test6") as HTMLDialogElement).open).not.toBeTruthy();
     expect(await canvas.queryByTestId("test6")).not.toBeTruthy();
@@ -129,7 +129,7 @@ export const ExpectedRendering4: Story = {
     // https://markaicode.com/storybook-interaction-tests/#
     const input1 = canvas.getByTestId("test7mob1");
     await userEvent.type(input1, "a new thing");
-    await userEvent.click( canvas.getByDisplayValue("Set") );
+    await userEvent.click(canvas.getByDisplayValue("Set"));
 
     expect(((await canvas.queryByTestId("test7")) as HTMLDialogElement).open).toBe(false);
   },
