@@ -12,14 +12,13 @@ const preview= definePreview({
       options: { xpath: true },
 		test:"todo",
     },
-/*
     controls: {
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
     },
-*/
+
   }
 });
 
