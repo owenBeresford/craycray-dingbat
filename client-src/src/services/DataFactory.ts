@@ -46,8 +46,7 @@ export interface FactoryArtefact {
   initData: () => void;
 }
 
-
-/** A module-wide collection of known variables 
+/** A module-wide collection of known variables
  */
 const debugId = new WeakMap<object, number>();
 let _idCounter = 1;
@@ -62,7 +61,7 @@ let _idCounter = 1;
  * @public
  * @returns {number}
  */
-export function idOf(obj: object):number {
+export function idOf(obj: object): number {
   if (!debugId.has(obj)) debugId.set(obj, _idCounter++);
   return debugId.get(obj) ?? -1;
 }
@@ -129,7 +128,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
    * @public
    * @returns {void}
    */
-  function initData():void {
+  function initData(): void {
     void currentNetworkConfig();
   }
 

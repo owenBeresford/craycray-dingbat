@@ -30,7 +30,8 @@ console.log("CODE under TEST started " + process.pid, goodSource);
  */
 self.onmessage = async function (ev: MessageEvent): Promise<void> {
   console.log(
-    "TEST2 received MSG to " + ev.origin + " from " , ev.source,
+    "TEST2 received MSG to " + ev.origin + " from ",
+    ev.source,
     (ev.data as ShippingStruct).action,
     (ev.data as ShippingStruct).data,
     "isolated",
@@ -77,7 +78,7 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
  * @returns {void}
  */
 self.onmessageerror = (e: unknown): void => {
-  console.warn("WORKER: got bad message " , (e as Error));
+  console.warn("WORKER: got bad message ", e as Error);
 };
 
 console.log("CODE under TEST end module ", typeof self);

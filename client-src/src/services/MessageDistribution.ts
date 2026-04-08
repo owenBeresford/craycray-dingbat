@@ -73,8 +73,8 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
       this.worker.onmessage = this.receipt.bind(this);
       this.running = true;
       return true;
-    } catch (ee:unknown) {
-      console.warn("Thread: " + (typeof ee )+ " " + (ee as Error).message, "\n", this.goodSource);
+    } catch (ee: unknown) {
+      console.warn("Thread: " + typeof ee + " " + (ee as Error).message, "\n", this.goodSource);
       return false;
     }
   }
@@ -110,9 +110,9 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
    * @returns {void}
    */
   protected receipt(ev: MessageEvent): void {
-    const local: ShippingStruct= ev.data as  ShippingStruct;
+    const local: ShippingStruct = ev.data as ShippingStruct;
     console.log(
-      "TEST recieved MSG to " + ev.origin + " from " +( ev.source ?? "[unknown]"),
+      "TEST recieved MSG to " + ev.origin + " from " + (ev.source ?? "[unknown]"),
       local.action,
       local.data,
       "isolated",
@@ -184,7 +184,6 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
    * @returns {Promise<boolean>}
    */
   public saveState(dat: Array<SaveStruct>): Promise<boolean> {
-    
     console.log("TEST sending MSG from the UI to the worker");
     if (!this.worker) {
       console.assert(this.worker != null, "986634563523, Worker thread should be active now");
@@ -201,7 +200,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
     });
   }
 
-/**
+  /**
  * loadState
  * Request state from server via thread.
  
@@ -250,9 +249,6 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
       }, PMQUE_TIMER);
     });
   }
-
-
-
 
   // saveProperty(nom:string, dat:string):boolean
   private saveProperty(): boolean {

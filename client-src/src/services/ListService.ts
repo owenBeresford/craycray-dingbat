@@ -28,7 +28,7 @@ export class ListService implements ListCollection {
    * @returns {ListService}
    */
   public constructor() {
-    this.catalog = [ EMPTY_LIST ];
+    this.catalog = [EMPTY_LIST];
   }
 
   /**
@@ -114,7 +114,7 @@ export class ListService implements ListCollection {
   public merge(next: ListCollection): boolean {
     for (let i = 0; i < next.count(); i++) {
       let annoying = next.get(i);
-      if (annoying) {
+      if (annoying && annoying.nom !== "New Empty list" ) {
         this.append(annoying);
       }
     }
