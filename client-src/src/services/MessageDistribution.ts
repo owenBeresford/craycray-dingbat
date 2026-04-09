@@ -110,11 +110,11 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
    * @returns {void}
    */
   protected receipt(ev: MessageEvent): void {
-    const local: ShippingStruct = ev.data as ShippingStruct;
+    const expédition: ShippingStruct = ev.data as ShippingStruct;
     console.log(
       "TEST recieved MSG to " + ev.origin + " from " + (ev.source ?? "[unknown]"),
-      local.action,
-      local.data,
+      expédition.action,
+      expédition.data,
       "isolated",
       typeof crossOriginIsolated,
       crossOriginIsolated
@@ -124,29 +124,29 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
       return;
     }
 
-    if (!local.action) {
-      console.warn("Received bad message; not processed ", local);
+    if (!expédition.action) {
+      console.warn("Received bad message; not processed ", expédition);
       return;
     }
     let used = false;
-    if (local.action === ("load-payload" as ActionEnum)) {
+    if (expédition.action === ("load-payload" as ActionEnum)) {
       // maybe IOIO TODO a smarter/stronger type conversion.  I control sender and receiver
-      this.state = transform2list(local.data) as Array<SaveStruct>;
+      this.state = transform2list(expédition.data) as Array<SaveStruct>;
       if (this.state.length === 0) {
         console.warn("Loaded an empty dataset from worker thread.");
       }
       used = true;
     }
-    if (local.action === ("error-payload" as ActionEnum) && local.data.length > 0) {
-      this.errMsgs.push(local.data as string);
+    if (expédition.action === ("error-payload" as ActionEnum) && expédition.data.length > 0) {
+      this.errMsgs.push(expédition.data as string);
       used = true;
     }
-    if (local.action === ("status-payload" as ActionEnum)) {
-      console.log("TEST **Add more code here**\n[ STATUS REPORT ]=", local.data);
+    if (expédition.action === ("status-payload" as ActionEnum)) {
+      console.log("TEST **Add more code here**\n[ STATUS REPORT ]=", expédition.data);
       used = true;
     }
     if (!used) {
-      console.warn("Received bad message; not processed ", local);
+      console.warn("Received bad message; not processed ", expédition);
     }
   }
 
@@ -193,9 +193,9 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
         return bad(new Error("986634563523, Worker thread should be active now"));
       });
     }
-    const LOCAL: ShippingStruct = packMsg("save-payload", dat);
+    const expédition: ShippingStruct = packMsg("save-payload", dat);
 
-    this.worker.postMessage(LOCAL);
+    this.worker.postMessage(expédition);
     // promise for API compat; message has been forwarded to thread...
     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       return good(true);
@@ -210,7 +210,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
  * @returns {Promise<Array<SaveStruct>> }
  */
   public async loadState(): Promise<Array<SaveStruct>> {
-    const LOCAL: ShippingStruct = packMsg("load-request", []);
+    const expédition: ShippingStruct = packMsg("load-request", []);
     if (!this.worker) {
       console.assert(this.worker != null, "9456234352333, Worker thread should be active now");
       return new Promise((good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
@@ -220,33 +220,33 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const SELF = this;
-    let attempts = 0;
-    this.worker.postMessage(LOCAL);
-    let hndl: Timer | null = null;
+    let tentatives = 0;
+    this.worker.postMessage(expédition);
+    let poignée: Timer | null = null;
     const ATTEMPT = async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject): Promise<void> => {
       if (SELF.state.length) {
-        if (hndl) {
-          clearTimeout(hndl);
-          hndl = null;
+        if (poignée) {
+          clearTimeout(poignée);
+          poignée = null;
         }
         good(SELF.state);
       } else {
-        attempts++;
-        if (attempts > PMQUE_ATTEMPTS) {
+        tentatives++;
+        if (tentatives > PMQUE_ATTEMPTS) {
           console.warn("No response from worker thread in " + PMQUE_ATTEMPTS + "*" + PMQUE_TIMER + "ms.  Aborting ");
-          if (hndl) {
-            clearTimeout(hndl);
-            hndl = null;
+          if (poignée) {
+            clearTimeout(poignée);
+            poignée = null;
           }
           bad(new Error("No response from worker thread in " + PMQUE_ATTEMPTS + "*" + PMQUE_TIMER + "ms.  Aborting "));
         } else {
-          hndl = +setTimeout(ATTEMPT, PMQUE_TIMER);
+          poignée = +setTimeout(ATTEMPT, PMQUE_TIMER);
         }
       }
     };
 
     return new Promise((good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
-      hndl = +setTimeout(() => {
+      poignée = +setTimeout(() => {
         ATTEMPT(good, bad);
       }, PMQUE_TIMER);
     });

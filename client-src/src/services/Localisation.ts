@@ -43,35 +43,35 @@ export class UI_EN_GB implements UItext {
 
   /**
    * add
-   * Add a new value to this map.  Uniqueness on keys is enforced.
+   * Add a new value to this map.  Uniqueness on clés is enforced.
 
-   * @param {string} key
-   * @param {string} val
+   * @param {string} clé
+   * @param {string} valeur
    * @public
    * @returns {void}
    */
-  public add(key: string, val: string): void {
-    if (this.dat.has(key)) {
-      throw new TypeError(`Key ${key} already exists!`);
+  public add(clé: string, valeur: string): void {
+    if (this.dat.has(clé)) {
+      throw new TypeError(`Key ${clé} already exists!`);
     } else {
-      this.dat.set(key, val);
+      this.dat.set(clé, valeur);
     }
   }
 
   /**
    * addArray
-   * Add an array as a value.  Uniqueness on keys is enforced.
+   * Add an array as a value.  Uniqueness on clés is enforced.
 
-   * @param {string} key
-   * @param {Array<string>} val
+   * @param {string} clé
+   * @param {Array<string>} valeur
    * @public
    * @returns {void}
    */
-  public addArray(key: string, val: Array<string>): void {
-    if (this.datA.has(key)) {
-      throw new TypeError(`Key ${key} already exists!`);
+  public addArray(clé: string, valeur: Array<string>): void {
+    if (this.datA.has(clé)) {
+      throw new TypeError(`Key ${clé} already exists!`);
     } else {
-      this.datA.set(key, val);
+      this.datA.set(clé, valeur);
     }
   }
 
@@ -79,49 +79,49 @@ export class UI_EN_GB implements UItext {
    * get
    * Return a value
 
-   * @param {string} key
+   * @param {string} clé
    * @public
    * @returns {string}
    */
-  public get(key: string): string {
-    if (this.dat.has(key)) {
-      return this.dat.get(key) ?? this.errorStr(key);
+  public get(clé: string): string {
+    if (this.dat.has(clé)) {
+      return this.dat.get(clé) ?? this.errorStr(clé);
     }
-    return this.errorStr(key);
+    return this.errorStr(clé);
   }
 
   /**
    * getTemplate
    * Return a value / an array of strings
 
-   * @param {string} key
+   * @param {string} clé
    * @public
    * @returns {Array<string>}
    */
-  public getTemplate(key: string): Array<string> {
-    if (this.datA.has(key)) {
-      const tt = this.datA.get(key);
-      if (Array.isArray(tt)) {
-        return tt;
+  public getTemplate(clé: string): Array<string> {
+    if (this.datA.has(clé)) {
+      const liste = this.datA.get(clé);
+      if (Array.isArray(liste)) {
+        return liste;
       }
-      return [this.errorStr(key)];
+      return [this.errorStr(clé)];
     }
-    if (key === "") {
+    if (clé === "") {
       return [""];
     }
-    return [this.errorStr(key)];
+    return [this.errorStr(clé)];
   }
 
   /**
    * errorStr
    * a util to supply error messages
 
-   * @param {string} key
+   * @param {string} clé
    * @public
    * @returns {string}
    */
-  public errorStr(key: string): string {
-    return `FAIL to find ${key}`;
+  public errorStr(clé: string): string {
+    return `FAIL to find ${clé}`;
   }
 }
 

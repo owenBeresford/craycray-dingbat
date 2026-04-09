@@ -17,6 +17,7 @@ export class MotionStream implements Motionable {
   protected stack: Array<Vector>;
   protected actions: Record<string, CBTYPE>;
   protected active: boolean;
+  protected mobile:boolean;
 
   /**
    * constructor
@@ -28,6 +29,7 @@ export class MotionStream implements Motionable {
     this.stack = [];
     this.actions = {};
     this.active = false;
+    this.mobile=isMobile();
   }
 
   /**
@@ -115,12 +117,12 @@ export class MotionStream implements Motionable {
    * @returns {Vector}
    */
   public clone(o1: number, o2: number): Vector {
-    const annoying = this.stack[o1].toArray();
-    const cur: Vector = new Vector(annoying[0], annoying[1]);
+    const agaçant = this.stack[o1].toArray();
+    const actuel: Vector = new Vector(agaçant[0], agaçant[1]);
     if (o2 >= this.stack.length || o2 < 1) {
       throw new Error(`Invalid clone id ${o2}`);
     }
-    return cur.subtract(this.stack[o2]);
+    return actuel.subtract(this.stack[o2]);
   }
 
   /**
@@ -151,7 +153,7 @@ export class MotionStream implements Motionable {
    */
   public significant = (delta: Vector): boolean => {
     const [x, y] = delta.toArray();
-    if (isMobile()) {
+    if (this.mobile) {
       return x > MOBILE_THRESHOLD || y > MOBILE_THRESHOLD;
     }
     return x > BIG_THRESHOLD || y > BIG_THRESHOLD;
@@ -173,10 +175,10 @@ export class MotionStream implements Motionable {
     const [x1, y1] = delta1.toArray();
     const [x2, y2] = delta2.toArray();
 
-    const thing1 = x1 * x2 + y1 * y2;
-    const thing2 = Math.sqrt(x1 * x1 + y1 * y1);
-    const thing3 = Math.sqrt(x2 * x2 + y2 * y2);
-    return Math.acos(thing1 / (thing2 * thing3));
+    const choseA = x1 * x2 + y1 * y2;
+    const choseB = Math.sqrt(x1 * x1 + y1 * y1);
+    const choseC = Math.sqrt(x2 * x2 + y2 * y2);
+    return Math.acos(choseA / (choseB * choseC));
   };
 
   /**
@@ -190,7 +192,7 @@ export class MotionStream implements Motionable {
   public significantAsPercentage = (delta: Vector): boolean => {
     const [maxX, maxY] = windowSize();
     const [x, y] = delta.toArray();
-    if (isMobile()) {
+    if (this.mobile) {
       return (x * 100) / maxX > MOBILE_THRESHOLD || (y * 100) / maxY > MOBILE_THRESHOLD;
     }
     return (x * 100) / maxX > BIG_THRESHOLD || (y * 100) / maxY > BIG_THRESHOLD;

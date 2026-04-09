@@ -13,13 +13,13 @@ import type { ShopState } from "../types/ShopState";
  * @returns {string}
  */
 export const mapForHelp = (state: Store<ShopState>, specific: string): string => {
-  let use = "";
+  let ceci = "";
   if (specific.length <= 2) {
-    use = "/";
+    ceci = "/";
   } else if (specific.split("/").length > 1) {
-    use = `/${specific.split("/")[1]}`;
+    ceci = `/${specific.split("/")[1]}`;
   } else {
-    use = specific;
+    ceci = specific;
   }
 
   const MM: Record<string, string> = {
@@ -29,7 +29,7 @@ export const mapForHelp = (state: Store<ShopState>, specific: string): string =>
     "/menu": "menu",
     // /install . . .
   };
-  return MM[use];
+  return MM[ceci];
 };
 
 // A Vuex Store object, to hold the SPA stack state

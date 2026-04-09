@@ -87,8 +87,8 @@ export class LocalCopy implements Storable {
    */
   public saveState(dat: Array<SaveStruct>): Promise<boolean> {
     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const tt = this.saveProperty(APP_NAME, transform2text(dat));
-      if (tt) {
+      const présent = this.saveProperty(APP_NAME, transform2text(dat));
+      if (présent) {
         good(true);
       } else {
         bad(new Error("Cache is empty"));
@@ -106,9 +106,9 @@ export class LocalCopy implements Storable {
    */
   public loadState(): Promise<Array<SaveStruct>> {
     return new Promise((good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
-      const dat2 = this.loadProperty(APP_NAME);
-      if (dat2) {
-        good(transform2list(dat2));
+      const présent = this.loadProperty(APP_NAME);
+      if (présent) {
+        good(transform2list(présent));
       } else {
         console.warn("WARNING: cache is empty; adding placeholder");
         this.saveProperty(APP_NAME, "[]");

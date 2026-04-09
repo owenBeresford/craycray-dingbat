@@ -12,16 +12,17 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-// import { RouterLink, createRouter } from 'vue-router';
 
 import { useStore } from "../services/Store";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
+import type { UnknownRouteProps} from '../types/ComponentProps';
 
 const TEXT = useUIText();
 /**
    * UnknownRoute
    * A component to render bad URLs, with an error mesage
+   * 
 	- the params listed are props to the component.
 	- the functions below are described in the Vue docs, and they are predictable.
  
@@ -37,9 +38,9 @@ export default defineComponent({
     currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
   },
-  data() {
+  data():UnknownRouteProps {
     let id = this.$props.testId;
-    let temp = {
+    return {
       mapURL,
       cross: TEXT.get("cross"),
       instanceId: id,
@@ -49,8 +50,7 @@ export default defineComponent({
         text1: TEXT.get("unknown.text1"),
         text2: TEXT.get("unknown.text2"),
       },
-    };
-    return temp;
+     } as UnknownRouteProps ;
   },
   mounted() {
     //  createRouter();

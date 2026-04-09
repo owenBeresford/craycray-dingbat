@@ -9,9 +9,9 @@ import type { DistantStorable } from "../types/RemoteTypes";
 import type { PromiseSucceed, PromiseReject } from "../types/promises";
 
 /**
- * ListService 
+ * ListService
  * ListService, the class to mediate List storage
- 
+
  * @public
  */
 export class NetworkedListService extends ListService implements ListCollection {
@@ -21,19 +21,19 @@ export class NetworkedListService extends ListService implements ListCollection 
   /**
    * constructor
    * Normal Con'tor
- 
-   * @param {DistantStorable} rr
-   * @param {LocalCopy} ll
+
+   * @param {DistantStorable} loin
+   * @param {LocalCopy} proche
    * @public
    * @returns {ListService}
    */
-  public constructor(rr: DistantStorable, ll: LocalCopy) {
+  public constructor(loin: DistantStorable, proche: LocalCopy) {
     super();
-    this.remote = rr;
-    this.local = ll;
+    this.remote = loin;
+    this.local = proche;
     if (_LOGGING_) {
       console.log(
-        "ListService created & injected with: (remote) " + rr.constructor.name + " (local) " + ll.constructor.name
+        "ListService created & injected with: (remote) " + loin.constructor.name + " (local) " + proche.constructor.name
       );
     }
     this.loadAllLists();
@@ -42,7 +42,7 @@ export class NetworkedListService extends ListService implements ListCollection 
   /**
    * poll
    * Check the remote data-sources are active (Wifi, and API running)
- 
+
    * @public
    * @returns {Promise<boolean>}
    */
@@ -64,12 +64,12 @@ export class NetworkedListService extends ListService implements ListCollection 
    * @returns {boolean}
    */
   public async saveAllLists(): Promise<boolean> {
-    const tmp: Array<SaveStruct> = [];
+    const valeur: Array<SaveStruct> = [];
 
     // IDs are chosen by the caller, there may be holes in the list
     //  eslint-disable-next-line no-restricted-syntax, guard-for-in, no-for-in-array
     for (const i in this.catalog) {
-      tmp.push({
+      valeur.push({
         name: this.catalog[i].nom,
         created: this.catalog[i].créé.getTime(),
         edited: this.catalog[i].modifié.getTime(),
@@ -79,28 +79,28 @@ export class NetworkedListService extends ListService implements ListCollection 
       } as SaveStruct);
     }
     //  Promise.resolve( this.local.saveState(tmp) );
-    await this.local.saveState(tmp);
+    await this.local.saveState(valeur);
     return true;
   }
 
   /**
    * mapper
-   * Util to convert data between formats SaveStruct -> AList
+   * Util to convert listea between formats SaveStruct -> AList
    * Mutates current Collections state
- 
-   * @param {Array<SaveStruct>} dat
+
+   * @param {Array<SaveStruct>} liste
    * @public
    * @returns {void}
    */
-  private mapper(dat: Array<SaveStruct>): void {
+  private mapper(liste: Array<SaveStruct>): void {
     //  eslint-disable-next-line no-restricted-syntax, guard-for-in, no-for-in-array
-    for (const i in dat) {
-      if (dat[i].name) {
-        const tt = AList.manual(dat[i].name, dat[i].id);
-        tt.créé = new Date(dat[i].created);
-        tt.modifié = new Date(dat[i].edited);
-        tt.énumérer = dat[i].count;
-        tt.éléments = [...dat[i].list];
+    for (const i in liste) {
+      if (liste[i].name) {
+        const tt = AList.manual(liste[i].name, liste[i].id);
+        tt.créé = new Date(liste[i].created);
+        tt.modifié = new Date(liste[i].edited);
+        tt.énumérer = liste[i].count;
+        tt.éléments = [...liste[i].list];
         this.catalog.push(<AList>tt);
       } else {
         console.warn("Unpacked list [" + i + "] has no name; Que?");
@@ -111,17 +111,17 @@ export class NetworkedListService extends ListService implements ListCollection 
   /**
    * loadAllLists
    * Request data from both remote sources, cache response in local states
- 
+
    * @public
-   * @returns {boolean} 
+   * @returns {boolean}
    */
   // might need to make this a Promise, if the then() callbacks dont block the function return.
   // public async loadAllLists(): Promise<boolean> {
   public loadAllLists(): boolean {
-    let out = true;
+    let répondeur = true;
     this.local.loadState().then((dat: Array<SaveStruct>): void => {
       if (!dat) {
-        out = false;
+        répondeur = false;
         return;
       }
 
@@ -133,7 +133,7 @@ export class NetworkedListService extends ListService implements ListCollection 
 
     this.remote.loadState().then((dat: Array<SaveStruct>): void => {
       if (!dat) {
-        out = false;
+        répondeur = false;
         return;
       }
 
@@ -144,6 +144,6 @@ export class NetworkedListService extends ListService implements ListCollection 
     });
 
     // i hope this works.  JS ha no spinlocks
-    return out;
+    return répondeur;
   }
 }

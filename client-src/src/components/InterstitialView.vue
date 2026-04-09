@@ -152,9 +152,9 @@ export default defineComponent({
   },
   methods: {
     applyBody(): void {
-      const templateName = mapForHelp(this.$store, "/");
+      const nom = mapForHelp(this.$store, "/");
       this.list.splice(0, this.list.length);
-      this.list.push(...TEXT.getTemplate(templateName));
+      this.list.push(...TEXT.getTemplate(nom));
       if (this.list.length === 0 || this.list[0] === "") {
         console.warn("Ran store->showHelp(), but have no content to show?");
         this.iShow = false;
@@ -167,9 +167,9 @@ export default defineComponent({
     },
 
     changeText(what: string): void {
-      const templateName = mapForHelp(this.$store, what);
+      const nom = mapForHelp(this.$store, what);
       this.list.splice(0, this.list.length);
-      this.list.push(...TEXT.getTemplate(templateName));
+      this.list.push(...TEXT.getTemplate(nom));
       if (this.list.length === 0 || this.list[0] === "") {
         this.iShow = false;
       }

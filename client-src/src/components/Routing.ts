@@ -24,11 +24,14 @@ const { currentData, updateData, initData } = ListData;
 export const StaticRoutes = createRouter({
   history: createWebHistory(wrap_getMyIP()),
   routes: [
+    // For the Meta sections 
+    // https://stackoverflow.com/questions/51639850/how-to-change-page-titles-when-using-vue-router
     //  props: { name: 'attrs' }
     {
       path: "/list-all",
       name: "list-everything",
       component: ListOfLists,
+      meta: { title: 'All your shopping lists' },
       props: (route: RouteLocationNormalized): Record<string, any> => {
         return { ...route.params, currentStateKey: "listoflists1", fixPath: swapPath };
       },
@@ -37,6 +40,7 @@ export const StaticRoutes = createRouter({
       path: "/",
       name: "list-same",
       component: ListOfLists,
+      meta: { title: 'All your shopping lists' },
       props: (route: RouteLocationNormalized): Record<string, any> => {
         return { ...route.params, currentStateKey: "listoflists2", fixPath: swapPath };
       },
@@ -44,6 +48,7 @@ export const StaticRoutes = createRouter({
     {
       path: "/list/:index",
       name: "a-list",
+      meta: { title: 'A list XXX' },
       component: ThisList,
       props: (route: RouteLocationNormalized): Record<string, any> => {
         return { ...route.params, shopStore: useStore(), currentStateKey: "thislist1" };

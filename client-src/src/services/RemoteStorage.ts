@@ -11,7 +11,7 @@ type NullableTimeout = ReturnType<typeof global.setTimeout> | undefined;
  * RemoteStorage
  * Service to message API servers, dealing with possible disabled Wifi.
  * This should be all the networking stuff; but none of the scheduling stuff
- 
+
  * @public
  */
 export class RemoteStorage implements Storable, DistantStorable {
@@ -35,7 +35,7 @@ export class RemoteStorage implements Storable, DistantStorable {
  * Test availability of remote API
   // try a OPTIONS or HEAD to see if available, short timeout
  * @see [https://davidwalsh.name/fetch-timeout]
- * 
+ *
  * @public
  * @returns Promise<boolean>
  */
@@ -47,7 +47,7 @@ export class RemoteStorage implements Storable, DistantStorable {
     const SELF = this;
 
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      let timeout: NullableTimeout = setTimeout(() => {
+      let sortie: NullableTimeout = setTimeout(() => {
         didTimeOut = true;
         bad(EEE);
       }, FETCH_TIMEOUT);
@@ -55,8 +55,8 @@ export class RemoteStorage implements Storable, DistantStorable {
       global
         .fetch(SELF.url, REQT)
         .then((resp: Response): boolean => {
-          clearTimeout(timeout);
-          timeout = undefined;
+          clearTimeout(sortie);
+          sortie = undefined;
           if (!didTimeOut) {
             good(resp.status % 100 === 2);
           } else {
@@ -70,8 +70,8 @@ export class RemoteStorage implements Storable, DistantStorable {
           }
         })
         .finally((): void => {
-          if (timeout) {
-            clearTimeout(timeout);
+          if (sortie) {
+            clearTimeout(sortie);
           }
         });
     });
@@ -80,35 +80,35 @@ export class RemoteStorage implements Storable, DistantStorable {
   /**
    * saveState
    * Send current list of lists to the API server
- 
-   * @param {Array<SaveStruct>} dat
+
+   * @param {Array<SaveStruct>} goutte
    * @public
    * @returns {Promise<boolean>}
    */
-  public async saveState(dat: Array<SaveStruct>): Promise<boolean> {
+  public async saveState(goutte: Array<SaveStruct>): Promise<boolean> {
     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject): void => {
-      const REQT: RequestInit = Object.assign(this.other, { method: "POST", body: transform2text(dat) }) as RequestInit;
+      const REQT: RequestInit = Object.assign(this.other, { method: "POST", body: transform2text(goutte) }) as RequestInit;
 
       global
         .fetch(this.url, REQT)
         .catch((err: Error) => {
           bad(err);
         })
-        .then((dat: Response | void) => {
-          if (dat) {
+        .then((goutte: Response | void) => {
+          if (goutte) {
             // this section is just JS
-            if (!dat.ok) {
-              return bad(new Error("Server sent an error http status " + dat.status));
+            if (!goutte.ok) {
+              return bad(new Error("Server sent an error http status " + goutte.status));
             }
 
-            dat
+            goutte
               .text()
               .then(function (txt: string): void {
-                const txt1 = JSON.parse(txt) as APIResponseType;
-                if ("statusCode" in txt1 && parseInt(txt1.statusCode, 10) > 299) {
+                const filet = JSON.parse(txt) as APIResponseType;
+                if ("statusCode" in filet && parseInt(filet.statusCode, 10) > 299) {
                   // this branch here should not be used; as all the responses have a proper
                   // HTTP status code
-                  return bad(new Error("Server sent an error http status " + txt1.statusCode));
+                  return bad(new Error("Server sent an error http status " + filet.statusCode));
                 } else {
                   return good(true);
                 }
@@ -128,7 +128,7 @@ export class RemoteStorage implements Storable, DistantStorable {
    * loadState
    * Request current list of lists from remote API
   // call will happen just after page/ app open, so probably on network
- 
+
    * @public
    * @returns {Promise<Array<SaveStruct>>}
    */
@@ -141,14 +141,14 @@ export class RemoteStorage implements Storable, DistantStorable {
           console.warn("FAILED TO LOAD STATE", (err as Error).message);
           return bad(new Error("No data was found"));
         })
-        .then((dat: Response | void) => {
-          if (!dat) {
+        .then((filet: Response | void) => {
+          if (!filet) {
             return bad(new Error("Valid HTTP, but got nothing back"));
           }
-          if (!dat.ok) {
-            return bad(new Error("Server sent an error http status " + dat.status));
+          if (!filet.ok) {
+            return bad(new Error("Server sent an error http status " + filet.status));
           }
-          return dat.text().then(function (text: string) {
+          return filet.text().then(function (text: string) {
             good(transform2list(text));
           });
         });

@@ -51,4 +51,12 @@ export interface TabBarProps {
   menu: Record<string, string>; // l12n data
 }
 
+export interface UnknownRouteProps {
+  mapURL: MapUrlType;
+  cross: string;
+  instanceId: string;
+  crossId: string;
+  text: Record<string, string>;
+};
+
 export type StrictArray = Array<string>;

@@ -224,15 +224,14 @@ export default defineComponent({
       if (!currentData) {
         return false;
       }
-      const llist = currentData.get(this.$store.state.currentId);
+      const liste = currentData.get(this.$store.state.currentId);
 
-      if (llist) {
-        const extra = Object.assign(AList.manual(`DUP: ${llist.nom}`, currentData.count()), llist);
-        extra.editName(`DUP: ${llist.nom}`);
+      if (liste) {
+        const extra = Object.assign(AList.manual(`DUP: ${liste.nom}`, currentData.count()), liste);
+        extra.editName(`DUP: ${liste.nom}`);
         currentData.append(extra);
       }
       StaticRoutes.push({ name: "list-everything" });
-
       return false;
     },
 
@@ -242,20 +241,20 @@ export default defineComponent({
         return false;
       }
 
-      const list = currentData.get(this.$store.state.currentId);
-      if (!list) {
+      const liste = currentData.get(this.$store.state.currentId);
+      if (!liste) {
         console.warn("EDIT NAME: got bad id, don't know how to proceed");
         return false;
       }
-      this.getInput = list.nom ?? TEXT.get("menu.renameSupport");
+      this.getInput = liste.nom ?? TEXT.get("menu.renameSupport");
 
       this.CB = (d1: string | null): any => {
         if (d1 === null) {
           this.visible = false;
           return;
         }
-        list.editName(d1);
-        currentData.put(this.$store.state.currentId, list);
+        liste.editName(d1);
+        currentData.put(this.$store.state.currentId, liste);
         this.visible = false;
         StaticRoutes.push({ name: "list-everything" });
       };
@@ -266,16 +265,18 @@ export default defineComponent({
     onSave(e: GuessEvent): boolean {
       e.preventDefault();
       if (!currentData) {
+        console.log("Cannot currently save, no stored data is available");
         return false;
       }
-      console.log("Saving list to local cache list, for all lists");
 
+      console.log("Saving list to local cache list, for all lists");
       currentData.saveAllLists();
       return false;
     },
     onRevert(e: GuessEvent): boolean {
       e.preventDefault();
       if (!currentData) {
+        console.log("Cannot currently revert, as no stored data is available");
         return false;
       }
 
@@ -284,6 +285,7 @@ export default defineComponent({
       return false;
     },
     onMenu(e: GuessEvent): boolean {
+// IOIO can simplify this code to be CSS rendering, and just menu state set here      
       e.preventDefault();
       if (e.type && e.type === "mouseup") {
         return false;

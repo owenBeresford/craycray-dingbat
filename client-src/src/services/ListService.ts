@@ -22,8 +22,6 @@ export class ListService implements ListCollection {
    * constructor
    * Normal Con'tor
  
-   * @param {DistantStorable} rr
-   * @param {LocalCopy} ll
    * @public
    * @returns {ListService}
    */
@@ -113,9 +111,9 @@ export class ListService implements ListCollection {
    */
   public merge(next: ListCollection): boolean {
     for (let i = 0; i < next.count(); i++) {
-      let annoying = next.get(i);
-      if (annoying && annoying.nom !== "New Empty list") {
-        this.append(annoying);
+      let agaçant = next.get(i);
+      if (agaçant && agaçant.nom !== "New Empty list") {
+        this.append(agaçant);
       }
     }
     return true;
@@ -129,12 +127,12 @@ export class ListService implements ListCollection {
    * @returns {Array<ListStruct> }
    */
   public list(): Array<ListStruct> {
-    const tmp: Array<ListStruct> = [];
+    const liste: Array<ListStruct> = [];
     //  eslint-disable-next-line no-restricted-syntax, guard-for-in
     for (const i in this.catalog) {
-      tmp.push(this.catalog[i].view());
+      liste.push(this.catalog[i].view());
     }
-    return tmp;
+    return liste;
   }
 
   /**
@@ -150,11 +148,11 @@ export class ListService implements ListCollection {
       console.warn("ERROR: Cannot load list with id=" + id + " " + JSON.stringify(this.catalog.keys()));
       return undefined;
     }
-    let tmp = this.catalog[id];
-    if (tmp === null) {
+    let objet = this.catalog[id];
+    if (objet === null) {
       return undefined;
     }
-    return tmp;
+    return objet;
   }
 
   /**

@@ -59,12 +59,6 @@ import { isMobile, clearSelection, extractId } from "../services/util";
 
 import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
 import type { ThisListProps } from "../types/ComponentProps";
-// import { ListService } from "../services/ListService";
-// import type { SaveStruct } from "../types/Saveable";
-// import { UI_EN_GB } from "../services/Localisation";
-// import type { Storable } from "../types/Saveable";
-// import type { Motionable } from "../types/Motionable";
-// import { ListService } from "../services/ListService";
 
 const TEXT = useUIText();
 const { currentData, updateData, initData } = ListData;
@@ -76,9 +70,9 @@ if (_LOGGING_) {
 }
 
 const NEW_LIST = -1;
-// this class is using a shared function pointer, as in vue2 the event bus is too slow
-// if you do parent state updates via it; they take 100ms to propagate, and you see flickers
-// it is possible that vue3 event bus is faster
+// This class is using a shared function pointer, as in vue2 the event bus is too slow.
+// If you do parent state updates via it; they take 100ms to propagate, and you see flickers.
+// It is possible that vue3 event bus is faster.
 
 /**
    * Thislist
@@ -125,8 +119,8 @@ export default defineComponent({
   },
   inject: ["helpText", "canSeeHelp", "ttl"],
   data(): ThisListProps {
-    const tt = new MotionStream();
-    tt.register("0", this.finalise.bind(this));
+    const flux = new MotionStream();
+    flux.register("0", this.finalise.bind(this));
 
     return {
       id: NEW_LIST,
@@ -134,7 +128,7 @@ export default defineComponent({
       getInput: "",
       canSeeInput: false,
       cb: Function as any,
-      stream: tt,
+      stream: flux,
       offset: -1,
       bisMobile: isMobile(),
       text: {
@@ -183,8 +177,8 @@ export default defineComponent({
     },
 
     onEdit(e: GuessEvent): boolean {
-      const annoying = e!.currentTarget as HTMLElement;
-      this.getInput = `${annoying!.innerText}`;
+      const agaçant = e!.currentTarget as HTMLElement;
+      this.getInput = `${agaçant!.innerText}`;
       e.preventDefault();
 
       this.cb = (d1: string | null): void => {
@@ -193,12 +187,12 @@ export default defineComponent({
           return;
         }
 
-        const offset = parseInt(annoying!.getAttribute("data-offset") ?? "-1", 10);
-        if (offset >= 0 && offset < this.list.énumérer) {
-          this.list.edit(offset, d1);
+        const indice = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
+        if (indice >= 0 && indice < this.list.énumérer) {
+          this.list.edit(indice, d1);
           this.canSeeInput = false;
         } else {
-          console.log(`Cannot update list item; bad offset value ${annoying.innerText}`);
+          console.log(`Cannot update list item; bad offset value ${agaçant.innerText}`);
         }
       };
 
@@ -207,10 +201,10 @@ export default defineComponent({
     },
 
     onSwipe(dir: string, e: TouchEvent): void {
-      const annoying = e!.currentTarget as HTMLElement;
+      const agaçant = e!.currentTarget as HTMLElement;
       e.preventDefault();
-      this.offset = parseInt(annoying!.getAttribute("data-offset") ?? "-1", 10);
-      console.log(`Deleting list element [${this.offset}] = ${annoying.innerText}`);
+      this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
+      console.log(`Deleting list element [${this.offset}] = ${agaçant.innerText}`);
       this.finalise();
     },
 
@@ -224,14 +218,14 @@ export default defineComponent({
 
     onDragStart(e: MouseEvent): void {
       e.preventDefault();
-      const annoying = e!.currentTarget as HTMLElement;
-      this.offset = parseInt(annoying!.getAttribute("data-offset") ?? "-1", 10);
+      const agaçant = e!.currentTarget as HTMLElement;
+      this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
       this.stream.start(e);
     },
 
     onDragStop(e: MouseEvent): void {
       e.preventDefault();
-      const annoying = e!.currentTarget as HTMLElement;
+      const agaçant = e!.currentTarget as HTMLElement;
       this.stream.end(e);
       clearSelection();
     },

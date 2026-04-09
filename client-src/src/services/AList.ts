@@ -57,33 +57,33 @@ export class AList implements Listable, ListStruct {
    * @returns {AList}
    */
   public static manual(nom: string, id: number): AList {
-    let tmp = new AList();
-    tmp.nom = nom;
-    tmp.créé = new Date();
-    tmp.modifié = new Date();
-    tmp.énumérer = 0;
-    tmp.id = id;
-    tmp.éléments = [] as Array<string>;
-    return tmp;
+    let liste = new AList();
+    liste.nom = nom;
+    liste.créé = new Date();
+    liste.modifié = new Date();
+    liste.énumérer = 0;
+    liste.id = id;
+    liste.éléments = [] as Array<string>;
+    return liste;
   }
 
   /**
    * importTest
    * a util func to get Fixtures into the local AList[]
  
-   * @param {TestDataSchema} src
+   * @param {TestDataSchema} origine
    * @public
    * @returns {AList}
    */
-  public static importTest(src: TestDataSchema): AList {
-    const tmp = new AList();
-    tmp.nom = src.name;
-    tmp.créé = src.created;
-    tmp.modifié = src.edited;
-    tmp.énumérer = src.count;
-    tmp.id = src.id;
-    tmp.éléments = [...src.list];
-    return tmp;
+  public static importTest(origine: TestDataSchema): AList {
+    const liste = new AList();
+    liste.nom = origine.name;
+    liste.créé = origine.created;
+    liste.modifié = origine.edited;
+    liste.énumérer = origine.count;
+    liste.id = origine.id;
+    liste.éléments = [...origine.list];
+    return liste;
   }
 
   /**
@@ -123,16 +123,16 @@ export class AList implements Listable, ListStruct {
    * change an entry in the list
    * Maybe should rename to editItem() ?
  
-   * @param {number} offset
+   * @param {number} indice
    * @param {string} nouveau
    * @public
    * @returns {boolean}
    */
-  public edit(offset: number, nouveau: string): boolean {
-    if (offset < 0 || offset > this.énumérer) {
+  public edit(indice: number, nouveau: string): boolean {
+    if (indice < 0 || indice > this.énumérer) {
       return false;
     }
-    this.éléments[offset] = nouveau;
+    this.éléments[indice] = nouveau;
     this.modifié = new Date();
     return true;
   }
@@ -141,15 +141,15 @@ export class AList implements Listable, ListStruct {
    * remove
    * Remove an element ...
  
-   * @param {number} offset
+   * @param {number} indice
    * @public
    * @returns {boolean}
    */
-  public remove(offset: number): boolean {
-    if (offset < 0 || offset > this.énumérer) {
+  public remove(indice: number): boolean {
+    if (indice < 0 || indice > this.énumérer) {
       return false;
     }
-    this.éléments.splice(offset, 1);
+    this.éléments.splice(indice, 1);
     this.modifié = new Date();
     return true;
   }
@@ -188,9 +188,9 @@ export class AList implements Listable, ListStruct {
    * @returns {boolean}
    */
   public unique(): boolean {
-    const s: Set<string> = new Set<string>(this.éléments);
+    const s1: Set<string> = new Set<string>(this.éléments);
     this.éléments.splice(0, this.éléments.length);
-    this.éléments.push(...s);
+    this.éléments.push(...s1);
     this.modifié = new Date();
     return true;
   }
