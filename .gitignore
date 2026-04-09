@@ -2,10 +2,13 @@
 node_modules
 /dist
 
-
 # local env files
 .env.local
 .env.*.local
+
+# You see no certs in the repo, you must add them after checkout.
+*.pem
+*.key
 
 # Log files
 npm-debug.log*
