@@ -78,28 +78,27 @@ export const TrackTextRendered6: Story = {
       setup() {
         const { currentData, initData, updateData } = ListData;
 
-        if (currentData) {
-          console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
+        if (currentData && _LOGGING_) {
+            console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
         }
-        if (ListData.currentData) {
-          console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
+        if (ListData.currentData && _LOGGING_) {
+            console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
         }
 
         return { args, currentStateKey: "test23", testId: "test23", shopStore: STORE, fixPath:(a:RouteLocationNormalizedLoadedGeneric)=>{return;} };
       },
-      // inject Suspense, I guess here?
-      template: `<ListOfLists currentStateKey="test23" testId="test23" :shopStore="shopStore" :fixPath="OVERRIDE" ></ListOfLists>`,
+       template: `<ListOfLists currentStateKey="test23" testId="test23" :shopStore="shopStore" :fixPath="fn" ></ListOfLists>`,
     };
   },
   // https://storybook.js.org/docs/writing-stories/loaders
   loaders: [
     () => {
       const { currentData, initData, updateData } = createDataFactory(fixture1());
-      if (currentData) {
-        console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
+      if (currentData && _LOGGING_) {
+          console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
-      if (ListData.currentData) {
-        console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
+      if (ListData.currentData && _LOGGING_) {
+          console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
       }
       if (!currentData) {
         throw new Error();
@@ -115,10 +114,10 @@ export const TrackTextRendered6: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const { currentData, initData, updateData } = ListData;
-    if (ListData.currentData) {
-      console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
-    }
-    if (currentData) {
+    if (ListData.currentData && _LOGGING_) {
+        console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
+      }
+    if (currentData && _LOGGING_) {
       console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
     }
 

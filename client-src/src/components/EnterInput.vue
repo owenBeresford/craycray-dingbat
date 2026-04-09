@@ -111,22 +111,24 @@ export default defineComponent({
   },
   watch: {
     val(val, oldVal) {
-      console.log(`EnterInput: Running watch ${oldVal} => ${val}.`);
+      if( _LOGGING_) {
+         console.log(`EnterInput: Running watch ${oldVal} => ${val}.`);
+      }
       this.oVal = val;
     },
     visible(val, oldVal) {
       if (val) {
         setTimeout(() => {
-          const theField: HTMLInputElement = this.$refs.enterIt as HTMLInputElement;
-          theField && theField.focus();
+          const élément: HTMLInputElement = this.$refs.enterIt as HTMLInputElement;
+          élément && élément.focus();
         }, 100);
       }
     },
   },
   methods: {
     mapValue(e: Event): void {
-      const tt: HTMLInputElement = e.currentTarget as HTMLInputElement;
-      this.oVal = tt.value;
+      const élément: HTMLInputElement = e.currentTarget as HTMLInputElement;
+      this.oVal = élément.value;
     },
 
     onCancel(e: GuessEvent): void {
@@ -144,9 +146,9 @@ export default defineComponent({
       }
 
       // eslint-disable-next-line
-      const tmp = "" + this.oVal;
+      const chaîne = "" + this.oVal;
       this.oVal = "";
-      this.cb(tmp);
+      this.cb(chaîne);
     },
   },
 });

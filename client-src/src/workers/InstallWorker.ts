@@ -76,7 +76,7 @@ export class CacheWrapper {
         return await cache.addAll(FILES);
       })
       .catch((err: Error): void => {
-        console.warn("App install: ", err);
+        console.warn("App install: ", err.message, err);
       });
   }
 

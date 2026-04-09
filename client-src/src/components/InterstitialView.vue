@@ -156,7 +156,7 @@ export default defineComponent({
       this.list.splice(0, this.list.length);
       this.list.push(...TEXT.getTemplate(templateName));
       if (this.list.length === 0 || this.list[0] === "") {
-        console.log("Ran store->showHelp(), but have no content to show?");
+        console.warn("Ran store->showHelp(), but have no content to show?");
         this.iShow = false;
       }
     },

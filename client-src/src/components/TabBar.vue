@@ -189,7 +189,7 @@ export default defineComponent({
         return false;
       }
       if (location.protocol !== "https:") {
-        console.log("Install button is disabled, you need to use HTTPS.");
+        console.warn("Install button is disabled, you need to use HTTPS.");
         return;
       }
       if (this.CACHE.check()) {
@@ -206,7 +206,9 @@ export default defineComponent({
       if (!currentData) {
         return false;
       }
-      console.log("TO TEST make unique");
+      if(  _LOGGING_) {
+        console.log("TO TEST make unique");
+      }
 
       const llist = currentData.get(this.$store.state.currentId);
       if (llist) {

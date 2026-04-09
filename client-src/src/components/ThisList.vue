@@ -68,10 +68,12 @@ import type { ThisListProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 const { currentData, updateData, initData } = ListData;
-if (ListData.currentData) {
-  console.log("KKK ThisList global scope ListData.currentData id:", idOf(ListData.currentData));
+if (ListData.currentData && _LOGGING_) {
+    console.log("KKK ThisList global scope ListData.currentData id:", idOf(ListData.currentData));
 }
-console.log("KKK ThisList global scope ListData id:", idOf(ListData));
+if(_LOGGING_) {
+  console.log("KKK ThisList global scope ListData id:", idOf(ListData));
+}
 
 const NEW_LIST = -1;
 // this class is using a shared function pointer, as in vue2 the event bus is too slow
@@ -104,10 +106,12 @@ export default defineComponent({
   },
   async created() {
     this.list = setupCurrentList(undefined);
-    if (currentData) {
-      console.log("KKK thisList.created  ListData.currentData id:", idOf(currentData));
+    if (currentData && _LOGGING_) {
+        console.log("KKK thisList.created  ListData.currentData id:", idOf(currentData));
+      }
+    if(_LOGGING_) {
+      console.log("KKK ThisList global scope ListData id:", idOf(ListData));
     }
-    console.log("KKK ThisList global scope ListData id:", idOf(ListData));
   },
   mounted() {
     const itinéraire = useRoute();

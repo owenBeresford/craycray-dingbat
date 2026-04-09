@@ -109,9 +109,9 @@ export function clearSelection(): void {
 
   if (typeof window.getSelection === "function") {
     // https://developer.mozilla.org/en-US/docs/Web/API/Selection
-    const tmp: Selection | null = window.getSelection();
-    if (tmp) {
-      tmp.removeAllRanges();
+    const élément: Selection | null = window.getSelection();
+    if (élément) {
+      élément.removeAllRanges();
     }
   } else {
     console.error("Cannot use window.getSelection or document.selection; what browser is this? ");

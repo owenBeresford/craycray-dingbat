@@ -119,7 +119,7 @@ export class RemoteStorage implements Storable, DistantStorable {
           } else {
             bad(new Error("Valid HTTP, but null response"));
           }
-          return "value for eslint ";
+          return "value for eslint.";
         });
     });
   }
@@ -137,8 +137,8 @@ export class RemoteStorage implements Storable, DistantStorable {
       const REQT: RequestInit = Object.assign(this.other, { method: "GET", body: null }) as RequestInit;
       global
         .fetch(this.url, REQT)
-        .catch((err: Error) => {
-          console.warn("FAILED TO LOAD STATE", err);
+        .catch((err: unknown) => {
+          console.warn("FAILED TO LOAD STATE", (err as Error).message);
           return bad(new Error("No data was found"));
         })
         .then((dat: Response | void) => {

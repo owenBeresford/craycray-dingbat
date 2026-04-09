@@ -71,7 +71,9 @@ export class SharedStateWorker implements DataPipeline {
           SELF.conn
             .saveState(json)
             .then((dat: boolean): boolean => {
-              console.log("save said " + dat);
+              if( _LOGGING_) {
+                console.log("save said " + dat);
+              }
               good(true);
               return true;
             })

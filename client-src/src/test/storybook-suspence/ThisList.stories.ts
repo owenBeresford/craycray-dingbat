@@ -81,10 +81,10 @@ export const TrackTextRendered2: Story = {
       setup() {
         const { currentData, initData, updateData } = ListData;
 
-        if (currentData) {
+        if (currentData && _LOGGING_)  {
           console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
         }
-        if (ListData.currentData) {
+        if (ListData.currentData && _LOGGING_) {
           console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
         }
 
@@ -98,10 +98,10 @@ export const TrackTextRendered2: Story = {
   loaders: [
     () => {
       const { currentData, initData, updateData } = createDataFactory(fixture1());
-      if (currentData) {
+      if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
-      if (ListData.currentData) {
+      if (ListData.currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
       }
       if (!currentData) {
@@ -118,10 +118,10 @@ export const TrackTextRendered2: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const { currentData, initData, updateData } = ListData;
-    if (ListData.currentData) {
+    if (ListData.currentData && _LOGGING_) {
       console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
     }
-    if (currentData) {
+    if (currentData && _LOGGING_) {
       console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
     }
 
@@ -164,10 +164,10 @@ export const TrackTextRendered2_5: Story = {
       setup() {
         const { currentData, initData, updateData } = ListData;
 
-        if (currentData) {
+        if (currentData && _LOGGING_) {
           console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
         }
-        if (ListData.currentData) {
+        if (ListData.currentData && _LOGGING_) {
           console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
         }
 
@@ -181,10 +181,10 @@ export const TrackTextRendered2_5: Story = {
   loaders: [
     () => {
       const { currentData, initData, updateData } = createDataFactory(fixture1());
-      if (currentData) {
+      if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
-      if (ListData.currentData) {
+      if (ListData.currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
       }
       if (!currentData) {
@@ -201,10 +201,10 @@ export const TrackTextRendered2_5: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const { currentData, initData, updateData } = ListData;
-    if (ListData.currentData) {
+    if (ListData.currentData && _LOGGING_) {
       console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
     }
-    if (currentData) {
+    if (currentData && _LOGGING_) {
       console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
     }
 
@@ -236,10 +236,10 @@ export const TrackTextRendered3: Story = {
       setup() {
         const { currentData, initData, updateData } = ListData;
 
-        if (currentData) {
+        if (currentData && _LOGGING_) {
           console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
         }
-        if (ListData.currentData) {
+        if (ListData.currentData && _LOGGING_) {
           console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
         }
 
@@ -253,10 +253,10 @@ export const TrackTextRendered3: Story = {
   loaders: [
     () => {
       const { currentData, initData, updateData } = createDataFactory(fixture2());
-      if (currentData) {
+      if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
-      if (ListData.currentData) {
+      if (ListData.currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
       }
       if (!currentData) {
@@ -273,10 +273,10 @@ export const TrackTextRendered3: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const { currentData, initData, updateData } = ListData;
-    if (ListData.currentData) {
+    if (ListData.currentData && _LOGGING_) {
       console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
     }
-    if (currentData) {
+    if (currentData && _LOGGING_) {
       console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
     }
 
@@ -313,10 +313,10 @@ export const TrackTextRendered4: Story = {
       setup() {
         const { currentData, initData, updateData } = ListData;
 
-        if (currentData) {
+        if (currentData && _LOGGING_) {
           console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
         }
-        if (ListData.currentData) {
+        if (ListData.currentData && _LOGGING_) {
           console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
         }
 
@@ -330,10 +330,10 @@ export const TrackTextRendered4: Story = {
   loaders: [
     () => {
       const { currentData, initData, updateData } = createDataFactory(fixture3());
-      if (currentData) {
+      if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
-      if (ListData.currentData) {
+      if (ListData.currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
       }
       if (!currentData) {
@@ -350,10 +350,10 @@ export const TrackTextRendered4: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const { currentData, initData, updateData } = ListData;
-    if (ListData.currentData) {
+    if (ListData.currentData && _LOGGING_) {
       console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
     }
-    if (currentData) {
+    if (currentData && _LOGGING_) {
       console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
     }
 
@@ -389,10 +389,10 @@ export const TrackTextRendered5: Story = {
       setup() {
         const { currentData, initData, updateData } = ListData;
 
-        if (currentData) {
+        if (currentData && _LOGGING_) {
           console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
         }
-        if (ListData.currentData) {
+        if (ListData.currentData && _LOGGING_) {
           console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
         }
 
@@ -406,10 +406,10 @@ export const TrackTextRendered5: Story = {
   loaders: [
     () => {
       const { currentData, initData, updateData } = createDataFactory(fixture4());
-      if (currentData) {
+      if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
-      if (ListData.currentData) {
+      if (ListData.currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
       }
       if (!currentData) {
@@ -426,10 +426,10 @@ export const TrackTextRendered5: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const { currentData, initData, updateData } = ListData;
-    if (ListData.currentData) {
+    if (ListData.currentData && _LOGGING_) {
       console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
     }
-    if (currentData) {
+    if (currentData && _LOGGING_) {
       console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
     }
 
