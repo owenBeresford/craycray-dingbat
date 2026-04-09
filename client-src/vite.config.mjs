@@ -15,7 +15,7 @@ if(process.env && process.env.NODE_ENV) {
 	mode=process.env.NODE_ENV;
 }
 let ofn="";
-if(mode==="development") {
+if(mode!="production") {
 	ofn="shopping-test";
 } else {
 	ofn="shopping";
@@ -31,6 +31,9 @@ export default defineConfig({
 	server: {
       hmr: false
 	},
+	 define: {
+	    _LOGGING_: process.env.NODE_ENV !== "production",
+  	},
 	build: {
     lib: {
       entry: path.resolve(__dirname, "src/main.ts"),
@@ -42,10 +45,12 @@ export default defineConfig({
     rollupOptions: {
       plugins: [terser({})],
       external: [],
+		cache:false,
       output: [
         {
           format: "es",
-      		entryFileName: (format) => `${ofn}.${format}.mjs`,
+			name: `${ofn}`,
+//      		entryFileName: (format) => `${ofn}.${format}.mjs`,
         },
       ],
     },
@@ -55,7 +60,7 @@ export default defineConfig({
   },
 });
 
-/*
+/* // notes from AI-BOT, claims this will suppress Vite vetting stories files and borking hard.
 export default defineConfig({
   optimizeDeps: { // remove spaces from regex
     exclude: ["tests /* * / * .stories. * "],

@@ -23,6 +23,10 @@ export default defineConfig({
       exclude: [ "src/**/*.stories.*", ],
 
     },
+// Copilot says these two lines should disable the checking, which is not useful
+// they don't work.
+//	sourcemap: false,
+//  sourcemap: "inline",
     environment: "jsdom",
     bail: 0,
     watch: false,
