@@ -24,15 +24,19 @@ if [ "$what" = "fe" -o "$what" = "all" ]; then
 		echo "Manually started the API service."
 	fi;
 	cd client-src
-	node $EXECDIR/vitest run --typecheck 
-	# I see no way to look at an exit value, it doesn't set it.
+	node $EXECDIR/vitest run -c vitest.config.ts --typecheck 2>/dev/null
+	# vitest sets an exit of 1, if a test fails. 
+	# I have added a thing for timeout to return 127
+	# Due to using typeschecks, I cannot use this feature in Devops tools,  
+	# as Vitest thinks there are ~850 errors in node_modules/@types, and is always 1
+
 	node $SEXECDIR/storybook build
-	node $SEXECDIR/storybook dev -p 6006 
 	node $SEXECDIR/storybook build -c .storybook-suspence/
+	node $SEXECDIR/storybook dev -p 6006 
 	node $SEXECDIR/storybook dev -p 6006 -c .storybook-suspence/
+	# I wish I had a way to "run then quit" on Storybook
 
-
-
+# vitest --typecheck --coverage
 	cd ..
 fi
 
