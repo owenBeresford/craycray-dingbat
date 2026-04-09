@@ -69,9 +69,9 @@ import type { ThisListProps } from "../types/ComponentProps";
 const TEXT = useUIText();
 const { currentData, updateData, initData } = ListData;
 if (ListData.currentData && _LOGGING_) {
-    console.log("KKK ThisList global scope ListData.currentData id:", idOf(ListData.currentData));
+  console.log("KKK ThisList global scope ListData.currentData id:", idOf(ListData.currentData));
 }
-if(_LOGGING_) {
+if (_LOGGING_) {
   console.log("KKK ThisList global scope ListData id:", idOf(ListData));
 }
 
@@ -107,9 +107,9 @@ export default defineComponent({
   async created() {
     this.list = setupCurrentList(undefined);
     if (currentData && _LOGGING_) {
-        console.log("KKK thisList.created  ListData.currentData id:", idOf(currentData));
-      }
-    if(_LOGGING_) {
+      console.log("KKK thisList.created  ListData.currentData id:", idOf(currentData));
+    }
+    if (_LOGGING_) {
       console.log("KKK ThisList global scope ListData id:", idOf(ListData));
     }
   },

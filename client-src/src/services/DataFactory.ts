@@ -90,8 +90,8 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
   if (Array.isArray(override)) {
     ret.currentData = new TestListService(override);
     if (ret.currentData && _LOGGING_) {
-        console.log("KKK createDataFactory (with a mock) ListData.currentData id:", idOf(ret.currentData));
-      }
+      console.log("KKK createDataFactory (with a mock) ListData.currentData id:", idOf(ret.currentData));
+    }
     ret.initData = function () {};
     return ret as Readonly<FactoryArtefact>;
   }
@@ -144,8 +144,8 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
  */
   function updateData(next: ListCollection): void {
     if (ret.currentData && _LOGGING_) {
-        console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
-      }
+      console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
+    }
     if (!ret.currentData) {
       ret.currentData = next;
       return;
@@ -155,12 +155,12 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
     }
     ret.currentData.merge(next);
     if (ret.currentData && _LOGGING_) {
-        console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
-      }
+      console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
+    }
   }
 
   if (ret.currentData && _LOGGING_) {
-      console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
+    console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
   }
 
   initData();
@@ -198,8 +198,8 @@ export function setupCurrentList(itinéraire: undefined | RouteLocationNormalize
       liste = currentData.get(id) ?? EMPTY_LIST;
     }
     if (currentData && _LOGGING_) {
-        console.log("KKK setupCurrentList currentData id:", idOf(currentData));
-      }
+      console.log("KKK setupCurrentList currentData id:", idOf(currentData));
+    }
   } catch (e) {
     let backupId = 0;
     if (currentData) {
@@ -212,8 +212,8 @@ export function setupCurrentList(itinéraire: undefined | RouteLocationNormalize
     }
     id = backupId;
     if (currentData && _LOGGING_) {
-        console.log("KKK setupCurrentList ERROR clause currentData id:", idOf(currentData));
-      }
+      console.log("KKK setupCurrentList ERROR clause currentData id:", idOf(currentData));
+    }
   }
 
   if (!currentData || currentData.count() === 0) {

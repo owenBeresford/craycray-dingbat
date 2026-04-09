@@ -1,5 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
-import type { RouterOptions, RouteRecordRaw, RouteLocationNormalized, RouteLocationNormalizedLoadedGeneric } from "vue-router";
+import type {
+  RouterOptions,
+  RouteRecordRaw,
+  RouteLocationNormalized,
+  RouteLocationNormalizedLoadedGeneric,
+} from "vue-router";
 
 import ListOfLists from "./ListOfLists.vue";
 import ThisList from "./ThisList.vue";
@@ -25,7 +30,7 @@ export const StaticRoutes = createRouter({
       name: "list-everything",
       component: ListOfLists,
       props: (route: RouteLocationNormalized): Record<string, any> => {
-        return { ...route.params, currentStateKey: "listoflists1", fixPath:swapPath };
+        return { ...route.params, currentStateKey: "listoflists1", fixPath: swapPath };
       },
     },
     {
@@ -33,7 +38,7 @@ export const StaticRoutes = createRouter({
       name: "list-same",
       component: ListOfLists,
       props: (route: RouteLocationNormalized): Record<string, any> => {
-        return { ...route.params, currentStateKey: "listoflists2", fixPath:swapPath };
+        return { ...route.params, currentStateKey: "listoflists2", fixPath: swapPath };
       },
     },
     {
@@ -64,9 +69,8 @@ export const StaticRoutes = createRouter({
  * @public
  * @returns {void}
  */
-export function swapPath(rr:RouteLocationNormalizedLoadedGeneric):void {
-  if (rr.path === '/') {
-    StaticRoutes.push({ name: 'list-everything' });
+export function swapPath(rr: RouteLocationNormalizedLoadedGeneric): void {
+  if (rr.path === "/") {
+    StaticRoutes.push({ name: "list-everything" });
   }
-} 
-
+}

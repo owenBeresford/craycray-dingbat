@@ -206,7 +206,7 @@ export default defineComponent({
       if (!currentData) {
         return false;
       }
-      if(  _LOGGING_) {
+      if (_LOGGING_) {
         console.log("TO TEST make unique");
       }
 

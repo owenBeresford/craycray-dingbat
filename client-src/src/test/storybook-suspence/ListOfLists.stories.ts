@@ -55,11 +55,15 @@ export const EntirelyPassive: Story = {
     currentStateKey: "test22",
     testId: "test2",
     shopStore: STORE,
-    fixPath:(a:unknown) => {return ;},
-   },
+    fixPath: (a: unknown) => {
+      return;
+    },
+  },
 };
 
-let OVERRIDE=(a:RouteLocationNormalizedLoadedGeneric)=>{return;};
+let OVERRIDE = (a: RouteLocationNormalizedLoadedGeneric) => {
+  return;
+};
 export const TrackTextRendered6: Story = {
   //////////////////////////////////////////////////////////////////////////////
   // https://github.com/storybookjs/storybook/blob/a3cdabb025524822807318bc137f69be006596c2/docs/snippets/web-components/api-doc-block-story-parameter.ts.mdx#L17
@@ -79,15 +83,23 @@ export const TrackTextRendered6: Story = {
         const { currentData, initData, updateData } = ListData;
 
         if (currentData && _LOGGING_) {
-            console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
+          console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
         }
         if (ListData.currentData && _LOGGING_) {
-            console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
+          console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
         }
 
-        return { args, currentStateKey: "test23", testId: "test23", shopStore: STORE, fixPath:(a:RouteLocationNormalizedLoadedGeneric)=>{return;} };
+        return {
+          args,
+          currentStateKey: "test23",
+          testId: "test23",
+          shopStore: STORE,
+          fixPath: (a: RouteLocationNormalizedLoadedGeneric) => {
+            return;
+          },
+        };
       },
-       template: `<ListOfLists currentStateKey="test23" testId="test23" :shopStore="shopStore" :fixPath="fn" ></ListOfLists>`,
+      template: `<ListOfLists currentStateKey="test23" testId="test23" :shopStore="shopStore" :fixPath="fn" ></ListOfLists>`,
     };
   },
   // https://storybook.js.org/docs/writing-stories/loaders
@@ -95,10 +107,10 @@ export const TrackTextRendered6: Story = {
     () => {
       const { currentData, initData, updateData } = createDataFactory(fixture1());
       if (currentData && _LOGGING_) {
-          console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
+        console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
       if (ListData.currentData && _LOGGING_) {
-          console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
+        console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
       }
       if (!currentData) {
         throw new Error();
@@ -115,24 +127,17 @@ export const TrackTextRendered6: Story = {
     const canvas = within(canvasElement);
     const { currentData, initData, updateData } = ListData;
     if (ListData.currentData && _LOGGING_) {
-        console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
-      }
+      console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
+    }
     if (currentData && _LOGGING_) {
       console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
     }
 
-    const list = await canvas.findByTestId("test23List1");  
+    const list = await canvas.findByTestId("test23List1");
     expect(list).toBeVisible();
-    expect(list.childNodes.length).toBe(3 + 2 ); // it correctly loads 1st list in fixture
+    expect(list.childNodes.length).toBe(3 + 2); // it correctly loads 1st list in fixture
     // the +2 is due to two textnodes
 
     // I shouldnt need to test the enterinput component, as it has its own test
   },
 };
-
-
-
-
-
-
-

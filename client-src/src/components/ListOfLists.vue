@@ -16,7 +16,7 @@
 import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
 
-import { DELAY_FOR_API } from '../Constants';
+import { DELAY_FOR_API } from "../Constants";
 import { useStore } from "../services/Store";
 import { ListData } from "../services/DataFactory";
 import { mapURL } from "../services/URLs";
@@ -24,7 +24,7 @@ import InterstitialView from "./InterstitialView.vue";
 import type { ListStruct } from "../types/ListCollection";
 import type { ListOfListsProps } from "../types/ComponentProps";
 
- /**
+/**
    * ListOfLists
    * A component for a small form to enter a singular text field.
    * Used to add items to the lists, or names of list etc
@@ -46,12 +46,12 @@ export default defineComponent({
       this.shopStore.commit("setPath", itinéraire.path);
     }
 
-     if (ListData.currentData && ListData.currentData.count() === 0) {
+    if (ListData.currentData && ListData.currentData.count() === 0) {
       // if this reference doesn't happen to be the first mention, it will have API content
       // I wish I could use Promises.then, but I can't really make the data() async
       // API should never take more than 500ms, as its not doing much, as its on LAN
       setTimeout(() => {
-        if(! ListData.currentData) {
+        if (!ListData.currentData) {
           throw new Error("Check server is running");
         }
 
@@ -60,7 +60,7 @@ export default defineComponent({
         } else {
           this.$data.shoppingLists = ListData.currentData.list();
         }
-      }, DELAY_FOR_API );
+      }, DELAY_FOR_API);
     }
   },
   computed: {
@@ -71,14 +71,14 @@ export default defineComponent({
   inject: ["helpText", "canSeeHelp", "ttl"],
   props: {
     currentStateKey: { type: String, required: true },
-    testId: { type:String, default:"test0" },
+    testId: { type: String, default: "test0" },
     shopStore: {
       type: Object,
       default: () => {
         return useStore();
       },
-	  },
-    fixPath:{type:Function, required:true },
+    },
+    fixPath: { type: Function, required: true },
   },
   data(): ListOfListsProps {
     // IOIO XXX thats not a realtime view, I might need to replace this, to a prop
@@ -88,13 +88,12 @@ export default defineComponent({
     }
     return {
       instanceId: this.$props.testId,
-      viewId: this.$props.testId +"View1",
-      listId: this.$props.testId +"List1",
+      viewId: this.$props.testId + "View1",
+      listId: this.$props.testId + "List1",
 
       shoppingLists: ll,
       mapURL,
     } as ListOfListsProps;
   },
-
 });
 </script>

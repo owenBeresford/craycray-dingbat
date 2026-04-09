@@ -114,7 +114,7 @@ export class ListService implements ListCollection {
   public merge(next: ListCollection): boolean {
     for (let i = 0; i < next.count(); i++) {
       let annoying = next.get(i);
-      if (annoying && annoying.nom !== "New Empty list" ) {
+      if (annoying && annoying.nom !== "New Empty list") {
         this.append(annoying);
       }
     }

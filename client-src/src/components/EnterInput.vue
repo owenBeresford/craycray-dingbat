@@ -111,8 +111,8 @@ export default defineComponent({
   },
   watch: {
     val(val, oldVal) {
-      if( _LOGGING_) {
-         console.log(`EnterInput: Running watch ${oldVal} => ${val}.`);
+      if (_LOGGING_) {
+        console.log(`EnterInput: Running watch ${oldVal} => ${val}.`);
       }
       this.oVal = val;
     },

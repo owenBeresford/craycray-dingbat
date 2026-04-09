@@ -31,10 +31,10 @@ export class NetworkedListService extends ListService implements ListCollection 
     super();
     this.remote = rr;
     this.local = ll;
-    if(  _LOGGING_) {
-    console.log(
-      "ListService created & injected with: (remote) " + rr.constructor.name + " (local) " + ll.constructor.name
-    );
+    if (_LOGGING_) {
+      console.log(
+        "ListService created & injected with: (remote) " + rr.constructor.name + " (local) " + ll.constructor.name
+      );
     }
     this.loadAllLists();
   }

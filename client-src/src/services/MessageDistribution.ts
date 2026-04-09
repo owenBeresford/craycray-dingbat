@@ -184,8 +184,8 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
    * @returns {Promise<boolean>}
    */
   public saveState(dat: Array<SaveStruct>): Promise<boolean> {
-    if(  _LOGGING_ ) {
-       console.log("TEST sending MSG from the UI to the worker");
+    if (_LOGGING_) {
+      console.log("TEST sending MSG from the UI to the worker");
     }
     if (!this.worker) {
       console.assert(this.worker != null, "986634563523, Worker thread should be active now");
