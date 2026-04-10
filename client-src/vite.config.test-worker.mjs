@@ -14,10 +14,10 @@ if(process.env && process.env.NODE_ENV) {
 	mode=process.env.NODE_ENV;
 }
 let ofn="";
-if(mode==="development") {
-	ofn="shopping-test";
+if(mode!="production") {
+	ofn="worker1-test";
 } else {
-	ofn="shopping";
+	ofn="worker1";
 }
 
 
@@ -36,15 +36,18 @@ export default defineConfig({
       name: "worker1",
       fileName: (format) => `${ofn}.${format}.js`,
     },
+	emptyOutDir:false,
     minify: "terser",
     target: "es2022",
+	watch:false,	
     rollupOptions: {
-      plugins: [terser({})],
+      plugins: [ terser({}) ],
       external: [],
       output: [
         {
+			name: `${ofn}`,
           format: "es",
-      		entryFileName: (format) => `${ofn}.${format}.mjs`,
+ //     		entryFileName: (format) => `${ofn}.${format}.mjs`,
         },
       ],
     },

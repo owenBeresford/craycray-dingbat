@@ -42,6 +42,7 @@ export default defineConfig({
     },
     minify: "terser",
     target: "es2022",
+	watch:false,	
     rollupOptions: {
       plugins: [terser({})],
       external: [],
