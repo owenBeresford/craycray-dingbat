@@ -48,6 +48,7 @@ export interface TabBarProps {
   menuId: string;
   inputId: string;
   urls: Array<string>;
+  hasData:boolean;
   menu: Record<string, string>; // l12n data
 }
 

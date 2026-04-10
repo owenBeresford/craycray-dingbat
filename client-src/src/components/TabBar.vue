@@ -23,51 +23,55 @@
             v-html="menuLabel"
           ></span>
           <menu :class="menuState" role="navigation" :data-testId="menuId">
-            <li :title="menu.installTitle">
-              <a :class="buttonEnabled" v-touch="onInstall" @click.once="onInstall" @keypress="onInstall">
+            <li>
+              <span role="button" :title="menu.installTitle" :class="buttonEnabled" v-touch="onInstall" @click.once="onInstall" @keypress="onInstall">
                 {{ menu.installName }}
-              </a>
+              </span>
             </li>
-            <li :title="menu.helpTitle">
-              <a class="button" v-touch="onIntersitial" @click.once="onIntersitial" @keypress="onIntersitial">{{
+            <li >
+              <span role="button" class="button" :title="menu.helpTitle" v-touch="onIntersitial" @click.once="onIntersitial" @keypress="onIntersitial">{{
                 menu.helpName
-              }}</a>
+              }}</span>
             </li>
-            <li :title="menu.renameTitle">
-              <a disabled="{!currentData}" class="button" v-touch="onName" @click="onName" @keypress="onName">{{
+            <li >
+              <span :aria-disabled="hasData" role="button" :title="menu.renameTitle" class="button" v-touch="onName" @click="onName" @keypress="onName">{{
                 menu.renameName
-              }}</a>
+              }}</span>
             </li>
-            <li :title="menu.dupeTitle">
-              <a
-                disabled="{!currentData}"
+            <li >
+              <span
+                :aria-disabled="hasData"
+                :title="menu.dupeTitle"
                 class="button"
+                role="button"
                 v-touch="onDuplicate"
                 @click="onDuplicate"
                 @keypress="onDuplicate"
-                >{{ menu.dupeName }}</a
+                >{{ menu.dupeName }}</span
               >
             </li>
-            <li :title="menu.uniqTitle">
-              <a disabled="{!currentData}" class="button" v-touch="onUnique" @click="onUnique" @keypress="onUnique">{{
+            <li >
+              <span :aria-disabled="hasData" class="button" role="button" :title="menu.uniqTitle" v-touch="onUnique" @click="onUnique" @keypress="onUnique">{{
                 menu.uniqName
-              }}</a>
+              }}</span>
             </li>
-            <li :title="menu.saveTitle">
-              <a disabled="{!currentData}" class="button" v-touch="onSave" @click="onSave" @keypress="onSave">{{
+            <li >
+              <span :title="menu.saveTitle" :aria-disabled="hasData" role="button" class="button" v-touch="onSave" @click="onSave" @keypress="onSave">{{
                 menu.saveName
-              }}</a>
+              }}</span>
             </li>
-            <li :title="menu.revertTitle">
-              <a
-                disabled="{!currentData}"
+            <li >
+              <span
+                :aria-disabled="hasData"
                 v-touch.once="onRevert"
+                :title="menu.revertTitle"
+                role="button"
                 @click.once="onRevert"
                 @keypress.once="onRevert"
                 class="button"
               >
                 {{ menu.revertName }}
-              </a>
+            </span>
             </li>
             <li>
               <br /><small>{{ menu.outro }}</small>
@@ -81,6 +85,7 @@
 </template>
 
 <script lang="ts">
+// https://github.com/josueggh/a11y-cheatsheet
 import { defineComponent } from "vue";
 
 import { useStore } from "../services/Store";
@@ -96,7 +101,7 @@ import { UI_EN_GB, useUIText } from "../services/Localisation";
 import { TabBarProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
-const { currentData, initData } = ListData;
+const { currentData, updateData, initData } = ListData;
 const MENU_OPEN = TEXT.get("menu.symbol");
 const MENU_CLOSE = TEXT.get("cross");
 /**
@@ -138,6 +143,7 @@ export default defineComponent({
       EIK: this.$props.currentStateKey + "false",
       inputId: this.testId + "input1",
       menuId: this.testId + "Menu1",
+      hasData:(currentData!=undefined),
       urls: [mapURL("allList", null), mapURL("aList", -1)],
       menu: {
         header: TEXT.get("menu.header1"),
