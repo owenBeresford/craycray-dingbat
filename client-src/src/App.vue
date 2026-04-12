@@ -1,6 +1,6 @@
 <template>
   <div class="wholePage" :data-testid="instanceId" :key="currentStateKey">
-    <TabBar currentStateKey="tabar1" />
+    <TabBar currentStateKey="tabar1" :testid="tabId"  />
     <router-view class="view" />
   </div>
 </template>
@@ -21,6 +21,11 @@ export default defineComponent({
     helpText: "menu",
     canSeeHelp: false,
     ttl: 5000,
+  },
+  data() {
+    return {
+      tabId:this.$props.instanceId+"TabBar1",
+     };
   },
 });
 </script>
