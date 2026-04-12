@@ -11,10 +11,11 @@
         <li class="button" :title="menu.newTitle">
           <router-link :to="urls[1]">{{ menu.newName }}</router-link>
         </li>
-        <li style="text-align: right">
+        <li>
           <span
-            class="obmenu bigger"
+            class="obmenu foldPoint"
             aria-haspopup="menu"
+            :aria-pressed="menuOpen" 
             role="button"
             @click="onMenu"
             v-touch="onMenu"
@@ -24,7 +25,7 @@
           ></span>
           <menu :class="menuState" role="navigation" :data-testId="menuId">
             <li>
-              <span role="button" :title="menu.installTitle" :class="buttonEnabled" v-touch="onInstall" @click.once="onInstall" @keypress="onInstall">
+              <span role="button" :title="menu.installTitle" :class="installEnabled" v-touch="onInstall" @click.once="onInstall" @keypress="onInstall">
                 {{ menu.installName }}
               </span>
             </li>
@@ -95,10 +96,10 @@ import { AList } from "../services/AList";
 import { ListData } from "../services/DataFactory";
 import EnterInput from "./EnterInput.vue";
 import { useCacheWrapper, CacheWrapper } from "../workers/InstallWorker";
-import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
 import { mapURL } from "../services/URLs";
-import { UI_EN_GB, useUIText } from "../services/Localisation";
-import { TabBarProps } from "../types/ComponentProps";
+import { useUIText } from "../services/Localisation";
+import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
+import type { TabBarProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 const { currentData, updateData, initData } = ListData;
@@ -120,26 +121,32 @@ export default defineComponent({
   props: {
     currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
+    shopStore: {
+      type: Object,
+      default: () => {
+        return useStore();
+      },
+    }
   },
   data(): TabBarProps {
     const CACHE: CacheWrapper = useCacheWrapper();
-    let tt = "button";
+    let état = "button";
     if (location.protocol !== "https:") {
-      tt += " disabled";
+      état += " disabled";
     } else if (CACHE.check()) {
-      tt += " disabled";
+      état += " disabled";
     }
 
     return {
       menuLabel: MENU_OPEN,
       menuState: "hide",
+      menuOpen:false,
       getInput: "",
-      $store: useStore(),
-      visible: false,
+       visible: false,
       CB: Function as any,
       mapURL,
       CACHE: CACHE,
-      buttonEnabled: tt,
+      installEnabled: état,
       EIK: this.$props.currentStateKey + "false",
       inputId: this.testId + "input1",
       menuId: this.testId + "Menu1",
@@ -171,7 +178,11 @@ export default defineComponent({
       },
     };
   },
-
+  mounted() {
+    if(!this.shopStore) {
+      throw new Error("You must hava a real Store (Vuex Object, not a actual shop) to run the App.");
+    }
+  },
   methods: {
     onIntersitial(e: GuessEvent): boolean {
       e.preventDefault();
@@ -180,11 +191,13 @@ export default defineComponent({
       }
 
       console.log("Trying to show help", this.$route.path);
-      if (this.$store.state.currentURL !== this.$route.path) {
+      if (this.shopStore && this.shopStore.state.currentURL !== this.$route.path) {
         console.warn("The state.currentURL hasn't updated!");
-        this.$store.commit("setPath", this.$route.path);
+        this.shopStore.commit("setPath", this.$route.path);
       }
-      this.$store.commit("show", true);
+      if (this.shopStore) {
+        this.shopStore.commit("show", true);
+      }
       return false;
     },
 
@@ -215,11 +228,12 @@ export default defineComponent({
       if (_LOGGING_) {
         console.log("TO TEST make unique");
       }
+      if(!this.shopStore ) { throw new Error("2344568746356986 Impossible"); }
 
-      const llist = currentData.get(this.$store.state.currentId);
-      if (llist) {
-        llist.unique();
-        currentData.put(this.$store.state.currentId, llist);
+      const liste = currentData.get(this.shopStore.state.currentId);
+      if (liste) {
+        liste.unique();
+        currentData.put(this.shopStore.state.currentId, liste);
       }
 
       return false;
@@ -230,7 +244,8 @@ export default defineComponent({
       if (!currentData) {
         return false;
       }
-      const liste = currentData.get(this.$store.state.currentId);
+      if(!this.shopStore ) { throw new Error("83456423493433 Impossible"); }
+      const liste = currentData.get(this.shopStore.state.currentId);
 
       if (liste) {
         const extra = Object.assign(AList.manual(`DUP: ${liste.nom}`, currentData.count()), liste);
@@ -246,8 +261,9 @@ export default defineComponent({
       if (!currentData) {
         return false;
       }
+      if(!this.shopStore ) { throw new Error("2357675675357578 Impossible"); }
 
-      const liste = currentData.get(this.$store.state.currentId);
+      const liste = currentData.get(this.shopStore.state.currentId);
       if (!liste) {
         console.warn("EDIT NAME: got bad id, don't know how to proceed");
         return false;
@@ -259,8 +275,9 @@ export default defineComponent({
           this.visible = false;
           return;
         }
+        if(!this.shopStore ) { throw new Error("2357675675357578 Impossible"); }
         liste.editName(d1);
-        currentData.put(this.$store.state.currentId, liste);
+        currentData.put(this.shopStore.state.currentId, liste);
         this.visible = false;
         StaticRoutes.push({ name: "list-everything" });
       };
@@ -270,9 +287,8 @@ export default defineComponent({
 
     onSave(e: GuessEvent): boolean {
       e.preventDefault();
-      if (!currentData) {
-        console.log("Cannot currently save, no stored data is available");
-        return false;
+      if (!currentData || !this.shopStore ) {
+         throw new Error("3598345234242 Impossible");
       }
 
       console.log("Saving list to local cache list, for all lists");
@@ -281,9 +297,8 @@ export default defineComponent({
     },
     onRevert(e: GuessEvent): boolean {
       e.preventDefault();
-      if (!currentData) {
-        console.log("Cannot currently revert, as no stored data is available");
-        return false;
+      if (!currentData || !this.shopStore  ) {
+        throw new Error("9845645234372323 Impossible");
       }
 
       console.log("Rebuilding data from cache for all lists");
@@ -299,9 +314,12 @@ export default defineComponent({
       if (this.menuLabel === MENU_OPEN) {
         this.menuLabel = MENU_CLOSE;
         this.menuState = "obmenu";
-      } else {
+        // ".tabBar.buttonRow .obmenu.foldPoint"
+        this.menuOpen= true;
+       } else {
         this.menuLabel = MENU_OPEN;
         this.menuState = "hide";
+        this.menuOpen= false;
       }
       return false;
     },

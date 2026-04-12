@@ -37,13 +37,13 @@ type MapUrlType = (nom: string, id: number | null) => string;
 export interface TabBarProps {
   menuLabel: string;
   menuState: string;
+  menuOpen: boolean;
   getInput: string;
-  $store: object; // IOIO XXX fixme
   visible: boolean;
   CB: Function;
   mapURL: MapUrlType;
   CACHE: CacheWrapper;
-  buttonEnabled: string;
+  installEnabled: string;
   EIK: string;
   menuId: string;
   inputId: string;
