@@ -58,9 +58,10 @@ export const EntirelyPassive: Story = {
     testId: "test16",
     shopStore: STORE,
   },
-};
+}; 
 
 //  await waitFor(() => expect(args.onSubmit).toHaveBeenCalled());
+
 
 export const TrackTextRendered2: Story = {
   //////////////////////////////////////////////////////////////////////////////
@@ -80,7 +81,7 @@ export const TrackTextRendered2: Story = {
       setup() {
         const { currentData, initData, updateData } = ListData;
 
-        if (currentData && _LOGGING_) {
+        if (currentData && _LOGGING_)  {
           console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
         }
         if (ListData.currentData && _LOGGING_) {
@@ -126,7 +127,7 @@ export const TrackTextRendered2: Story = {
 
     const list = await canvas.findByTestId("test17List1");
     expect(list).toBeVisible();
-    expect(list.childNodes.length).toBe(3 + 2); // it correctly loads 1st list in fixture
+    expect(list.childNodes.length).toBe(3 + 2 ); // it correctly loads 1st list in fixture
     // the +2 is due to two textnodes
 
     // IOIO XXX there is one one list displayed here.  DUMP TEST
@@ -145,6 +146,9 @@ export const TrackTextRendered2: Story = {
     // I shouldnt need to test the enterinput component, as it has its own test
   },
 };
+
+
+
 
 export const TrackTextRendered2_5: Story = {
   decorators: [
@@ -220,6 +224,10 @@ export const TrackTextRendered2_5: Story = {
   },
 };
 
+
+
+
+
 export const TrackTextRendered3: Story = {
   render: (args, { loaded }) => {
     // https://router.vuejs.org/api/interfaces/Router.html#isReady-
@@ -286,6 +294,10 @@ export const TrackTextRendered3: Story = {
     // I shouldnt need to test the enterinput component, as it has its own test
   },
 };
+
+
+
+
 
 export const TrackTextRendered4: Story = {
   decorators: [
@@ -360,6 +372,9 @@ export const TrackTextRendered4: Story = {
   },
 };
 
+
+
+
 export const TrackTextRendered5: Story = {
   decorators: [
     vueRouter(customRoutes),
@@ -414,7 +429,7 @@ export const TrackTextRendered5: Story = {
     if (ListData.currentData && _LOGGING_) {
       console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
     }
-    if (currentData && _LOGGING_) {
+    if (currentData && _LOGGING_ ) {
       console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
     }
 

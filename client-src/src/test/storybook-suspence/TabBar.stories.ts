@@ -2,7 +2,11 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { expect, fn, within, userEvent } from "storybook/test";
 
 import TabBar from "../../components/TabBar.vue";
-// this needs suspence
+import { ListData, createDataFactory } from "../../services/DataFactory";
+import { CacheWrapper } from '../../workers/InstallWorker';
+import { useStore } from "../../services/Store";
+import { fixture1, fixture2, fixture3, fixture4, fixture5 } from "../fixture-lists";
+ // this needs suspence
 
 const meta: Meta<typeof TabBar> = {
   component: TabBar,
@@ -36,10 +40,10 @@ export const TrackTextRendered: Story = {
     expect(canvas.queryByTestId("test15Menu1")).not.toBeVisible();
 
     await userEvent.click(canvas.getByRole("button", { name: EXTRACT_NON_ASCII }));
-    expect(canvas.queryByRole("button", { name: /❌/i })).toBeVisible();
+    expect(canvas.queryByRole("button", { name: EXTRACT_NON_ASCII })).toBeVisible();
     expect(canvas.queryByTestId("test15Menu1")).toBeVisible();
 
-    await userEvent.click(canvas.getByRole("button", { name: /❌/i }));
+    await userEvent.click(canvas.getByRole("button", { name: EXTRACT_NON_ASCII }));
     expect(canvas.queryByRole("button", { name: EXTRACT_NON_ASCII })).toBeVisible();
     expect(canvas.queryByTestId("test15Menu1")).not.toBeVisible();
   },
@@ -68,25 +72,35 @@ export const TrackTextRendered8: Story = {
     await step('list all lists', async () => {
         expect(await canvas.findByText("List All")).toBeVisible();
         await userEvent.click(canvas.getByText("List All"));
+        // Story may break here
     });
 
     await step('create new list', async () => {
         expect(await canvas.findByText("New")).toBeVisible();
         await userEvent.click(canvas.getByText("New"));
+        // Story may break here
     });
 
     // this button can't be tested without loading the other components...
-    await step('show help', async () => {
+    await step('Show help', async () => {
+        const STORE=useStore(); 
+      
         expect(await canvas.findByText("Show help")).toBeVisible();
+        expect(STORE.state.showHelp).toBe(false);
         await userEvent.click(canvas.getByText("Show help"));
+        expect(STORE.state.showHelp).toBe(true);
    //     expect( await canvas.findByTestId("XXX")).toBeVisible();
+   // interstitial not in navbar itself, so cannot trigger anything just here 
     });
     
     await step('attempt installation', async () => {
         try {
           let test=await canvas.getByText("Install");
           expect(test).toBeVisible();
+          expect(await CacheWrapper.isInstalled()).toBe(false);
           await userEvent.click(test);
+          expect(await CacheWrapper.isInstalled()).toBe(true);
+             
           // TODO change button name to reflect current state
         } catch(e:unknown ) {
           // This label will depend on current state, so can fail at some points
@@ -94,16 +108,51 @@ export const TrackTextRendered8: Story = {
         }
     });
 
-    /* BUTTONS:
-    A "List All"
-    A "New"
-    SPAN "Install"
-    SPAN "Show help"
-    SPAN "Rename list"
-    SPAN "Duplicate list"
-    SPAN "Make unique"
-    SPAN "Save all"
-    SPAN "Revert all"
-    */
+    await step('Rename list', async () => {
+        expect(await canvas.findByText("Rename list")).toBeVisible();
+        const NEWDATA= createDataFactory(fixture2());
+        if(!NEWDATA.currentData) { throw new Error("No data found after fixture loaded??"); }
+      
+        const liste1 = NEWDATA.currentData.get(1);
+        expect( liste1?.nom).toBe( "list 1");
+     //   let image=liste1?.nom;
+        await userEvent.click(canvas.getByText("Rename list"));
+        expect( liste1?.nom).not.toBe( "list 1");
+   //     expect( await canvas.findByTestId("XXX")).toBeVisible();
+     });
+
+    await step('Duplicate list', async () => {
+        expect(await canvas.findByText("Duplicate list")).toBeVisible();
+        const NEWDATA= createDataFactory(fixture2());
+        if(!NEWDATA.currentData) { throw new Error("No data found after fixture loaded??"); }
+        let before=NEWDATA.currentData.count();
+
+        await userEvent.click(canvas.getByText("Duplicate list"));
+        expect( NEWDATA.currentData.count() - before).toBe(1);
+    });
+    
+    await step('Make unique', async () => {
+        expect(await canvas.findByText("Make unique")).toBeVisible();
+        const NEWDATA= createDataFactory(fixture5());
+        const STORE=useStore(); 
+        if(!NEWDATA.currentData) { throw new Error("No data found after fixture loaded??"); }
+        STORE.setId(1);
+
+        let before=NEWDATA.currentData.get(1)?.export();
+        await userEvent.click(canvas.getByText("Make unique"));
+        expect( before!.length ).toBeGreaterThan( NEWDATA.currentData.get(1)!.export().length );
+
+    });
+
+   await step('Save all', async () => {
+        expect(await canvas.findByText("Save all")).toBeVisible();  
+        // TODO: need to extend this one 
+   });
+
+   await step('Revert all', async () => {
+        expect(await canvas.findByText("Revert all")).toBeVisible();    
+        // TODO: need to extend this one 
+   });
+   
   },
 };

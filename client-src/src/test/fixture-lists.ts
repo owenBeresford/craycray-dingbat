@@ -155,6 +155,36 @@ export function fixture4(): Array<TestDataSchema> {
   ];
 }
 
+export function fixture5(): Array<TestDataSchema> {
+  // bad ids
+  return [
+    {
+      name: "list 1",
+      created: new Date(),
+      edited: new Date(),
+      count: 5,
+      id: 1,
+      list: ["thing 1", "thing 1", "thing 3", "thing 3", "thing 3"],
+    } as TestDataSchema,
+    {
+      name: "list 2",
+      created: new Date(),
+      edited: new Date(),
+      count: 3,
+      id: 1,
+      list: ["thing 1", "thing 2", "thing 3"],
+    } as TestDataSchema,
+    {
+      name: "list 3",
+      created: new Date(),
+      edited: new Date(),
+      count: 10,
+      id: 1,
+      list: ["thing 1", "thing 2", "thing 3", "thing 4", "thing 5", "thing 6", "thing 7", "thing 8", "thing 9"],
+    } as TestDataSchema,
+  ];
+}
+
 export function simple_fixture1(): Array<TestDataSchema> {
   return [
     {

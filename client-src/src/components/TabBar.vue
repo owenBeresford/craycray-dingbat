@@ -90,14 +90,13 @@
 import { defineComponent } from "vue";
 
 import { useStore } from "../services/Store";
-import { StaticRoutes } from "./Routing";
 import { AList } from "../services/AList";
-//import { ListService } from "../services/ListService";
 import { ListData } from "../services/DataFactory";
-import EnterInput from "./EnterInput.vue";
 import { useCacheWrapper, CacheWrapper } from "../workers/InstallWorker";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
+import { StaticRoutes } from "./Routing";
+import EnterInput from "./EnterInput.vue";
 import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
 import type { TabBarProps } from "../types/ComponentProps";
 
@@ -105,6 +104,7 @@ const TEXT = useUIText();
 const { currentData, updateData, initData } = ListData;
 const MENU_OPEN = TEXT.get("menu.symbol");
 const MENU_CLOSE = TEXT.get("cross");
+
 /**
    * TabBar
    * A component for the top menu
@@ -176,7 +176,7 @@ export default defineComponent({
         revertName: TEXT.get("menu.revertName"),
         outro: TEXT.get("menu.outro"),
       },
-    };
+    } as TabBarProps ;
   },
   mounted() {
     if(!this.shopStore) {
