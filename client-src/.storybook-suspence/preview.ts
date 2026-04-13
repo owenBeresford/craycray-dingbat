@@ -1,4 +1,4 @@
-import "../src/assets/shopping.css";
+import "../src/assets/shopping-app.css";
 import "../src/assets/foundation.min.css";
 import { setup, definePreview } from "@storybook/vue3-vite";
 import { createRouter, createWebHistory } from "vue-router";
