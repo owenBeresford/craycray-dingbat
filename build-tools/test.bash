@@ -31,9 +31,12 @@ if [ "$what" = "fe" -o "$what" = "all" ]; then
 	# as Vitest thinks there are ~850 errors in node_modules/@types, and is always 1
 
 	node $SEXECDIR/storybook build
+	node $SEXECDIR/storybook dev -p 6006 --https --ssl-cert ./src/assets/cert.pem --ssl-key ./src/assets/private.key 
+
 	node $SEXECDIR/storybook build -c .storybook-suspence/
-	node $SEXECDIR/storybook dev -p 6006 
-	node $SEXECDIR/storybook dev -p 6006 -c .storybook-suspence/
+	node $SEXECDIR/storybook dev -p 6006 -c .storybook-suspence/ --https --ssl-cert ./src/assets/cert.pem --ssl-key ./src/assets/private.key 
+
+    # node node_modules/.bin/storybook dev -p 6006 --https --ssl-cert ./src/assets/cert.pem --ssl-key ./src/assets/private.key 
 	# I wish I had a way to "run then quit" on Storybook
 
 # vitest --typecheck --coverage
