@@ -8,7 +8,7 @@ import type { LocalCopy } from "../services/LocalCopy";
 /**
  * useCacheWrapper
  * Another use function, blah
- 
+
  * @public
  * @returns {CacheWrapper}
  */
@@ -22,16 +22,16 @@ const prefix = "https://" + REMOTE_HOST;
 const FILES: Array<string> = [
   prefix + "/index.html",
   prefix + "/favicon.ico",
-  prefix + "/libs.min.js",
+  prefix + "/libs.min.js", // maybe strip this one
   prefix + "/shopping.min.css",
-  prefix + "/shopping.min.js",
+  prefix + "/shopping.min.mjs",
   prefix + "/worker1.min.mjs",
 ];
 
 /**
- * CacheWrapper 
+ * CacheWrapper
  * Class to manage local cache for installation
- 
+
  * @public
  */
 export class CacheWrapper {
@@ -40,7 +40,8 @@ export class CacheWrapper {
   /**
    * constructor
    * Plain con'tor, nothing noteworthy
- 
+   * UPDATE: I needed to mask out the exception when storybook is found, or that always bsils.
+
    * @param {LocalCopy} ll
    * @public
    */
@@ -63,8 +64,8 @@ export class CacheWrapper {
   /**
    * install
    * Copy asset files onto device
-  // This may over install on purpose, the assets should be immutable,
- 
+   * This can over-install on purpose - the assets *should* be immutable,
+
    * @public
    * @returns {void}
    */
@@ -81,9 +82,20 @@ export class CacheWrapper {
   }
 
   /**
+   * isInstalled
+   * A util to be able to see if App is already installed.
+
+   * @public
+   * @returns {Promise<boolean> }
+   */
+  public static async isInstalled():Promise<boolean> {
+    return await global.caches.has(FILES[0] );
+  }
+
+  /**
    * check
    * Test installed flag, to show if App is present.
- 
+
    * @public
    * @returns {boolean}
    */
