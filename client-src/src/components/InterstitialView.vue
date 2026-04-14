@@ -83,7 +83,7 @@ export default defineComponent({
         label1: TEXT.get("interstitial.label1"),
       },
       currentStateKey2: chaine,
-    } as InterstitialProps;
+    } satisfies InterstitialProps;
   },
   mounted() {
     // this.local = useLocal();

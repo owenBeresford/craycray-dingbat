@@ -6,3 +6,6 @@ declare module "*.vue" {
   const component: DefineComponent<{}, {}, any>;
   export default component;
 }
+
+declare const _LOGGING_: boolean;
+console.warn("ENV D TS executed");

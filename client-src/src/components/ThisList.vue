@@ -139,7 +139,7 @@ export default defineComponent({
       nextTestId: this.$props.testId + "Input1",
       aListId: this.$props.testId + "List1",
       viewId: this.$props.testId + "View1",
-    } as ThisListProps;
+    } satisfies ThisListProps;
   },
   computed: {
     betterId(): string {

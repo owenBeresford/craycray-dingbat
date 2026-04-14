@@ -52,7 +52,7 @@ export default defineComponent({
         text1: TEXT.get("unknown.text1"),
         text2: TEXT.get("unknown.text2"),
       },
-     } as UnknownRouteProps ;
+     } satisfies UnknownRouteProps ;
   },
   mounted() {
     //  createRouter();

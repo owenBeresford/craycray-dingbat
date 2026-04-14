@@ -176,7 +176,7 @@ export default defineComponent({
         revertName: TEXT.get("menu.revertName"),
         outro: TEXT.get("menu.outro"),
       },
-    } as TabBarProps ;
+    } satisfies TabBarProps ;
   },
   mounted() {
     if(!this.shopStore) {

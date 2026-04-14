@@ -33,7 +33,7 @@ export const mapForHelp = (state:COMPLETE_STORE, specific: string): string => {
   return MM[ceci];
 };
 
-export type COMPLETE_STORE=typeof createStore<ShopState>;
+export type COMPLETE_STORE=ReturnType< createStore<ShopState>>;
 
 // A Vuex Store object, to hold the SPA stack state
 export const STORE: COMPLETE_STORE = createStore({
@@ -42,7 +42,7 @@ export const STORE: COMPLETE_STORE = createStore({
       currentURL: "",
       showHelp: false,
       currentId: -1,
-    } as ShopState;
+    } satisfies  ShopState;
   },
   mutations: {
     setPath(state: ShopState, nn: string): void {
