@@ -192,7 +192,7 @@ export default defineComponent({
 
       console.log("Trying to show help", this.$route.path);
       if (this.shopStore && this.shopStore.state.currentURL !== this.$route.path) {
-        console.warn("The state.currentURL hasn't updated!");
+        console.warn("The state.currentURL hasn't updated!", this.shopStore.state.currentURL, this.$route.path);
         this.shopStore.commit("setPath", this.$route.path);
       }
       if (this.shopStore) {

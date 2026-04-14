@@ -38,7 +38,6 @@ describe("I can use NetworkedListService", () => {
       expect(global.localStorage.length).toBe(0);
       expect(ls.currentData.saveAllLists()).toBe(true);
       expect(global.localStorage.length).not.toBe(0);
-      console.dir(global.localStorage.key);
 
       good(true);
     });

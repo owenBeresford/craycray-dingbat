@@ -1,6 +1,7 @@
 import { assert, describe, it, expect, expectTypeOf } from "vitest";
 import type { Store } from "vuex";
-import { STORE, OnlyForTesting, useStore } from "../../services/Store";
+import { STORE, OnlyForTesting, useStore  } from "../../services/Store";
+import type { COMPLETE_STORE } from "../../services/Store"; 
 import type { ShopState } from "../../types/ShopState";
 
 const { mapForHelp } = OnlyForTesting;
@@ -9,7 +10,7 @@ describe("I can open Store", () => {
   it("I can create it", () => {
     assert.isOk(STORE, "this is an object");
     assert.isTrue(typeof STORE === "object", `this is an object of correct type ${typeof STORE}`);
-    expectTypeOf(STORE).toExtend<Store<ShopState>>();
+    expectTypeOf(STORE).toExtend<COMPLETE_STORE>();
     //    Assert(STORE instanceof Store, 'this is an object of correct type ');
   });
 

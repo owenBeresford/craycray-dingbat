@@ -109,12 +109,11 @@ export default defineComponent({
   },
   mounted() {
     const itinéraire = useRoute();
-    if (this.$props.shopStore) {
-      this.$props.shopStore.commit("setPath", itinéraire.path);
-      this.$props.shopStore.commit("setId", this.id);
-    } else if (this.shopStore) {
+    if (this.shopStore) {
       this.shopStore.commit("setPath", itinéraire.path);
       this.shopStore.commit("setId", this.id);
+    } else {
+      console.assert(this.shopStore, "ThisList: At mounted() stage, do not have a state storage?!");
     }
   },
   inject: ["helpText", "canSeeHelp", "ttl"],

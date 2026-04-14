@@ -1,5 +1,5 @@
 <template>
-  <div class="listage" :data-testid="instanceId" :key="currentStateKey">
+  <div class="ListOfList" :data-testid="instanceId" :key="currentStateKey">
     <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="betterId" :testId="viewId" />
     <ul :data-testId="listId">
       <li v-for="i in shoppingLists" :key="i.id" :title="`Display the ${i.nom} list.`">

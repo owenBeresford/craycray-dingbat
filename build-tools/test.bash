@@ -31,6 +31,7 @@ if [ "$what" = "fe" -o "$what" = "all" ]; then
 	# as Vitest thinks there are ~850 errors in node_modules/@types, and is always 1
 
 	node $SEXECDIR/storybook build
+	# https://tiberriver256.github.io/web%20development/how-to-run-storybook-with-https-on-localhost/
 	node $SEXECDIR/storybook dev -p 6006 --https --ssl-cert ./src/assets/cert.pem --ssl-key ./src/assets/private.key 
 
 	node $SEXECDIR/storybook build -c .storybook-suspence/

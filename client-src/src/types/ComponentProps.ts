@@ -2,7 +2,11 @@ import type { Listable, ListStruct, ListCollection } from "./ListCollection";
 import type { Motionable } from "./Motionable";
 import { AList } from "../services/AList";
 import { CacheWrapper } from "../workers/InstallWorker";
+import type { LocalCopy } from "../services/LocalCopy";
 
+import type { ShopState } from "../types/ShopState";
+import type { Store } from "vuex";
+ 
 export interface ListOfListsProps {
   instanceId: string;
   shoppingLists: Array<ListStruct>;
@@ -55,9 +59,24 @@ export interface TabBarProps {
 export interface UnknownRouteProps {
   mapURL: MapUrlType;
   cross: string;
+  store: Store<ShopState>;
   instanceId: string;
   crossId: string;
   text: Record<string, string>;
+};
+
+export interface InterstitialProps {
+      instanceId: string;
+      closeId: string;
+      local: LocalCopy;
+      store : Store<ShopState>;
+      iShow: boolean;
+      list: StrictArray;
+      urlsStack: StrictArray;
+      firstPass: boolean;
+      text: Record<string,string> ;
+      currentStateKey2: string;
+
 };
 
 export type StrictArray = Array<string>;

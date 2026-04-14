@@ -38,8 +38,11 @@
   },
   "include": [  "src/**/*.ts", "src/components/*.vue", "src/*.vue", "src/*.ts" ],
   "exclude": [
-	"./build/components/*", "./build/services/*", "./build/*",
-    "node_modules"
+    "node_modules",
+    ".storybook",
+    "**/*.stories.ts",
+    "**/*.stories.tsx",
+    "**/*.stories.mdx"
   ],
 	"vueCompilerOptions": {
 		"strictTemplates":true,

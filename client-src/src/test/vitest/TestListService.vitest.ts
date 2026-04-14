@@ -86,14 +86,14 @@ describe("I can use ListService", () => {
       expect(ls.create("item2")).toBe(2);
       expect(ls.create("item3")).toBe(3);
 
-      console.log("WERWER ", JSON.stringify(ls.list().keys()));
+    //  console.log("WERWER ", JSON.stringify(ls.list().keys()));
       expect(ls.delete(1)).toBe(true);
-      console.log("WERWER2", JSON.stringify(ls.list().keys()));
+    //  console.log("WERWER2", JSON.stringify(ls.list().keys()));
       expect(ls.count()).toBe(3);
 
-      console.log("WERWER ", JSON.stringify(ls.list().keys()));
+    //  console.log("WERWER ", JSON.stringify(ls.list().keys()));
       expect(ls.delete(2)).toBe(true);
-      console.log("WERWER2", JSON.stringify(ls.list().keys()));
+    //  console.log("WERWER2", JSON.stringify(ls.list().keys()));
       expect(ls.count()).toBe(3);
 
       good(true);

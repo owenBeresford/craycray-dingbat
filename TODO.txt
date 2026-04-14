@@ -3,23 +3,19 @@
 - EnterInput.val isn't applied, I think
 - EnterInput test, have a chain of open an close to show state is tidied correctly
 - this might be child components being ready before parent.  [Vue warn]: injection "shopping" not found.
-- resolve router-link not rendering
+- engineer thing to that actual network code is masked in story tests
 - pour les mot variable privé, traduire en francias 
-- $store
 - Update static route to include new ids
-- move rest of text to localisation
 - check ARIA values 
 - check for alternatives for deps with non-standard packing
 - swap js-json-object with typedjson
 - check that values in AList are populated correctly
 - finish localisation / convert to import libs
 - update localisation to a better string storage 
-- finish moving all the types to types dir
 - work out what MSG_DESTINATION should be
 - workout if can installworker filelist to a manifest?
 - postMessage targets ~ set target address when known
 - StateSyncing test cover full state map. when threads work
-- DataFactory
 - check other means to engineer motionstream
 - think about best name for ShopState
 - may be need to re-add STORE.getters
@@ -29,6 +25,7 @@
 - add the better validation on transform2list
 - bash scripts need to check version of node
 - On browser tab maximisation, poll() server to see if still live && accessible
+- On list state update, work out if new data is the same as old.   compute hash?
 https://www.npmjs.com/package/@vitejs/plugin-vue
 https://github.com/orimay/async-ts
 

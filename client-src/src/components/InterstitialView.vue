@@ -25,7 +25,7 @@ import { useUIText } from "../services/Localisation";
 import { useLocal } from "../services/LocalCopy";
 import { KNOWN_PHONE } from "../Constants";
 import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
-import type { StrictArray } from "../types/ComponentProps";
+import type { StrictArray, InterstitialProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 /**
@@ -53,13 +53,13 @@ export default defineComponent({
     currentStateKey: { type: [String, Object], required: true },
     testId: { type: String, default: "test0" },
   },
-  data() {
+  data():InterstitialProps {
     let id = this.$props.testId;
-    let tmp = "";
+    let chaine = "";
     if (typeof this.$props.currentStateKey === "string") {
-      tmp = this.$props.currentStateKey;
+      chaine = this.$props.currentStateKey;
     } else {
-      tmp = this.$props.currentStateKey.betterId;
+      chaine = this.$props.currentStateKey.betterId;
     }
 
     // this is an override, so the props are applied at loadtime if running inside Storybook,
@@ -73,6 +73,7 @@ export default defineComponent({
       instanceId: id,
       closeId: id + "close1",
       local: useLocal(),
+      store : useStore(),
       iShow: shouldShow ? this.$props.show : false,
       list: [] as StrictArray,
       firstPass: false,
@@ -81,12 +82,11 @@ export default defineComponent({
         close1: TEXT.get("interstitial.close1"),
         label1: TEXT.get("interstitial.label1"),
       },
-      currentStateKey2: tmp,
-    };
+      currentStateKey2: chaine,
+    } as InterstitialProps;
   },
   mounted() {
-    this.$store = useStore();
-    this.local = useLocal();
+    // this.local = useLocal();
     // these two are currently hidden, and have no local state
     // No support for arrays in this.display todate
     const inner2 = () => {
@@ -134,7 +134,7 @@ export default defineComponent({
       this.iShow = val;
     },
     // https://stackoverflow.com/questions/57934943/how-to-watch-for-vuex-state
-    "$store.state.currentURL": {
+    "store.state.currentURL": {
       deep: true,
       handler(val: string, oldVal: string): void {
         if (this.firstPass && !this.urlsStack.includes(val)) {
@@ -145,14 +145,14 @@ export default defineComponent({
       },
     },
 
-    "$store.state.showHelp": function (val, oldVal) {
+    "store.state.showHelp": function (val, oldVal) {
       this.iShow = val;
       this.applyBody();
     },
   },
   methods: {
     applyBody(): void {
-      const nom = mapForHelp(this.$store, "/");
+      const nom = mapForHelp(this.store, "/");
       this.list.splice(0, this.list.length);
       this.list.push(...TEXT.getTemplate(nom));
       if (this.list.length === 0 || this.list[0] === "") {
@@ -167,7 +167,7 @@ export default defineComponent({
     },
 
     changeText(what: string): void {
-      const nom = mapForHelp(this.$store, what);
+      const nom = mapForHelp(this.store, what);
       this.list.splice(0, this.list.length);
       this.list.push(...TEXT.getTemplate(nom));
       if (this.list.length === 0 || this.list[0] === "") {

@@ -1,5 +1,6 @@
 import { createStore, useStore as originalUseStore } from "vuex";
 import type { Store } from "vuex";
+
 import { APP_NAME } from "../Constants";
 import type { ShopState } from "../types/ShopState";
 
@@ -7,12 +8,12 @@ import type { ShopState } from "../types/ShopState";
  * mapForHelp
  * Convert a URN to the symbol for the relevant interstitial text
  
- * @param {Store<ShopState>} state
+ * @param {COMPLETE_STORE} state
  * @param {string} specific
  * @public
  * @returns {string}
  */
-export const mapForHelp = (state: Store<ShopState>, specific: string): string => {
+export const mapForHelp = (state:COMPLETE_STORE, specific: string): string => {
   let ceci = "";
   if (specific.length <= 2) {
     ceci = "/";
@@ -32,8 +33,10 @@ export const mapForHelp = (state: Store<ShopState>, specific: string): string =>
   return MM[ceci];
 };
 
+export type COMPLETE_STORE=typeof createStore<ShopState>;
+
 // A Vuex Store object, to hold the SPA stack state
-export const STORE: Store<ShopState> = createStore<ShopState>({
+export const STORE: COMPLETE_STORE = createStore({
   state: (): ShopState => {
     return {
       currentURL: "",
@@ -64,9 +67,9 @@ export const STORE: Store<ShopState> = createStore<ShopState>({
  * Another use function, blah
  
  * @public
- * @returns {Store<ShopState>}
+ * @returns {COMPLETE_STORE} ~ Mostly Store<ShopState>
  */
-export function useStore(): Store<ShopState> {
+export function useStore(): COMPLETE_STORE {
   originalUseStore(APP_NAME);
   return STORE;
 }
@@ -74,6 +77,9 @@ export function useStore(): Store<ShopState> {
 // this solution is lighter than "rewire" which is described in
 // https://www.wisdomgeek.com/development/web-development/javascript/how-to-unit-test-private-non-exported-function-in-javascript/
 export const OnlyForTesting = { mapForHelp };
+
+
+
 
 /**
 > STORE

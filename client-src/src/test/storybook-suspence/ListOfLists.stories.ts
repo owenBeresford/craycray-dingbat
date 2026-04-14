@@ -94,12 +94,10 @@ export const TrackTextRendered6: Story = {
           currentStateKey: "test23",
           testId: "test23",
           shopStore: STORE,
-          fixPath: (a: RouteLocationNormalizedLoadedGeneric) => {
-            return;
-          },
+          fixPath: fn(),
         };
       },
-      template: `<ListOfLists currentStateKey="test23" testId="test23" :shopStore="shopStore" :fixPath="fn" ></ListOfLists>`,
+      template: `<ListOfLists currentStateKey="test23" testId="test23" :shopStore="shopStore" :fixPath={fn} ></ListOfLists>`,
     };
   },
   // https://storybook.js.org/docs/writing-stories/loaders

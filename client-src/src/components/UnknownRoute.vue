@@ -13,6 +13,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+
 import { useStore } from "../services/Store";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
@@ -42,6 +43,7 @@ export default defineComponent({
     let id = this.$props.testId;
     return {
       mapURL,
+      store: useStore(),
       cross: TEXT.get("cross"),
       instanceId: id,
       crossId: id + "d1",
@@ -54,8 +56,7 @@ export default defineComponent({
   },
   mounted() {
     //  createRouter();
-    this.$store = useStore();
-    this.$store.commit("setId", -1);
+    this.store.commit("setId", -1);
   },
 });
 </script>

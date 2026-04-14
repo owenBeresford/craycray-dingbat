@@ -1,0 +1,7 @@
+assets/
+build/*
+dist/*
+node_modules
+package-lock.json
+*.d.ts
+
