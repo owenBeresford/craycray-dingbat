@@ -12,10 +12,11 @@ const meta: Meta<typeof EnterInput> = {
 export default meta;
 type Story = StoryObj<typeof EnterInput>;
 
+const CB1=fn(function() {} );
 export const EntirelyPassive: Story = {
   args: {
     val: "",
-    cb: fn,
+    cb: CB1,
     visible: true,
     currentStateKey: "test3",
     testId: "test3",
@@ -25,7 +26,7 @@ export const EntirelyPassive: Story = {
 export const Invisible1: Story = {
   args: {
     val: "",
-    cb: fn,
+    cb: CB1,
     visible: false,
     currentStateKey: "test3.5",
     testId: "test3.5",
@@ -35,7 +36,7 @@ export const Invisible1: Story = {
 export const ExpectedRendering: Story = {
   args: {
     val: "heyyo",
-    cb: fn,
+    cb: CB1,
     visible: true,
     currentStateKey: "test4",
     testId: "test4",
@@ -65,8 +66,8 @@ export const ExpectedRendering: Story = {
 export const ExpectedRendering2: Story = {
   args: {
     val: "heyyo",
-    cb: fn,
-    visible: true,
+    cb: CB1,
+    visible: false,
     currentStateKey: "test5",
     testId: "test5",
   },
@@ -85,7 +86,7 @@ export const ExpectedRendering2: Story = {
 export const ExpectedRendering3: Story = {
   args: {
     val: "",
-    cb: fn,
+    cb: CB1,
     visible: true,
     currentStateKey: "test6",
     testId: "test6",
@@ -102,7 +103,7 @@ export const ExpectedRendering3: Story = {
     // https://markaicode.com/storybook-interaction-tests/#
     const input1 = canvas.getByTestId("test6desk1");
     await userEvent.type(input1, "a new thing");
-    await userEvent.click(canvas.getByDisplayValue("Set"));
+    await userEvent.click(await canvas.findByDisplayValue("Set"));
 
     expect((canvas.queryByTestId("test6") as HTMLDialogElement).open).not.toBeTruthy();
     expect(await canvas.queryByTestId("test6")).not.toBeTruthy();
@@ -112,7 +113,7 @@ export const ExpectedRendering3: Story = {
 export const ExpectedRendering4: Story = {
   args: {
     val: "",
-    cb: fn,
+    cb: CB1,
     visible: true,
     currentStateKey: "test7",
     testId: "test7",
@@ -129,10 +130,45 @@ export const ExpectedRendering4: Story = {
     // https://markaicode.com/storybook-interaction-tests/#
     const input1 = canvas.getByTestId("test7mob1");
     await userEvent.type(input1, "a new thing");
-    await userEvent.click(canvas.getByDisplayValue("Set"));
+    await userEvent.click(await canvas.findByDisplayValue("Set"));
 
-    expect(((await canvas.queryByTestId("test7")) as HTMLDialogElement).open).toBe(false);
+    expect(((await canvas.queryByTestId("test7")) as HTMLDialogElement).open).toBe( false);
   },
 };
+
+export const ToggleCapacity1: Story = {
+  args: {
+    val: "test1",
+    cb: CB1,
+    visible: true,
+    currentStateKey: "test25",
+    testId: "test25",
+  },
+
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // might need to add .resolves. to expect statements
+    expect(await canvas.getByTestId("test25")).toBeVisible();
+    if (isMobile()) {
+      return;
+    } 
+
+    // https://markaicode.com/storybook-interaction-tests/#
+    const input1 = canvas.getByTestId("test25desk1");
+    await userEvent.type(input1, "a new thing");
+    await userEvent.click( await canvas.findByDisplayValue("Set"));
+
+    expect(((await canvas.queryByTestId("test25")) as HTMLDialogElement).open).toBe(false);
+    (await canvas.queryByTestId("test25") as HTMLDialogElement).open=true;
+    await userEvent.type(input1, "another thing");
+    await userEvent.click( await canvas.findByDisplayValue("Set"));
+    expect(((await canvas.queryByTestId("test25")) as HTMLDialogElement).open).toBe(false);
+    (await canvas.queryByTestId("test25") as HTMLDialogElement).open=true;
+    await userEvent.type(input1, "keep going");
+    await userEvent.click( await canvas.findByDisplayValue("Set"));
+    expect(((await canvas.queryByTestId("test25")) as HTMLDialogElement).open).toBe(false);
+  },
+};
+
 
 // IOIO XXX add test for open/close multiple times

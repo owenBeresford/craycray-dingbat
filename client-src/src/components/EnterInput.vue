@@ -1,5 +1,5 @@
 <template>
-  <dialog class="enterInput" id="enterinput" v-if="visible" :data-testid="instanceId" :key="currentStateKey" open>
+  <dialog class="enterInput" id="enterinput" :data-testid="instanceId" :key="currentStateKey" :open="bShow">
     <form action="" method="dialog">
       <div class="labelRow">
         <label for="txt">{{ text.label1 }}</label>
@@ -61,6 +61,7 @@ import { defineComponent, ref } from "vue";
 import { isMobile } from "../services/util";
 import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
 import { useUIText } from "../services/Localisation";
+import type { EnterInputProps } from '../types/ComponentProps';
 
 const TEXT = useUIText();
 /**
@@ -87,12 +88,12 @@ export default defineComponent({
     currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
   },
-  data() {
-    //    let id=nextId();
+  data():EnterInputProps {
     let id = this.$props.testId;
-    let temp = {
+    return {
       oVal: "",
       bIsMobile: isMobile(),
+      bShow: this.$props.visible,
       cross: TEXT.get("cross"),
       instanceId: id,
       desktopId: id + "desk1",
@@ -106,17 +107,17 @@ export default defineComponent({
         value1: TEXT.get("enter.value1"),
         title2: TEXT.get("enter.title2"),
       },
-    };
-    return temp;
+    } satisfies EnterInputProps;
   },
   watch: {
     val(val, oldVal) {
-      if (_LOGGING_) {
+//      if (_LOGGING_) {
         console.log(`EnterInput: Running watch ${oldVal} => ${val}.`);
-      }
+//      }
       this.oVal = val;
     },
     visible(val, oldVal) {
+      this.bShow=!!val;
       if (val) {
         setTimeout(() => {
           const élément: HTMLInputElement = this.$refs.enterIt as HTMLInputElement;
@@ -135,13 +136,13 @@ export default defineComponent({
       this.cb(null);
       this.oVal = "";
       (document.querySelector("dialog#enterinput") as HTMLDialogElement).open = false;
-      // this.visible = false;
+      this.bShow = !this.bShow;
       e.preventDefault();
     },
 
     onUpdate(e: GuessEvent): void {
       e.preventDefault();
-      if (!this.visible) {
+      if (!this.bShow) {
         return;
       }
 
@@ -149,6 +150,7 @@ export default defineComponent({
       const chaîne = "" + this.oVal;
       this.oVal = "";
       this.cb(chaîne);
+      this.bShow=!this.bShow;
     },
   },
 });

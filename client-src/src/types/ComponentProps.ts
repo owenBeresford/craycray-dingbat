@@ -15,6 +15,19 @@ export interface ListOfListsProps {
   listId: string;
 }
 
+export interface EnterInputProps {
+  bIsMobile:  boolean; 
+  bShow: boolean;
+  oVal: string;
+  cross: string;
+  instanceId: string; 
+  desktopId: string;
+  commitId: string; 
+  mobileId: string;
+  cancelId: string;
+  text: Record<string, string>;
+}
+
 export interface ThisListProps {
   id: number;
   list: AList;
