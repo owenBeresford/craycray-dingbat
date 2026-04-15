@@ -1,7 +1,7 @@
 <template>
   <div class="interstitial" v-if="iShow" @interstitial="changeText" :data-testid="instanceId" :key="currentStateKey2">
     <ul>
-      <li class="closeUp" :title="text.close1">
+      <li class="closeUp">
         <input
           class="button"
           name="closeUp"

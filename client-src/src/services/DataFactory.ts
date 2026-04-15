@@ -2,14 +2,14 @@
 import type { RouteLocationNormalizedLoadedGeneric } from "vue-router";
 import { useRoute } from "vue-router";
 
-import { extractId } from "../services/util";
-import { AList, EMPTY_LIST } from "../services/AList";
-import { DELAY_FOR_API } from "../Constants";
-
+import { extractId } from "./util";
+import { AList, EMPTY_LIST } from "./AList";
+import type { Listable } from '../types/ListCollection';
+ 
 // import { ListService } from "./ListService";
 import { useLocal } from "./LocalCopy";
 import { useMsgDistrib } from "./MessageDistribution";
-import { createRemoteService } from "../Constants";
+import { createRemoteService, DELAY_FOR_API } from "../Constants";
 import { TestListService } from "./TestListService";
 import { NetworkedListService } from "./NetworkedListService";
 
@@ -66,7 +66,8 @@ export function idOf(obj: object): number {
   return debugId.get(obj) ?? -1;
 }
 
-/*
+/**
+ * createDataFactory
   This function/ pattern can be called:
     * Asynchronous Facade Pattern
     * Dependency Injection with Async Worker
@@ -92,7 +93,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
     if (ret.currentData && _LOGGING_) {
       console.log("KKK createDataFactory (with a mock) ListData.currentData id:", idOf(ret.currentData));
     }
-    ret.initData = function () {};
+    ret.initData = function ():void {};
     return ret as Readonly<FactoryArtefact>;
   }
 
@@ -180,9 +181,9 @@ export const ListData: FactoryArtefact = createDataFactory(undefined);
  * @param {undefined|RouteLocationNormalizedLoadedGeneric} itinéraire ~ huge great big type is from vue-router
 // currentData:ListCollection | undefined
  * @public
- * @returns {Promise<AList>}
+ * @returns {Promise<Listable>}
  */
-export function setupCurrentList(itinéraire: undefined | RouteLocationNormalizedLoadedGeneric): AList {
+export function setupCurrentList(itinéraire: undefined | RouteLocationNormalizedLoadedGeneric): Listable {
   let id: number = 0;
   let liste = EMPTY_LIST;
   let currentData: ListCollection | undefined;

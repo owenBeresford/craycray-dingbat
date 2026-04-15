@@ -97,10 +97,15 @@ export default defineComponent({
         return useStore();
       },
     }, // TS: "Store<ShopState>"
+    list:{
+      type: Object,
+      default: () => {
+        return setupCurrentList(undefined);
+      },
+    },
   },
   async created() {
-    this.list = setupCurrentList(undefined);
-    if (currentData && _LOGGING_) {
+     if (currentData && _LOGGING_) {
       console.log("KKK thisList.created  ListData.currentData id:", idOf(currentData));
     }
     if (_LOGGING_) {

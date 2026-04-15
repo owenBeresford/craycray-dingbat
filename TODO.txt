@@ -1,4 +1,5 @@
 
+- ESLINT ON VUE FILES
 - increase tests
 - EnterInput.val isn't applied, I think
 - EnterInput test, have a chain of open an close to show state is tidied correctly
@@ -6,11 +7,7 @@
 - engineer thing to that actual network code is masked in story tests
 - pour les mot variable privé, traduire en francias 
 - Update static route to include new ids
-- check ARIA values 
-- check for alternatives for deps with non-standard packing
-- swap js-json-object with typedjson
 - check that values in AList are populated correctly
-- finish localisation / convert to import libs
 - update localisation to a better string storage 
 - work out what MSG_DESTINATION should be
 - workout if can installworker filelist to a manifest?

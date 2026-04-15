@@ -22,7 +22,7 @@
 	"skipLibCheck": true,
     "baseUrl": ".",
 	"outDir": "src/types",
-    "types": [ "node", "vitest", "vite", "./src/types/env.d.ts" ],
+    "types": [ "node", "vitest", "vite", "./src/types/env.d.ts", "src/types/vue-shim.d.ts" ],
     "paths": {
       "@/*": [
         "src/*"

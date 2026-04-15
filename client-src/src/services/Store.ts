@@ -1,5 +1,5 @@
 import { createStore, useStore as originalUseStore } from "vuex";
-import type { Store } from "vuex";
+// import type { Store } from "vuex";
 
 import { APP_NAME } from "../Constants";
 import type { ShopState } from "../types/ShopState";
