@@ -173,12 +173,10 @@
 
 .enterInput {
   width: 20em;
+  z-index: 2;
+  top: calc(50% - 2em);
   background-color: white;
   border: 1em #eee solid;
-  z-index: 2;
-  position: fixed;
-  left: calc(50% - 10em);
-  top: calc(50% - 2em);
 }
 .enterInput p {
   white-space: nowrap;
