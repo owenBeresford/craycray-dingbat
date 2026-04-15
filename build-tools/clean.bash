@@ -4,6 +4,9 @@
 if [ `basename $PWD` != 'client-src' ]; then 
 	cd client-src
 fi
+
+
+
 if [ -d ./build/src ]; then
 	echo "PROBLEM: build has put stuff in wrong place again build/src/..."
 	rm -rf ./build/src

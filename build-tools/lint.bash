@@ -18,14 +18,14 @@ if [ $ret -ne 0 ]; then
 	exit 1
 fi
 
-$NODEBIN $EXECDIR/eslint --ext src/*.ts src/services/*.ts src/components/*.ts src/workers/*.ts  $args
+$NODEBIN $EXECDIR/eslint src/*.ts src/services/*.ts src/components/*.ts src/workers/*.ts  $args
 ret=$?
 if [ $ret -ne 0 ]; then
 	echo "[step 1/4 client] Tool exited $ret on the TS source"
 	exit 1
 fi
 
-$NODEBIN $EXECDIR/eslint -c src/components/.eslintrc.json --ext src/components/*.vue $args
+$NODEBIN $EXECDIR/eslint -c src/components/.eslintrc.json src/components/*.vue $args
 ret=$?
 if [ $ret -ne 0 ]; then
 	echo "[step 2/4 client] Tool exited $ret on ./src/components/*.vue"
@@ -43,13 +43,13 @@ fi
 
 
 cd ../server-src
-$NODEBIN $EXECDIR/eslint --ext src/main.ts $args
+$NODEBIN $EXECDIR/eslint src/main.ts $args
 ret=$?
 if [ $ret -ne 0 ]; then
 	echo "[step 1/3 server] Tool exited $ret on src/main.ts"
 	exit 1
 fi
-$NODEBIN $EXECDIR/eslint --ext src/shopping/*.ts $args
+$NODEBIN $EXECDIR/eslint src/shopping/*.ts $args
 ret=$?
 if [ $ret -ne 0 ]; then
 	echo "[step 2/3 server] Tool exited $ret on ./src/shopping/*.ts"

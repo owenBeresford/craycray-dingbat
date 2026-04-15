@@ -1,7 +1,7 @@
 #!/bin/bash
 EXECDIR=node_modules/.bin
 export NODE_ENV=test
-APIPID=~/.shopping.pid
+APIPID=~/shopping.pid
 SVRBIN=./server-src/bin/shopping.es.mjs
 if [ ! -f "$SVRBIN" ]; then
 	echo "Compile the source first."
@@ -19,12 +19,12 @@ if [ "$what" = "fe" -o "$what" = "all" ]; then
 		export CURSERVICE=`cat $APIPID`; 
 	fi; 
 	if [ $CURSERVICE -lt 100 ]; then 
-		node $APIPID
+		node $SVRBIN
 		echo $! >$APIPID
 		echo "Manually started the API service."
 	fi;
 	cd client-src
-	node $EXECDIR/vitest run -c vitest.config.ts --typecheck 2>/dev/null
+	node $EXECDIR/vitest run -c vitest.config.ts --typecheck --isolate 
 	# vitest sets an exit of 1, if a test fails. 
 	# I have added a thing for timeout to return 127
 	# Due to using typeschecks, I cannot use this feature in Devops tools,  
@@ -39,6 +39,7 @@ if [ "$what" = "fe" -o "$what" = "all" ]; then
 
     # node node_modules/.bin/storybook dev -p 6006 --https --ssl-cert ./src/assets/cert.pem --ssl-key ./src/assets/private.key 
 	# I wish I had a way to "run then quit" on Storybook
+	# UPDATE: there is a 'run all tests' button, just need a CLI access path
 
 # vitest --typecheck --coverage
 	cd ..
@@ -46,7 +47,7 @@ fi
 
 if [ "$what" = "be" -o "$what" = "all" ]; then
 	cd server-src
-	node $EXECDIR/vitest run --typecheck 
+	node $EXECDIR/vitest run --typecheck --isolate 
 	cd ..
 fi
 
