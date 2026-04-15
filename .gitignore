@@ -5,10 +5,15 @@ node_modules
 # local env files
 .env.local
 .env.*.local
+*.DISABLED
 
 # You see no certs in the repo, you must add them after checkout.
 *.pem
 *.key
+*.crt
+*.cer
+*.der
+*.p7b
 
 # Log files
 npm-debug.log*
@@ -26,7 +31,7 @@ pnpm-debug.log*
 *.sw?
 
 package-lock.json
-
+src/stories/
 
 *storybook.log
 storybook-static

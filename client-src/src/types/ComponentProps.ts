@@ -6,7 +6,7 @@ import type { LocalCopy } from "../services/LocalCopy";
 
 import type { ShopState } from "../types/ShopState";
 import type { Store } from "vuex";
- 
+
 export interface ListOfListsProps {
   instanceId: string;
   shoppingLists: Array<ListStruct>;
@@ -52,7 +52,7 @@ export interface TabBarProps {
   menuId: string;
   inputId: string;
   urls: Array<string>;
-  hasData:boolean;
+  hasData: boolean;
   menu: Record<string, string>; // l12n data
 }
 
@@ -63,20 +63,19 @@ export interface UnknownRouteProps {
   instanceId: string;
   crossId: string;
   text: Record<string, string>;
-};
+}
 
 export interface InterstitialProps {
-      instanceId: string;
-      closeId: string;
-      local: LocalCopy;
-      store : Store<ShopState>;
-      iShow: boolean;
-      list: StrictArray;
-      urlsStack: StrictArray;
-      firstPass: boolean;
-      text: Record<string,string> ;
-      currentStateKey2: string;
-
-};
+  instanceId: string;
+  closeId: string;
+  local: LocalCopy;
+  store: Store<ShopState>;
+  iShow: boolean;
+  list: StrictArray;
+  urlsStack: StrictArray;
+  firstPass: boolean;
+  text: Record<string, string>;
+  currentStateKey2: string;
+}
 
 export type StrictArray = Array<string>;

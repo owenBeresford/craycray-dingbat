@@ -1,27 +1,95 @@
 /* ********************************************************* */
-.tabBar { width:100%; margin-top: 0.3em; display: flex; justify-content: space-around; }
-.tabBar { color: #222; }
-.tabBar > div { width:50%; min-width:fit-content; }
-.tabBar > div:first-child { vertical-align:middle; margin-top: 0.5em; }
-.tabBar> div:nth-child(2) { max-width:max-content; }
-.tabBar> div:nth-child(2) > ul { display: flex; justify-content: space-around; }
-.tabBar .button, .tabBar .button * { color: #fff; }
-.tabBar.buttonRow { margin-left: 0px; margin-bottom: 1em; }
-.tabBar.buttonRow ul > li { display: inline-block; margin-left: 0.3em; list-style-type: none; width: 7em; }
-.tabBar.buttonRow ul > li:last-child { text-align: right; }
-.tabBar.buttonRow ul > li a { vertical-align: middle; margin-bottom: 0px; }
-.tabBar.buttonRow li .foldPoint { font-size: 120%; margin: 0.65em; display: inline-block; width:2em; display:inline-block; margin-right:1em; line-height:0.85; 
-                position:relative; top: -9px; }
-.tabBar.buttonRow li .foldPoint[aria-pressed=false] { font-size: 170%; margin: 0.30em; margin-right:0.6em; width:1.5em; line-height:0.66; }
+.tabBar {
+  width: 100%;
+  margin-top: 0.3em;
+  display: flex;
+  justify-content: space-around;
+}
+.tabBar {
+  color: #222;
+}
+.tabBar > div {
+  width: 50%;
+  min-width: fit-content;
+}
+.tabBar > div:first-child {
+  vertical-align: middle;
+  margin-top: 0.5em;
+}
+.tabBar > div:nth-child(2) {
+  max-width: max-content;
+}
+.tabBar > div:nth-child(2) > ul {
+  display: flex;
+  justify-content: space-around;
+}
+.tabBar .button,
+.tabBar .button * {
+  color: #fff;
+}
+.tabBar.buttonRow {
+  margin-left: 0px;
+  margin-bottom: 1em;
+}
+.tabBar.buttonRow ul > li {
+  display: inline-block;
+  margin-left: 0.3em;
+  list-style-type: none;
+  width: 7em;
+}
+.tabBar.buttonRow ul > li:last-child {
+  text-align: right;
+}
+.tabBar.buttonRow ul > li a {
+  vertical-align: middle;
+  margin-bottom: 0px;
+}
+.tabBar.buttonRow li .foldPoint {
+  font-size: 120%;
+  margin: 0.65em;
+  display: inline-block;
+  width: 2em;
+  display: inline-block;
+  margin-right: 1em;
+  line-height: 0.85;
+  position: relative;
+  top: -9px;
+}
+.tabBar.buttonRow li .foldPoint[aria-pressed="false"] {
+  font-size: 170%;
+  margin: 0.3em;
+  margin-right: 0.6em;
+  width: 1.5em;
+  line-height: 0.66;
+}
 @media screen and (max-width: 400px) {
-  .tabBar { display: block; }
-  .tabBar p { text-align: center;  }
-  .tabBar div:nth-child(1) { display: block; width: 100%; }
-  .tabBar ul { margin-bottom: 0.2em; }
-  .tabBar div:nth-child(2) { display: block; width: 100%; }
-  .tabBar ul li { width: 30%; display: inline-block; }
-  .buttonRow li { margin-left: 0.8em; }
-  .tabBar ul li:first-child { margin-left: 0em; }
+  .tabBar {
+    display: block;
+  }
+  .tabBar p {
+    text-align: center;
+  }
+  .tabBar div:nth-child(1) {
+    display: block;
+    width: 100%;
+  }
+  .tabBar ul {
+    margin-bottom: 0.2em;
+  }
+  .tabBar div:nth-child(2) {
+    display: block;
+    width: 100%;
+  }
+  .tabBar ul li {
+    width: 30%;
+    display: inline-block;
+  }
+  .buttonRow li {
+    margin-left: 0.8em;
+  }
+  .tabBar ul li:first-child {
+    margin-left: 0em;
+  }
 }
 .tabBar.buttonRow menu.obmenu {
   z-index: 1;
@@ -31,24 +99,75 @@
   background-color: #eee;
   border: 1em #eee solid;
   text-align: left;
-  padding-left:0px;
+  padding-left: 0px;
 }
-.tabBar.buttonRow ul>li span.obmenu { color: transparent; text-shadow: 0 0 0 #222; padding: 0.5em 1em 0.5em 1em; }
-.tabBar.buttonRow > li span.obmenu:hover { background-color: #eee; }
-.tabBar.buttonRow menu.obmenu li { display:inline-block; width:100%; }
-.tabBar.buttonRow menu.obmenu .button { display:inline-block; width:100%; }
+.tabBar.buttonRow ul > li span.obmenu {
+  color: transparent;
+  text-shadow: 0 0 0 #222;
+  padding: 0.5em 1em 0.5em 1em;
+}
+.tabBar.buttonRow > li span.obmenu:hover {
+  background-color: #eee;
+}
+.tabBar.buttonRow menu.obmenu li {
+  display: inline-block;
+  width: 100%;
+}
+.tabBar.buttonRow menu.obmenu .button {
+  display: inline-block;
+  width: 100%;
+}
 
 /* ********************************************************* */
-.ListOfList ul { list-style-type: none; width: max-content; margin-left: auto; margin-right: auto; margin-top:1em; }
-.ListOfList ul li { margin-left: 0.5em; width: calc(100% - 0.5em); }
-.ListOfList ul .button { margin-bottom:0.4em; margin-top:0.4em; }
-.ListOfList span.centre { margin-top: -0.5em; white-space: nowrap; display: inline-block; vertical-align: middle; overflow-x: hidden; }
+.ListOfList ul {
+  list-style-type: none;
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1em;
+}
+.ListOfList ul li {
+  margin-left: 0.5em;
+  width: calc(100% - 0.5em);
+}
+.ListOfList ul .button {
+  margin-bottom: 0.4em;
+  margin-top: 0.4em;
+}
+.ListOfList span.centre {
+  margin-top: -0.5em;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
 
 /* ********************************************************* */
-.unknownRoute { display: flex; flex-direction: row; align-content: flex-start; justify-content: space-evenly; align-items: center; height: calc(100vh - 4.5em); }
-.unknownRoute .error { font-size: 300%; background-color: #fdd; width: 2em; display: inline-block; text-align: center; vertical-align: middle; align-content: center; 
-  color: transparent;   text-shadow: 0 0 0 #222; height: 3em; line-height:0.6;   }
-.unknownRoute p.bigger { font-size: 120%; margin: 1em; }
+.unknownRoute {
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  justify-content: space-evenly;
+  align-items: center;
+  height: calc(100vh - 4.5em);
+}
+.unknownRoute .error {
+  font-size: 300%;
+  background-color: #fdd;
+  width: 2em;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  align-content: center;
+  color: transparent;
+  text-shadow: 0 0 0 #222;
+  height: 3em;
+  line-height: 0.6;
+}
+.unknownRoute p.bigger {
+  font-size: 120%;
+  margin: 1em;
+}
 
 /* ********************************************************* */
 
@@ -65,13 +184,26 @@
   white-space: nowrap;
   text-align: left;
 }
-.enterInput p input[placeholder] { margin-right: 1.3em; }
-.enterInput p input[role="button"] { font-size:110%; padding:0.2em; }
-.enterInput .labelRow { display: flex; justify-content: space-around; }
-.enterInput .labelRow span.cancel { padding: 0.5em; position: relative; right: -40px; top: -24px; } 
-.enterInput .labelRow span.cancel:hover { background-color: #eee; }
-
-
+.enterInput p input[placeholder] {
+  margin-right: 1.3em;
+}
+.enterInput p input[role="button"] {
+  font-size: 110%;
+  padding: 0.2em;
+}
+.enterInput .labelRow {
+  display: flex;
+  justify-content: space-around;
+}
+.enterInput .labelRow span.cancel {
+  padding: 0.5em;
+  position: relative;
+  right: -40px;
+  top: -24px;
+}
+.enterInput .labelRow span.cancel:hover {
+  background-color: #eee;
+}
 
 /* ********************************************************* */
 
@@ -113,7 +245,7 @@
 }
 
 @media screen and (min-width: 400px) {
-   .interstitial {
+  .interstitial {
     left: calc(50% - 200px);
     right: calc(50% - 200px);
     width: 400px;
@@ -158,7 +290,7 @@ div.aList ul.buttonRow li span {
 }
 
 @media screen and (max-width: 400px) {
-    ul.aList span.button {
+  ul.aList span.button {
     margin-left: calc(50% - 6em);
   }
 }
@@ -167,7 +299,7 @@ div.aList ul.buttonRow li span {
   .aList ul.buttonRow {
     margin-left: calc(50% - 9em);
   }
-} 
+}
 
 /* ********************************************************* */
 #app {

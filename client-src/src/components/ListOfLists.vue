@@ -93,7 +93,7 @@ export default defineComponent({
 
       shoppingLists: ll,
       mapURL,
-    } satisfies  ListOfListsProps;
+    } satisfies ListOfListsProps;
   },
 });
 </script>

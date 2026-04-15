@@ -13,11 +13,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-
 import { useStore } from "../services/Store";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
-import type { UnknownRouteProps} from '../types/ComponentProps';
+import type { UnknownRouteProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 /**
@@ -39,7 +38,7 @@ export default defineComponent({
     currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
   },
-  data():UnknownRouteProps {
+  data(): UnknownRouteProps {
     let id = this.$props.testId;
     return {
       mapURL,
@@ -52,7 +51,7 @@ export default defineComponent({
         text1: TEXT.get("unknown.text1"),
         text2: TEXT.get("unknown.text2"),
       },
-     } satisfies UnknownRouteProps ;
+    } satisfies UnknownRouteProps;
   },
   mounted() {
     //  createRouter();

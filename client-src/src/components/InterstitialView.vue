@@ -53,7 +53,7 @@ export default defineComponent({
     currentStateKey: { type: [String, Object], required: true },
     testId: { type: String, default: "test0" },
   },
-  data():InterstitialProps {
+  data(): InterstitialProps {
     let id = this.$props.testId;
     let chaine = "";
     if (typeof this.$props.currentStateKey === "string") {
@@ -73,7 +73,7 @@ export default defineComponent({
       instanceId: id,
       closeId: id + "close1",
       local: useLocal(),
-      store : useStore(),
+      store: useStore(),
       iShow: shouldShow ? this.$props.show : false,
       list: [] as StrictArray,
       firstPass: false,

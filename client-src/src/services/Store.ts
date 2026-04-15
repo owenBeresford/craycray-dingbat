@@ -13,7 +13,7 @@ import type { ShopState } from "../types/ShopState";
  * @public
  * @returns {string}
  */
-export const mapForHelp = (state:COMPLETE_STORE, specific: string): string => {
+export const mapForHelp = (state: COMPLETE_STORE, specific: string): string => {
   let ceci = "";
   if (specific.length <= 2) {
     ceci = "/";
@@ -33,7 +33,7 @@ export const mapForHelp = (state:COMPLETE_STORE, specific: string): string => {
   return MM[ceci];
 };
 
-export type COMPLETE_STORE=ReturnType<typeof createStore<ShopState>>;
+export type COMPLETE_STORE = ReturnType<typeof createStore<ShopState>>;
 
 // A Vuex Store object, to hold the SPA stack state
 export const STORE: COMPLETE_STORE = createStore({
@@ -42,7 +42,7 @@ export const STORE: COMPLETE_STORE = createStore({
       currentURL: "",
       showHelp: false,
       currentId: -1,
-    } satisfies  ShopState;
+    } satisfies ShopState;
   },
   mutations: {
     setPath(state: ShopState, nn: string): void {
@@ -77,9 +77,6 @@ export function useStore(): COMPLETE_STORE {
 // this solution is lighter than "rewire" which is described in
 // https://www.wisdomgeek.com/development/web-development/javascript/how-to-unit-test-private-non-exported-function-in-javascript/
 export const OnlyForTesting = { mapForHelp };
-
-
-
 
 /**
 > STORE

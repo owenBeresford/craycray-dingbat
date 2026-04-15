@@ -88,8 +88,8 @@ export class CacheWrapper {
    * @public
    * @returns {Promise<boolean> }
    */
-  public static async isInstalled():Promise<boolean> {
-    return await global.caches.has(FILES[0] );
+  public static async isInstalled(): Promise<boolean> {
+    return await global.caches.has(FILES[0]);
   }
 
   /**

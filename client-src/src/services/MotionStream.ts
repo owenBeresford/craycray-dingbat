@@ -17,7 +17,7 @@ export class MotionStream implements Motionable {
   protected stack: Array<Vector>;
   protected actions: Record<string, CBTYPE>;
   protected active: boolean;
-  protected mobile:boolean;
+  protected mobile: boolean;
 
   /**
    * constructor
@@ -29,7 +29,7 @@ export class MotionStream implements Motionable {
     this.stack = [];
     this.actions = {};
     this.active = false;
-    this.mobile=isMobile();
+    this.mobile = isMobile();
   }
 
   /**

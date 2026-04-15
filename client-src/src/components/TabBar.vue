@@ -15,7 +15,7 @@
           <span
             class="obmenu foldPoint"
             aria-haspopup="menu"
-            :aria-pressed="menuOpen" 
+            :aria-pressed="menuOpen"
             role="button"
             @click="onMenu"
             v-touch="onMenu"
@@ -25,21 +25,41 @@
           ></span>
           <menu :class="menuState" role="navigation" :data-testId="menuId">
             <li>
-              <span role="button" :title="menu.installTitle" :class="installEnabled" v-touch="onInstall" @click.once="onInstall" @keypress="onInstall">
+              <span
+                role="button"
+                :title="menu.installTitle"
+                :class="installEnabled"
+                v-touch="onInstall"
+                @click.once="onInstall"
+                @keypress="onInstall"
+              >
                 {{ menu.installName }}
               </span>
             </li>
-            <li >
-              <span role="button" class="button" :title="menu.helpTitle" v-touch="onIntersitial" @click.once="onIntersitial" @keypress="onIntersitial">{{
-                menu.helpName
-              }}</span>
+            <li>
+              <span
+                role="button"
+                class="button"
+                :title="menu.helpTitle"
+                v-touch="onIntersitial"
+                @click.once="onIntersitial"
+                @keypress="onIntersitial"
+                >{{ menu.helpName }}</span
+              >
             </li>
-            <li >
-              <span :aria-disabled="hasData" role="button" :title="menu.renameTitle" class="button" v-touch="onName" @click="onName" @keypress="onName">{{
-                menu.renameName
-              }}</span>
+            <li>
+              <span
+                :aria-disabled="hasData"
+                role="button"
+                :title="menu.renameTitle"
+                class="button"
+                v-touch="onName"
+                @click="onName"
+                @keypress="onName"
+                >{{ menu.renameName }}</span
+              >
             </li>
-            <li >
+            <li>
               <span
                 :aria-disabled="hasData"
                 :title="menu.dupeTitle"
@@ -51,17 +71,31 @@
                 >{{ menu.dupeName }}</span
               >
             </li>
-            <li >
-              <span :aria-disabled="hasData" class="button" role="button" :title="menu.uniqTitle" v-touch="onUnique" @click="onUnique" @keypress="onUnique">{{
-                menu.uniqName
-              }}</span>
+            <li>
+              <span
+                :aria-disabled="hasData"
+                class="button"
+                role="button"
+                :title="menu.uniqTitle"
+                v-touch="onUnique"
+                @click="onUnique"
+                @keypress="onUnique"
+                >{{ menu.uniqName }}</span
+              >
             </li>
-            <li >
-              <span :title="menu.saveTitle" :aria-disabled="hasData" role="button" class="button" v-touch="onSave" @click="onSave" @keypress="onSave">{{
-                menu.saveName
-              }}</span>
+            <li>
+              <span
+                :title="menu.saveTitle"
+                :aria-disabled="hasData"
+                role="button"
+                class="button"
+                v-touch="onSave"
+                @click="onSave"
+                @keypress="onSave"
+                >{{ menu.saveName }}</span
+              >
             </li>
-            <li >
+            <li>
               <span
                 :aria-disabled="hasData"
                 v-touch.once="onRevert"
@@ -72,7 +106,7 @@
                 class="button"
               >
                 {{ menu.revertName }}
-            </span>
+              </span>
             </li>
             <li>
               <br /><small>{{ menu.outro }}</small>
@@ -126,7 +160,7 @@ export default defineComponent({
       default: () => {
         return useStore();
       },
-    }
+    },
   },
   data(): TabBarProps {
     const CACHE: CacheWrapper = useCacheWrapper();
@@ -140,9 +174,9 @@ export default defineComponent({
     return {
       menuLabel: MENU_OPEN,
       menuState: "hide",
-      menuOpen:false,
+      menuOpen: false,
       getInput: "",
-       visible: false,
+      visible: false,
       CB: Function as any,
       mapURL,
       CACHE: CACHE,
@@ -150,7 +184,7 @@ export default defineComponent({
       EIK: this.$props.currentStateKey + "false",
       inputId: this.testId + "input1",
       menuId: this.testId + "Menu1",
-      hasData:(currentData!=undefined),
+      hasData: currentData != undefined,
       urls: [mapURL("allList", null), mapURL("aList", -1)],
       menu: {
         header: TEXT.get("menu.header1"),
@@ -176,10 +210,10 @@ export default defineComponent({
         revertName: TEXT.get("menu.revertName"),
         outro: TEXT.get("menu.outro"),
       },
-    } satisfies TabBarProps ;
+    } satisfies TabBarProps;
   },
   mounted() {
-    if(!this.shopStore) {
+    if (!this.shopStore) {
       throw new Error("You must hava a real Store (Vuex Object, not a actual shop) to run the App.");
     }
   },
@@ -228,7 +262,9 @@ export default defineComponent({
       if (_LOGGING_) {
         console.log("TO TEST make unique");
       }
-      if(!this.shopStore ) { throw new Error("2344568746356986 Impossible"); }
+      if (!this.shopStore) {
+        throw new Error("2344568746356986 Impossible");
+      }
 
       const liste = currentData.get(this.shopStore.state.currentId);
       if (liste) {
@@ -244,7 +280,9 @@ export default defineComponent({
       if (!currentData) {
         return false;
       }
-      if(!this.shopStore ) { throw new Error("83456423493433 Impossible"); }
+      if (!this.shopStore) {
+        throw new Error("83456423493433 Impossible");
+      }
       const liste = currentData.get(this.shopStore.state.currentId);
 
       if (liste) {
@@ -261,7 +299,9 @@ export default defineComponent({
       if (!currentData) {
         return false;
       }
-      if(!this.shopStore ) { throw new Error("2357675675357578 Impossible"); }
+      if (!this.shopStore) {
+        throw new Error("2357675675357578 Impossible");
+      }
 
       const liste = currentData.get(this.shopStore.state.currentId);
       if (!liste) {
@@ -275,7 +315,9 @@ export default defineComponent({
           this.visible = false;
           return;
         }
-        if(!this.shopStore ) { throw new Error("2357675675357578 Impossible"); }
+        if (!this.shopStore) {
+          throw new Error("2357675675357578 Impossible");
+        }
         liste.editName(d1);
         currentData.put(this.shopStore.state.currentId, liste);
         this.visible = false;
@@ -287,8 +329,8 @@ export default defineComponent({
 
     onSave(e: GuessEvent): boolean {
       e.preventDefault();
-      if (!currentData || !this.shopStore ) {
-         throw new Error("3598345234242 Impossible");
+      if (!currentData || !this.shopStore) {
+        throw new Error("3598345234242 Impossible");
       }
 
       console.log("Saving list to local cache list, for all lists");
@@ -297,7 +339,7 @@ export default defineComponent({
     },
     onRevert(e: GuessEvent): boolean {
       e.preventDefault();
-      if (!currentData || !this.shopStore  ) {
+      if (!currentData || !this.shopStore) {
         throw new Error("9845645234372323 Impossible");
       }
 
@@ -306,7 +348,7 @@ export default defineComponent({
       return false;
     },
     onMenu(e: GuessEvent): boolean {
-// IOIO can simplify this code to be CSS rendering, and just menu state set here      
+      // IOIO can simplify this code to be CSS rendering, and just menu state set here
       e.preventDefault();
       if (e.type && e.type === "mouseup") {
         return false;
@@ -315,11 +357,11 @@ export default defineComponent({
         this.menuLabel = MENU_CLOSE;
         this.menuState = "obmenu";
         // ".tabBar.buttonRow .obmenu.foldPoint"
-        this.menuOpen= true;
-       } else {
+        this.menuOpen = true;
+      } else {
         this.menuLabel = MENU_OPEN;
         this.menuState = "hide";
-        this.menuOpen= false;
+        this.menuOpen = false;
       }
       return false;
     },
