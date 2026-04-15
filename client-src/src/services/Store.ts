@@ -33,7 +33,7 @@ export const mapForHelp = (state:COMPLETE_STORE, specific: string): string => {
   return MM[ceci];
 };
 
-export type COMPLETE_STORE=ReturnType< createStore<ShopState>>;
+export type COMPLETE_STORE=ReturnType<typeof createStore<ShopState>>;
 
 // A Vuex Store object, to hold the SPA stack state
 export const STORE: COMPLETE_STORE = createStore({
