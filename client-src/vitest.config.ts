@@ -12,7 +12,6 @@ export default defineConfig({
     include: [
       "src/test/vitest/*.vitest.ts",
       "src/test/vitest/*.vitest.jsx",
-      "src/test/vitest/*.vitest.js",
       "src/test/vitest/*.vitest.mjs",
     ],
     exclude:[
@@ -21,7 +20,6 @@ export default defineConfig({
     typecheck: {
       include: ["src/test/vitest/*.vitest.*", ],
       exclude: [ "src/**/*.stories.*", ],
-
     },
 // Copilot says these two lines should disable the checking, which is not useful
 // they don't work.
@@ -43,6 +41,7 @@ export default defineConfig({
         },
       },
     ],
+   globalSetup: "./src/test/vitest.setup.ts",
 
   },
   optimizeDeps:{

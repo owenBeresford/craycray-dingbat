@@ -18,11 +18,11 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
-    "sourceMap": true,
+    "sourceMap": false,
 	"skipLibCheck": true,
     "baseUrl": ".",
 	"outDir": "src/types",
-    "types": [ "node", "vitest", "vite" ],
+    "types": [ "node", "vitest", "vite", "./src/types/env.d.ts" ],
     "paths": {
       "@/*": [
         "src/*"
