@@ -1,0 +1,13 @@
+                       watch     touch   inject   key
+--------------------------------------------------------
+PROBLEM?                YES        NO   NO SOON    NO
+--------------------------------------------------------
+App.vue                  N         N       base    Y
+
+EnterInput.vue           Y         N               Y
+InterstitialView.vue     Y         N               Y
+ListOfLists.vue          N         Y       Y       Y
+TabBar.vue               N         Y               Y
+ThisList.vue             N         Y       Y       Y
+UnknownRoute.vue         N         N               Y
+
