@@ -1,12 +1,12 @@
 import { AList } from "./AList";
 import { ListService } from "./ListService";
 
-import type { SaveStruct } from "../types/Saveable";
+import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { LocalCopy } from "./LocalCopy";
 import type { ListCollection } from "../types/ListCollection";
-import type { DistantStorable } from "../types/RemoteTypes";
+import type { DistantStorable } from "../../../common/types/RemoteTypes";
 //import type { Listable, ListStruct } from "../types/ListCollection";
-import type { PromiseSucceed, PromiseReject } from "../types/promises";
+import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 
 /**
  * ListService

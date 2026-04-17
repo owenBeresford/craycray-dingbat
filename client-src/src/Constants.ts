@@ -1,4 +1,4 @@
-import type { RemoteConfig } from "./types/RemoteTypes";
+import type { RemoteConfig } from "../../common/types/RemoteTypes";
 import { RemoteStorage } from "./services/RemoteStorage";
 // import type { Request as RequestType, Response as ResponseType } from 'node-fetch';
 

@@ -59,7 +59,7 @@
 import { defineComponent, ref } from "vue";
 // https://stackoverflow.com/questions/50617865/vue-v-model-input-change-mobile-chrome-not-work
 import { isMobile } from "../services/util";
-import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
+import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import { useUIText } from "../services/Localisation";
 import type { EnterInputProps } from '../types/ComponentProps';
 

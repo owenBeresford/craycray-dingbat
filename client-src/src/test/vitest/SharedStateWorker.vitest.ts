@@ -2,7 +2,8 @@
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 
 import { SharedStateWorker, useSSW } from "../../workers/SharedStateWorker";
-import type { SaveStruct, DelayCallbackType, DataPipeline } from "../../types/Saveable";
+import type { DelayCallbackType, DataPipeline } from "../../types/Saveable";
+import type { SaveStruct } from '../../../../common/types/SaveStruct';
 
 import { TestLocation } from "../MockLocation";
 

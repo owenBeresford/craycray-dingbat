@@ -1,15 +1,11 @@
 // import 'reflect-metadata';
 // chatbot wanted this, its not actually needed, so I commented it :-)
-import { Directive, defineComponent, ref } from "vue";
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
-import { mount, RouterLinkStub, config } from "@vue/test-utils";
-import Vue3TouchEvents from "vue3-touch-events";
 import { JsonSerializer, throwError, JsonProperty, JsonObject } from "typescript-json-serializer";
 
 import type { ListStruct, Listable } from "../../types/ListCollection";
 import { AList } from "../../services/AList";
-import { SaveStruct } from "../../types/Saveable";
-
+ 
 // This is just a test object.
 @JsonObject()
 class Book {

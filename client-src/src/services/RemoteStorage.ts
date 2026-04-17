@@ -1,7 +1,8 @@
 import { transform2text, transform2list } from "./Storable";
-import type { SaveStruct, Storable } from "../types/Saveable";
-import type { DistantStorable, RemoteConfig, APIResponseType } from "../types/RemoteTypes";
-import type { PromiseSucceed, PromiseReject } from "../types/promises";
+import type { Storable } from "../types/Saveable";
+import type { SaveStruct } from "../../../common/types/SaveStruct";
+import type { DistantStorable, RemoteConfig, APIResponseType } from "../../../common/types/RemoteTypes";
+import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 import { FETCH_TIMEOUT } from "../Constants";
 // import type  { Request as RequestType, Response as ResponseType } from 'node-fetch';
 

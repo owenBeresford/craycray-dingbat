@@ -1,9 +1,9 @@
 import { AList, EMPTY_LIST } from "./AList";
 
-import type { SaveStruct } from "../types/Saveable";
+import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { ListCollection } from "../types/ListCollection";
 import type { ListStruct } from "../types/ListCollection";
-import type { PromiseSucceed, PromiseReject } from "../types/promises";
+import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 
 /**
  * ListService 

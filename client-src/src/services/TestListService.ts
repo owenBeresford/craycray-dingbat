@@ -1,7 +1,7 @@
 import { AList } from "./AList";
 import { ListService } from "./ListService";
 import type { ListCollection, TestDataSchema } from "../types/ListCollection";
-import type { PromiseSucceed, PromiseReject } from "../types/promises";
+import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 
 /**
  * TestListService 

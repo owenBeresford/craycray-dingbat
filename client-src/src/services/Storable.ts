@@ -1,5 +1,5 @@
-import type { SaveStruct } from "../types/Saveable";
-import type { ShippingStruct, ActionEnum } from "../types/Messagable";
+import type { SaveStruct } from "../../../common/types/SaveStruct";
+import type { ShippingStruct, ActionEnum } from "../../../common/types/Messagable";
 
 /**
  * transform2text

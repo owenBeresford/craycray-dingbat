@@ -1,12 +1,4 @@
-export interface SaveStruct {
-  name: string;
-  created: number;
-  edited: number;
-  count: number;
-  id: number;
-
-  list: Array<string>;
-}
+import type { SaveStruct } from '../../../common/types/SaveStruct';
 
 export interface Storable {
   saveProperty(nom: string, dat: string): boolean;

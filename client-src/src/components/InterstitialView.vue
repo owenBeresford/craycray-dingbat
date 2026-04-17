@@ -24,7 +24,7 @@ import { useStore, mapForHelp } from "../services/Store";
 import { useUIText } from "../services/Localisation";
 import { useLocal } from "../services/LocalCopy";
 import { KNOWN_PHONE } from "../Constants";
-import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
+import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { StrictArray, InterstitialProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();

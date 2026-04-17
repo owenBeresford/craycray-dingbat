@@ -3,9 +3,9 @@
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 
 import { MessageDistribution, useMsgDistrib } from "../../services/MessageDistribution";
-import type { DistantStorable } from "../../types/RemoteTypes";
+import type { DistantStorable } from "../../../../common/types/RemoteTypes";
 import type { BasicThreadable } from "../../types/BasicThreadable";
-import type { SaveStruct } from "../../types/Saveable";
+import type { SaveStruct } from "../../../../common/types/SaveStruct";
 
 describe("test on MesageDistribution ", () => {
   it("Can use useMsgDistrib", () => {

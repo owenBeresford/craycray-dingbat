@@ -59,7 +59,7 @@ import { MotionStream } from "../services/MotionStream";
 import { isMobile, clearSelection, extractId } from "../services/util";
 import { LOGO_PATH } from "../Constants";
 
-import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
+import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { ThisListProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();

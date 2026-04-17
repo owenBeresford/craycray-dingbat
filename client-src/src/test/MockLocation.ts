@@ -1,4 +1,4 @@
-import type { DOMStringList } from "../types/infill-DOM-types-for-tests";
+import type { DOMStringList } from "../../../common/types/infill-DOM-types-for-tests";
 
 if (typeof URLSearchParams == "undefined") {
   throw new Error("Please update your version of Node.  URLSearchParams should exist with no shims.");

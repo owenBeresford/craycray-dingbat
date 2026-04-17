@@ -3,7 +3,7 @@ import { LocalStorage } from "node-localstorage";
 
 import { APP_NAME } from "../../Constants";
 import { LocalCopy } from "../../services/LocalCopy";
-import type { PromiseSucceed, PromiseReject } from "../../types/promises";
+import type { PromiseSucceed, PromiseReject } from "../../../../common/types/promises";
 
 globalThis.localStorage = new LocalStorage("./public/scratch");
 

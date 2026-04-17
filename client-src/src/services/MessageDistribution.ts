@@ -1,11 +1,11 @@
-import type { SaveStruct } from "../types/Saveable";
+import type { SaveStruct } from "../../../common/types/SaveStruct";
 import { PMQUE_TIMER, PMQUE_ATTEMPTS, MSG_THREAD } from "../Constants";
 // import { WorkerHandle } from '../types/Workable';
-import type { ShippingStruct, ActionEnum } from "../types/Messagable";
+import type { ShippingStruct, ActionEnum } from "../../../common/types/Messagable";
 import type { BasicThreadable } from "../types/BasicThreadable";
-import type { DistantStorable } from "../types/RemoteTypes";
+import type { DistantStorable } from "../../../common/types/RemoteTypes";
 import { transform2list, packMsg } from "./Storable";
-import type { PromiseSucceed, PromiseReject } from "../types/promises";
+import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 
 type Timer = number;
 

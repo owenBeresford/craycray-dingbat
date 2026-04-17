@@ -131,7 +131,7 @@ import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
 import { StaticRoutes } from "./Routing";
 import EnterInput from "./EnterInput.vue";
-import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
+import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { TabBarProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();

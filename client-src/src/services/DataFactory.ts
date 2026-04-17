@@ -14,7 +14,7 @@ import { TestListService } from "./TestListService";
 import { NetworkedListService } from "./NetworkedListService";
 
 import type { ListCollection, TestDataSchema } from "../types/ListCollection";
-import type { DistantStorable } from "../types/RemoteTypes";
+import type { DistantStorable } from "../../../common/types/RemoteTypes";
 import type { MessageDistribution } from "./MessageDistribution";
 
 /*                     TRUTH TABLE

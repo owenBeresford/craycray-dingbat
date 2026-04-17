@@ -2,11 +2,11 @@ import { assert, describe, it, expect, expectTypeOf, assertType } from "vitest";
 // import { LocalStorage } from "node-localstorage";
 
 import { ListService } from "../../services/ListService";
-import { AList } from "../../services/AList";
+// import { AList } from "../../services/AList";
 import { createDataFactory } from "../../services/DataFactory";
 import type { FactoryArtefact } from "../../services/DataFactory";
 import type { ListStruct, Listable, ListCollection } from "../../types/ListCollection";
-import type { PromiseSucceed, PromiseReject } from "../../types/promises";
+import type { PromiseSucceed, PromiseReject } from "../../../../common/types/promises";
 
 describe("I can use NetworkedListService", () => {
   // this ought to be run multiple times in different network settings
