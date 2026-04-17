@@ -1,5 +1,5 @@
 #!/bin/bash 
-# IOIO XXX update needed
+# IOIO XXX update needed   This was created for legacy tools, that have been removed.
 
 if [ `basename $PWD` != 'client-src' ]; then 
 	cd client-src

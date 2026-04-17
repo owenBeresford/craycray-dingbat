@@ -16,7 +16,9 @@ fi
 NODEBIN='node --experimental-modules '
 
 if [ "$what" == "--fe" -o "$what" == "all" ]; then
-	cd client-src
+	if [ "`basename $PWD`" != "client-src" ]; then
+		cd client-src
+	fi
 	$NODEBIN $EXECDIR/vite --config ./vite.config.mjs build --l info
 	ret=$?
 	if [ $ret -ne 0 ]; then
@@ -44,7 +46,11 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 
 elif [ "$what" == "--be" -o "$what" == "all" ]; then
 	echo "running back end code"
-	cd server-src/
+	revert=0
+	if [ "`basename $PWD`" != "server-src" ]; then
+		cd server-src/
+		revert=1
+	fi
 	echo "The nextJS builder doesn't put stuff in dist OR public OR build. . .  So here is this *solution* in an unfashionable language."
 	$EXECDIR/nest build
 	ret=$?
@@ -62,7 +68,9 @@ elif [ "$what" == "--be" -o "$what" == "all" ]; then
 	if [ ! -f dist/shopping/list.json ]; then
 		echo "{}" > dist/shopping/list.json
 	fi
-	cd ..
+	if [ $revert ]; then
+		cd ..
+	fi
 fi
 
 

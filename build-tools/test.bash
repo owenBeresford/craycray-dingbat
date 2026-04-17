@@ -23,7 +23,10 @@ if [ "$what" = "fe" -o "$what" = "all" ]; then
 		echo $! >$APIPID
 		echo "Manually started the API service."
 	fi;
-	cd client-src
+	if [ "`basename $PWD`" != "client-src" ]; then
+		cd client-src
+	fi
+
 	node $EXECDIR/vitest run -c vitest.config.ts --typecheck --isolate 
 	# vitest sets an exit of 1, if a test fails. 
 	# I have added a thing for timeout to return 127
@@ -46,7 +49,9 @@ if [ "$what" = "fe" -o "$what" = "all" ]; then
 fi
 
 if [ "$what" = "be" -o "$what" = "all" ]; then
-	cd server-src
+	if [ "`basename $PWD`" != "server-src" ]; then
+		cd server-src
+	fi
 	node $EXECDIR/vitest run --typecheck --isolate 
 	cd ..
 fi
