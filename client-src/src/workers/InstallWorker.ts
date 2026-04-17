@@ -18,11 +18,12 @@ export function useCacheWrapper(): CacheWrapper {
 
 // List of files needed in the installation
 const prefix = "https://" + REMOTE_HOST;
-// IOIO XXX move this to a manifest?
+// web manifests do not list files, so list lives here
 const FILES: Array<string> = [
   prefix + "/index.html",
+  prefix + "/manifest.json",
   prefix + "/favicon.ico",
-  prefix + "/libs.min.js", // maybe strip this one
+  prefix + "/logo.png",
   prefix + "/shopping.min.css",
   prefix + "/shopping.min.mjs",
   prefix + "/worker1.min.mjs",
@@ -49,7 +50,7 @@ export class CacheWrapper {
     this.local = ll;
     if (
       !("__STORYBOOK_MODULE_TEST__" in window && window.__STORYBOOK_MODULE_TEST__) &&
-      !(global.caches instanceof CacheStorage)
+      !(globalThis.caches instanceof CacheStorage)
     ) {
       throw new Error("234798674564 Cache storage isn't working, the install button cannot work,");
     }
@@ -70,7 +71,7 @@ export class CacheWrapper {
    * @returns {void}
    */
   public install(): void {
-    global.caches
+    globalThis.caches
       .open(APP_NAME + "_" + APP_VERSION)
       .then(async (cache: Cache): Promise<void> => {
         this.local.saveProperty(INSTALLED, "1");
@@ -89,7 +90,7 @@ export class CacheWrapper {
    * @returns {Promise<boolean> }
    */
   public static async isInstalled(): Promise<boolean> {
-    return await global.caches.has(FILES[0]);
+    return await globalThis.caches.has(FILES[0]);
   }
 
   /**
