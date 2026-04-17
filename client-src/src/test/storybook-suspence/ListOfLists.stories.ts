@@ -8,7 +8,7 @@ import ListOfLists from "../../components/ListOfLists.vue";
 import UnknownRoute from "../../components/UnknownRoute.vue";
 import { STORE } from "../../services/Store";
 import { createDataFactory, ListData, idOf } from "../../services/DataFactory";
-import { fixture1, fixture2, fixture3, fixture4 } from "../fixture-lists";
+import { fixture1, fixture2, fixture3, fixture4 } from "../../../../common/fixture-lists";
 // this needs suspence
 
 // https://github.com/storybookjs/storybook/blob/a3cdabb025524822807318bc137f69be006596c2/docs/snippets/web-components/api-doc-block-story-parameter.ts.mdx#L17

@@ -5,7 +5,7 @@ import TabBar from "../../components/TabBar.vue";
 import { ListData, createDataFactory } from "../../services/DataFactory";
 import { CacheWrapper } from "../../workers/InstallWorker";
 import { useStore } from "../../services/Store";
-import { fixture1, fixture2, fixture3, fixture4, fixture5 } from "../fixture-lists";
+import { fixture1, fixture2, fixture3, fixture4, fixture5 } from "../../../../common/fixture-lists";
 // this needs suspence
 
 const meta: Meta<typeof TabBar> = {

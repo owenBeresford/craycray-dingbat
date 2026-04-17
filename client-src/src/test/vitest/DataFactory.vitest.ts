@@ -2,7 +2,7 @@
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 
 import { createDataFactory } from "../../services/DataFactory";
-import { simple_fixture1, simple_fixture2 } from "../fixture-lists";
+import { simple_fixture1, simple_fixture2 } from "../../../../common/fixture-lists";
 import { ListService } from "../../services/ListService";
 import { AList } from "../../services/AList";
 import type { FactoryArtefact } from "../../services/DataFactory";
