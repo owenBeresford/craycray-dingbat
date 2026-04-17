@@ -27,12 +27,23 @@ export function transform2text(dat: any): string {
  * As name says, create internal data structure from text
 // IOIO TODO possible magic to make types work...
  
+ * @throws {Error} - when the JSON isn't to expected format
  * @param {string} dat
  * @public
  * @returns {Array<SaveStruct>}
  */
 export function transform2list(dat: string): Array<SaveStruct> {
-  return JSON.parse(dat) as Array<SaveStruct>;
+  let thing:Object;
+  try {
+    thing =JSON.parse(dat);
+    if(!Array.isArray( thing)) { throw new Error("This should be an Array"); }
+    // Push into AList, then export to SaveStruct
+    return thing as Array<SaveStruct>; 
+
+  } catch(e:unknown ) {
+    console.log("JSON parsing broke ", (e as Error).message);
+  }
+  return [] as Array<SaveStruct> ;
 }
 
 /**
