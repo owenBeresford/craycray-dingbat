@@ -25,7 +25,9 @@ export const ANGLE_ACCURACY = 20.0;
 
 // localisation
 export const SUPPORTED_LANGUAGE = "en-GB";
-export const KNOWN_PHONE = "shopping-known";
+export const KNOWN_PHONE = "shopping-known"; // may get localised
+export const TTL_FOR_HELP =5000; // ms
+export const DEFAULT_HELP_SHOW=false;
 
 export const FETCH_TIMEOUT = 500; // ms
 export const DELAY_FOR_API = 500; // ms
