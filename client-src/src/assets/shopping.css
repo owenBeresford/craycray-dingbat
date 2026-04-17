@@ -134,13 +134,19 @@
   margin-bottom: 0.4em;
   margin-top: 0.4em;
 }
-.ListOfList span.centre {
+.ListOfList .centre {
   margin-top: -0.5em;
   white-space: nowrap;
   display: inline-block;
   vertical-align: middle;
   overflow-x: hidden;
 }
+
+.ListOfList .centre:focus-within  {
+  background:#ddd;
+}
+.ListOfList img { height: 30px; width:30px; overflow-x: clip;
+  overflow-y: clip; margin-right:0.3em; } 
 
 /* ********************************************************* */
 .unknownRoute {
@@ -174,10 +180,12 @@
 .enterInput {
   width: 20em;
   z-index: 2;
-  top: calc(50% - 2em);
+  top: calc(50vh - 3em);
   background-color: white;
   border: 1em #eee solid;
 }
+dialog.enterInput::backdrop { background-color:rgba(39, 39, 39, 0.3); pointer-events: none; }
+
 .enterInput p {
   white-space: nowrap;
   text-align: left;
@@ -310,5 +318,26 @@ div.aList ul.buttonRow li span {
 }
 
 .wholePage {
-  height: 100%;
+  height: 100%; font-family:system-ui;
 }
+
+/* A useful class that will slap a big warning on span containing images (various formats) 
+   Adjust selector to suit needs.  The warning is about 150px on most peoples machines  */
+.deadImages span:has(svg, picture, img)::before {
+  z-index: 2;
+  line-height: 0.7;
+  position: absolute;
+  border: red 2px solid;
+  color: red;
+  content: " 🗙 ";
+  /* font-size: 8em; */
+  font-size: 1.5em;
+  padding: 0.1em;
+  border-radius: 40%;
+  margin-top: 0.5em;
+  margin-left: 0.15em;
+  padding-bottom: 0.25em;
+  pointer-events: none;
+}
+
+/* https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/How_to/Create_a_standalone_app */
