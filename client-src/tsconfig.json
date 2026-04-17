@@ -22,7 +22,7 @@
 	"skipLibCheck": true,
     "baseUrl": ".",
 	"outDir": "src/types",
-    "types": [ "node", "vitest", "vite", "./src/types/env.d.ts" ],
+    "types": [ "node", "vitest", "vite", "./src/types/env.d.ts", "./src/types/shims-vue.d.ts" ],
     "paths": {
       "@/*": [
         "src/*"
@@ -38,16 +38,17 @@
   },
   "include": [  "src/**/*.ts", "src/components/*.vue", "src/*.vue", "src/*.ts" ],
   "exclude": [
-    "node_modules",
+   "node_modules",
     ".storybook",
     "**/*.stories.ts",
     "**/*.stories.tsx",
     "**/*.stories.mdx"
-  ],
+  ], /* this blob is from a bot, I may strip it later.  The goal was eslint in Vue SFC, and it didn't deliver */
 	"vueCompilerOptions": {
 		"strictTemplates":true,
 		"experimentalDecorators":true,
 		"checkUnknownComponents":true,
+		"emitDecoratorMetadata":true,
 		"extensions":[".vue", ".tsx", ".ts" ],
 		"include": [ "src/types/vue-shim.d.ts", "src/**/*.ts", "src/components/*.vue", "src/*.vue", "src/*.ts" ]
 	}
