@@ -34,7 +34,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, "src/workers/StateSyncing.ts"),
       name: "worker1",
-      fileName: (format) => `${ofn}.${format}.js`,
+      fileName: (format) => `${ofn}.${format}.mjs`,
     },
 	emptyOutDir:false,
     minify: "terser",
