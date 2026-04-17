@@ -4,6 +4,7 @@
     <ul class="buttonRow">
       <li class="bigger">{{ list.nom }}</li>
       <li :title="text.addTitle">
+        <img width="40" height="40" :href="logoPath" aria-hidden="true" role="presentation" :alt="text.imgAlt"  />
         <span
           role="button"
           v-touch.once="onAdd"
@@ -56,6 +57,7 @@ import { ListData, setupCurrentList, idOf } from "../services/DataFactory";
 import { AList, EMPTY_LIST } from "../services/AList";
 import { MotionStream } from "../services/MotionStream";
 import { isMobile, clearSelection, extractId } from "../services/util";
+import { LOGO_PATH } from "../Constants";
 
 import type { GuessEvent } from "../types/infill-DOM-types-for-tests";
 import type { ThisListProps } from "../types/ComponentProps";
@@ -97,14 +99,8 @@ export default defineComponent({
         return useStore();
       },
     }, // TS: "Store<ShopState>"
-    list:{
-      type: Object,
-      default: () => {
-        return setupCurrentList(undefined);
-      },
-    },
   },
-  async created() {
+  created() {
      if (currentData && _LOGGING_) {
       console.log("KKK thisList.created  ListData.currentData id:", idOf(currentData));
     }
@@ -114,6 +110,7 @@ export default defineComponent({
   },
   mounted() {
     const itinéraire = useRoute();
+    this.list.importTest( setupCurrentList(itinéraire ) as AList);
     if (this.shopStore) {
       this.shopStore.commit("setPath", itinéraire.path);
       this.shopStore.commit("setId", this.id);
@@ -135,10 +132,13 @@ export default defineComponent({
       stream: flux,
       offset: -1,
       bisMobile: isMobile(),
+      logoPath: LOGO_PATH, 
       text: {
         addTitle: TEXT.get("list.additemTitle"),
         currentTitle: TEXT.get("list.curListsTitle"),
         addName: TEXT.get("list.addItemName"),
+        imgAlt:TEXT.get("list.imgAlt"),
+
       },
       childId: this.$props.testId + "Child1",
       nextTestId: this.$props.testId + "Input1",

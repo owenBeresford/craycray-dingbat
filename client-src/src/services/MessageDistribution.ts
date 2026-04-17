@@ -62,7 +62,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
    */
   public forkThread(): boolean {
     try {
-      if (typeof global.Worker === "object") {
+      if (typeof globalThis.Worker === "object") {
         // eslint says not to await on this...??
         this.worker = new Worker(MSG_THREAD, { credentials: "same-origin", name: "NUDGE", type: "module" });
       }
@@ -195,7 +195,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
     }
     const expédition: ShippingStruct = packMsg("save-payload", dat);
 
-    this.worker.postMessage(expédition);
+    this.worker.postMessage(expédition, undefined);
     // promise for API compat; message has been forwarded to thread...
     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       return good(true);
@@ -221,7 +221,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const SELF = this;
     let tentatives = 0;
-    this.worker.postMessage(expédition);
+    this.worker.postMessage(expédition, undefined);
     let poignée: Timer | null = null;
     const ATTEMPT = async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject): Promise<void> => {
       if (SELF.state.length) {

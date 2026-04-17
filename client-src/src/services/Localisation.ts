@@ -186,6 +186,7 @@ function UITextFactory(lang: string): UItext {
     hiddenReference.add("list.additemTitle", "Add a new item to current list.");
     hiddenReference.add("list.curListsTitle", "Current lists.  Desktop: long touch to edit, swipe left to delete.");
     hiddenReference.add("list.addItemName", "Add item");
+    hiddenReference.add("list.imgAlt", "The app logo - Improve text here");
 
     hiddenReference.addArray("firstUse", [
       "&nbsp; ",

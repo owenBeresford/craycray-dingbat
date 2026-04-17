@@ -19,7 +19,7 @@ export interface ListCollection {
 // other languages would also work
 export interface ListStruct {
   nom: string;
-  // we have the creation date, as sorting my be needed in future
+  // we have the creation date, as sorting may be needed in future
   créé: Date;
   modifié: Date;
   // i.e. array length, as have no sight on array in this type

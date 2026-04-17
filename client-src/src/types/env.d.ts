@@ -1,11 +1,12 @@
 /// <reference types="vite/client" />
 
-declare module "*.vue" {
-  import type { DefineComponent } from "vue";
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const component: DefineComponent<{}, {}, any>;
-  export default component;
+export declare const _LOGGING_: Readonly<boolean>;
+//console.warn("ENV D TS executed");
+
+declare global {
+  interface Window {
+    readonly _LOGGING_: boolean;
+  }
 }
 
-declare const _LOGGING_: boolean;
-console.warn("ENV D TS executed");
+// possibly extend https://stackoverflow.com/questions/79734942/why-cant-i-define-a-new-interface-that-extends-the-window-interface

@@ -112,7 +112,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
 
     // Local has no state, so no extra loading data
     const d3 = useLocal();
-    const d2 = createRemoteService(global.location);
+    const d2 = createRemoteService(globalThis.location);
     if (await d2.poll()) {
       ret.currentData = new NetworkedListService(d2, d3);
     } else {
@@ -199,7 +199,7 @@ export function setupCurrentList(itinéraire: undefined | RouteLocationNormalize
       liste = currentData.get(id) ?? EMPTY_LIST;
     }
     if (currentData && _LOGGING_) {
-      console.log("KKK setupCurrentList currentData id:", idOf(currentData));
+      console.log("KKK setupCurrentList currentData id:", idOf(currentData), " AND ", id);
     }
   } catch (e) {
     let backupId = 0;

@@ -5,7 +5,7 @@ import type { PromiseSucceed, PromiseReject } from "../types/promises";
 import { FETCH_TIMEOUT } from "../Constants";
 // import type  { Request as RequestType, Response as ResponseType } from 'node-fetch';
 
-type NullableTimeout = ReturnType<typeof global.setTimeout> | undefined;
+type NullableTimeout = ReturnType<typeof globalThis.setTimeout> | undefined;
 
 /**
  * RemoteStorage
@@ -52,7 +52,7 @@ export class RemoteStorage implements Storable, DistantStorable {
         bad(EEE);
       }, FETCH_TIMEOUT);
 
-      global
+      globalThis
         .fetch(SELF.url, REQT)
         .then((resp: Response): boolean => {
           clearTimeout(sortie);
@@ -92,7 +92,7 @@ export class RemoteStorage implements Storable, DistantStorable {
         body: transform2text(goutte),
       }) as RequestInit;
 
-      global
+      globalThis
         .fetch(this.url, REQT)
         .catch((err: Error) => {
           bad(err);
@@ -138,20 +138,20 @@ export class RemoteStorage implements Storable, DistantStorable {
   public async loadState(): Promise<Array<SaveStruct>> {
     return new Promise((good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
       const REQT: RequestInit = Object.assign(this.other, { method: "GET", body: null }) as RequestInit;
-      global
+      globalThis
         .fetch(this.url, REQT)
         .catch((err: unknown) => {
           console.warn("FAILED TO LOAD STATE", (err as Error).message);
           return bad(new Error("No data was found"));
         })
-        .then((filet: Response | void) => {
+        .then((filet: Response | void):void => {
           if (!filet) {
             return bad(new Error("Valid HTTP, but got nothing back"));
           }
           if (!filet.ok) {
             return bad(new Error("Server sent an error http status " + filet.status));
           }
-          return filet.text().then(function (text: string) {
+          filet.text().then(function (text: string):void {
             good(transform2list(text));
           });
         });

@@ -1,13 +1,16 @@
 <template>
-  <div class="ListOfList" :data-testid="instanceId" :key="currentStateKey">
-    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="betterId" :testId="viewId" />
+  <div class="ListOfList deadImages" :data-testid="instanceId" :key="currentStateKey">
+    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="secondId" :testId="viewId" />
     <ul :data-testId="listId">
-      <li v-for="i in shoppingLists" :key="i.id" :title="`Display the ${i.nom} list.`">
-        <span class="centre">
+      <li v-for="i in shoppingLists" :key="i.id" :title="`Access the ${i.nom} list.`" >
+          <span>
+          <img width="30" height="30" :href="logoPath" aria-hidden="true" role="presentation" alt="The app logo - Improve text here" />
+          </span>
+          <span class="centre" role="button">
           <router-link :to="`${mapURL('aList', i.id)}`" class="button">{{ i.nom }}</router-link>
           &nbsp;&nbsp; ~ from {{ i.créé.getUTCDate() }}-{{ i.créé.getUTCMonth() + 1 }}-{{ i.créé.getUTCFullYear() }},
-          {{ i.énumérer }} items
-        </span>
+          {{ i.énumérer }} items.
+          </span>
       </li>
     </ul>
   </div>
@@ -16,7 +19,7 @@
 import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
 
-import { DELAY_FOR_API } from "../Constants";
+import { DELAY_FOR_API, LOGO_PATH } from "../Constants";
 import { useStore } from "../services/Store";
 import { ListData } from "../services/DataFactory";
 import { mapURL } from "../services/URLs";
@@ -63,11 +66,6 @@ export default defineComponent({
       }, DELAY_FOR_API);
     }
   },
-  computed: {
-    betterId() {
-      return this.$props.currentStateKey + "view";
-    },
-  },
   inject: ["helpText", "canSeeHelp", "ttl"],
   props: {
     currentStateKey: { type: String, required: true },
@@ -81,17 +79,19 @@ export default defineComponent({
     fixPath: { type: Function, required: true },
   },
   data(): ListOfListsProps {
-    // IOIO XXX thats not a realtime view, I might need to replace this, to a prop
-    let ll: Array<ListStruct> = [];
+    // IOIO XXX thats not a realtime view, I might need to replace this, with a prop
+    let chose: Array<ListStruct> = [];
     if (ListData.currentData) {
-      ll = ListData.currentData.list();
+      chose = ListData.currentData.list();
     }
     return {
       instanceId: this.$props.testId,
       viewId: this.$props.testId + "View1",
       listId: this.$props.testId + "List1",
+      secondId:this.$props.currentStateKey+"view",
 
-      shoppingLists: ll,
+      logoPath: LOGO_PATH, 
+      shoppingLists: chose,
       mapURL,
     } satisfies ListOfListsProps;
   },

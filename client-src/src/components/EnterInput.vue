@@ -91,7 +91,7 @@ export default defineComponent({
   data():EnterInputProps {
     let id = this.$props.testId;
     return {
-      oVal: "",
+      oVal: ""+this.$props.val,
       bIsMobile: isMobile(),
       bShow: this.$props.visible,
       cross: TEXT.get("cross"),
@@ -110,15 +110,15 @@ export default defineComponent({
     } satisfies EnterInputProps;
   },
   watch: {
-    val(val, oldVal) {
+    val(nouveau:string, vieux:string ):void {
 //      if (_LOGGING_) {
-        console.log(`EnterInput: Running watch ${oldVal} => ${val}.`);
+        console.log(`EnterInput: Running watch ${vieux} => ${nouveau}.`);
 //      }
-      this.oVal = val;
+      this.oVal = nouveau;
     },
-    visible(val, oldVal) {
-      this.bShow=!!val;
-      if (val) {
+    visible(nouveau:string, vieux:string):void {
+      this.bShow=!!nouveau;
+      if (nouveau) {
         setTimeout(() => {
           const élément: HTMLInputElement = this.$refs.enterIt as HTMLInputElement;
           élément && élément.focus();
