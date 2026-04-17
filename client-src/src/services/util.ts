@@ -15,7 +15,7 @@
  */
 export function isMobile(): boolean {
   try {
-    return window.matchMedia("(any-pointer:coarse)").matches ? false : true;
+    return window.matchMedia("(any-pointer:coarse)").matches ? true: false;
   } catch (e) {
     return true;
   }
