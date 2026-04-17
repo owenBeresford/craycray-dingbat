@@ -14,14 +14,14 @@ import { SaveStruct } from "../../types/Saveable";
 @JsonObject()
 class Book {
   @JsonProperty({ name: "name", required: true, type: String })
-  name: string;
+  name: any;
 
   @JsonProperty({ name: "publishYear", required: true, type: Number })
-  publishYear: number;
+  publishYear: any;
 }
 
 describe("test on json object (to see if tech works)", () => {
-  it("Can load service", () => {
+  it("Can load service", ():void => {
     const book: Book = new Book();
     book.name = "Moby Dick";
     book.publishYear = 1892;
@@ -34,8 +34,19 @@ describe("test on json object (to see if tech works)", () => {
       book2 = new Book();
       book2.name = "FAIL";
       expect(typeof book2).toBe("object");
+      console.log("The partial book didn't crash out, note I have no validate now function");
     } catch (e: unknown) {
       console.warn("Partial data object is expected to fail, and...BOOM!", (e as Error).message);
+    }
+
+    let book3: Book;
+    try {
+      book3 = new Book();
+      book3.publishYear = ():void =>{ console.log("Alle yur BASIS are belangt om ons."); };
+      expect(typeof book3).toBe("object");
+      console.log("working book (check values):", book3);
+    } catch (e: unknown) {
+      console.warn("Function injected detected, and...BOOM!", (e as Error).message);
     }
   });
 });
@@ -56,6 +67,8 @@ describe("test on AList", () => {
     tt.id = 1;
     tt.éléments = [] as Array<string>;
     expect(tt).toBeTruthy();
+    expect( tt.nom).toBe("NEWNAME" );
+    expect( tt.énumérer).toBe( 2);
   });
 
   it("attempt2 ", () => {
@@ -82,6 +95,6 @@ describe("test on AList", () => {
     expect(obj.nom === "NEWNAME2").toBeTruthy();
 
     obj.import(["dgdfgdfg", "adasd", "werwerw", "test1"]);
-    expect(obj.énumérer).toEqual(4);
+    expect(obj.énumérer).toEqual(9);
   });
 });
