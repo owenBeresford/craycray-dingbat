@@ -35,9 +35,9 @@ describe("I can use NetworkedListService", () => {
       expect(ls.currentData.create("item2")).toBe(2);
       expect(ls.currentData.create("item3")).toBe(3);
 
-      expect(global.localStorage.length).toBe(0);
+      expect(globalThis.localStorage.length).toBe(0);
       expect(ls.currentData.saveAllLists()).toBe(true);
-      expect(global.localStorage.length).not.toBe(0);
+      expect(globalThis.localStorage.length).not.toBe(0);
 
       good(true);
     });
@@ -54,7 +54,7 @@ describe("I can use NetworkedListService", () => {
       expect(ls.currentData.create("item2")).toBe(2);
       expect(ls.currentData.create("item3")).toBe(3);
 
-      expect(global.localStorage.length).toBe(0);
+      expect(globalThis.localStorage.length).toBe(0);
       expect(ls.currentData.loadAllLists()).toBe(true);
       expect(ls.currentData.count()).toBe(1);
       // IOIO
@@ -74,7 +74,7 @@ describe("I can use NetworkedListService", () => {
       expect(ls.currentData.create("item2")).toBe(2);
       expect(ls.currentData.create("item3")).toBe(3);
 
-      expect(global.localStorage.length).toBe(0);
+      expect(globalThis.localStorage.length).toBe(0);
       expect(ls.currentData.poll()).toBe(true);
       expect(ls.currentData.count()).toBe(1);
       // IOIO

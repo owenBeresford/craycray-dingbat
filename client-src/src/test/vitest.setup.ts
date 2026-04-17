@@ -1,9 +1,14 @@
 // GLOBAL TOOLS
 // globalSetup: "./src/test/vitest.setup.ts",
 //
+/// <reference types="../types/env.d.ts" />
+ 
 export async function setup(): Promise<void> {
-  global._LOGGING_ = process.env.NODE_ENV !== "production";
-  console.warn("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW 6");
+  Object.defineProperty(globalThis, "_LOGGING_", {
+    value: process.env.NODE_ENV !== "production",
+    writable: true
+});
+
 }
 
 export async function teardown(): Promise<void> {}
@@ -13,4 +18,4 @@ export async function teardown(): Promise<void> {}
 // beforeEach(() => {  // Do something here\n })
 // afterEach(() =>  {  // Do something here\n })
 //
-console.warn("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW 18");
+ 

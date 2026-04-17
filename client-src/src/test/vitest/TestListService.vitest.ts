@@ -9,7 +9,7 @@ import type { ListStruct, Listable, ListCollection } from "../../types/ListColle
 import type { PromiseSucceed, PromiseReject } from "../../types/promises";
 import { fixture1, fixture2, fixture3, fixture4 } from "../fixture-lists";
 
-global.localStorage = new LocalStorage("./public/scratch");
+globalThis.localStorage = new LocalStorage("./public/scratch");
 
 // the createDataFactory with args is tested via storybook tests, which is why it exists.
 describe("I can use ListService", () => {

@@ -25,16 +25,16 @@ describe("I can use the flat util functions", () => {
       const url3 = "//www.ebay.co.uk/itm/335829529206?_trksid=p2332490.c101196.m2219";
       const url4 = "http://192.168.0.0/resource/covering-letter-generator";
 
-      global.location = new TestLocation(url1);
+      globalThis.location = new TestLocation(url1);
       assert.equal(wrap_getMyIP(), "https://find-and-update.company-information.service.gov.uk/");
 
-      global.location = new TestLocation(url2);
+      globalThis.location = new TestLocation(url2);
       assert.equal(wrap_getMyIP(), "https://www.ebay.co.uk/");
 
-      global.location = new TestLocation(url3);
+      globalThis.location = new TestLocation(url3);
       assert.equal(wrap_getMyIP(), "/");
 
-      global.location = new TestLocation(url4);
+      globalThis.location = new TestLocation(url4);
       assert.equal(wrap_getMyIP(), "/");
       good(true);
     });

@@ -16,7 +16,7 @@ describe("test on InstallWorker ", () => {
 
   it("Can use InstallWorker", async () => {
     let txt = useCacheWrapper();
-    let c = await global.caches.open(APP_NAME + "_" + APP_VERSION);
+    let c = await globalThis.caches.open(APP_NAME + "_" + APP_VERSION);
     let l = await c.keys();
     l.forEach(async (a: Request, b: number) => {
       await c.delete(a.url);

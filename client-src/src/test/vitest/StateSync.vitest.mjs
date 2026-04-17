@@ -45,7 +45,7 @@ describe("test on StateSync ", () => {
         good(1);
       };
       //			w.postMessage(packMsg("status-request" as ActionEnum, {} as ShippingStruct ));
-      w.postMessage(packMsg("status-request", {}));
+      w.postMessage(packMsg("status-request", {}), undefined);
       console.log("TEST send message");
 
       // yada other states

@@ -5,7 +5,7 @@ import { APP_NAME } from "../../Constants";
 import { LocalCopy } from "../../services/LocalCopy";
 import type { PromiseSucceed, PromiseReject } from "../../types/promises";
 
-global.localStorage = new LocalStorage("./public/scratch");
+globalThis.localStorage = new LocalStorage("./public/scratch");
 
 describe("I can use LocalCopy", () => {
   it("I can create it", (): Promise<boolean> => {
