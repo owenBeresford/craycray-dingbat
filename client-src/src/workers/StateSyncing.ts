@@ -1,7 +1,7 @@
 import type { SaveStruct, DataPipeline } from "../types/Saveable";
 import type { ShippingStruct, ActionEnum } from "../types/Messagable";
 // import type { DistantStorable } from "../types/RemoteTypes";
-// import { PMQUE_TIMER, PMQUE_ATTEMPTS, MSG_DESTINATION, MSG_THREAD, createRemoteService } from "../Constants";
+// import { PMQUE_TIMER, PMQUE_ATTEMPTS, MSG_THREAD, createRemoteService } from "../Constants";
 // import { createRemoteService } from "../Constants";
 import { useSSW } from "./SharedStateWorker";
 import { transform2text, transform2list } from "../services/Storable";
@@ -9,7 +9,7 @@ import { transform2text, transform2list } from "../services/Storable";
 export {};
 declare const self: DedicatedWorkerGlobalScope;
 
-if (global.Worker) {
+if (globalThis.Worker  ) {
   // I think this error report is too late, here.  BUT, if it is absent, still whine about it
   throw new Error("Runtime doesn't support Workers, FAIL, ABORT.");
 }

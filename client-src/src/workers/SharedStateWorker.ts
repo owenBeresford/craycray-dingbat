@@ -55,7 +55,7 @@ export class SharedStateWorker implements DataPipeline {
 
   /**
    * pushWhenAble
-   * initaite uploading data (async, phone maybe offnet)
+   * initiate uploading data (async, phone maybe offnet)
  
    * @param {Array<SaveStruct>} json
    * @public
