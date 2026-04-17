@@ -87,6 +87,25 @@ export class AList implements Listable, ListStruct {
   }
 
   /**
+   * importTest
+   * a util func to get Fixtures into the local AList[]
+
+   * @param {AList} origine
+   * @public
+   * @returns {AList}
+   */
+  public importTest(origine: AList): AList {
+    this.nom = origine.nom;
+    this.créé = origine.créé;
+    this.modifié = origine.modifié;
+    this.énumérer = origine.énumérer;
+    this.id = origine.id;
+    this.éléments = [...origine.éléments];
+    return this;
+  }
+
+
+  /**
    * editName
    * Alter the lists name
  
