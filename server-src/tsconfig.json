@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+	"strictNullChecks":true,
+    "jsx": "preserve",
+    "experimentalDecorators": true,
+	"strictPropertyInitialization":false,
+	"emitDecoratorMetadata": true,
+    "allowJs": true,
+    "declaration": true,
+    "declarationDir": "./src/types",
+	"isolatedModules": true,
+    "moduleResolution": "node",
+	"noResolve":false,
+    "esModuleInterop": true,
+	"extendedDiagnostics":true,
+	"downlevelIteration": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "useDefineForClassFields": true,
+    "sourceMap": false,
+	"skipLibCheck": true,
+    "baseUrl": ".",
+
+    "types": [ "node", "vitest", "vite", "./src/types/env.d.ts", "./src/types/shims-vue.d.ts" ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "lib": [ 
+	  "esnext",
+      "dom",
+      "dom.iterable",
+	  "WebWorker",
+      "scripthost"
+     ]
+	},
+  "include": [  "src/**/*.ts", "src/components/*.vue", "src/*.vue", "src/*.ts" ],
+  "exclude": [
+   "node_modules",
+    ".storybook",
+    "**/*.stories.ts",
+    "**/*.stories.tsx",
+    "**/*.stories.mdx"
+ ]
+}
