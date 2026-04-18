@@ -1,13 +1,14 @@
 import { defineConfig } from 'vite';
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
+import path, { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { builtinModules } from 'node:module';
 
 import terser from "@rollup/plugin-terser";
 // import typescript from "@rollup/plugin-typescript"
 import { getGlobals } from 'common-es';
 const { __dirname, __filename } = getGlobals(import.meta.url);
-// import ts from 'vite-plugin-ts';
-import vue from '@vitejs/plugin-vue';
+import ts from 'vite-plugin-ts';
+// import vue from '@vitejs/plugin-vue';
 // maybe try '@vitejs/plugin-vue-jsx' when have those files
 
 let mode='development';
@@ -16,28 +17,37 @@ if(process.env && process.env.NODE_ENV) {
 }
 let ofn="";
 if(mode!="production") {
-	ofn="shopping-test";
+	ofn="api-test";
 } else {
-	ofn="shopping";
+	ofn="api";
 }
+// src: https://stackoverflow.com/questions/69523560/using-vite-for-backend
+const NODE_BUILT_IN_MODULES = builtinModules.filter(m => !m.startsWith('_'));
+NODE_BUILT_IN_MODULES.push(...NODE_BUILT_IN_MODULES.map(m => `node:${m}`));
+
 
 // https://vitejs.dev/config/
 /// <reference types="vitest/config" />
 export default defineConfig({
 //	plugins: [ts(), vue() ],
 //	plugins: [typescript(), vue() ],
-	plugins: [ vue() ],
-	root: __dirname+ '/public',
+	plugins: [ts() ],
+	root: __dirname,
 	server: {
       hmr: false
 	},
+    optimizeDeps: {
+        exclude: NODE_BUILT_IN_MODULES,
+    },
 	 define: {
 	    _LOGGING_: process.env.NODE_ENV !== "production",
   	},
 	build: {
+    outDir: path.resolve(__dirname, '../dist'),
+	copyPublicDir:false,
     lib: {
       entry: path.resolve(__dirname, "src/main.ts"),
-      name: "shopping-gui",
+      name: "api",
       fileName: (format) => `${ofn}.${format}.mjs`,
     },
     minify: "terser",
@@ -45,13 +55,12 @@ export default defineConfig({
 	watch:false,	
     rollupOptions: {
       plugins: [terser({})],
-      external: [],
+      external: NODE_BUILT_IN_MODULES, 
 		cache:false,
       output: [
         {
           format: "es",
 			name: `${ofn}`,
-//      		entryFileName: (format) => `${ofn}.${format}.mjs`,
         },
       ],
     },
@@ -60,24 +69,5 @@ export default defineConfig({
     },
   },
 });
-
-/* // notes from AI-BOT, claims this will suppress Vite vetting stories files and borking hard.
-export default defineConfig({
-  optimizeDeps: { // remove spaces from regex
-    exclude: ["tests /* * / * .stories. * "],
-  },
-  plugins: [
-    {
-      name: "exclude-storybook-tests",
-      enforce: "pre",
-      transform(_, id) {
-        if (id.match(/\.stories\./)) {
-          return { code: "", map: null };
-        }
-      },
-    },
-  ],
-});
-*/
 
 // vim: syn=javascript nospell
