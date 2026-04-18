@@ -1,44 +1,40 @@
+Don't call lists "list X", or all the labelling gets confused.
 
+DETAILS TO COMPLETE FOR RELEASE
+- server code import :-)
 - ESLINT ON VUE FILES
 - increase tests
-- EnterInput.val isn't applied, I think
-- EnterInput test, have a chain of open an close to show state is tidied correctly
-- this might be child components being ready before parent.  [Vue warn]: injection "shopping" not found.
-- engineer thing to that actual network code is masked in story tests
-- pour les mot variable privé, traduire en francias 
+- interaction: status bar/ message board
 - Update static route to include new ids
-- check that values in AList are populated correctly
-- update localisation to a better string storage 
-- work out what MSG_DESTINATION should be
-- workout if can installworker filelist to a manifest?
-- postMessage targets ~ set target address when known
 - StateSyncing test cover full state map. when threads work
-- check other means to engineer motionstream
 - think about best name for ShopState
-- may be need to re-add STORE.getters
-- look at closure generators to hold my "module variable" static vars safe after compilation/ bundling
+- Make better favico
+- consider badges, css backdrop not working
 - workout if MotionStream->significance and signifcanceAsPercentage should use same thresholds
-- edit clean.bash to current dir tree
-- add the better validation on transform2list
-- bash scripts need to check version of node
-- On browser tab maximisation, poll() server to see if still live && accessible
-- On list state update, work out if new data is the same as old.   compute hash?
-https://www.npmjs.com/package/@vitejs/plugin-vue
-https://github.com/orimay/async-ts
+- May be need to re-add STORE.getters
+- Compute hashes in message boundaries, a la Kafka.  If hash is identical to current state, cancel transaction
+- engineer thing to that actual network code is masked in story tests
+
+
+LOW IMPACT, nioce to haves
+- pour les mot variable privé, traduire en francias 
+- ShoppingService test, add fixtures to extend load() testing
+- Localisation getting placeholders/ formatstr, then map ListOfList
+- this might be child components being ready before parent.  [Vue warn]: injection "shopping" not found.
+- implement my DOCS file (JSON validation)
+- look at atomic IO in Node.  #leSigh.  A write isn't likely to collide with a read, but if it did the reader gets a mess.
+- Maybe lineup state-keys to show net status in later builds
+- update Localisation to a better string storage, I discover <i18n> feature 
+- Check other means to engineer MotionStream
+- Implement document.addEventListener('visibilitychange'  to use network most wisely
+- Add the better validation on transform2list
+   - This has low value, as data will be been validated before
+- A larger project may gain from Mutex'  https://github.com/orimay/async-ts
+- For higher levels of SPA arch than needed here, add CustomElements https://www.npmjs.com/package/@vitejs/plugin-vue 
+- look at closure generators to hold my "module variable" static vars safe after compilation/ bundling
+  - OR drop them... deprecating...
+
 
 set NODE_ENV="TEST" for tests
 Yes, the storybook test use storybook/test module that currently I can't install.   Storybook seems to include it even though its doesn't exist in the correct version ~ mono-repo.   #WorksForMe, I hope it works-for-you.
-
-export default defineConfig({
-  define: {
-    __DEV__: process.env.NODE_ENV !== "production",
-  },
-});
-
-Then in your code:
-ts
-if (__DEV__) {
-  console.log("Debug info:", something);
-}
-
 
