@@ -1,15 +1,15 @@
-import { GoneException } from '@nestjs/common/exceptions';
-import fs from 'node:fs';
-import { promises as FSP } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
-import path from 'node:path';
+import { GoneException } from "@nestjs/common/exceptions";
+import fs from "node:fs";
+import { promises as FSP } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
+import path from "node:path";
 
-import { SaveStruct } from '../../../common/types/SaveStruct';
+import { SaveStruct } from "../../../common/types/SaveStruct";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const SOL_STORE_IMAGE = path.join(__dirname, 'list.json');
+const SOL_STORE_IMAGE = path.join(__dirname, "list.json");
 
 /**
  * ShoppingService 
@@ -41,17 +41,14 @@ export class ShoppingService {
    */
   public load(): Promise<string> {
     return new Promise((good, bad) => {
-      fs.readFile(  SOL_STORE_IMAGE,
-                    { encoding: 'utf8' },
-                    ( err: NodeJS.ErrnoException | null, data: string) => {
+      fs.readFile(SOL_STORE_IMAGE, { encoding: "utf8" }, (err: NodeJS.ErrnoException | null, data: string) => {
         if (err) {
-          console.warn('PANIC! Cannot read server store file ', err);
+          console.warn("PANIC! Cannot read server store file ", err);
           bad(new GoneException());
           return;
         }
         return good(data);
-
-                    });
+      });
     });
   }
 
@@ -96,15 +93,15 @@ export class ShoppingService {
    * @public
    * @returns {Promise<string>}
    */
-  function actualSave(dat: Array<SaveStruct>): Promise<string> {
+  actualSave(dat: Array<SaveStruct>): Promise<string> {
     const tmp = JSON.stringify(dat);
     // havent set the write mode, may not need to
 
     return new Promise((good, bad) => {
       fs.writeFile(SOL_STORE_IMAGE, tmp, (err: NodeJS.ErrnoException | null) => {
         if (err) {
-          console.warn('PANIC! Cannot write server store file ', err);
-          bad(new GoneException('ignore this JSON, use the HTTP code'));
+          console.warn("PANIC! Cannot write server store file ", err);
+          bad(new GoneException("ignore this JSON, use the HTTP code"));
         } else {
           good('{"result":"ignore this JSON, use the HTTP code", "statusCode":204}');
         }
@@ -126,12 +123,12 @@ export class ShoppingService {
 
     try {
       tt = JSON.parse(data);
-      if ( !Array.isArray(tt) ) {
+      if (!Array.isArray(tt)) {
         throw Error("JSON in storage isn't an array ");
       }
     } catch (e) {
-      console.warn('PANIC! Cannot read server store file ', e);
-      throw new GoneException('Malformed JSON in fle data');
+      console.warn("PANIC! Cannot read server store file ", e);
+      throw new GoneException("Malformed JSON in fle data");
     }
     if (this.right.length) {
       this.right.splice(0, this.right.length);
@@ -141,7 +138,7 @@ export class ShoppingService {
     try {
       this.right = this.typeAssert(tt);
     } catch (e) {
-      throw new GoneException('Malformed JSON in fle data');
+      throw new GoneException("Malformed JSON in fle data");
     }
   }
 
@@ -153,24 +150,25 @@ export class ShoppingService {
    * @public
    * @returns {Array<SaveStruct>}
    */
-  function typeAssert(newer: Array<any>): Array<SaveStruct> {
+  typeAssert(newer: Array<any>): Array<SaveStruct> {
     const dat: Array<SaveStruct> = [];
 
     let FAIL = 0;
     for (let i = 0; i < newer.length; i++) {
-      const ttt:SaveStruct = Object.assign(
-                  { name: '', created: 0, edited: 0, count: 0, id: i, list: [] },
-                   newer[i]) as SaveStruct;
+      const ttt: SaveStruct = Object.assign(
+        { name: "", created: 0, edited: 0, count: 0, id: i, list: [] },
+        newer[i]
+      ) as SaveStruct;
       // all these items must have a value
       if (!(ttt.name && ttt.created && ttt.edited && ttt.count && ttt.id)) {
-        console.log('Uploaded shopping list at ' + i + ' is missing critical data.');
+        console.log("Uploaded shopping list at " + i + " is missing critical data.");
         FAIL++;
       } else {
         dat.push(ttt);
       }
     }
     if (FAIL > 0) {
-      throw new Error('Transactiomn rejected, invalid data supplied.');
+      throw new Error("Transactiomn rejected, invalid data supplied.");
     }
     return dat;
   }
@@ -185,18 +183,17 @@ export class ShoppingService {
    */
   public async save(left: Array<SaveStruct>): Promise<string> {
     if (!Array.isArray(left)) {
-      throw new Error('Malformed data as param ' + left);
+      throw new Error("Malformed data as param " + left);
     }
 
     this.left = this.typeAssert(left);
-    const local = await FSP.open(SOL_STORE_IMAGE, 'r');
+    const local = await FSP.open(SOL_STORE_IMAGE, "r");
     return local
-      .readFile({ encoding: 'utf8' })
-      .then( this.inner.bind(this) )
+      .readFile({ encoding: "utf8" })
+      .then(this.inner.bind(this))
       .then(() => {
         local.close();
         return this.actualSave(this.merge(this.left, this.right));
       });
   }
 }
-

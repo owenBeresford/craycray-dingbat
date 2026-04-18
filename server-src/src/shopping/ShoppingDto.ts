@@ -1,21 +1,21 @@
 import {
-  ArrayMinSize,
+  //  ArrayMinSize,
   IsArray,
-  IsBoolean,
+  //  IsBoolean,
   IsNotEmpty,
   IsNumber,
-  IsOptional,
+  //  IsOptional,
   IsString,
   ValidateNested,
   IsDefined,
   IsNotEmptyObject,
-} from 'class-validator';
-import { Type } from 'class-transformer';
+} from "class-validator";
+import { Type } from "class-transformer";
 
 /**
- * SaveStructDto 
+ * SaveStructDto
  * A motionless accessible entity.  Here as class-validator config instance
- 
+
  * @public
  */
 export class SaveStructDto {
@@ -43,7 +43,7 @@ export class SaveStructDto {
 /**
  * BlobDto
  * A motionless accessible entity.  Here as class-validator config instance
- 
+
  * @public
  */
 export class BlobDto {
@@ -55,4 +55,3 @@ export class BlobDto {
   @Type(() => SaveStructDto)
   public dat: Array<SaveStructDto>;
 }
-
