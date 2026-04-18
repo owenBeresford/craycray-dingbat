@@ -1,10 +1,12 @@
 import { assert, describe, it, expect, assertType } from "vitest";
 import { GoneException } from '@nestjs/common/exceptions';
 
-import type { TestDataSchema } from "../../client-src/src/types/ListCollection";
+import type { TestDataSchema } from "../../../client-src/src/types/ListCollection";
 import { ShoppingService } from "../shopping/ShoppingService";
-import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
-import { fixture1, fixture2 } from "../../../common/fixture-lists";
+// import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
+import type { SaveStruct } from '../../../common/types/SaveStruct';
+import { fixture1, fixture2, transform2SaveStruct } from "../../../common/fixture-lists";
+
 
 describe("I can use ShoppingService", () => {
   it("I can create it", () => {
@@ -35,13 +37,13 @@ describe("I can use ShoppingService", () => {
 
   it('The save() seems to work', async ( ):Promise<void> => {
     const OBJ=new ShoppingService();
-    let src:Array<TestDataSchema>=fixture1();
+    let src:Array<SaveStruct>=transform2SaveStruct(fixture1());
 
     await OBJ.save( src ).then((dat) => {
         assert(typeof dat === "string" && dat.length > 30, "The save function has returned data");
         try {
           let ret2 = JSON.parse(dat);
-          assert( ret2.statusCode).toBe(204);
+          expect( ret2.statusCode).toBe(204);
 
         } catch (e:unknown) {
           assert(false, "The string from save() cannot be parsed as JSON without error " + ((e as Error).message));
@@ -51,29 +53,29 @@ describe("I can use ShoppingService", () => {
 
   it('The merge() seems to work', async ( ):Promise<void> => {
     const OBJ=new ShoppingService();
-    let src1:Array<TestDataSchema>=fixture1();
-    let src2:Array<TestDataSchema>=fixture2();
+    let src1:Array<SaveStruct>=transform2SaveStruct(fixture1());
+    let src2:Array<SaveStruct>=transform2SaveStruct(fixture2());
 
     let ret=OBJ.merge( src1, src2 );
-    assertType<Array<TestDataSchema>>( ret);
+    assertType<Array<SaveStruct>>( ret);
 // This test will show is it crashes, 
 // BUT I havent tested the logic
   });
 
   it('The merge() seems to work', async ( ):Promise<void> => {
     const OBJ=new ShoppingService();
-    let src1:Array<TestDataSchema>=fixture1();
+    let src1:Array<SaveStruct>= transform2SaveStruct( fixture1());
  
     let ret=OBJ.typeAssert( src1 );
-    assertType<Array<TestDataSchema>>( ret);
+    assertType<Array<SaveStruct>>( ret);
 // This test will show is it crashes, 
 // BUT I havent tested the logic
 
     ret=OBJ.typeAssert( [] );
-    assertType<Array<TestDataSchema>>( ret);
+    assertType<Array<SaveStruct>>( ret);
 
     ret=OBJ.typeAssert( [{}] );
-    assertType<Array<TestDataSchema>>( ret);
+    assertType<Array<SaveStruct>>( ret);
 
   });
 

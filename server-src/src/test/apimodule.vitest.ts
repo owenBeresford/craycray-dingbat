@@ -1,18 +1,21 @@
 import { assert, describe, it, expect, assertType, beforeAll, afterAll } from "vitest";
-import { request } from 'supertest';
+import * as supertest from 'supertest';
+// https://scribe.rip/@azizzouaghia/setting-up-basic-api-testing-with-supertest-cucumber-jest-and-typescript-8c6a23c045a1
 import { GoneException } from '@nestjs/common/exceptions';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 
-import {  ShoppingBE } from '../shopping/ShoppingBE';
+import { delay } from '../../../client-src/src/services/util';
+import { ShoppingBE } from '../shopping/ShoppingBE';
 import { ShoppingService } from '../shopping/ShoppingService';
-import { SaveStruct } from '../../common/types/SaveStruct';
+import { SaveStruct } from '../../../common/types/SaveStruct';
 // import type { TestDataSchema } from "../../client-src/src/types/ListCollection";
-import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
-import { fixture1, fixture2 } from "../../../common/fixture-lists";
+// import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
+import { fixture1, fixture2, transform2SaveStruct  } from "../../../common/fixture-lists";
 
 describe("I can use API module", () => {
   let OBJ: INestApplication;
+  const request = supertest();
 
   beforeAll(async () => {
     const moduleFixture = await Test.createTestingModule({
@@ -30,9 +33,8 @@ describe("I can use API module", () => {
   });
 
   it("can GET the API", async () => {
-    request(OBJ.getHttpServer(), { http2: true })
+    await request(OBJ.getHttpServer(), { http2: true }).get('/shared-state')
       .set('Accept', 'application/json')
-      .get('/shared-state')
       .expect('Content-Type', /json/)
         .end(function(err:Error|null, res:Response):void {
             if (err) throw err;
@@ -40,7 +42,7 @@ describe("I can use API module", () => {
             try {
                 let obj=JSON.parse(new String(res.body).trim());
                 assertType<Array<SaveStruct>>(obj );
-                assert( obj.length).greaterThan(1 ); 
+                expect( obj.length).greaterThan(1 ); 
             } catch(e) {
                 expect(false).toBe(true);
             }
@@ -50,10 +52,9 @@ describe("I can use API module", () => {
 
   it("can POST the API", async () => {
     // made data from fixture...
-    request(OBJ.getHttpServer(), { http2: true })
+    await request(OBJ.getHttpServer(), { http2: true }).post('/shared-state')
       .set('Accept', 'application/json')
-      .post('/shared-state')
-       .send( fixture1() )
+      .send( transform2SaveStruct( fixture1()) )
       .expect('Content-Type', /json/)
         .end(function(err:Error|null, res:Response):void {
             if (err) throw err;
@@ -65,7 +66,12 @@ describe("I can use API module", () => {
                 expect(false).toBe(true);
             }
          })    
-      .expect(201 );  // i think, yes doesnt match above, yes, this is great.   "1scriptingLang to rule them", but they chose JS. #leSigh
+      .expect(201 );  
+    // i think, yes doesnt match above, yes, this is great.   "1scriptingLang to rule them", but they chose JS. #leSigh
   });  
+
+    it('DEMO TEST 1111', { skip: true }, async ():Promise<boolean> => {
+        return new Promise(async (a, b )=>{ await delay(1_000 ); a(true); });
+    });
 
 });  
