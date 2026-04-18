@@ -1,14 +1,16 @@
 import { Controller, Res, Req, Header, Body, HttpCode, Param, Get, Post } from '@nestjs/common';
-import { GoneException } from '@nestjs/common/exceptions';
+// import { GoneException } from '@nestjs/common/exceptions';
 import { ParseArrayPipe } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 // import { Request, Response, NextFunction } from 'express';
 
-import type { SaveStruct } from '../../common/types/SaveStruct';
+// import type { SaveStruct } from '../../../common/types/SaveStruct';
 import { ShoppingService } from './ShoppingService';
 import { BlobDto, SaveStructDto } from './ShoppingDto';
 
 /*
+class ShoppingBE
+
 This class is NOT DEMO code, its just a limited scope usage class
 To make this a class that could be accessed from the internet, add security process,
 and remove assumption that my code is the only API user

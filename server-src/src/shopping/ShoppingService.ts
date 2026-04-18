@@ -1,25 +1,44 @@
 import { GoneException } from '@nestjs/common/exceptions';
-import fs from 'fs';
-import { promises as FSP } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import path from 'path';
+import fs from 'node:fs';
+import { promises as FSP } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+import path from 'node:path';
 
-import { SaveStruct } from '../../common/types/SaveStruct';
+import { SaveStruct } from '../../../common/types/SaveStruct';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const SOL_STORE_IMAGE = path.join(__dirname, 'list.json');
 
+/**
+ * ShoppingService 
+ * An actual class 
+ 
+ * @public
+ */
 export class ShoppingService {
   private left: Array<SaveStruct>;
   private right: Array<SaveStruct>;
 
+  /**
+   * constructor
+   * A plain con'tor
+ 
+   * @public
+   */
   constructor() {
     this.left = [];
     this.right = [];
   }
 
+  /**
+   * load
+   * An API call implementation to return data in the local DB
+ 
+   * @public
+   * @returns <string> - the whole file contents, without adjustments
+   */
   public load(): Promise<string> {
     return new Promise((good, bad) => {
       fs.readFile(  SOL_STORE_IMAGE,
@@ -36,6 +55,15 @@ export class ShoppingService {
     });
   }
 
+  /**
+   * merge
+   * A non-public function to use the newest copy of each item in two lists of lists
+ 
+   * @param {Array<SaveStruct>} left
+   * @param {Array<SaveStruct>} right
+   * @public
+   * @returns {Array<SaveStruct>}
+   */
   merge(left: Array<SaveStruct>, right: Array<SaveStruct>): Array<SaveStruct> {
     const out = [] as Array<SaveStruct>;
     const MAX = Math.max(left.length, right.length);
@@ -59,7 +87,16 @@ export class ShoppingService {
     return out;
   }
 
-  actualSave(dat: Array<SaveStruct>): Promise<string> {
+  /**
+   * actualSave
+   * Flush data to disk.
+   * MAYBE RENAME
+ 
+   * @param {Array<SaveStruct>} dat
+   * @public
+   * @returns {Promise<string>}
+   */
+  function actualSave(dat: Array<SaveStruct>): Promise<string> {
     const tmp = JSON.stringify(dat);
     // havent set the write mode, may not need to
 
@@ -75,6 +112,14 @@ export class ShoppingService {
     });
   }
 
+  /**
+   * inner
+   * A unpublished until that validates inbound data and does some transforms
+ 
+   * @param {string} data
+   * @public
+   * @returns {void}
+   */
   inner(data: string): void {
     // I would like to say this is a specific type, but it could be a string "cabbage"
     let tt: Array<any> = [];
@@ -100,7 +145,15 @@ export class ShoppingService {
     }
   }
 
-  typeAssert(newer: Array<any>): Array<SaveStruct> {
+  /**
+   * typeAssert
+   * A util to check data is the right shape 
+ 
+   * @param {Array<any>} newer
+   * @public
+   * @returns {Array<SaveStruct>}
+   */
+  function typeAssert(newer: Array<any>): Array<SaveStruct> {
     const dat: Array<SaveStruct> = [];
 
     let FAIL = 0;
@@ -122,6 +175,14 @@ export class ShoppingService {
     return dat;
   }
 
+  /**
+   * save
+   * The API point implementation to persist the clients data
+ 
+   * @param {Array<SaveStruct>} left
+   * @public
+   * @return {Promise<string>}
+   */
   public async save(left: Array<SaveStruct>): Promise<string> {
     if (!Array.isArray(left)) {
       throw new Error('Malformed data as param ' + left);
@@ -138,3 +199,4 @@ export class ShoppingService {
       });
   }
 }
+

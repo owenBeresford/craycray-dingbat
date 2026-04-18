@@ -12,6 +12,12 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
+/**
+ * SaveStructDto 
+ * A motionless accessible entity.  Here as class-validator config instance
+ 
+ * @public
+ */
 export class SaveStructDto {
   @IsString()
   @IsNotEmpty()
@@ -34,6 +40,12 @@ export class SaveStructDto {
   public list: Array<string>;
 }
 
+/**
+ * BlobDto
+ * A motionless accessible entity.  Here as class-validator config instance
+ 
+ * @public
+ */
 export class BlobDto {
   @IsDefined()
   @IsNotEmptyObject()
@@ -43,3 +55,4 @@ export class BlobDto {
   @Type(() => SaveStructDto)
   public dat: Array<SaveStructDto>;
 }
+

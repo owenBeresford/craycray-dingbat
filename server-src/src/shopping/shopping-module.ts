@@ -9,6 +9,17 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+/**
+ * setHeaders
+ * Util to inject relevant headers to the response
+ * THIS IS TO MATCH A FRAMEWORK I DIDN'T SET THE TYPES
+ 
+ * @param { any} res
+ * @param {string} path
+ * @param {any} stat
+ * @public
+ * @returns {void}
+ */
 const setHeaders = (res: any, path: string, stat: any): void => {
   let done = false;
   if (path.indexOf('.css') > 0) {
@@ -49,7 +60,7 @@ const setHeaders = (res: any, path: string, stat: any): void => {
   imports: [
     ServeStaticModule.forRoot({
       //		serveRoot: join( __dirname, '..', '..',),
-      rootPath: join(__dirname, '..', '..', '..', 'client-src', 'public'),
+      rootPath: join(__dirname, '..', '..', '..', 'client-src', 'dist'),
       serveStaticOptions: {
         //		exclude: ['/api*'],
         //		immutable: true,
@@ -61,4 +72,7 @@ const setHeaders = (res: any, path: string, stat: any): void => {
   controllers: [ShoppingBE],
   providers: [ShoppingService],
 })
+// NOTE cannot add docs on that *Decorator*, or add semis
+
 export class ShoppingModule {}
+
