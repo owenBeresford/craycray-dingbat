@@ -24,7 +24,7 @@
 	"skipLibCheck": true,
     "baseUrl": ".",
 
-    "types": [ "node", "vitest", "vite", "./src/types/env.d.ts", "./src/types/shims-vue.d.ts" ],
+    "types": [ "node", "vitest", "vite" ],
     "paths": {
       "@/*": [
         "src/*"
@@ -34,16 +34,11 @@
 	  "esnext",
       "dom",
       "dom.iterable",
-	  "WebWorker",
       "scripthost"
      ]
 	},
-  "include": [  "src/**/*.ts", "src/components/*.vue", "src/*.vue", "src/*.ts" ],
+  "include": [  "src/**/*.ts", "src/*.ts" ],
   "exclude": [
-   "node_modules",
-    ".storybook",
-    "**/*.stories.ts",
-    "**/*.stories.tsx",
-    "**/*.stories.mdx"
- ]
+   "node_modules"
+  ]
 }
