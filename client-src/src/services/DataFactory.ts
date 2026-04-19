@@ -13,7 +13,8 @@ import { createRemoteService, DELAY_FOR_API } from "../Constants";
 import { TestListService } from "./TestListService";
 import { NetworkedListService } from "./NetworkedListService";
 
-import type { ListCollection, TestDataSchema } from "../types/ListCollection";
+import type { ListCollection } from "../types/ListCollection";
+import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
 import type { MessageDistribution } from "./MessageDistribution";
 

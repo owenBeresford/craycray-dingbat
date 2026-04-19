@@ -1,11 +1,11 @@
 import { assert, describe, it, expect, assertType } from "vitest";
 import { GoneException } from "@nestjs/common/exceptions";
 
-import type { TestDataSchema } from "../../../client-src/src/types/ListCollection";
 import { ShoppingService } from "../shopping/ShoppingService";
+import { fixture1, fixture2, transform2SaveStruct } from "../../../common/fixture-lists";
 // import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 import type { SaveStruct } from "../../../common/types/SaveStruct";
-import { fixture1, fixture2, transform2SaveStruct } from "../../../common/fixture-lists";
+import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 
 describe("I can use ShoppingService", () => {
   it("I can create it", () => {

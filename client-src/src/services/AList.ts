@@ -1,5 +1,6 @@
 import { JsonSerializer, throwError, JsonProperty, JsonObject } from "typescript-json-serializer";
-import type { Listable, ListStruct, TestDataSchema } from "../types/ListCollection";
+import type { Listable, ListStruct } from "../types/ListCollection";
+import type { TestDataSchema } from '../../../common/types/TestDataSchema';
 
 /**
  * convertEpoch2Date
