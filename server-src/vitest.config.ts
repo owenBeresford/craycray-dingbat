@@ -3,31 +3,24 @@
 
 import { configDefaults, defineConfig, UserConfig } from "vitest/config";
 import typescript from "@rollup/plugin-typescript";
-import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
-  plugins: [ vue(), typescript() ],
+  plugins: [  typescript() ],
   test: {
     globals: true,
     include: [
-      "src/test/vitest/*.vitest.ts",
-      "src/test/vitest/*.vitest.jsx",
-      "src/test/vitest/*.vitest.mjs",
+      "src/test/*.vitest.ts",
+      "src/test/*.vitest.mjs",
     ],
-    exclude:[
-      "src/test/**/*.stories.*",
-    ],
+    exclude:[  ],
     typecheck: {
-      include: ["src/test/vitest/*.vitest.*", ],
-      exclude: [ "src/**/*.stories.*", ],
+      include: [ "src/test/*.vitest.*", ],
+      exclude: [ ],
     },
-// Copilot says these two lines should disable the checking, which is not useful
-// they don't work.
-//	sourcemap: false,
-//  sourcemap: "inline",
-    environment: "jsdom",
+    environment: "node",
     bail: 0,
-    watch: false,
+//watch: null,
+//server:{ watch:null },
     coverage: {
       provider: 'v8' // or 'istanbul'
     },
@@ -41,16 +34,10 @@ export default defineConfig({
         },
       },
     ],
-   globalSetup: "./src/test/vitest.setup.ts",
 
   },
-  optimizeDeps:{
-     exclude:[
-      "src/test/**/*.stories.*",
-    ],
-  },
-  css:true,
-  browser: { enabled: true, name: "/snap/bin/chromium" },
+  css:false,
+  browser: { enabled: false, name: "/snap/bin/chromium" },
 });
 // can create own runner if needed
 // https://main.vitest.dev/guide/advanced/

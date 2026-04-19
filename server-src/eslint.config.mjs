@@ -122,7 +122,7 @@ export default [
     },
     ignores: [
       "dist/*",
-		"public/*",
+      "../dist/*",
       "node_modules/*",
       "package-lock.json",
       "vite.config*.ts",

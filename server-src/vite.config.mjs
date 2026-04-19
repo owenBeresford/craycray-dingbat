@@ -31,7 +31,7 @@ NODE_BUILT_IN_MODULES.push(...NODE_BUILT_IN_MODULES.map(m => `node:${m}`));
 export default defineConfig({
 //	plugins: [ts(), vue() ],
 //	plugins: [typescript(), vue() ],
-	plugins: [ts() ],
+	plugins: [ ts() ],
 	root: __dirname,
 	server: {
       hmr: false
