@@ -15,13 +15,15 @@
     "moduleResolution": "node",
 	"noResolve":false,
     "esModuleInterop": true,
+	"extendedDiagnostics":true,
+	"downlevelIteration": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
     "sourceMap": false,
 	"skipLibCheck": true,
     "baseUrl": ".",
-	"outDir": "src/types",
+	"outDir": "../dist/types/",
     "types": [ "node", "vitest", "vite", "./src/types/env.d.ts", "./src/types/shims-vue.d.ts" ],
     "paths": {
       "@/*": [
