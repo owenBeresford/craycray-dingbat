@@ -84,30 +84,31 @@ export function idOf(obj: object): number {
   @returns {FactoryArtefact} - see above tuple interface
  */
 export function createDataFactory(override: Array<TestDataSchema> | undefined): FactoryArtefact {
-  let ret: FactoryArtefact = {} as FactoryArtefact;
-  ret.currentData = undefined;
-  ret.updateData = updateData;
-  ret.initData = initData;
+  let retour: FactoryArtefact = {} as FactoryArtefact;
+  retour.currentData = undefined;
+  retour.updateData = updateData;
+  retour.initData = initData;
 
   if (Array.isArray(override)) {
-    ret.currentData = new TestListService(override);
-    if (ret.currentData && _LOGGING_) {
-      console.log("KKK createDataFactory (with a mock) ListData.currentData id:", idOf(ret.currentData));
+    retour.currentData = new TestListService(override);
+    if (retour.currentData && _LOGGING_) {
+      console.log("KKK createDataFactory (with a mock) ListData.currentData id:", idOf(retour.currentData));
     }
-    ret.initData = function ():void {};
-    return ret as Readonly<FactoryArtefact>;
+    retour.initData = function ():void {};
+    return retour as Readonly<FactoryArtefact>;
   }
 
   /**
  * currentNetworkConfig
  * A "use function" to create ListCollections, which has different composition depending on network settings
+ * TODO add simplification when Storybook or Vitest is running
 
  * @public
  * @returns {Promise<void>}
  */
   async function currentNetworkConfig(): Promise<void> {
     let d4: MessageDistribution;
-    if (ret.currentData && (await ret.currentData.poll())) {
+    if (retour.currentData && (await retour.currentData.poll())) {
       return;
     }
 
@@ -115,11 +116,11 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
     const d3 = useLocal();
     const d2 = createRemoteService(globalThis.location);
     if (await d2.poll()) {
-      ret.currentData = new NetworkedListService(d2, d3);
+      retour.currentData = new NetworkedListService(d2, d3);
     } else {
       d4 = useMsgDistrib() as MessageDistribution;
       d4.forkThread();
-      ret.currentData = new NetworkedListService(d4 as DistantStorable, d3);
+      retour.currentData = new NetworkedListService(d4 as DistantStorable, d3);
     }
   }
 
@@ -145,28 +146,28 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
  * @returns {void}
  */
   function updateData(next: ListCollection): void {
-    if (ret.currentData && _LOGGING_) {
-      console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
+    if (retour.currentData && _LOGGING_) {
+      console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
     }
-    if (!ret.currentData) {
-      ret.currentData = next;
+    if (!retour.currentData) {
+      retour.currentData = next;
       return;
     }
-    for (let i = 0; i < ret.currentData.count(); i++) {
-      ret.currentData.delete(i);
+    for (let i = 0; i < retour.currentData.count(); i++) {
+      retour.currentData.delete(i);
     }
-    ret.currentData.merge(next);
-    if (ret.currentData && _LOGGING_) {
-      console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
+    retour.currentData.merge(next);
+    if (retour.currentData && _LOGGING_) {
+      console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
     }
   }
 
-  if (ret.currentData && _LOGGING_) {
-    console.log("KKK createDataFactory currentData id:", idOf(ret.currentData));
+  if (retour.currentData && _LOGGING_) {
+    console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
   }
 
   initData();
-  return ret;
+  return retour;
 }
 
 // What external modules (aside from test) will gain from accessing.
