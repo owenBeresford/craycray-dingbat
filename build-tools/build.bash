@@ -12,8 +12,8 @@ buildenv="test"
 if [ -n "$NODE_ENV" ]; then
 	buildenv=$NODE_ENV;
 fi
-# version is set via NVM
-NODEBIN='node --experimental-modules '
+# Node version is set via NVM
+NODEBIN='node '
 
 if [ "$what" == "--fe" -o "$what" == "all" ]; then
 	if [ "`basename $PWD`" != "client-src" ]; then
@@ -32,15 +32,25 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 		exit 1
 	fi
 
-	$NODEBIN $EXECDIR/uglifycss --max-line-len 2000 ./src/assets/shopping.css >./build/shopping.tmp.css
+	$NODEBIN $EXECDIR/uglifycss --max-line-len 2000 ./src/assets/shopping.css >./shopping.tmp.css
 	ret=$?
 	if [ $ret -ne 0 ]; then
 		echo "Tool uglifycss exited $ret on *.css"
 		exit 1
 	fi
-	cat ./src/assets/foundation.min.css ./build/shopping.tmp.css > ./public/shopping.min.css
+	cat ./src/assets/foundation.min.css ./shopping.tmp.css > ../dist/public/shopping.min.css
+	cp src/asset/favicon.ico ../dist/public/
+	cp src/asset/index.html ../dist/public/
+	cp src/asset/logo.png ../dist/public/
+	cp src/asset/manifest.json ../dist/public/	
+	cp src/asset/cert.pem ../dist/public/
+	cp src/asset/private.key ../dist/public/
+
 	echo "Created fresh shopping.min.css ."
+	rm ./shopping.tmp.css
 	cd ..
+
+
 
 
 
@@ -52,21 +62,22 @@ elif [ "$what" == "--be" -o "$what" == "all" ]; then
 		revert=1
 	fi
 	echo "The nextJS builder doesn't put stuff in dist OR public OR build. . .  So here is this *solution* in an unfashionable language."
-	$EXECDIR/nest build
+# maybe issue:: building with Vite or Nest?
+	node $EXECDIR/nest build
 	ret=$?
 	if [ $ret -ne 0 ]; then
 		echo "Tool exited $ret on nest build"
 		exit 1
 	fi
 
-	mkdir -p dist/shopping
-	mv src/*js dist/
-	mv src/*js.map dist
-	mv src/shopping/*js dist/shopping
-	mv src/shopping/*js.map dist/shopping
+	mkdir -p ../dist/
+#	mv src/*js ../dist/
+#	mv src/*js.map dist
+#	mv src/shopping/*js dist/shopping
+#	mv src/shopping/*js.map dist/shopping
 
-	if [ ! -f dist/shopping/list.json ]; then
-		echo "{}" > dist/shopping/list.json
+	if [ ! -f ../dist/public/list.json ]; then
+		echo "{}" > ../dist/public/list.json
 	fi
 	if [ $revert ]; then
 		cd ..
