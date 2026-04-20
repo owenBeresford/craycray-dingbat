@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { expect, fn, within, userEvent } from "storybook/test";
 
 import EnterInput from "../../components/EnterInput.vue";
-import { isMobile } from "../../services/util";
+import { isMobile } from "../../../../common/util";
 
 const meta: Meta<typeof EnterInput> = {
   component: EnterInput,

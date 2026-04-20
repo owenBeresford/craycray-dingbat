@@ -56,7 +56,8 @@ import { useUIText } from "../services/Localisation";
 import { ListData, setupCurrentList, idOf } from "../services/DataFactory";
 import { AList, EMPTY_LIST } from "../services/AList";
 import { MotionStream } from "../services/MotionStream";
-import { isMobile, clearSelection, extractId } from "../services/util";
+import { extractId } from "../services/util";
+import { isMobile, clearSelection } from '../../../common/util';
 import { LOGO_PATH } from "../Constants";
 
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";

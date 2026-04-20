@@ -1,6 +1,6 @@
 import { Vector } from "vector2d/src/Vector";
 // its bad to import internal classes; but this package isn't compatible with modern bundlers/ classloaders
-import { isMobile, windowSize, rad2deg } from "./util";
+import { isMobile, windowSize, rad2deg } from "../../../common/util";
 import { MOBILE_THRESHOLD, BIG_THRESHOLD, ANGLE_ACCURACY } from "../Constants";
 import type { CBTYPE, Motionable } from "../types/Motionable";
 

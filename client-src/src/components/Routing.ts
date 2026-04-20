@@ -9,7 +9,7 @@ import type {
 import ListOfLists from "./ListOfLists.vue";
 import ThisList from "./ThisList.vue";
 import UnknownRoute from "./UnknownRoute.vue";
-import { wrap_getMyIP } from "../services/util";
+import { wrap_getMyIP } from "../../../common/util";
 import { useStore } from "../services/Store";
 import { ListData } from "../services/DataFactory";
 
