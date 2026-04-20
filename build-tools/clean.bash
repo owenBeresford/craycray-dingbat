@@ -29,6 +29,10 @@ rm -r src/types/
 cd ../common
 rm *.js
 rm types/*.js
+rm -r server-src
+rm -r common 
+cd -
+
 
 # 
 # if [ -d ./build/src ]; then
