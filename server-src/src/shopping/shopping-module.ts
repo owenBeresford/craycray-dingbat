@@ -60,7 +60,7 @@ const setHeaders = (res: any, path: string, stat: any): void => {
   imports: [
     ServeStaticModule.forRoot({
       //		serveRoot: join( __dirname, '..', '..',),
-      rootPath: join(__dirname, "..", "..", "..", "client-src", "dist"),
+      rootPath: join(__dirname, "..", "..", "..", "dist", "public"),
       serveStaticOptions: {
         //		exclude: ['/api*'],
         //		immutable: true,
