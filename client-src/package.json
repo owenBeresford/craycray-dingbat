@@ -8,28 +8,18 @@
     "name": "O Beresford"
   },
   "scripts": {
-    "start": "export CURSERVICE=0; PIDFN=~/shopping.pid if [ -f $PIDFN ]; then export CURSERVICE=`cat $PIDFN`; fi; if [ $CURSERVICE -gt 100 ]; then kill $CURSERVICE; fi; cd ../server-src; node dist/main.js; echo $! > $PIDFN; cd -",
+    "start": "../build-tools/start.bash ",
 	"build:app":"../build-tools/build.bash",
-    "build": "../build-tools/build.bash --fe",
-    "test:fe": "tsc -p ./tsconfig.release.json; ../build-tools/test.bash ;  echo 'Add more tests!!!'",
+    "build:fe": "../build-tools/build.bash --fe",
+    "test:fe": "../build-tools/test.bash --fe;  echo 'Add more tests!!!'",
     "coverage": "node ./node_modules/.bin/vitest --typecheck --coverage",
     "lint": "../build-tools/lint.bash",
     "clean": "../build-tools/clean.bash",
     "storybook": "node ./node_modules/.bin/storybook dev -p 6006 --https --ssl-cert ./src/assets/cert.pem --ssl-key ./src/assets/private.key ; node ./node_modules/.bin/storybook dev -p 6006 -c ./.storybook-suspence/ --https --ssl-cert ./src/assets/cert.pem --ssl-key ./src/assets/private.key ",
-    "build-storybook": "node ./node_modules/.bin/storybook build; node ./node_modules/.bin/storybook build -c ./.storybook-suspence/",
+    "build-storybook": "node ./node_modules/.bin/storybook build; node ./node_modules/.bin/storybook build -c ./.storybook-suspence/"
 
-
-    "##              install note                ": "node14 ./node_modules/.bin/npm ",
-    "#build:app": "export pop='0'; if [ `basename $PWD` != 'client-src' ]; then export pop='1'; cd client-src; fi; node14 ./node_modules/.bin/vite build; if [ $pop -eq 1 ]; then cd -; ./build-tools/build.bash --be; cd client-src; else cd ..; ./build-tools/build.bash --be; cd -; fi  ",
-    "#build": "export pop='0'; if [ `basename $PWD` != 'client-src' ]; then export pop='1'; cd client-src; fi; node14 ./node_modules/.bin/vite build; if [ $pop -eq 1 ]; then cd ..; fi ",
-    "#test:fe": "tsc -p ./tsconfig.release.json; node14 --es-module-specifier-resolution=node ./node_modules/.bin/jest --env=node ; node14 ./node_modules/.bin/vitest --run --isolate ;  echo 'Add more vitest!!!'",
-    "#coverage": "node ./node_modules/.bin/vitest --typecheck --coverage",
-    "#start": "export CURSERVICE=0; if [ -f ./shopping.pid ]; then export CURSERVICE=`cat ./shopping.pid`; fi; if [ $CURSERVICE -gt 100 ]; then kill $CURSERVICE; fi; cd ../server-src; node14 --es-module-specifier-resolution=node dist/main.js & echo $! > ../client-src/shopping.pid; cd -",
-    "#storybook": "storybook dev -p 6006",
-    "#build-storybook": "storybook build"
   },
-  "main": "main.js",
-  "module": "main.js",
+  "main": "main.mjs",
   "dependencies": {
     "@vue/runtime-core": "^3.2.33",
     "common-es": "^1.0.1",
@@ -71,7 +61,6 @@
     "@vue/eslint-config-typescript": "^10.0.0",
     "@vue/test-utils": "^2.4.1",
     "cross-fetch": "^3.1.5",
-    "cypress": "^15.11.0",
     "eslint": "^8.46.0",
     "eslint-plugin-jsdoc": "^62.8.0",
     "eslint-plugin-no-only-tests": "^3.3.0",
