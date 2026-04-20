@@ -10,7 +10,7 @@
 	"emitDecoratorMetadata": true,
     "allowJs": true,
     "declaration": true,
-    "declarationDir": "./src/types",
+    "declarationDir": "../common/types",
 	"isolatedModules": true,
     "moduleResolution": "node",
 	"noResolve":false,
@@ -37,7 +37,7 @@
       "scripthost"
      ]
 	},
-  "include": [  "src/**/*.ts", "src/*.ts" ],
+  "include": [ "src/shopping/*.ts", "src/*.ts" ],
   "exclude": [
    "node_modules"
   ]
