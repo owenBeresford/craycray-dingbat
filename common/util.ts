@@ -7,7 +7,7 @@
  */
 export function isMobile(): boolean {
   try {
-    return window.matchMedia("(any-pointer:coarse)").matches ? true: false;
+    return globalThis.matchMedia("(any-pointer:coarse)").matches ? true: false;
   } catch (e) {
     return true;
   }
@@ -78,8 +78,8 @@ export function deg2rad(i: number): number {
  * @returns {string}
  */
 export function wrap_getMyIP(): string {
-  if (location.protocol === "https:") {
-    return "https://" + location.host + "/";
+  if (globalThis.location.protocol === "https:") {
+    return "https://" + globalThis.location.host + "/";
   } else {
     return "/";
   }
@@ -99,9 +99,9 @@ export function clearSelection(): void {
     return;
   }
 
-  if (typeof window.getSelection === "function") {
+  if (typeof globalThis.getSelection === "function") {
     // https://developer.mozilla.org/en-US/docs/Web/API/Selection
-    const élément: Selection | null = window.getSelection();
+    const élément: Selection | null = globalThis.getSelection();
     if (élément) {
       élément.removeAllRanges();
     }
@@ -109,6 +109,32 @@ export function clearSelection(): void {
     console.error("Cannot use window.getSelection or document.selection; what browser is this? ");
   }
 }
+
+if(!( globalThis.crypto || globalThis.crypto.subtle) ) {
+  throw new Error("JS runtime doesn't allow access to crypt/ hash functions.  Cannot proceed");
+}
+if(Uint8Array.prototype.toHex) {
+  throw new Error("JS runtime isn't allowing access to baseline features");
+}
+
+/**
+ * hashState
+ * Create a predictable hash of blob of data to support idempotency and duplicate collapse.
+   // this is 1handed hashing, not cmp capacity
+
+ * @param {Array<SaveStruct> } dat
+ * @param {Readonly<string> ="SHA-256"} hash - the algorithm to apply, in 'spec naming notation' 
+ * @public
+ * @returns {string} - hex encoded
+ */
+export async function hashState(dat:Array<SaveStruct>, hash:Readonly<string>="SHA-256"):string {
+  let step1:string= JSON.stringify(dat);
+      //step2:  this step should be obsolete/ irrelevant, but is critical failure if absent
+  let step2 = new TextEncoder().encode(step1);
+  let step3 = await globalThis.crypto.subtle.digest(hash, step2);
+  return new Uint8Array(step3).toHex();
+}
+
 
 export type Fetch = (u: string, o: RequestInit) => Promise<Response>;
 export type Fetchable = Fetch | null;
@@ -137,7 +163,7 @@ export async function runFetch(
   trap: boolean,
   extra:RequestInit | undefined
 ): Promise<SimpleResponse> {
-  const f: Fetch = fetch;
+  const f: Fetch = globalThis.fetch;
   const returnBad = (trap: boolean, err: Error, stat:number): SimpleResponse => {
     if (trap) {
       return {

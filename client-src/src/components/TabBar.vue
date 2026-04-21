@@ -130,6 +130,7 @@ import { useCacheWrapper, CacheWrapper } from "../workers/InstallWorker";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
 import { StaticRoutes } from "./Routing";
+import { hashState } from '../../../common/util';
 import EnterInput from "./EnterInput.vue";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { TabBarProps } from "../types/ComponentProps";
@@ -216,6 +217,7 @@ export default defineComponent({
     if (!this.shopStore) {
       throw new Error("You must hava a real Store (Vuex Object, not a actual shop) to run the App.");
     }
+    this.loadedStateKey=hashState(currentData.list() );
   },
   methods: {
     onIntersitial(e: GuessEvent): boolean {
@@ -333,20 +335,31 @@ export default defineComponent({
         throw new Error("3598345234242 Impossible");
       }
 
+      if( this.loadedStateKey===hashState(currentData.list()) ) {
+        console.log("Data is identical as last save ");
+        return false;
+      } 
       console.log("Saving list to local cache list, for all lists");
+      this.loadedStateKey=hashState(currentData.list());
       currentData.saveAllLists();
       return false;
     },
+
     onRevert(e: GuessEvent): boolean {
       e.preventDefault();
       if (!currentData || !this.shopStore) {
         throw new Error("9845645234372323 Impossible");
       }
-
+     
+      if( this.loadedStateKey===hashState(currentData.list()) ) {
+        console.log("Data is identical to initial state ");
+        return false;
+      }
       console.log("Rebuilding data from cache for all lists");
       currentData.loadAllLists();
       return false;
     },
+
     onMenu(e: GuessEvent): boolean {
       // IOIO can simplify this code to be CSS rendering, and just menu state set here
       e.preventDefault();
