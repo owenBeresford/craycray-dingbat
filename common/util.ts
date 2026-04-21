@@ -29,7 +29,7 @@ export async function delay(ms: number): Promise<void> {
  * windowSize
  * Compute current window size
 
- * @see [https://stackoverflow.com/a/28241682]
+ * @see [https://stackoverflow.com/a/28241682 ]
  * @public
  * @returns {Array<number>}
  */
@@ -75,7 +75,7 @@ export function deg2rad(i: number): number {
 // until the https is deployed; this is safer as /
 
  * @public
- * @returns {string]
+ * @returns {string}
  */
 export function wrap_getMyIP(): string {
   if (location.protocol === "https:") {
@@ -107,6 +107,85 @@ export function clearSelection(): void {
     }
   } else {
     console.error("Cannot use window.getSelection or document.selection; what browser is this? ");
+  }
+}
+
+export type Fetch = (u: string, o: RequestInit) => Promise<Response>;
+export type Fetchable = Fetch | null;
+
+export interface SimpleResponse {
+  body: object | string;
+  headers: Headers;
+  ok: boolean;
+  status:number;
+}
+
+/**
+ * runFetch
+ * A simple wrapper current fetch()
+ * IMPURE when I add logging
+ * This behaves as a VERY SIMPLE middle-ware.
+ * @param {string|URL} url
+ * @param {boolean} trap ~ return null rather than an exception
+ * @param {boolean} ldebug
+ * @public
+ * @throws {Error} = predictably, in case of network issue
+ * @returns {Promise<SimpleResponse>}
+ */
+export async function runFetch(
+  url: string,
+  trap: boolean,
+  extra:RequestInit | undefined
+): Promise<SimpleResponse> {
+  const f: Fetch = fetch;
+  const returnBad = (trap: boolean, err: Error, stat:number): SimpleResponse => {
+    if (trap) {
+      return {
+        body: "nothing",
+        headers: {} as Headers,
+        ok: false,
+        status:stat,
+      } as SimpleResponse;
+    } else {
+      throw err;
+    }
+  };
+  if( typeof extra === "undefined" ) { extra={} as RequestInit; }
+
+  try {
+    const trans: Response = await f(url, ({
+      credentials: "same-origin",
+    } & extra ) as RequestInit) as Response;
+    if (!trans.ok) {
+      return returnBad(trap, new Error("ERROR getting asset " + url), trans.status);
+    }
+    if (trans.status === 404) {
+      throw new Error("got HTTP 404");
+    }
+
+    let payload = "";
+    if (
+      ((trans.headers as Headers).get("content-type") as string)
+        .toLowerCase()
+        .startsWith("application/json")
+    ) {
+      payload = await trans.json();
+    } else {
+      payload = await trans.text();
+    }
+
+    return {
+      body: payload,
+      headers: trans.headers,
+      ok: true,
+      status:trans.status,
+    } as SimpleResponse;
+  } catch (e) {
+    return returnBad(
+      trap,
+      new Error("ERROR getting asset " + url + " " + e.toString()),
+     trans.status
+    );
   }
 }
 
