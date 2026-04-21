@@ -10,6 +10,11 @@ if [ -n "$CURSERVICE" ]; then
 		kill $CURSERVICE; 
 	fi
 fi; 
+rm $PIDFN 2>/dev/nul
+if [ "$1" = "-q" ]; then
+	return
+fi	
+
 cd ..; 
 # might need to add Nest into this...
 #  "#start:debug": "nest start --debug --watch",
