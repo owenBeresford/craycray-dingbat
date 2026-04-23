@@ -1,10 +1,18 @@
 import { NestFactory } from "@nestjs/core";
 import { ValidationPipe } from "@nestjs/common";
+import { ExpressAdapter } from '@nestjs/platform-express';
+import express, { type Express, Request as ExpRequest, Response as ExpResponse } from 'express';
+import fs from "node:fs";
+import path from "node:path";
+import https, { type ServerOptions } from 'node:https';
+import { getGlobals } from 'common-es';
+
 import type { NestExpressApplication } from '@nestjs/platform-express';
-import fs from "fs";
-import path from "path";
+import type { LogLevel } from '@nestjs/common';
 
 import { ShoppingModule } from "./shopping/shopping-module";
+
+const { __dirname, __filename } = getGlobals(import.meta.url);
 
 interface ShoppingSSLOpts {
   key: Buffer;
@@ -15,7 +23,7 @@ let SPort = 3001;
 let SIpAddr = "192.168.1.218";
 let SSLkey = "";
 let SSLcert = "";
-let serverOptions = {} as { httpsOptions: ShoppingSSLOpts };
+let serverOptions = {} as { httpsOptions: ShoppingSSLOpts, logger:Array<LogLevel> };
 if (process.env) {
   if (process.env.SHOPPING_PORT) {
     SPort = parseInt(process.env.SHOPPING_PORT, 10);
@@ -37,22 +45,40 @@ if (process.env) {
 /**
  * bootstrap
  * Function that create the server socket and Nest resources
- 
+
  * @public
  * @returns {Promise<void>}
  */
 async function bootstrap():Promise<void> {
   if (SSLkey) {
-    const httpsOptions = {
-      key: fs.readFileSync(SSLkey),
-      cert: fs.readFileSync(SSLcert),
-    //  logger: new BetterLogger(new ClsService(new AsyncLocalStorage())),  
-    } as ShoppingSSLOpts;
-    serverOptions = { httpsOptions };
+    const httpsOptions:ServerOptions = {
+      key: fs.readFileSync( path.resolve(SSLkey), 'utf8' ),
+      cert: fs.readFileSync( path.resolve(SSLcert), 'utf8' ),
+    };
+    const serverOptions = {
+      httpsOptions,
+  //  logger: new BetterLogger(new ClsService(new AsyncLocalStorage())),
+      logger: ['error', 'warn', 'log', 'debug', 'verbose'],
+    };
   }
-// https://www.npmjs.com/package/@mridang/nestjs-defaults
 
-  const app = await NestFactory.create<NestExpressApplication>(ShoppingModule, serverOptions);
+  const exp: Express = express();
+  exp.use(
+    "/",
+  express.static(
+           path.join(__dirname, "public" ),
+          { dotfiles: "ignore", immutable: false }
+              ),
+        );
+   exp.get('/', (req:ExpRequest, res:ExpResponse):void => {
+     res.sendFile(path.resolve('public/index.html'));
+  });
+
+  const app = await NestFactory.create<NestExpressApplication>(
+    ShoppingModule,
+    new ExpressAdapter(exp),
+    { logger:serverOptions.logger }
+        );
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: false,
@@ -60,10 +86,13 @@ async function bootstrap():Promise<void> {
       transformOptions: { enableImplicitConversion: true },
     })
   );
+
  //  app.useStaticAssets( path.join(__dirname, "..", "..", "dist". "public") )
-  app.enableCors({ credentials: true,  });
+  app.enableCors({ credentials: true, });
   await app.init();
-  await app.listen(SPort, SIpAddr);
+
+  const server = https.createServer(serverOptions.httpsOptions, exp);
+  await server.listen(SPort, SIpAddr);
   console.log("Opening port " + SIpAddr + ":" + SPort + " for clients.");
 
 }
