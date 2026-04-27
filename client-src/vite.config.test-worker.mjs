@@ -26,10 +26,13 @@ export default defineConfig({
 //	plugins: [ts(), vue() ],
 //	plugins: [typescript(), vue() ],
 	plugins: [ vue() ],
-	root: __dirname+ '/../dist/public/',
+//	root: __dirname+ '/../dist/public/',
 	server: {
       hmr: false
 	},
+    define: {
+	    _LOGGING_: process.env.NODE_ENV !== "production",
+  	},
 	build: {
     lib: {
       entry: path.resolve(__dirname, "src/workers/StateSyncing.ts"),

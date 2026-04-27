@@ -27,7 +27,7 @@ export default defineConfig({
 //	plugins: [ts(), vue() ],
 //	plugins: [typescript(), vue() ],
 	plugins: [ vue() ],
-	root: __dirname+ '/../dist/public',
+//	root: __dirname+ '/../dist/public',
 	server: {
       hmr: false
 	},
@@ -37,9 +37,9 @@ export default defineConfig({
 	build: {
     lib: {
       entry: path.resolve(__dirname, "src/main.ts"),
-      name: "shopping-gui",
       fileName: (format) => `${ofn}.${format}.mjs`,
     },
+	emptyOutDir:true,
     minify: "terser",
     target: "es2022",
 	watch:false,	
