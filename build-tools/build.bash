@@ -4,7 +4,7 @@
 # If I ever move to support win32, I will need to port this to Python3
 
 what="all"
-if [ ! -z "$1" ]; then
+if [ -n "$1" ]; then
 	what="$1"
 fi
 EXECDIR=./node_modules/.bin
@@ -18,7 +18,11 @@ NODEBIN='node '
 if [ "$what" == "--fe" -o "$what" == "all" ]; then
 	echo "**** Running compiling client side ****"
 	if [ "`basename $PWD`" != "client-src" ]; then
-		cd client-src
+		if [ "`basename $PWD`" == "server-src" ]; then
+			cd ../client-src
+		else
+			cd client-src
+		fi
 	fi
 	$NODEBIN $EXECDIR/vite --config ./vite.config.mjs build --l info
 	ret=$?
@@ -54,12 +58,11 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 	echo "Created fresh shopping.min.css ."
 	rm ./shopping.tmp.css
 	cd ..
+fi
 
 
 
-
-
-elif [ "$what" == "--be" -o "$what" == "all" ]; then
+if [ "$what" == "--be" -o "$what" == "all" ]; then
 	echo "**** Compiling back end code ****"
 	revert=0
 	if [ "`basename $PWD`" != "server-src" ]; then
@@ -70,12 +73,15 @@ elif [ "$what" == "--be" -o "$what" == "all" ]; then
 	echo "The nextJS builder doesn't put stuff in dist OR public OR build. . .  So here is this *solution* in an unfashionable language."
 # maybe issue:: building with Vite or Nest?
 #	node $EXECDIR/nest build
-	node $EXECDIR/vite --config ./vite.config.mjs build --l info
+#	node $EXECDIR/vite --config ./vite.config.mjs build --l info
+    node $EXECDIR/ncc build src/main.ts -o ../dist/ -m --target=es2022 --stats-out=/tmp/shopping-build-stats.json --no-cache 
 	ret=$?
 	if [ $ret -ne 0 ]; then
-		echo "Tool exited $ret on API build"
+		echo "Tool NCC exited $ret on API build"
 		exit 1
 	fi
+	mv ../dist/index.js ../dist/main.min.mjs
+	rm -r ../dist/home/
 
 	if [ ! -f ../dist/public/list.json ]; then
 		echo "{}" > ../dist/public/list.json
