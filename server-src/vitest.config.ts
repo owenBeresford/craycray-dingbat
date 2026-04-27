@@ -15,12 +15,16 @@ export default defineConfig({
     exclude:[  ],
     typecheck: {
       include: [ "src/test/*.vitest.*", ],
-      exclude: [ ],
+      exclude: [ "node_modules/" ],
+      enabled: false,
     },
     environment: "node",
     bail: 0,
-//watch: null,
-//server:{ watch:null },
+// vitest docs solution to sourcemap spam
+    watch: null,
+    server:{ watch:null },
+    isolate: false,
+
     coverage: {
       provider: 'v8' // or 'istanbul'
     },
@@ -34,8 +38,28 @@ export default defineConfig({
         },
       },
     ],
+// 'Bot solution to souremap spam
+  deps: {
+      optimizer: {
+        web: {
+          enabled: false,
+        },
+      },
+    },
+
 
   },
+// Bot part2, after claiming vitest uses vite, its setting for esbuild
+  esbuild: {
+    tsconfigRaw: {
+      compilerOptions: {
+        composite: false,
+        incremental: false,
+        tsBuildInfoFile: null,
+      },
+    },
+  },
+
   css:false,
   browser: { enabled: false, name: "/snap/bin/chromium" },
 });

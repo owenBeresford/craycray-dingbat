@@ -22,8 +22,8 @@ if(mode!="production") {
 	ofn="api";
 }
 // src: https://stackoverflow.com/questions/69523560/using-vite-for-backend
-const NODE_BUILT_IN_MODULES = builtinModules.filter(m => !m.startsWith('_'));
-NODE_BUILT_IN_MODULES.push(...NODE_BUILT_IN_MODULES.map(m => `node:${m}`));
+//const NODE_BUILT_IN_MODULES = builtinModules.filter(m => !m.startsWith('_'));
+//NODE_BUILT_IN_MODULES.push(...NODE_BUILT_IN_MODULES.map(m => `node:${m}`));
 
 
 // https://vitejs.dev/config/
@@ -37,7 +37,19 @@ export default defineConfig({
       hmr: false
 	},
     optimizeDeps: {
-        exclude: NODE_BUILT_IN_MODULES,
+		noDiscovery:true,
+		include:[
+    "@grpc/proto-loader", "@nestjs/microservices",
+    "@nestjs/serve-static", "@nestjs/platform-express", 
+    "@zirus/nestjs-cache-module", "class-transformer", 
+    "class-validator", "fastify-static",
+		], 
+		disabled: true,
+//		enabled:false,
+//      exclude: {
+//		  ...builtinModules,
+//          ...builtinModules.map(m => `node:${m}`),
+//	  			}
     },
 	 define: {
 	    _LOGGING_: process.env.NODE_ENV !== "production",
@@ -45,22 +57,27 @@ export default defineConfig({
 	build: {
     outDir: path.resolve(__dirname, '../dist'),
 	copyPublicDir:false,
+	 ssr: path.resolve(__dirname, "src/main.ts"),
     lib: {
       entry: path.resolve(__dirname, "src/main.ts"),
       name: "api",
       fileName: (format) => `${ofn}.${format}.mjs`,
     },
     minify: "terser",
-    target: "es2022",
+    target: "node20",
 	watch:false,	
     rollupOptions: {
       plugins: [terser({})],
-      external: NODE_BUILT_IN_MODULES, 
+      external: {  
+		 ...builtinModules,
+         ...builtinModules.map(m => `node:${m}`),
+		  },
 		cache:false,
       output: [
         {
-          format: "es",
-			name: `${ofn}`,
+          format: "esm",
+	//		name: `${ofn}`,
+			entryFileNames: 'main.mjs'
         },
       ],
     },
