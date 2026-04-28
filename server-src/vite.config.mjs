@@ -41,8 +41,8 @@ export default defineConfig({
 		include:[
     "@grpc/proto-loader", "@nestjs/microservices",
     "@nestjs/serve-static", "@nestjs/platform-express", 
-    "@zirus/nestjs-cache-module", "class-transformer", 
-    "class-validator", "fastify-static",
+     "class-transformer", 
+    "class-validator", "@fastify/static",
 		], 
 		disabled: true,
 //		enabled:false,
