@@ -1,24 +1,24 @@
-Don't call lists "list X", or all the labelling gets confused.
+Don't call lists "list X", or all the labelling gets confused "list list X".
 
 DETAILS TO COMPLETE FOR RELEASE
-- server code import :-)
 - ESLINT ON VUE FILES
 - increase tests
-- interaction: status bar/ message board
-- Update static route to include new ids
-- StateSyncing test cover full state map. when threads work
+- StateSyncing test cover full state map - when threads work.
 - think about best name for ShopState
 - Make better favico
 - consider badges, css backdrop not working
 - workout if MotionStream->significance and signifcanceAsPercentage should use same thresholds
 - May be need to re-add STORE.getters
-- Compute hashes in message boundaries, a la Kafka.  If hash is identical to current state, cancel transaction
-- engineer thing to that actual network code is masked in story tests
-
+- engineer thing to that actual network code is masked in story tests... another connection type
+- replace self-signed-certs with real-ones via lets-encrypt
 
 LOW IMPACT, nioce to haves
+- Maybe functions can have runtime behaviour from function name, supported by https://github.com/Guichaguri/cross-caller/blob/main/src/index.ts
+- Look at eslint-plugin-unicorn, might reduce problems on eslint + TS
+- interaction: status bar/ message board
 - pour les mot variable privé, traduire en francias 
 - ShoppingService test, add fixtures to extend load() testing
+- find my list local IP code 
 - Localisation getting placeholders/ formatstr, then map ListOfList
 - this might be child components being ready before parent.  [Vue warn]: injection "shopping" not found.
 - implement my DOCS file (JSON validation)
