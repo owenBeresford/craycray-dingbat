@@ -58,9 +58,10 @@ const setHeaders = (res: any, path: string, stat: any): void => {
 
 @Module({
   imports: [
+    /*
     ServeStaticModule.forRoot({
-      //		serveRoot: join( __dirname, '..', '..',),
-      rootPath: join(__dirname, "..", "..", "..", "dist", "public"),
+      //		serveRoot: join( __dirname, '..', '..', "public"),
+      rootPath: join(__dirname, "public"),
       serveStaticOptions: {
         //		exclude: ['/api*'],
         //		immutable: true,
@@ -68,9 +69,11 @@ const setHeaders = (res: any, path: string, stat: any): void => {
         fallthrough: false,
       },
     }),
+    */
   ],
   controllers: [ShoppingBE],
   providers: [ShoppingService],
 })
 // NOTE cannot add docs on that *Decorator*, or add semis
 export class ShoppingModule {}
+

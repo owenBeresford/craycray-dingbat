@@ -9,7 +9,7 @@ import { SaveStruct } from "../../../common/types/SaveStruct";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const SOL_STORE_IMAGE = path.join(__dirname, "list.json");
+const SOL_STORE_IMAGE = path.join(__dirname, "public", "list.json");
 
 /**
  * ShoppingService 
@@ -41,6 +41,7 @@ export class ShoppingService {
    */
   public load(): Promise<string> {
     return new Promise((good, bad) => {
+      // this function is async
       fs.readFile(SOL_STORE_IMAGE, { encoding: "utf8" }, (err: NodeJS.ErrnoException | null, data: string) => {
         if (err) {
           console.warn("PANIC! Cannot read server store file ", err);
