@@ -8,7 +8,7 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers#about_thread_safety
 //
 import type { RemoteStorage } from "../services/RemoteStorage";
-import type {  DelayCallbackType, DataPipeline } from "../types/Saveable";
+import type { DelayCallbackType, DataPipeline } from "../types/Saveable";
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 import { createRemoteService } from "../Constants";

@@ -14,9 +14,9 @@ export const ROOT_NODE = "#app";
 export const PMQUE_TIMER = 300;
 export const PMQUE_ATTEMPTS = 10;
 
-// IOIO check base dir for compiled artefacts
-export const MSG_THREAD = /* @vite-ignore */ new URL("worker1.min.mjs", import.meta.url);
-export const LOGO_PATH= "/logo.png";
+// IOIO check base dir for compiled artefacts 
+export const MSG_THREAD = /* @vite-ignore */ new URL("worker1.es.min.mjs", import.meta.url);
+export const LOGO_PATH= "/asset/logo.png";
 
 // values for MotionStream
 export const MOBILE_THRESHOLD = 150;
