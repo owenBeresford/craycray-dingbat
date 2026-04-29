@@ -13,9 +13,12 @@ smaller goals:
 * Write some code tat people can see, its not ground breaking.
 WARN: to-date not actually ran this yet.
 
-## to use
+### To use
+* This project likes Node24, absolutely no warranty if you attempt to run on older versions as I expect NPM will make your life very hard.  Package.json includes some magic for getting Node24, but that tech is very frail as it moves version of NPM.  #leSigh.
+   * Assuming you are a techie, adopt/ deploy NVM to have flexibility.
 * clone repo to a big screen device
 * run `npm i`
+* Run thing to make certs ** (to create)
 * run `npm run build:app`
 * run `npm run app`
 * launch on phone or desktop and build your initial lists (labour-intense here)

@@ -2,7 +2,7 @@
 EXECDIR=node_modules/.bin
 export NODE_ENV=test
 APIPID=~/shopping.pid
-SVRBIN=./server-src/bin/shopping.es.mjs
+SVRBIN=./dist/main.min.mjs
 if [ ! -f "$SVRBIN" ]; then
 	echo "Compile the source first."
 	exit 1
@@ -13,6 +13,7 @@ if [ ! -z "$1" ]; then
 	what="$1"
 fi
 export CI=true 
+LAUNCHED=0
 
 if [ "$what" = "fe" -o "$what" = "all" ]; then
     export CURSERVICE=0; 
@@ -20,8 +21,9 @@ if [ "$what" = "fe" -o "$what" = "all" ]; then
 		export CURSERVICE=`cat $APIPID`; 
 	fi; 
 	if [ $CURSERVICE -lt 100 ]; then 
-		node $SVRBIN
+		node $SVRBIN &
 		echo $! >$APIPID
+		LAUNCHED=1
 		echo "Manually started the API service."
 	fi;
 	if [ "`basename $PWD`" != "client-src" ]; then
@@ -53,6 +55,13 @@ if [ "$what" = "be" -o "$what" = "all" ]; then
 	if [ "`basename $PWD`" != "server-src" ]; then
 		cd server-src
 	fi
+	if [ $CURSERVICE -lt 100 -a "$LAUNCHED" -eq "0" ]; then 
+		node $SVRBIN &
+		echo $! >$APIPID
+		LAUNCHED=1
+		echo "Manually started the API service."
+	fi;
+
 	node $EXECDIR/vitest run --typecheck --isolate 
 	cd ..
 fi

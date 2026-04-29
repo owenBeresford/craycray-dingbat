@@ -9,9 +9,12 @@
   },
   "scripts": {
     "start": "../build-tools/start.bash ",
+    "stop": "../build-tools/start.bash -q",
 	"build:app":"../build-tools/build.bash",
     "build:fe": "../build-tools/build.bash --fe",
+    "build:be": "../build-tools/build.bash --be",
     "test:fe": "../build-tools/test.bash --fe;  echo 'Add more tests!!!'",
+    "test:be": "../build-tools/test.bash --be;  echo 'Add more tests!!!'",
     "coverage": "node ./node_modules/.bin/vitest --typecheck --coverage",
     "lint": "../build-tools/lint.bash",
     "clean": "../build-tools/clean.bash",

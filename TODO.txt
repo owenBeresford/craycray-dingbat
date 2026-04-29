@@ -38,3 +38,41 @@ LOW IMPACT, nioce to haves
 set NODE_ENV="TEST" for tests
 Yes, the storybook test use storybook/test module that currently I can't install.   Storybook seems to include it even though its doesn't exist in the correct version ~ mono-repo.   #WorksForMe, I hope it works-for-you.
 
+### Storybook behaviours
+I believe this steps are in the Storybook tests
+
+On / or /list-all
+  * display lists that the client knows about
+    * each list should a name, a size, and a save date
+  * a tabbar, which holds
+    * "list all"
+    * "new"
+    * burger menu
+  * actions:
+    * std hovers
+    * triggering a list name should change to that screen
+    * triggering the burger menu a should display it (see own section)
+    * triggering the new button should load an empty list
+    * if no cookie (first-touch), will display help intro, set a cookie, then the menu help
+    * if in first-touch, display help for this screen
+
+On /list/$X
+  * displays items in that list 
+  * sets list name in tabbar header
+  * actions:
+    * std hovers
+    * long trigger on item open edittext small-screen
+    * swipe left on an item will remove it
+    * triggering "add item" will open edittext small-screen on a blank input
+    * if in first-touch, display help for this screen
+    
+On menu
+  * change symbol on menu button
+  * list of menu items
+  * actions
+    * each one of the buttons does as described
+    * items that change a list go to that list
+    * items that change all lists go to all lists
+    * show help show the help
+
+
