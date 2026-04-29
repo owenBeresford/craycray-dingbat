@@ -30,7 +30,7 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 		echo "Tool main vite exited $ret on *.ts"
 		exit 1
 	else 
-		cp dist/*.mjs ../dist/public/
+		cp dist/shopping.es.mjs ../dist/public/shopping.es.min.mjs
 	fi
 	$NODEBIN $EXECDIR/vite --config ./vite.config.test-worker.mjs build --l info
 	ret=$?
@@ -52,8 +52,9 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 	cp src/assets/index.html ../dist/public/
 	cp src/assets/logo.png ../dist/public/
 	cp src/assets/manifest.json ../dist/public/	
-	cp src/assets/cert.pem ../dist/public/
-	cp src/assets/private.key ../dist/public/
+# old test certs.
+#	cp src/assets/cert.pem ../dist/public/
+#	cp src/assets/private.key ../dist/public/
 
 	echo "Created fresh shopping.min.css ."
 	rm ./shopping.tmp.css
@@ -84,7 +85,9 @@ if [ "$what" == "--be" -o "$what" == "all" ]; then
 	rm -r ../dist/home/
 
 	if [ ! -f ../dist/public/list.json ]; then
-		echo "{}" > ../dist/public/list.json
+		echo "[]" > ../dist/public/list.json
+	else
+		echo "At build time, there exists a list file, check its correct."
 	fi
 	if [ $revert ]; then
 		cd ..
@@ -92,5 +95,5 @@ if [ "$what" == "--be" -o "$what" == "all" ]; then
 fi
 
 # to EXEC 
-#  node --es-module-specifier-resolution=node dist/main.js
+#  node dist/main.js
 

@@ -12,6 +12,7 @@ what="all"
 if [ ! -z "$1" ]; then
 	what="$1"
 fi
+export CI=true 
 
 if [ "$what" = "fe" -o "$what" = "all" ]; then
     export CURSERVICE=0; 
@@ -55,4 +56,5 @@ if [ "$what" = "be" -o "$what" = "all" ]; then
 	node $EXECDIR/vitest run --typecheck --isolate 
 	cd ..
 fi
+unset CI
 
