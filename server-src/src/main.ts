@@ -1,6 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import { ValidationPipe } from "@nestjs/common";
-import { ConfigService, ConfigModule } from '@nestjs/config';
+// import { ConfigService, ConfigModule } from '@nestjs/config';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import fastify from 'fastify';
 import type { FastifyInstance, FastifyServerOptions,  FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
@@ -12,7 +12,7 @@ import type { ServerOptions, SecureServerOptions, Http2SecureServer, Http2Server
 import type {SecureVersion, TLSSocket } from 'node:tls';
 import http2 from 'node:http2';
 import type { NestFastifyApplication } from '@nestjs/platform-fastify';
-import { ShoppingModule } from "../shopping/shopping-module";
+import { ShoppingModule } from "./shopping/shopping-module";
 import type { LogLevel } from '@nestjs/common';
 import { getGlobals } from 'common-es';
 
@@ -34,7 +34,7 @@ function extractEnv(env:NodeJS.ProcessEnv ):ControlledEnv {
 
 	let out={
 		SPort : 3001,
-		SIpAddr : "192.168.1.218",
+		SIpAddr : "app.hiss",
 		SSLkey: "/tmp/",
 		SSLcert: "/tmp/",
 		passphrase: "enter a password",
@@ -113,7 +113,7 @@ function createstaticAssets( httpsOptions:SecureServerOptions ) {
 	  	prefix: '/asset/',   
 	});
 	inst.addHook('onRequest', (request: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction):void => {
- 	 console.log('Incoming:', {
+ 	 console.log('Incoming reqt:', {
     method: request.method,
     url: request.url,
     httpVersion: request.raw.httpVersion,
@@ -134,7 +134,7 @@ const httpsOptions:SecureServerOptions = {
   allowHTTP1: true,  // the bot is really keen on this.  I would like not have it
 };
 
-ConfigModule.forRoot({ isGlobal: true });
+// ConfigModule.forRoot({ isGlobal: true });
 const fast=createstaticAssets( httpsOptions );
 
 const app:NestFastifyApplication = await NestFactory.create<NestFastifyApplication>(
@@ -153,19 +153,14 @@ const app:NestFastifyApplication = await NestFactory.create<NestFastifyApplicati
  await app.init();
 
  // https://dev.to/axiom_agent/nodejs-graceful-shutdown-the-right-way-sigterm-connection-draining-and-kubernetes-fp8
- const DYING=async function():Promise<void> { 
+ const DYING= function():void { 
       console.log("Closing service on " + vars.SIpAddr + ":" + vars.SPort );
-	  try {
-      	await server.close();
-	  } catch(e:unknown) {
-		console.warn("Unable to close server socket cleanly", (e as Error).message);
-	  }
-	  process.exit(127);
+	 //	  process.exit(127);
   };
 
 process.on('uncaughtException', async function( err:Error ):Promise<void> {
     console.error("Unexpected exception, panic!!", err.message, err.stack);
-	await DYING();
+	  DYING();
  });
   process.on('SIGTERM', DYING );
   process.on('SIGINT', DYING );

@@ -2,15 +2,24 @@ import { GoneException } from "@nestjs/common/exceptions";
 import fs from "node:fs";
 import { promises as FSP } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { dirname } from "node:path";
+import { dirname, basename, } from "node:path";
 import path from "node:path";
 
 import { SaveStruct } from "../../../common/types/SaveStruct";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const SOL_STORE_IMAGE = path.join(__dirname, "public", "list.json");
+let base:string="";
+if(basename( __dirname) === "shopping") {
+  // I am running in a unit-test
+  base= dirname(dirname(dirname( __dirname)));
+} else {
+  // I am problably a service build
+  base= dirname( __dirname);
+}
+const SOL_STORE_IMAGE = path.join(base, "dist", "public", "list.json");
 
+console.log("this file is ", SOL_STORE_IMAGE, basename( __dirname) );
 /**
  * ShoppingService 
  * An actual class 
@@ -151,7 +160,7 @@ export class ShoppingService {
    * @public
    * @returns {Array<SaveStruct>}
    */
-  typeAssert(newer: Array<any>): Array<SaveStruct> {
+  typeAssert(newer: Array<any>):Array<SaveStruct> {
     const dat: Array<SaveStruct> = [];
 
     let FAIL = 0;
@@ -160,9 +169,9 @@ export class ShoppingService {
         { name: "", created: 0, edited: 0, count: 0, id: i, list: [] },
         newer[i]
       ) as SaveStruct;
-      // all these items must have a value
+       // all these items must have a value
       if (!(ttt.name && ttt.created && ttt.edited && ttt.count && ttt.id)) {
-        console.log("Uploaded shopping list at " + i + " is missing critical data.");
+        console.debug("Uploaded shopping list at " + i + " is missing critical data.");
         FAIL++;
       } else {
         dat.push(ttt);

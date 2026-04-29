@@ -16,10 +16,10 @@ import { fixture1, fixture2, transform2SaveStruct } from "../../../common/fixtur
 
 
 describe("I can use API module", () => {
-  const TARGET:string"https://192.168.1.218:3001/shared-state";
+  const TARGET:string="https://app.hiss:3001/api/shared-state";
 
   it("can GET the API", async () => {
-    const ret:SimpleResponse =runFetch(TARGET , true, undefined );
+    const res:SimpleResponse =runFetch(TARGET , true, undefined );
     expect(res.ok);
     expect( res.status).toBe(200);
     expect( res.headers.get("Content-Type") ).toMatch(/json/);
