@@ -76,4 +76,3 @@ const setHeaders = (res: any, path: string, stat: any): void => {
 })
 // NOTE cannot add docs on that *Decorator*, or add semis
 export class ShoppingModule {}
-

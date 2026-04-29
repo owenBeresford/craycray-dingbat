@@ -71,13 +71,12 @@ describe("I can use ShoppingService", () => {
       ret = OBJ.typeAssert([]);
       assertType<Array<SaveStruct>>(ret);
     } catch (e) {
-      assert(true,"#74 cannot assert types on an empty array");
+      assert(true, "#74 cannot assert types on an empty array");
     }
 
-    expect(() => OBJ.typeAssert( [{}] )).toThrowError( )   
-    // this is invalid data, but a likely error state 
+    expect(() => OBJ.typeAssert([{}])).toThrowError();
+    // this is invalid data, but a likely error state
     // assertType<Array<SaveStruct>>(ret);
-  
   });
 
   // inner(), and actualSave() are tested via save(), and is only branching to emit error states

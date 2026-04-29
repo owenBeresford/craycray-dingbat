@@ -21,7 +21,7 @@ The code doesn't provide a "download URL" outside of the REST API.
 
 @Controller("api")
 export class ShoppingBE {
-  constructor(private readonly impl: ShoppingService) {  }
+  constructor(private readonly impl: ShoppingService) {}
 
   @Get("/shared-state")
   @HttpCode(200)
@@ -41,7 +41,7 @@ export class ShoppingBE {
   @Header("Accept", "application/json")
   @Header("Pragma", "no-cache")
   public async save(dat: Array<SaveStructDto>): Promise<string> {
-     // the extra validation is inside the impl, and will throw if needed
+    // the extra validation is inside the impl, and will throw if needed
     return await this.impl.save(dat);
   }
 }
