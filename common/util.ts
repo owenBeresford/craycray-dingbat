@@ -123,7 +123,7 @@ if(Uint8Array.prototype.toHex) {
    // this is 1handed hashing, not cmp capacity
 
  * @param {Array<SaveStruct> } dat
- * @param {Readonly<string> ="SHA-256"} hash - the algorithm to apply, in 'spec naming notation' 
+ * @param {Readonly<string> ="SHA-256"} hash - the algorithm to apply, in 'spec naming notation'
  * @public
  * @returns {string} - hex encoded
  */
@@ -177,11 +177,10 @@ export async function runFetch(
     }
   };
   if( typeof extra === "undefined" ) { extra={} as RequestInit; }
-
+  let trans: Response;
   try {
-    const trans: Response = await f(url, ({
-      credentials: "same-origin",
-    } & extra ) as RequestInit) as Response;
+    let head:RequestInit=Object.assign({}, extra, { credentials: "same-origin", } );
+    trans = await f(url, head ) as Response;
     if (!trans.ok) {
       return returnBad(trap, new Error("ERROR getting asset " + url), trans.status);
     }
@@ -207,10 +206,11 @@ export async function runFetch(
       status:trans.status,
     } as SimpleResponse;
   } catch (e) {
+// console.log("outer error formatter in my fetch", e);
     return returnBad(
       trap,
       new Error("ERROR getting asset " + url + " " + e.toString()),
-     trans.status
+      (trans?trans.status:"500")
     );
   }
 }
