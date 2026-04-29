@@ -4,7 +4,6 @@ import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { DistantStorable, RemoteConfig, APIResponseType } from "../../../common/types/RemoteTypes";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 import { FETCH_TIMEOUT } from "../Constants";
-// import type  { Request as RequestType, Response as ResponseType } from 'node-fetch';
 
 type NullableTimeout = ReturnType<typeof globalThis.setTimeout> | undefined;
 

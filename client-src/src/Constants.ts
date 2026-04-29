@@ -1,7 +1,6 @@
 import type { RemoteConfig } from "../../common/types/RemoteTypes";
 import { RemoteStorage } from "./services/RemoteStorage";
-// import type { Request as RequestType, Response as ResponseType } from 'node-fetch';
-
+ 
 // networking values + postMessages
 export const APP_NAME = "shopping";
 export const APP_VERSION = "0.0.1";
@@ -14,7 +13,8 @@ export const ROOT_NODE = "#app";
 export const PMQUE_TIMER = 300;
 export const PMQUE_ATTEMPTS = 10;
 
-// IOIO check base dir for compiled artefacts 
+// URLs used 
+// maybe MSG_THREAD should start https://...
 export const MSG_THREAD = /* @vite-ignore */ new URL("worker1.es.min.mjs", import.meta.url);
 export const LOGO_PATH= "/asset/logo.png";
 

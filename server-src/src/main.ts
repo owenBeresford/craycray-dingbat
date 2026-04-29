@@ -43,7 +43,7 @@ interface ControlledEnv {
  * extractEnv
  * A map function to get a sanitised subset of bash env
  * @tODO: lookup local IP, rather than static value
- 
+
  * @param {NodeJS.ProcessEnv} env
  * @private
  * @returns {ControlledEnv }
@@ -85,7 +85,7 @@ function extractEnv(env: NodeJS.ProcessEnv): ControlledEnv {
 /**
  * createSocket
  * Initialise settings for a HTTPS socket
- 
+
  * @deprecated
  * @param {SecureServerOptions} httpsOptions
  * @protected
@@ -126,8 +126,8 @@ function createSocket(httpsOptions: SecureServerOptions): Http2SecureServer {
 /**
  * createstaticAssets
  * Create and setup static assets
- 
- * @param {SecureServerOptions} httpsOptions 
+
+ * @param {SecureServerOptions} httpsOptions
  * @protected
  * @returns {FastifyAdapter }
  */
@@ -162,7 +162,7 @@ function createstaticAssets(httpsOptions: SecureServerOptions): FastifyAdapter {
 /**
  * bootstrapHTTPS
  * Initialise the NODE REST API
- 
+
  * I think this should be named "createAPIAsset",or similar but NestJS get picky
  * @param {ControlledEnv} vars - see top of file for typedef
  * @public
@@ -173,7 +173,7 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
     key: fs.readFileSync(vars.SSLkey as string, "utf8"),
     cert: fs.readFileSync(vars.SSLcert as string, "utf8"),
     passphrase: vars.passphrase as string,
-    allowHTTP1: true, // the bot is really keen on this.  I would like not have it
+//    allowHTTP1: true, // the bot is really keen on this.  I would like not have it
   };
 
   // ConfigModule.forRoot({ isGlobal: true });
@@ -197,7 +197,7 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
   // https://dev.to/axiom_agent/nodejs-graceful-shutdown-the-right-way-sigterm-connection-draining-and-kubernetes-fp8
   const DYING = function (): void {
     console.log("Closing service on " + vars.SIpAddr + ":" + vars.SPort);
-    //	  process.exit(127);
+    process.exit(127); // or the terminal isn't returned
   };
 
   process.on("uncaughtException", async function (err: Error): Promise<void> {
