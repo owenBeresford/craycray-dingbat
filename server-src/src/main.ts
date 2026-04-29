@@ -24,7 +24,6 @@ import type {
 } from "node:http2";
 import type { SecureVersion, TLSSocket } from "node:tls";
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
-import type { LogLevel } from "@nestjs/common";
 
 import { ShoppingModule } from "./shopping/shopping-module";
 const { __dirname, __filename } = getGlobals(import.meta.url);
@@ -176,7 +175,6 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
 //    allowHTTP1: true, // the bot is really keen on this.  I would like not have it
   };
 
-  // ConfigModule.forRoot({ isGlobal: true });
   const fast = createstaticAssets(httpsOptions);
 
   const app: NestFastifyApplication = await NestFactory.create<NestFastifyApplication>(

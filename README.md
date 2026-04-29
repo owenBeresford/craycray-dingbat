@@ -23,16 +23,45 @@ WARN: to-date not actually ran this yet.
 * This project likes Node24, absolutely no warranty if you attempt to run on older versions as I expect NPM will make your life very hard.  Package.json includes some magic for getting Node24, but that tech is very frail as it moves version of NPM.  #leSigh.
    * Assuming you are a techie, adopt/ deploy NVM to have flexibility.
 * clone repo to a big screen device
-* run `npm i`
-* Run thing to make certs ** (to create)
+* Read the file, then Run build-tools/checksum.bash  this create scripts and runs `npm i` twice
+* OR run `npm i` in each package directory, and build your own certs (maybe from **Letsencrypt**?) 
 * run `npm run build:app`
 * run `npm run app`
-* launch on phone or desktop and build your initial lists (labour-intense here)
+* launch on phone or desktop and build your initial lists (labour-intensive here)
 * Nag me for JSON import from XYZ other platform capacity
 
 * Advanced use: read TODO list
 
 
+### Basic file system
+
+- $root/
+	- build-tools
+		- bash scripts 	~ maybe port to Python later
+	- common
+		- code directly used by both sides
+		- types 
+	- client-src/
+		- .storybook	~ these are config for strorybook tests
+		- .storybook-suspense
+		- src/
+			- assets
+			- components
+			- services
+			- test		~ several test tech inside
+			- types
+			- workers
+			- assorted "main" here
+	- dist/				~ compiled server-src files
+		- public 	 	~ compiled assets from client-src
+		- private		~ generated assets, that do not show in web page indexes
+	- server-src
+		- src
+			- shopping
+			- test
+			- assorted "main" here
+
+	- random config and notes
 
 ### User interaction (draft grade)
 

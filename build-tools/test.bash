@@ -38,12 +38,12 @@ if [ "$what" = "fe" -o "$what" = "all" ]; then
 
 	node $SEXECDIR/storybook build
 	# https://tiberriver256.github.io/web%20development/how-to-run-storybook-with-https-on-localhost/
-	node $SEXECDIR/storybook dev -p 6006 --https --ssl-cert ./src/assets/cert.pem --ssl-key ./src/assets/private.key 
+	node $SEXECDIR/storybook dev -p 6006 --https --ssl-cert ../dist/private/server.pem --ssl-key ../dist/private/private.key 
 
 	node $SEXECDIR/storybook build -c .storybook-suspence/
-	node $SEXECDIR/storybook dev -p 6006 -c .storybook-suspence/ --https --ssl-cert ./src/assets/cert.pem --ssl-key ./src/assets/private.key 
+	node $SEXECDIR/storybook dev -p 6006 -c .storybook-suspence/ --https --ssl-cert ../dist/private/server.pem --ssl-key ../dist/private/private.key 
 
-    # node node_modules/.bin/storybook dev -p 6006 --https --ssl-cert ./src/assets/cert.pem --ssl-key ./src/assets/private.key 
+    # node node_modules/.bin/storybook dev -p 6006 --https --ssl-cert ../dist/private/server.pem --ssl-key ../dist/private/private.key 
 	# I wish I had a way to "run then quit" on Storybook
 	# UPDATE: there is a 'run all tests' button, just need a CLI access path
 

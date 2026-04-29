@@ -17,9 +17,9 @@ if (basename(__dirname) === "shopping") {
   // I am problably a service build
   base = dirname(__dirname);
 }
-const SOL_STORE_IMAGE = path.join(base, "dist", "public", "list.json");
+const SOL_STORE_IMAGE = path.join(base, "dist", "private", "list.json");
 
-console.log("this file is ", SOL_STORE_IMAGE, basename(__dirname));
+console.log("This data file is ", SOL_STORE_IMAGE, basename(__dirname));
 /**
  * ShoppingService 
  * An actual class 
