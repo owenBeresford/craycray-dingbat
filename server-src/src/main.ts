@@ -1,8 +1,13 @@
 import { NestFactory } from "@nestjs/core";
 import { ValidationPipe } from "@nestjs/common";
-// import { ConfigService, ConfigModule } from '@nestjs/config';
 import { FastifyAdapter } from "@nestjs/platform-fastify";
 import fastify from "fastify";
+import fastifyStatic from "@fastify/static";
+import http2 from "node:http2";
+import fs from "node:fs";
+import path from "node:path";
+import { getGlobals } from "common-es";
+
 import type {
   FastifyInstance,
   FastifyServerOptions,
@@ -10,10 +15,6 @@ import type {
   FastifyReply,
   HookHandlerDoneFunction,
 } from "fastify";
-import fastifyStatic from "@fastify/static";
-
-import fs from "node:fs";
-import path from "node:path";
 import type {
   ServerOptions,
   SecureServerOptions,
@@ -22,12 +23,10 @@ import type {
   Http2ServerResponse,
 } from "node:http2";
 import type { SecureVersion, TLSSocket } from "node:tls";
-import http2 from "node:http2";
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
-import { ShoppingModule } from "./shopping/shopping-module";
 import type { LogLevel } from "@nestjs/common";
-import { getGlobals } from "common-es";
 
+import { ShoppingModule } from "./shopping/shopping-module";
 const { __dirname, __filename } = getGlobals(import.meta.url);
 
 // At runtime the values are forced to be int or string
@@ -40,7 +39,15 @@ interface ControlledEnv {
   passphrase: string;
 }
 
-// lookup local IP
+/**
+ * extractEnv
+ * A map function to get a sanitised subset of bash env
+ * @tODO: lookup local IP, rather than static value
+ 
+ * @param {NodeJS.ProcessEnv} env
+ * @private
+ * @returns {ControlledEnv }
+ */
 function extractEnv(env: NodeJS.ProcessEnv): ControlledEnv {
   if (!env) {
     throw new Error("Must have an env");
@@ -75,6 +82,15 @@ function extractEnv(env: NodeJS.ProcessEnv): ControlledEnv {
   return out;
 }
 
+/**
+ * createSocket
+ * Initialise settings for a HTTPS socket
+ 
+ * @deprecated
+ * @param {SecureServerOptions} httpsOptions
+ * @protected
+ * @returns {Http2SecureServer }
+ */
 function createSocket(httpsOptions: SecureServerOptions): Http2SecureServer {
   const server: Http2SecureServer = http2.createSecureServer(httpsOptions);
   server.on("error", function (e: Error): void {
@@ -107,7 +123,15 @@ function createSocket(httpsOptions: SecureServerOptions): Http2SecureServer {
   return server;
 }
 
-function createstaticAssets(httpsOptions: SecureServerOptions) {
+/**
+ * createstaticAssets
+ * Create and setup static assets
+ 
+ * @param {SecureServerOptions} httpsOptions 
+ * @protected
+ * @returns {FastifyAdapter }
+ */
+function createstaticAssets(httpsOptions: SecureServerOptions): FastifyAdapter {
   const fast = new FastifyAdapter({
     http2: true,
     http2SessionTimeout: 10_000,
@@ -135,6 +159,15 @@ function createstaticAssets(httpsOptions: SecureServerOptions) {
   return fast;
 }
 
+/**
+ * bootstrapHTTPS
+ * Initialise the NODE REST API
+ 
+ * I think this should be named "createAPIAsset",or similar but NestJS get picky
+ * @param {ControlledEnv} vars - see top of file for typedef
+ * @public
+ * @returns {Promise<void>}
+ */
 export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
   const httpsOptions: SecureServerOptions = {
     key: fs.readFileSync(vars.SSLkey as string, "utf8"),
@@ -175,7 +208,6 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
   process.on("SIGINT", DYING);
 
   await app.listen(vars.SPort, vars.SIpAddr);
-  // await server.listen(vars.SPort, vars.SIpAddr);
   // return nil at present
 }
 
