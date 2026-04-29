@@ -1,5 +1,8 @@
 
+
 ## "business english" changelog
+
+
 * Have better UX than the default google note taking app.
 * To work in steel-frame supermarkets that block most 4g signal.
 * To support edit-without-save so the same list can be used each week
@@ -13,7 +16,10 @@ smaller goals:
 * Write some code that people can see, its not ground breaking.
 WARN: to-date not actually ran this yet.
 
+
 ### To use
+
+
 * This project likes Node24, absolutely no warranty if you attempt to run on older versions as I expect NPM will make your life very hard.  Package.json includes some magic for getting Node24, but that tech is very frail as it moves version of NPM.  #leSigh.
    * Assuming you are a techie, adopt/ deploy NVM to have flexibility.
 * clone repo to a big screen device
@@ -26,14 +32,17 @@ WARN: to-date not actually ran this yet.
 
 * Advanced use: read TODO list
 
-### User interaction (draft grade)
-If this was paid work, I would be using a more graphical and less indexable file, from one of:
-* [I'm an inline-style link with title](https://www.google.com "Google's Homepage")
 
-* [The most fancy interaction design tool, running in browser or a native app](https://figma.com "Figma")
-* [Another tool I haven't used, no review](https://www.mockplus.com/blog/post/user-journey-map "Mockplus")
-* [The old tool that I find much faster to deliver a basic sketch with](https://balsamiq.com/wireframes/cloud/ "Balsamiq")
+
+### User interaction (draft grade)
+
+
+If this was paid work, I would be using a more graphical and less indexable file, from one of:
+* [Figma: The most fancy interaction design tool, running in browser or a native app](https://figma.com "Figma")
+* [Mockplus: Another tool I haven't used, no review](https://www.mockplus.com/blog/post/user-journey-map "Mockplus")
+* [Balsamiq: The old tool that I find much faster to deliver a basic sketch with](https://balsamiq.com/wireframes/cloud/ "Balsamiq")
 * others
+
 
 User journeys:
 * user1 tries app by going to my LAN, opening supplied URL in phone
