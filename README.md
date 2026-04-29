@@ -10,7 +10,7 @@ smaller goals:
 * A find feature
 * Port data between phone and desktop/ laptop easily
 * Be able to copy lists 
-* Write some code tat people can see, its not ground breaking.
+* Write some code that people can see, its not ground breaking.
 WARN: to-date not actually ran this yet.
 
 ### To use
@@ -28,9 +28,11 @@ WARN: to-date not actually ran this yet.
 
 ### User interaction (draft grade)
 If this was paid work, I would be using a more graphical and less indexable file, from one of:
-* [https://figma.com Figma]
-* [https://www.mockplus.com/blog/post/user-journey-map Mockplus]
-* [https://balsamiq.com/wireframes/cloud/ Balsamiq]
+* [I'm an inline-style link with title](https://www.google.com "Google's Homepage")
+
+* [The most fancy interaction design tool, running in browser or a native app](https://figma.com "Figma")
+* [Another tool I haven't used, no review](https://www.mockplus.com/blog/post/user-journey-map "Mockplus")
+* [The old tool that I find much faster to deliver a basic sketch with](https://balsamiq.com/wireframes/cloud/ "Balsamiq")
 * others
 
 User journeys:
