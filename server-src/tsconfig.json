@@ -15,7 +15,7 @@
     "moduleResolution": "node",
 	"noResolve":false,
     "esModuleInterop": true,
-	"extendedDiagnostics":true,
+	"extendedDiagnostics":false,
 	"downlevelIteration": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
