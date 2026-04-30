@@ -1,7 +1,7 @@
 import { assert, describe, it, expect } from "vitest";
 import { fetch } from "cross-fetch";
 
-import { RemoteConfig, DistantStorable } from "../../types/RemoteTypes";
+import { RemoteConfig, DistantStorable } from "../../../../common/types/RemoteTypes";
 import { RemoteStorage } from "../../services/RemoteStorage";
 
 describe("I can create RemoteStorage", () => {

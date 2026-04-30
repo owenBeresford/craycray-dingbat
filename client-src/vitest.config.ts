@@ -1,5 +1,5 @@
 /// <reference types="vitest" />
-//  // / <reference types="vite/client" />
+/// <reference types="vite/client" />
 
 import { configDefaults, defineConfig, UserConfig } from "vitest/config";
 import typescript from "@rollup/plugin-typescript";
@@ -21,10 +21,6 @@ export default defineConfig({
       include: ["src/test/vitest/*.vitest.*", ],
       exclude: [ "src/**/*.stories.*", ],
     },
-// Copilot says these two lines should disable the checking, which is not useful
-// they don't work.
-//	sourcemap: false,
-//  sourcemap: "inline",
     environment: "jsdom",
     bail: 0,
     watch: false,

@@ -23,10 +23,7 @@ if(mode!="production") {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-//	plugins: [ts(), vue() ],
-//	plugins: [typescript(), vue() ],
 	plugins: [ vue() ],
-//	root: __dirname+ '/../dist/public/',
 	server: {
       hmr: false
 	},

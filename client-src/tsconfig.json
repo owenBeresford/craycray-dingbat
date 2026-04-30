@@ -15,7 +15,7 @@
     "moduleResolution": "node",
 	"noResolve":false,
     "esModuleInterop": true,
-	"extendedDiagnostics":false,
+	"extendedDiagnostics": false,
 	"downlevelIteration": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
@@ -24,7 +24,7 @@
 	"skipLibCheck": true,
     "baseUrl": ".",
 	"outDir": "../dist/types/",
-    "types": [ "node", "vitest", "vite", "./src/types/env.d.ts", "./src/types/shims-vue.d.ts" ],
+    "types": [ "node", "vitest", "vite", "../common/types/env.d.ts", "./src/types/shims-vue.d.ts" ],
     "paths": {
       "@/*": [
         "src/*"
@@ -38,7 +38,7 @@
       "scripthost"
     ]
   },
-  "include": [  "src/**/*.ts", "src/components/*.vue", "src/*.vue", "src/*.ts" ],
+  "include": [  "src/**/*.ts", "src/components/*.vue", "src/*.vue", "src/*.ts", "../common/*ts", "../common/types/*.ts" ],
   "exclude": [
    "node_modules",
     ".storybook",
@@ -52,6 +52,6 @@
 		"checkUnknownComponents":true,
 		"emitDecoratorMetadata":true,
 		"extensions":[".vue", ".tsx", ".ts" ],
-		"include": [ "src/types/vue-shim.d.ts", "src/**/*.ts", "src/components/*.vue", "src/*.vue", "src/*.ts" ]
+		"include": [ "src/types/vue-shim.d.ts", "../common/types/env.d.ts", "src/**/*.ts", "src/components/*.vue", "src/*.vue", "src/*.ts" ]
 	}
 }

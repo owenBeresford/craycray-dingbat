@@ -1,5 +1,6 @@
-import type { SaveStruct, DataPipeline } from "../types/Saveable";
-import type { ShippingStruct, ActionEnum } from "../types/Messagable";
+import type { DataPipeline } from "../types/Saveable";
+import type { SaveStruct } from "../../../common/types/SaveStruct";
+import type { ShippingStruct, ActionEnum } from "../../../common/types/Messagable";
 // import type { DistantStorable } from "../types/RemoteTypes";
 // import { PMQUE_TIMER, PMQUE_ATTEMPTS, MSG_THREAD, createRemoteService } from "../Constants";
 // import { createRemoteService } from "../Constants";

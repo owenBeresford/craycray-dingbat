@@ -7,7 +7,7 @@ import { createDataFactory } from "../../services/DataFactory";
 import type { FactoryArtefact } from "../../services/DataFactory";
 import type { ListStruct, Listable, ListCollection } from "../../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../../../../common/types/promises";
-import { fixture1, fixture2, fixture3, fixture4 } from ""../../../../common/fixture-lists";
+import { fixture1, fixture2, fixture3, fixture4 } from "../../../../common/fixture-lists";
 
 globalThis.localStorage = new LocalStorage("./public/scratch");
 

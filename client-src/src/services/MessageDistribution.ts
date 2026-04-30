@@ -61,6 +61,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
    * @returns {boolean}
    */
   public forkThread(): boolean {
+ console.log("YTYTYTY Running forkThread() ");   
     try {
       if (typeof globalThis.Worker === "object") {
         // eslint says not to await on this...??
@@ -184,7 +185,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
    * @returns {Promise<boolean>}
    */
   public saveState(dat: Array<SaveStruct>): Promise<boolean> {
-    if (_LOGGING_) {
+    if( globalThis._LOGGING_) {
       console.log("TEST sending MSG from the UI to the worker");
     }
     if (!this.worker) {

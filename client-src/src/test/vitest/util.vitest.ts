@@ -2,7 +2,8 @@ import { assert, describe, it, expect } from "vitest";
 // import { LocalStorage } from "node-localstorage";
 
 // only functions that make sense outside of a browser are in this test
-import { rad2deg, wrap_getMyIP, nextId, resetId, pollId } from "../../services/util";
+import { rad2deg, wrap_getMyIP } from "../../../../common/util";
+import { nextId, resetId, pollId } from "../../services/util";
 import { TestLocation } from "../MockLocation";
 // import type { MockLocation } from './MockLocation';
 import type { PromiseSucceed, PromiseReject } from "../../../../common/types/promises";

@@ -101,7 +101,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
   /**
  * currentNetworkConfig
  * A "use function" to create ListCollections, which has different composition depending on network settings
- * TODO add simplification when Storybook or Vitest is running
+ * @TODO add simplification when Storybook or Vitest is running
 
  * @public
  * @returns {Promise<void>}

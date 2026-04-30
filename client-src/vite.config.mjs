@@ -24,10 +24,7 @@ if(mode!="production") {
 // https://vitejs.dev/config/
 /// <reference types="vitest/config" />
 export default defineConfig({
-//	plugins: [ts(), vue() ],
-//	plugins: [typescript(), vue() ],
 	plugins: [ vue() ],
-//	root: __dirname+ '/../dist/public',
 	server: {
       hmr: false
 	},
@@ -60,24 +57,5 @@ export default defineConfig({
     },
   },
 });
-
-/* // notes from AI-BOT, claims this will suppress Vite vetting stories files and borking hard.
-export default defineConfig({
-  optimizeDeps: { // remove spaces from regex
-    exclude: ["tests /* * / * .stories. * "],
-  },
-  plugins: [
-    {
-      name: "exclude-storybook-tests",
-      enforce: "pre",
-      transform(_, id) {
-        if (id.match(/\.stories\./)) {
-          return { code: "", map: null };
-        }
-      },
-    },
-  ],
-});
-*/
 
 // vim: syn=javascript nospell
