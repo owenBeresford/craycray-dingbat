@@ -63,6 +63,17 @@ WARN: to-date not actually ran this yet.
 
 	- random config and notes
 
+
+### Warnings / Caveats
+
+
+- For better readability, I moved many local variable names to a non-English lang ~ fr-FR ~ so there is no clash with JS keywords.    Public symbols should be in en-UK.   This convention isn't global, but its not bad spelling.   JS does allow UTF-8 in variable names.
+- TS says _LOGGING_ isn't defined in tests.   It is at test runtime.  ''I may be able to resolve this.''   This _LOGGING_ feature is to add test only logging, that the build step strips.  
+- Node supports a different Thread implementation to browsers.  I could make some more of my tests work, but that is adding code to pass test env that cannot be used outside of tests.  This is not productive.
+- TS says Uint8Array.prototype.toHex doesn't exist.  Its a Baseline [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toHex].  
+- TS says globalThis.crypto.subtle isn't available.  It is available at runtime in Node, for v24 and some earlier.  This JUST runs memory counting tests, and has no impact on production.
+
+
 ### User interaction (draft grade)
 
 
