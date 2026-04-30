@@ -24,7 +24,7 @@
 	"skipLibCheck": true,
     "baseUrl": ".",
 	"outDir": "../dist/types/",
-    "types": [ "node", "vitest", "vite", "../common/types/env.d.ts", "./src/types/shims-vue.d.ts" ],
+    "types": [  "node", "vitest", "vite", "../common/types/env.d.ts", "./src/types/shims-vue.d.ts" ],
     "paths": {
       "@/*": [
         "src/*"
@@ -52,6 +52,6 @@
 		"checkUnknownComponents":true,
 		"emitDecoratorMetadata":true,
 		"extensions":[".vue", ".tsx", ".ts" ],
-		"include": [ "src/types/vue-shim.d.ts", "../common/types/env.d.ts", "src/**/*.ts", "src/components/*.vue", "src/*.vue", "src/*.ts" ]
+		"include": [ "src/types/vue-shim.d.ts", "../common/types/env.d.ts", "src/**/*.ts", "src/components/*.vue", "src/*.vue", "src/*.ts", "dom" ]
 	}
 }
