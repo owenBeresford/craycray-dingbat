@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 export declare const _LOGGING_: Readonly<boolean>;
-//console.warn("ENV D TS executed");
+console.warn("ENV D TS executed");
 
 declare global {
   interface Window {

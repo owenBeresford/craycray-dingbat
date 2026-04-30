@@ -1,4 +1,4 @@
-import type { SaveStruct } from "./Saveable";
+import type { SaveStruct } from "./SaveStruct";
 
 export interface DistantStorable {
   saveState(dat: Array<SaveStruct>): Promise<boolean>;

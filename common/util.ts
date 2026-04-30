@@ -1,3 +1,5 @@
+import type { SaveStruct } from './types/SaveStruct';
+
 /**
  * isMobile
  * Simple guess about current HW platform
@@ -113,7 +115,7 @@ export function clearSelection(): void {
 if(!( globalThis.crypto || globalThis.crypto.subtle) ) {
   throw new Error("JS runtime doesn't allow access to crypt/ hash functions.  Cannot proceed");
 }
-if(Uint8Array.prototype.toHex) {
+if(!Uint8Array.prototype.toHex) {
   throw new Error("JS runtime isn't allowing access to baseline features");
 }
 
@@ -127,7 +129,7 @@ if(Uint8Array.prototype.toHex) {
  * @public
  * @returns {string} - hex encoded
  */
-export async function hashState(dat:Array<SaveStruct>, hash:Readonly<string>="SHA-256"):string {
+export async function hashState(dat:Array<SaveStruct>, hash:Readonly<string>="SHA-256"):Promise<string> {
   let step1:string= JSON.stringify(dat);
       //step2:  this step should be obsolete/ irrelevant, but is critical failure if absent
   let step2 = new TextEncoder().encode(step1);
@@ -177,7 +179,7 @@ export async function runFetch(
     }
   };
   if( typeof extra === "undefined" ) { extra={} as RequestInit; }
-  let trans: Response;
+  let trans: Response ={} as Response;
   try {
     let head:RequestInit=Object.assign({}, extra, { credentials: "same-origin", } );
     trans = await f(url, head ) as Response;
@@ -205,12 +207,12 @@ export async function runFetch(
       ok: true,
       status:trans.status,
     } as SimpleResponse;
-  } catch (e) {
+  } catch (e:unknown) {
 // console.log("outer error formatter in my fetch", e);
     return returnBad(
       trap,
-      new Error("ERROR getting asset " + url + " " + e.toString()),
-      (trans?trans.status:"500")
+      new Error("ERROR getting asset " + url + " " + (e as Error).message),
+      (trans?trans.status:500 )
     );
   }
 }
