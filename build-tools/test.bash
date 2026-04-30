@@ -20,7 +20,7 @@ if [ "$what" = "fe" -o "$what" = "all" ]; then
 	if [ -f $APIPID ]; then 
 		export CURSERVICE=`cat $APIPID`; 
 	fi; 
-	if [ $CURSERVICE -lt 100 ]; then 
+	if [ "$CURSERVICE" -lt 100 ]; then 
 		node $SVRBIN &
 		echo $! >$APIPID
 		LAUNCHED=1
@@ -51,11 +51,11 @@ if [ "$what" = "fe" -o "$what" = "all" ]; then
 	cd ..
 fi
 
-if [ "$what" = "be" -o "$what" = "all" ]; then
+if [ "$what" == "be" -o "$what" == "all" ]; then
 	if [ "`basename $PWD`" != "server-src" ]; then
 		cd server-src
 	fi
-	if [ $CURSERVICE -lt 100 -a "$LAUNCHED" -eq "0" ]; then 
+	if [ "$CURSERVICE" -lt 100 -a "$LAUNCHED" == "0" ]; then 
 		node $SVRBIN &
 		echo $! >$APIPID
 		LAUNCHED=1

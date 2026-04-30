@@ -39,26 +39,26 @@ export default defineConfig({
       },
     ],
 // 'Bot solution to souremap spam
-  deps: {
-      optimizer: {
-        web: {
-          enabled: false,
-        },
-      },
-    },
+//  deps: {
+//      optimizer: {
+//        web: {
+//          enabled: false,
+//        },
+//      },
+//    },
 
 
   },
 // Bot part2, after claiming vitest uses vite, its setting for esbuild
-  esbuild: {
-    tsconfigRaw: {
-      compilerOptions: {
-        composite: false,
-        incremental: false,
-        tsBuildInfoFile: null,
-      },
-    },
-  },
+//  esbuild: {
+//    tsconfigRaw: {
+//      compilerOptions: {
+//        composite: false,
+//        incremental: false,
+//        tsBuildInfoFile: null,
+//      },
+//    },
+//  },
 
   css:false,
   browser: { enabled: false, name: "/snap/bin/chromium" },

@@ -21,9 +21,6 @@ if(mode!="production") {
 } else {
 	ofn="api";
 }
-// src: https://stackoverflow.com/questions/69523560/using-vite-for-backend
-//const NODE_BUILT_IN_MODULES = builtinModules.filter(m => !m.startsWith('_'));
-//NODE_BUILT_IN_MODULES.push(...NODE_BUILT_IN_MODULES.map(m => `node:${m}`));
 
 
 // https://vitejs.dev/config/
@@ -45,11 +42,6 @@ export default defineConfig({
     "class-validator", "@fastify/static",
 		], 
 		disabled: true,
-//		enabled:false,
-//      exclude: {
-//		  ...builtinModules,
-//          ...builtinModules.map(m => `node:${m}`),
-//	  			}
     },
 	 define: {
 	    _LOGGING_: process.env.NODE_ENV !== "production",
@@ -77,7 +69,7 @@ export default defineConfig({
         {
           format: "esm",
 	//		name: `${ofn}`,
-			entryFileNames: 'main.mjs'
+		  entryFileNames: 'main.mjs'
         },
       ],
     },
