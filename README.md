@@ -20,8 +20,6 @@ WARN: to-date not actually ran this yet.
 ### To use
 
 
-* This project likes Node24, absolutely no warranty if you attempt to run on older versions as I expect NPM will make your life very hard.  Package.json includes some magic for getting Node24, but that tech is very frail as it moves version of NPM.  #leSigh.
-   * Assuming you are a techie, adopt/ deploy NVM to have flexibility.
 * clone repo to a big screen device
 * Read the file, then Run build-tools/checksum.bash  this create scripts and runs `npm i` twice
 * OR run `npm i` in each package directory, and build your own certs (maybe from **Letsencrypt**?) 
@@ -67,11 +65,15 @@ WARN: to-date not actually ran this yet.
 ### Warnings / Caveats
 
 
+- If you talk HTTP/0.9 or HTTP/1.0, or HTTP/1.1 to the API you get TCP transit, and nothing on higher protocols.  This is HTTPS and HTTP/2 only service, your browser should default to HTTPS and ALN upgrade steps.   
+- This project likes Node24, absolutely no warranty if you attempt to run on older versions as I expect NPM will make your life very hard.  Package.json includes some magic for getting Node24, but that tech is very frail as it moves version of NPM.  #leSigh.
+   - Assuming you are a techie, adopt/ deploy NVM to have flexibility.
 - For better readability, I moved many local variable names to a non-English lang ~ fr-FR ~ so there is no clash with JS keywords.    Public symbols should be in en-UK.   This convention isn't global, but its not bad spelling.   JS does allow UTF-8 in variable names.
-- TS says _LOGGING_ isn't defined in tests.   It is at test runtime.  ''I may be able to resolve this.''   This _LOGGING_ feature is to add test only logging, that the build step strips.  
+- TS says _LOGGING_ isn't defined in tests.   It is at test runtime.  ''I may be able to resolve this.''   This _LOGGING_ feature is to add test-only logging, that the build step strips.  
 - Node supports a different Thread implementation to browsers.  I could make some more of my tests work, but that is adding code to pass test env that cannot be used outside of tests.  This is not productive.
 - TS says Uint8Array.prototype.toHex doesn't exist.  Its a Baseline [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toHex].  
 - TS says globalThis.crypto.subtle isn't available.  It is available at runtime in Node, for v24 and some earlier.  This JUST runs memory counting tests, and has no impact on production.
+- Build tools will complain "Failed to load source map" for ./client-src/src/assets/foundation.min.css.  Yes this file is absent.  Don't worry.  I may go back to normal package import later.
 
 
 ### User interaction (draft grade)
