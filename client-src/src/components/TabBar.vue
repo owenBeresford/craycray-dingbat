@@ -136,7 +136,6 @@ import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-test
 import type { TabBarProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
-const { currentData, updateData, initData } = ListData;
 const MENU_OPEN = TEXT.get("menu.symbol");
 const MENU_CLOSE = TEXT.get("cross");
 
@@ -185,7 +184,7 @@ export default defineComponent({
       EIK: this.$props.currentStateKey + "false",
       inputId: this.testId + "input1",
       menuId: this.testId + "Menu1",
-      hasData: currentData != undefined,
+      hasData: ListData.currentData != undefined,
       urls: [mapURL("allList", null), mapURL("aList", -1)],
       menu: {
         header: TEXT.get("menu.header1"),
@@ -217,7 +216,10 @@ export default defineComponent({
     if (!this.shopStore) {
       throw new Error("You must hava a real Store (Vuex Object, not a actual shop) to run the App.");
     }
-    this.loadedStateKey=hashState(currentData.list() );
+    console.log("This should have some data in it.  ListData.currentData");
+    console.dir(ListData.currentData);
+
+    this.loadedStateKey=hashState( ListData.currentData.list() );
   },
   methods: {
     onIntersitial(e: GuessEvent): boolean {
@@ -258,7 +260,7 @@ export default defineComponent({
 
     onUnique(e: GuessEvent): boolean {
       e.preventDefault();
-      if (!currentData) {
+      if (!ListData.currentData) {
         return false;
       }
       if (_LOGGING_) {
@@ -268,10 +270,10 @@ export default defineComponent({
         throw new Error("2344568746356986 Impossible");
       }
 
-      const liste = currentData.get(this.shopStore.state.currentId);
+      const liste = ListData.currentData.get(this.shopStore.state.currentId);
       if (liste) {
         liste.unique();
-        currentData.put(this.shopStore.state.currentId, liste);
+        ListData.currentData.put(this.shopStore.state.currentId, liste);
       }
 
       return false;
@@ -279,18 +281,18 @@ export default defineComponent({
 
     onDuplicate(e: GuessEvent): boolean {
       e.preventDefault();
-      if (!currentData) {
+      if (!ListData.currentData) {
         return false;
       }
       if (!this.shopStore) {
         throw new Error("83456423493433 Impossible");
       }
-      const liste = currentData.get(this.shopStore.state.currentId);
+      const liste = ListData.currentData.get(this.shopStore.state.currentId);
 
       if (liste) {
-        const extra = Object.assign(AList.manual(`DUP: ${liste.nom}`, currentData.count()), liste);
+        const extra = Object.assign(AList.manual(`DUP: ${liste.nom}`, ListData.currentData.count()), liste);
         extra.editName(`DUP: ${liste.nom}`);
-        currentData.append(extra);
+        ListData.currentData.append(extra);
       }
       StaticRoutes.push({ name: "list-everything" });
       return false;
@@ -298,14 +300,14 @@ export default defineComponent({
 
     onName(e: GuessEvent): boolean {
       e.preventDefault();
-      if (!currentData) {
+      if (!ListData.currentData) {
         return false;
       }
       if (!this.shopStore) {
         throw new Error("2357675675357578 Impossible");
       }
 
-      const liste = currentData.get(this.shopStore.state.currentId);
+      const liste = ListData.currentData.get(this.shopStore.state.currentId);
       if (!liste) {
         console.warn("EDIT NAME: got bad id, don't know how to proceed");
         return false;
@@ -321,7 +323,7 @@ export default defineComponent({
           throw new Error("2357675675357578 Impossible");
         }
         liste.editName(d1);
-        currentData.put(this.shopStore.state.currentId, liste);
+        ListData.currentData.put(this.shopStore.state.currentId, liste);
         this.visible = false;
         StaticRoutes.push({ name: "list-everything" });
       };
@@ -331,32 +333,32 @@ export default defineComponent({
 
     onSave(e: GuessEvent): boolean {
       e.preventDefault();
-      if (!currentData || !this.shopStore) {
+      if (!ListData.currentData || !this.shopStore) {
         throw new Error("3598345234242 Impossible");
       }
 
-      if( this.loadedStateKey===hashState(currentData.list()) ) {
+      if( this.loadedStateKey===hashState(ListData.currentData.list()) ) {
         console.log("Data is identical as last save ");
         return false;
       } 
       console.log("Saving list to local cache list, for all lists");
-      this.loadedStateKey=hashState(currentData.list());
-      currentData.saveAllLists();
+      this.loadedStateKey=hashState(ListData.currentData.list());
+      ListData.currentData.saveAllLists();
       return false;
     },
 
     onRevert(e: GuessEvent): boolean {
       e.preventDefault();
-      if (!currentData || !this.shopStore) {
+      if (!ListData.currentData || !this.shopStore) {
         throw new Error("9845645234372323 Impossible");
       }
      
-      if( this.loadedStateKey===hashState(currentData.list()) ) {
+      if( this.loadedStateKey===hashState(ListData.currentData.list()) ) {
         console.log("Data is identical to initial state ");
         return false;
       }
       console.log("Rebuilding data from cache for all lists");
-      currentData.loadAllLists();
+      ListData.currentData.loadAllLists();
       return false;
     },
 
