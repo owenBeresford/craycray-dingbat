@@ -48,10 +48,10 @@ if (typeof globalThis.fetch === "undefined" || !globalThis.fetch) {
  * @returns {RemoteStorage}
  */
 export function createRemoteService(loc: Location | WorkerLocation): RemoteStorage {
-  if (process.env.NODE_ENV !== "development" && (!globalThis || !globalThis.addEventListener)) {
+  if ("process" in globalThis && process.env.NODE_ENV !== "development" && (!globalThis || !globalThis.addEventListener)) {
     throw new Error("8674564632343 Message passing is only possible inside a reasonable browser.");
   }
-  if (process.env.NODE_ENV !== "development" && (!globalThis || (!globalThis.Worker && !("worker_threads" in globalThis)))) {
+  if ("process" in globalThis && process.env.NODE_ENV !== "development" && (!globalThis || (!globalThis.Worker && !("worker_threads" in globalThis)))) {
     throw new Error("9757353545757 Message passing is only possible inside a reasonable browser.");
   }
   let d3: RemoteConfig = {

@@ -8,7 +8,7 @@ if [ -n "$1" ]; then
 	what="$1"
 fi
 EXECDIR=./node_modules/.bin
-buildenv="test"
+buildenv="development"
 if [ -n "$NODE_ENV" ]; then
 	buildenv=$NODE_ENV;
 fi
@@ -30,7 +30,9 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 		echo "Tool main vite exited $ret on *.ts"
 		exit 1
 	else 
-		cp dist/shopping.es.mjs ../dist/public/shopping.es.min.mjs
+		# TODO work out wghy my FE deps now inject checks against "process.env"
+		echo -n "const process={env:{}};" > ../dist/public/shopping.es.min.mjs
+		cat dist/shopping.es.mjs >> ../dist/public/shopping.es.min.mjs
 	fi
 	$NODEBIN $EXECDIR/vite --config ./vite.config.test-worker.mjs build --l info
 	ret=$?
@@ -38,7 +40,7 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 		echo "Tool sync vite exited $ret on *.ts"
 		exit 1
 	else 
-		cp dist/*.mjs ../dist/public/
+		cp dist/worker*.mjs ../dist/public/
 	fi
 
 	$NODEBIN $EXECDIR/uglifycss --max-line-len 2000 ./src/assets/shopping.css >./shopping.tmp.css

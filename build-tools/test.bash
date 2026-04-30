@@ -1,6 +1,6 @@
 #!/bin/bash
 EXECDIR=node_modules/.bin
-export NODE_ENV=test
+export NODE_ENV=development
 APIPID=~/shopping.pid
 SVRBIN=./dist/main.min.mjs
 if [ ! -f "$SVRBIN" ]; then
