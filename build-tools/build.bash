@@ -40,7 +40,7 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 		echo "Tool sync vite exited $ret on *.ts"
 		exit 1
 	else 
-		cp dist/worker*.mjs ../dist/public/
+		cp dist/worker1.es.mjs ../dist/public/worker1.es.min.mjs
 	fi
 
 	$NODEBIN $EXECDIR/uglifycss --max-line-len 2000 ./src/assets/shopping.css >./shopping.tmp.css
@@ -60,6 +60,7 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 
 	echo "Created fresh shopping.min.css ."
 	rm ./shopping.tmp.css
+	rm ./dist/*.*
 	cd ..
 fi
 
