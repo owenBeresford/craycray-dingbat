@@ -34,7 +34,7 @@ if (_LOGGING_) { // test only logging
  */
 self.onmessage = async function (ev: MessageEvent): Promise<void> {
   console.log(
-    "TEST2 (in thread) received MSG sent to " + ev.srcElement.name,
+    "WORKER THREAD received MSG sent to " + ev.srcElement.name,
      (ev.data as ShippingStruct).action,
     (ev.data as ShippingStruct).data,
     "isolated",

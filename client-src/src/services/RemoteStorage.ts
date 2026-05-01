@@ -11,6 +11,7 @@ type NullableTimeout = ReturnType<typeof globalThis.setTimeout> | undefined;
  * RemoteStorage
  * Service to message API servers, dealing with possible disabled Wifi.
  * This should be all the networking stuff; but none of the scheduling stuff
+ * This class has no use* function as createRemoteService is the use function
 
  * @public
  */

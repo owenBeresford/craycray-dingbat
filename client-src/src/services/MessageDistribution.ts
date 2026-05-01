@@ -113,7 +113,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
   protected receipt(ev: MessageEvent): void {
     const expédition: ShippingStruct = ev.data as ShippingStruct;
     console.log(
-      "TEST recieved MSG sent to " +WORKER_NAME ,
+      "BROWSER recieved MSG sent to " +WORKER_NAME ,
       expédition.action,
       expédition.data,
       "isolated",
@@ -132,7 +132,6 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
     }
     let used = false;
     if (expédition.action === ("load-payload" as ActionEnum)) {
-console.log("UI section: recieved a message from browser");  
       // maybe IOIO TODO a smarter/stronger type conversion.  I control sender and receiver
       this.state = transform2list(expédition.data) as Array<SaveStruct>;
       if (this.state.length === 0) {
@@ -207,7 +206,6 @@ console.log("UI section: recieved a message from browser");
       });
     }
     const expédition: ShippingStruct = packMsg("save-payload", dat);
-
     this.worker.postMessage(expédition, undefined);
     // promise for API compat; message has been forwarded to thread...
     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
@@ -235,11 +233,9 @@ console.log("UI section: recieved a message from browser");
     const SELF = this;
     let tentatives = 0;
     this.worker.postMessage(expédition, undefined);
-console.log("posted message to thread");    
     let poignée: Timer | null = null;
     const ATTEMPT = async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject): Promise<void> => {
-console.log("resp listener ", SELF.state.length );
-      if (SELF.state.length) {
+       if (SELF.state.length) {
         if (poignée) {
           clearTimeout(poignée);
           poignée = null;
@@ -255,7 +251,6 @@ console.log("resp listener ", SELF.state.length );
           }
           bad(new Error("No response from worker thread in " + PMQUE_ATTEMPTS + "*" + PMQUE_TIMER + "ms.  Aborting "));
         } else {
-console.log("next timeOut started ", tentatives );          
           poignée = +setTimeout(()=> {return ATTEMPT(good, bad); }, PMQUE_TIMER);
         }
       }

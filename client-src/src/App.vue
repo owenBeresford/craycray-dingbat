@@ -11,7 +11,7 @@ import { defineComponent } from "vue";
 // import { nextId } from "./services/util";
 import { TTL_FOR_HELP, DEFAULT_HELP_SHOW } from './Constants';
 import TabBar from "./components/TabBar.vue";
-
+ 
 export default defineComponent({
   name: "ShoppingApp",
   components: { TabBar },

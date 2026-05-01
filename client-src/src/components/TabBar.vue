@@ -217,7 +217,7 @@ export default defineComponent({
       throw new Error("You must hava a real Store (Vuex Object, not a actual shop) to run the App.");
     }
     console.log("This should have some data in it.  ListData.currentData");
-    console.dir(ListData.currentData);
+    console.dir(ListData.currentData, [mapURL("allList", null), mapURL("aList", -1)]);
 
     this.loadedStateKey=hashState( ListData.currentData.list() );
   },
