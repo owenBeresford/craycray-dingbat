@@ -55,14 +55,14 @@ export class RemoteStorage implements Storable, DistantStorable {
       globalThis
         .fetch(SELF.url, REQT)
         .then((resp: Response): boolean => {
-          clearTimeout(sortie);
+           clearTimeout(sortie);
           sortie = undefined;
           if (!didTimeOut) {
-            good(resp.status % 100 === 2);
+            good( Math.round(resp.status / 100) === 2);
           } else {
             bad(EEE);
           }
-          return resp.status % 100 === 2;
+          return Math.round(resp.status / 100) === 2;
         })
         .catch((err: Error): void => {
           if (!didTimeOut) {
