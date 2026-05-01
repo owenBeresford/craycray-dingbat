@@ -15,7 +15,8 @@ export const PMQUE_ATTEMPTS = 10;
 
 // URLs used 
 // maybe MSG_THREAD should start https://...
-export const MSG_THREAD = /* @vite-ignore */ new URL("worker1.es.min.mjs", import.meta.url);
+export const MSG_THREAD = /* @vite-ignore */ new URL("/asset/worker1.es.min.mjs", import.meta.url);
+export const WORKER_NAME="NUDGE";
 export const LOGO_PATH= "/asset/logo.png";
 
 // values for MotionStream
