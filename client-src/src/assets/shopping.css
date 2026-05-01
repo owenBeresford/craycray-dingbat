@@ -126,10 +126,7 @@
   margin-right: auto;
   margin-top: 1em;
 }
-.ListOfList ul li {
-  margin-left: 0.5em;
-  width: calc(100% - 0.5em);
-}
+ 
 .ListOfList ul .button {
   margin-bottom: 0.4em;
   margin-top: 0.4em;
@@ -141,6 +138,14 @@
   vertical-align: middle;
   overflow-x: hidden;
 }
+
+.ListOfList .row { display:flex; align-items: center;  justify-content: space-evenly;  flex-direction: row; 
+  white-space: nowrap; margin-bottom: 0.6em;  width: calc(100% - 0.5em); }
+
+.ListOfList .row span:last-child { justify-content:flex-end; padding-left:1em; }
+.ListOfList .row span:first-child { justify-content:flex-start; padding-right:1em; }
+
+.ListOfList a { min-width:10em; max-width:26em; }
 
 .ListOfList .centre:focus-within  {
   background:#ddd;
