@@ -4,7 +4,7 @@
     <ul class="buttonRow">
       <li class="bigger">{{ list.nom }}</li>
       <li :title="text.addTitle">
-        <img width="40" height="40" :href="logoPath" aria-hidden="true" role="presentation" :alt="text.imgAlt"  />
+        <img width="40" height="40" :src="logoPath" aria-hidden="true" role="presentation" :alt="text.imgAlt"  />
         <span
           role="button"
           v-touch.once="onAdd"
