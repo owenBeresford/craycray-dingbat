@@ -28,6 +28,18 @@ import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import { ShoppingModule } from "./shopping/shopping-module";
 const { __dirname, __filename } = getGlobals(import.meta.url);
 
+const VALID_ROUTES=[
+  '/',
+  '/index.html',
+  "/asset/favicon.ico" ,
+  "/asset/manifest.json"  ,
+  "/asset/shopping.min.css",
+  "/asset/shopping.es.min.mjs",
+  "/asset/logo.png",
+  "/asset/worker1.es.min.mjs",
+];
+
+
 // At runtime the values are forced to be int or string
 // so for example bash functions get mashed into strings, and the Node process will crash.
 interface ControlledEnv {
@@ -145,16 +157,21 @@ function createstaticAssets(httpsOptions: SecureServerOptions): FastifyAdapter {
     root: path.join(__dirname, "public"),
     prefix: "/asset/",
   });
-  inst.addHook("onRequest", (request: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction): void => {
-    console.log("Incoming reqt:", {
-      method: request.method,
-      url: request.url,
-      httpVersion: request.raw.httpVersion,
-      headers: request.headers,
-    });
+  
+  inst.addHook("onRequest", (req: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction): void => {
+    const URN= new URL(req.url);
+    if(!VALID_ROUTES.includes( URN.pathname)) {
+      console.warn( "ALERT ALERT "+(new Date()).toISOString()+ " UNKNOWN REQUEST URL ", req.hostname, req.headers);
+      // this should fall though to the defaulkt route...
+    }
+/* // when I looked more, it was the client setting this header,. so dont need this step.
+    if( req.headers["content-type"]?.startsWith("image") ) {
+      reply.removeHeader("pragma");
+    }
+*/
     done();
   });
-
+  
   return fast;
 }
 
