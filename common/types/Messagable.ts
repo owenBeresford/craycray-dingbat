@@ -5,7 +5,8 @@ export type ActionEnum =
   | "load-payload"
   | "load-request"
   | "status-request"
-  | "running";
+  | "running"
+  | "ret-payload";
 
 export interface ShippingStruct {
   action: ActionEnum;

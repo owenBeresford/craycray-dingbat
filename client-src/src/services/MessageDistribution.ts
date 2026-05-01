@@ -1,11 +1,12 @@
 import type { SaveStruct } from "../../../common/types/SaveStruct";
-import { PMQUE_TIMER, PMQUE_ATTEMPTS, MSG_THREAD } from "../Constants";
+import { PMQUE_TIMER, PMQUE_ATTEMPTS, MSG_THREAD, WORKER_NAME } from "../Constants";
 // import { WorkerHandle } from '../types/Workable';
 import type { ShippingStruct, ActionEnum } from "../../../common/types/Messagable";
 import type { BasicThreadable } from "../types/BasicThreadable";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
 import { transform2list, packMsg } from "./Storable";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
+import { WORKER_NAME } from "../Constants";
 
 type Timer = number;
 
@@ -61,11 +62,10 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
    * @returns {boolean}
    */
   public forkThread(): boolean {
- console.log("YTYTYTY Running forkThread() ");   
     try {
-      if (typeof globalThis.Worker === "object") {
+      if (typeof globalThis.Worker === "object" || typeof globalThis.Worker === "function") {
         // eslint says not to await on this...??
-        this.worker = new Worker(MSG_THREAD, { credentials: "same-origin", name: "NUDGE", type: "module" });
+        this.worker = new Worker(MSG_THREAD, { credentials: "same-origin", name: WORKER_NAME, type: "module" });
       }
       if (!this.worker) {
         throw Error("84564234234266 I'm sooo confuuuuzed error (see code) ");
@@ -113,14 +113,15 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
   protected receipt(ev: MessageEvent): void {
     const expédition: ShippingStruct = ev.data as ShippingStruct;
     console.log(
-      "TEST recieved MSG to " + ev.origin + " from " + (ev.source ?? "[unknown]"),
+      "TEST recieved MSG sent to " +WORKER_NAME ,
       expédition.action,
       expédition.data,
       "isolated",
       typeof crossOriginIsolated,
       crossOriginIsolated
     );
-    if (ev.origin !== this.goodSource) {
+    if(ev.srcElement.name !==WORKER_NAME ) {
+    // if (ev.origin !== this.goodSource) {
       console.warn("Recv msg from un-authorised source " + ev.origin);
       return;
     }
@@ -131,9 +132,11 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
     }
     let used = false;
     if (expédition.action === ("load-payload" as ActionEnum)) {
+console.log("UI section: recieved a message from browser");  
       // maybe IOIO TODO a smarter/stronger type conversion.  I control sender and receiver
       this.state = transform2list(expédition.data) as Array<SaveStruct>;
       if (this.state.length === 0) {
+        this.errMsgs.push("No lists founds, processed an empty response from network!");
         console.warn("Loaded an empty dataset from worker thread.");
       }
       used = true;
@@ -142,6 +145,15 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
       this.errMsgs.push(expédition.data as string);
       used = true;
     }
+    if (expédition.action === ("ret-payload" as ActionEnum) && expédition.data.length > 0) {
+      this.state = transform2list(expédition.data) as Array<SaveStruct>;
+      if (this.state.length === 0) {
+        console.warn("Loaded an empty dataset from worker thread.");
+        this.errMsgs.push("No lists founds, processed an empty response from network!");
+      }
+      used = true;
+    }
+  
     if (expédition.action === ("status-payload" as ActionEnum)) {
       console.log("TEST **Add more code here**\n[ STATUS REPORT ]=", expédition.data);
       used = true;
@@ -223,8 +235,10 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
     const SELF = this;
     let tentatives = 0;
     this.worker.postMessage(expédition, undefined);
+console.log("posted message to thread");    
     let poignée: Timer | null = null;
     const ATTEMPT = async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject): Promise<void> => {
+console.log("resp listener ", SELF.state.length );
       if (SELF.state.length) {
         if (poignée) {
           clearTimeout(poignée);
@@ -241,7 +255,8 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
           }
           bad(new Error("No response from worker thread in " + PMQUE_ATTEMPTS + "*" + PMQUE_TIMER + "ms.  Aborting "));
         } else {
-          poignée = +setTimeout(ATTEMPT, PMQUE_TIMER);
+console.log("next timeOut started ", tentatives );          
+          poignée = +setTimeout(()=> {return ATTEMPT(good, bad); }, PMQUE_TIMER);
         }
       }
     };
