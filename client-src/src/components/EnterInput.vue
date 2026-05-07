@@ -5,9 +5,10 @@
         <label for="txt">{{ text.label1 }}</label>
         <span
           class="cancel"
-          @click="onCancel"
+          @click.prevent="onCancel"
           @touch.prevent="onCancel"
           @keypress.once="onCancel"
+          @keyup.esc="onCancel"
           :title="text.title2"
           :aria-label="text.title2"
           v-html="cross"
@@ -44,8 +45,8 @@
         <input
           type="button"
           role="button"
-          @click.once.prevent="onUpdate"
-          @touch.once.prevent="onUpdate"
+          @click.prevent="onUpdate"
+          @touch.prevent="onUpdate"
           :title="text.title1"
           :value="text.value1"
           :data-testid="commitId"
@@ -118,7 +119,8 @@ export default defineComponent({
     },
     visible(nouveau:string, vieux:string):void {
       this.bShow=!!nouveau;
-      if (nouveau) {
+console.log("XXX new value in viibility","new value", nouveau, this.bShow, "old value", vieux );
+      if (this.bShow) {
         setTimeout(() => {
           const élément: HTMLInputElement = this.$refs.enterIt as HTMLInputElement;
           élément && élément.focus();
@@ -135,14 +137,14 @@ export default defineComponent({
     onCancel(e: GuessEvent): void {
       this.cb(null);
       this.oVal = "";
-      (document.querySelector("dialog#enterinput") as HTMLDialogElement).open = false;
       this.bShow = !this.bShow;
-      e.preventDefault();
+      (document.querySelector("dialog#enterinput") as HTMLDialogElement).open = false;
     },
 
     onUpdate(e: GuessEvent): void {
-      e.preventDefault();
+console.warn("EnterInput.onUpdate running again. ", e);      
       if (!this.bShow) {
+console.warn("EnterInput.onUpdate  event this component isn't active, but has input events");
         return;
       }
 
@@ -151,6 +153,8 @@ export default defineComponent({
       this.oVal = "";
       this.cb(chaîne);
       this.bShow=!this.bShow;
+      (document.querySelector("dialog#enterinput") as HTMLDialogElement).open = false;
+
     },
   },
 });

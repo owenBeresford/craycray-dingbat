@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { expect, fn, within, userEvent } from "storybook/test";
 
 import EnterInput from "../../components/EnterInput.vue";
-import { isMobile } from "../../../../common/util";
+import { isMobile, delay } from "../../../../common/util";
 
 const meta: Meta<typeof EnterInput> = {
   component: EnterInput,
@@ -157,15 +157,24 @@ export const ToggleCapacity1: Story = {
     const input1 = canvas.getByTestId("test25desk1");
     await userEvent.type(input1, "a new thing");
     await userEvent.click( await canvas.findByDisplayValue("Set"));
+    expect(((await canvas.queryByTestId("test25")) as HTMLDialogElement).open).toBe(false);
+    ToggleCapacity1.args.visible=false;
+    ToggleCapacity1.args.visible=true;
+    await delay(1000);
+    (await canvas.queryByTestId("test25") as HTMLDialogElement).open=true;
+
+    await userEvent.type(input1, "another thing");
+    await userEvent.click( await canvas.findByDisplayValue("Set"));
+    ToggleCapacity1.args.visible=false;
+    ToggleCapacity1.args.visible=true;
+    await delay(1000);  // this test is to show the expected operation is stable, and it shows weakness in test tech, #leSigh.
 
     expect(((await canvas.queryByTestId("test25")) as HTMLDialogElement).open).toBe(false);
     (await canvas.queryByTestId("test25") as HTMLDialogElement).open=true;
-    await userEvent.type(input1, "another thing");
-    await userEvent.click( await canvas.findByDisplayValue("Set"));
-    expect(((await canvas.queryByTestId("test25")) as HTMLDialogElement).open).toBe(false);
-    (await canvas.queryByTestId("test25") as HTMLDialogElement).open=true;
+
     await userEvent.type(input1, "keep going");
     await userEvent.click( await canvas.findByDisplayValue("Set"));
+
     expect(((await canvas.queryByTestId("test25")) as HTMLDialogElement).open).toBe(false);
   },
 };
