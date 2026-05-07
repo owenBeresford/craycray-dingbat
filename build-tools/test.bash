@@ -35,6 +35,8 @@ if [ "$what" = "fe" -o "$what" = "all" ]; then
 	# I have added a thing for timeout to return 127
 	# Due to using typeschecks, I cannot use this feature in Devops tools,  
 	# as Vitest thinks there are ~850 errors in node_modules/@types, and is always 1
+	#
+	# IOIO XXX When stable process strip build from here its in the build.bash
 
 	node $SEXECDIR/storybook build
 	# https://tiberriver256.github.io/web%20development/how-to-run-storybook-with-https-on-localhost/

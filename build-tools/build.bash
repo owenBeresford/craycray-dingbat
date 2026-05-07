@@ -61,6 +61,10 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 	echo "Created fresh shopping.min.css ."
 	rm ./shopping.tmp.css
 	rm ./dist/*.*
+
+# build storybook tests
+	node $SEXECDIR/storybook build
+	node $SEXECDIR/storybook build -c .storybook-suspence/
 	cd ..
 fi
 
@@ -70,7 +74,11 @@ if [ "$what" == "--be" -o "$what" == "all" ]; then
 	echo "**** Compiling back end code ****"
 	revert=0
 	if [ "`basename $PWD`" != "server-src" ]; then
-		cd server-src/
+		if [ "`basename $PWD`" == "client-src" ]; then
+			cd ../server-src
+		else
+			cd server-src
+		fi
 		revert=1
 	fi
 	mkdir -p ../dist/
@@ -87,10 +95,10 @@ if [ "$what" == "--be" -o "$what" == "all" ]; then
 	mv ../dist/index.js ../dist/main.min.mjs
 	rm -r ../dist/home/
 
-	if [ ! -f ../dist/public/list.json ]; then
-		echo "[]" > ../dist/public/list.json
+	if [ ! -f ../dist/private/list.json ]; then
+		echo "[]" > ../dist/private/list.json
 	else
-		echo "At build time, there exists a list file, check its correct."
+		echo "At build time, there exists a list.json file, check its correct."
 	fi
 	if [ $revert ]; then
 		cd ..

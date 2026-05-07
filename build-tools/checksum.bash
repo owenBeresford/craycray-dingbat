@@ -1,4 +1,4 @@
-#!/bin/bash -x 
+#!/bin/bash  
 #
 # Setup the files that arent checked-in. 
 # Written in bash as faster to write and is more concise
@@ -8,10 +8,14 @@
 # Unfortunately, this script can't really be unit tested,
 #  please run with a '-x' param to the bash interpreter 
 
+# https://www.certguard.app/blog/self-signed-certificates-dev-ci-testing
+# add legacy SSL certs for storybook
+
 export BASE=`dirname "$0"`
 export BASE="$BASE/.."
 cd $BASE
-export PRIVATE="./dist/private"
+export PRIVATE="dist/private"
+export PROD_URL="app.hiss"  # edit to take value from user
 
 bigVersion=`node -v | sed -e "s/v//" -e "s/\..*//"`
 if [ "24" != "$bigVersion" ]; then
@@ -52,8 +56,8 @@ if [ ! -f "$BASE/server-src/package-lock.json" ]; then
 	npm i
 fi
 
-mkdir -p dist/public
-mkdir -p $PRIVATE
+mkdir -p $BASE/dist/public
+mkdir -p $BASE/$PRIVATE
 
 if [ -z "`which openssl`" ]; then
 	echo "ERROR: Please install openassl, or add it to the PATH."
@@ -72,25 +76,29 @@ if [ $? -ne 0 ]; then
 	exit 2
 fi
 
-openssl genpkey -genparam -algorithm ec -pkeyopt ec_paramgen_curve:P-256 -out ~/VALUELESS-params-P-256.pem
+openssl ecparam -genkey -name prime256v1 -noout -out $BASE/dist/private/params.pem 
+# openssl genpkey -genparam -algorithm ec -pkeyopt ec_paramgen_curve:P-256 -out ~/VALUELESS-params-P-256.pem
 if [ $? -ne 0 ]; then
-	echo "1st Openssl cmd failed.  Panic, contect dev?"
+	echo "1st Openssl cmd failed.  Panic, contact dev?"
 	exit 8
 fi
 
-echo "This next step is interactive, please follow prompts for a new web cert"
-openssl req -newkey ec:/home/$USER/VALUELESS-params-P-256.pem -keyout $PRIVATE/private.key -out $PRIVATE/csr.pem
+openssl pkcs8 -topk8 -nocrypt -in $BASE/dist/private/params.pem -out $BASE/dist/private/private.key
+#echo "This next step is interactive, please follow prompts for a new web cert"
+#openssl req -newkey ec:/home/$USER/VALUELESS-params-P-256.pem -keyout $PRIVATE/private.key -out $PRIVATE/csr.pem
 if [ $? -ne 0 ]; then
-	echo "2nd Openssl cmd failed.  Panic, contect dev?"
+	echo "2nd Openssl cmd failed.  Panic, contact dev?"
 	exit 8
 fi
 
-openssl req -x509 -key $PRIVATE/private.key -in $PRIVATE/csr.pem -out  $PRIVATE/server.pem -days 365 -sha256 
+openssl req -new -x509 -key $BASE/dist/private/private.key -out $BASE/dist/private/server.pem -days 365 -subj "/CN=$PROD_URL" -addext "keyUsage = digitalSignature, keyEncipherment" -addext "extendedKeyUsage = serverAuth"
+# openssl req -x509 -key $PRIVATE/private.key -in $PRIVATE/csr.pem -out  $PRIVATE/server.pem -days 365 -sha256 
 if [ $? -ne 0 ]; then
-	echo "3rd Openssl cmd failed.  Panic, contect dev?"
+	echo "3rd Openssl cmd failed.  Panic, contact dev?"
 	exit 8
 fi
-echo -e "Certs for a year have been created.  Rerun this script after that date for more.\nThe certs are invisible to Git, do not add them to a repo."
+
+echo -e "Certs for a year have been created just now.  Rerun this script after the year for more.\nThe certs are invisible to Git, do not add them to a repo."
 
 # vim: nospell syn=bash
 

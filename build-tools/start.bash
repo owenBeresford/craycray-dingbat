@@ -22,13 +22,13 @@ fi
 #  "#start:debug": "nest start --debug --watch",
 
 # export SHOPPING_PORT=3001 
-# export SHOPPING_IPADDR="192.168.1.218"  
+# export SHOPPING_IPADDR="app.hiss"  
 export SHOPPING_CERT=./dist/private/server.pem
 export SHOPPING_KEY=./dist/private/private.key  
-export SHOPPING_PASSPHRASE='XXX add password here XXX'
+export SHOPPING_PASSPHRASE=""
 # export NODE_DEBUG='tls,https'
 
-node ./dist/main.min.mjs; 
+node ./dist/main.min.mjs & 
 echo $! > $PIDFN; 
 cd -
 
