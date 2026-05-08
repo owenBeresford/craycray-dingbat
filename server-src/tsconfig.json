@@ -24,7 +24,7 @@
 	"skipLibCheck": true,
     "baseUrl": ".",
 
-    "types": [ "node", "vitest", "vite" ],
+    "types": [ "vitest", "vite", "node" ],
     "paths": {
       "@/*": [
         "src/*"
