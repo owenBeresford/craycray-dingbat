@@ -5,7 +5,8 @@ import type { ShippingStruct, ActionEnum } from "../../../common/types/Messagabl
 import { WORKER_NAME } from "../Constants";
 // import { createRemoteService } from "../Constants";
 import { useSSW } from "./SharedStateWorker";
-import { transform2text, transform2list } from "../services/Storable";
+import { transform2text, transform2list, packMsg } from "../services/Storable";
+
 
 export {};
 declare const self: DedicatedWorkerGlobalScope;

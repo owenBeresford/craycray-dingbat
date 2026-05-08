@@ -11,6 +11,7 @@ DETAILS TO COMPLETE FOR RELEASE
 - May be need to re-add STORE.getters
 - engineer thing to that actual network code is masked in story tests... another connection type
 - replace self-signed-certs with real-ones via lets-encrypt
+- storybook "run tests" on page load
 
 LOW IMPACT, nioce to haves
 - Maybe functions can have runtime behaviour from function name, supported by https://github.com/Guichaguri/cross-caller/blob/main/src/index.ts

@@ -65,6 +65,7 @@ WARN: to-date not actually ran this yet.
 ### Warnings / Caveats
 
 
+- Due the way that security theatre and SSL are designed, "low risk" URLs local to your own hardware will require fiddling to be accessed.  Browsers are not happy with HTTP, or HTTPS self signed for good general reasons.  However this doesn't make sense for local domains.  Some browsers often do not read the local hosts file to eliminate virus's on win32.   As a casual app-dev on the outside of those projects, I can document known work-rounds and no more.   
 - If you talk HTTP/0.9 or HTTP/1.0, or HTTP/1.1 to the API you get TCP transit, and nothing on higher protocols.  This is HTTPS and HTTP/2 only service, your browser should default to HTTPS and ALN upgrade steps.   
 - This project likes Node24, absolutely no warranty if you attempt to run on older versions as I expect NPM will make your life very hard.  Package.json includes some magic for getting Node24, but that tech is very frail as it moves version of NPM.  #leSigh.
    - Assuming you are a techie, adopt/ deploy NVM to have flexibility.

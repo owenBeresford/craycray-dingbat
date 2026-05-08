@@ -57,7 +57,7 @@ export class RemoteStorage implements Storable, DistantStorable {
         .fetch(SELF.url, REQT)
         .then((resp: Response): boolean => {
            clearTimeout(sortie);
-          sortie = undefined;
+           sortie = undefined;
           if (!didTimeOut) {
             good( Math.round(resp.status / 100) === 2);
           } else {
@@ -98,10 +98,10 @@ export class RemoteStorage implements Storable, DistantStorable {
         .catch((err: Error) => {
           bad(err);
         })
-        .then((goutte: Response | void) => {
+        .then((goutte: Response | void):void => {
+console.log("UIUIUI Did a fetch with ", REQT, "got ", goutte, "UIUIUIU");
           if (goutte) {
-            // this section is just JS
-            if (!goutte.ok) {
+             if (!goutte.ok) {
               return bad(new Error("Server sent an error http status " + goutte.status));
             }
 
@@ -121,7 +121,7 @@ export class RemoteStorage implements Storable, DistantStorable {
                 return bad(new Error("Server sent an error http status " + ee.toString()));
               });
           } else {
-            bad(new Error("Valid HTTP, but null response"));
+            return bad(new Error("Valid HTTP, but null response"));
           }
           return "value for eslint.";
         });
@@ -138,7 +138,8 @@ export class RemoteStorage implements Storable, DistantStorable {
    */
   public async loadState(): Promise<Array<SaveStruct>> {
     return new Promise((good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
-      const REQT: RequestInit = Object.assign(this.other, { method: "GET", body: null }) as RequestInit;
+      const REQT: RequestInit = Object.assign(this.other, { method: "GET", body: null, mode:'no-cors' }) as RequestInit;
+console.log("load state headers?",  REQT );      
       globalThis
         .fetch(this.url, REQT)
         .catch((err: unknown) => {

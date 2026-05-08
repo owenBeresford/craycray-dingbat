@@ -6,8 +6,7 @@ import type { BasicThreadable } from "../types/BasicThreadable";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
 import { transform2list, packMsg } from "./Storable";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
-import { WORKER_NAME } from "../Constants";
-
+ 
 type Timer = number;
 
 /**
