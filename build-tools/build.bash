@@ -63,8 +63,8 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 	rm ./dist/*.*
 
 # build storybook tests
-	node $SEXECDIR/storybook build
-	node $SEXECDIR/storybook build -c .storybook-suspence/
+	node $EXECDIR/storybook build
+	node $EXECDIR/storybook build -c .storybook-suspence/
 	cd ..
 fi
 
