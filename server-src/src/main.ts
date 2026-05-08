@@ -154,11 +154,15 @@ function createstaticAssets(httpsOptions: SecureServerOptions): FastifyAdapter {
   } as FastifyServerOptions);
   const inst: FastifyInstance = fast.getInstance();
   inst.get("/", (request: FastifyRequest, reply: FastifyReply) => {
-    reply.type("text/html; charset=utf8").sendFile("index.html");
+    reply.status(200).type("text/html; charset=utf8").sendFile("index.html");
   });
   inst.register(fastifyStatic, {
     root: path.join(__dirname, "public"),
     prefix: "/asset/",
+  });
+  inst.get("*", (request: FastifyRequest, reply: FastifyReply) => {
+    console.log("WILD CARD route");
+    reply.status(200).type("text/html; charset=utf8").sendFile("index.html");
   });
   
   inst.addHook("onRequest", (req: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction): void => {
