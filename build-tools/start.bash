@@ -9,11 +9,11 @@ if [ -n "$CURSERVICE" ]; then
 	if [ $CURSERVICE -gt 100 ]; then
 		echo "Sent a kill(15) to [old instance] $CURSERVICE"
 		kill $CURSERVICE; 
+	    reset 
 	fi
 fi; 
 rm $PIDFN 2>/dev/null
 if [ "$1" = "-q" ]; then
-	reset 
 	exit
 fi	
 
