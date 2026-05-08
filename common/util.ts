@@ -1,5 +1,6 @@
 import type { SaveStruct } from './types/SaveStruct';
-import {  toHex as monkeyPath_toHex } from 'es-arraybuffer-base64/Uint8Array.prototype.toHex';
+import { toHex as monkeyPatch_toHex } from '../server-src/node_modules/es-arraybuffer-base64/Uint8Array.prototype.toHex';
+import type { PromiseSucceed, PromiseReject } from "./types/promises";
 
 /**
  * isMobile
@@ -118,7 +119,7 @@ if(!( globalThis.crypto || globalThis.crypto.subtle) ) {
 }
 
 if(!('toHex' in Uint8Array.prototype)) {
-  Uint8Array.prototype.toHex=monkeyPath_toHex;
+  Uint8Array.prototype.toHex=monkeyPatch_toHex;
 }
 
 /**
@@ -153,15 +154,15 @@ export interface SimpleResponse {
 export interface FileExecFlags {
   cwd?:string|URL; 
   env?:Object;
-  encoding?:strin ;
+  encoding?:string ;
   timeout?:number ; // ms
   maxBuffer?:number ;
-  killSignal?:string|integer ;
+  killSignal?:string|number ;
   uid?:number; 
   gid?:number;
   windowsHide?:boolean ;
   windowsVerbatimArguments?:boolean ;
-  shell?:boolean|string|boolean ;
+  shell?:boolean|string ;
   signal?:AbortSignal;
 };
 
@@ -176,17 +177,17 @@ export async function runExecProcessOnUrl(
     url: string,
     extra:RequestInit | undefined
         ):Promise<SimpleResponse> {
-  if (typeof process !== "object") {
-    return;  // a browser
-  }
   var execFile:Function;
-  if(! execFile ) {
-    let tmp=await import('node:child_process');
-    execFile = tmp.execFile;
+  if (typeof process !== "object") {
+    throw new Error("Runtime: runExecProcessOnUrl() should only be used inside Node");  // a browser
+  } else {
+    if(! execFile ) {
+      let tmp=await import('node:child_process');
+      execFile = tmp.execFile;
+    }
   }
- 
 
-  return new Promise(async (good: PromiseSucceed<SimpleResponse>, bad: PromiseReject): void => {
+  return new Promise(async (good: PromiseSucceed<SimpleResponse>, bad: PromiseReject) => {
 // stderr has headers
   // stdout has response body
   const CB=(error:Error, stdout:string| Buffer, stderr: string|Buffer ):void => {
@@ -194,6 +195,13 @@ export async function runExecProcessOnUrl(
       console.error("cURL failed:", error.message);
       return bad(error);
     }
+    if(stdout instanceof Buffer) {
+      stdout=stdout.toString();
+    }
+    if(stderr instanceof Buffer) {
+      stderr=stderr.toString();
+    }
+
     let headers=parseHeaders(stderr);
     let h2=new Headers();
     for(let i in headers.resp ) {
@@ -256,10 +264,10 @@ export async function runExecProcessOnUrl(
   let args:Array<string>=[
       "-v", "-k", "-m1", url,  
   ];
-  if(extra && ( "method" in extra)) {
+  if(extra && ( "method" in extra) && extra['method']) {
     args.push( "-X"+extra['method'].toUpperCase() );
   }
-  if(extra &&( "body" in extra)) {
+  if(extra &&( "body" in extra) && extra['body']) {
     args.push( "-d");
     args.push( extra['body'] );
   }
