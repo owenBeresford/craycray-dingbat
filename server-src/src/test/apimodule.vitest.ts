@@ -1,7 +1,8 @@
 import { assert, describe, it, expect, assertType, beforeAll, afterAll } from "vitest";
 // https://scribe.rip/@azizzouaghia/setting-up-basic-api-testing-with-supertest-cucumber-jest-and-typescript-8c6a23c045a1
  
-import { delay, runFetch, runExecProcessOnUrl} from "../../../common/util";
+import { delay, runFetch,} from "../../../common/util";
+import { runExecProcessOnUrl } from "../../../common/cURL";
 import { ShoppingBE } from "../shopping/ShoppingBE";
 import { ShoppingService } from "../shopping/ShoppingService";
 import { SaveStruct } from "../../../common/types/SaveStruct";

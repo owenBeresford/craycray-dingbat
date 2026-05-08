@@ -1,0 +1,133 @@
+import type { SaveStruct } from './types/SaveStruct';
+import { toHex as monkeyPatch_toHex } from '../server-src/node_modules/es-arraybuffer-base64/Uint8Array.prototype.toHex';
+import type { PromiseSucceed, PromiseReject } from "./types/promises";
+
+export interface FileExecFlags {
+  cwd?:string|URL; 
+  env?:Object;
+  encoding?:string ;
+  timeout?:number ; // ms
+  maxBuffer?:number ;
+  killSignal?:string|number ;
+  uid?:number; 
+  gid?:number;
+  windowsHide?:boolean ;
+  windowsVerbatimArguments?:boolean ;
+  shell?:boolean|string ;
+  signal?:AbortSignal;
+};
+
+interface RunExecReturn {
+    reqt:Record<string, string>;
+    resp:Record<string, string>;
+};
+
+
+// https://nodejs.org/api/child_process.html#child_processexecfilefile-args-options-callback
+export async function runExecProcessOnUrl(
+    url: string,
+    extra:RequestInit | undefined
+        ):Promise<SimpleResponse> {
+  var execFile:Function;
+  if (typeof process !== "object") {
+    throw new Error("Runtime: runExecProcessOnUrl() should only be used inside Node");  // a browser
+  } else {
+    if(! execFile ) {
+      let tmp=await import('node:child_process');
+      execFile = tmp.execFile;
+    }
+  }
+
+  return new Promise(async (good: PromiseSucceed<SimpleResponse>, bad: PromiseReject) => {
+// stderr has headers
+  // stdout has response body
+  const CB=(error:Error, stdout:string| Buffer, stderr: string|Buffer ):void => {
+    if(error) {
+      console.error("cURL failed:", error.message);
+      return bad(error);
+    }
+    if(stdout instanceof Buffer) {
+      stdout=stdout.toString();
+    }
+    if(stderr instanceof Buffer) {
+      stderr=stderr.toString();
+    }
+
+    let headers=parseHeaders(stderr);
+    let h2=new Headers();
+    for(let i in headers.resp ) {
+      h2.append( i, headers.resp[i] );
+    }
+
+    let exit:SimpleResponse= {
+        body: stdout.trim(),
+        headers: h2,
+        ok: Math.floor( parseInt(headers.resp['status'], 10) /100) === 2,
+        status: parseInt(headers.resp['status'], 10 ),
+      } as SimpleResponse;
+    return good(exit);
+  };
+
+  function parseHeaders(str:string):RunExecReturn {
+    let bits:Array<string>=str.split("\n");
+    let out={reqt:{}, resp:{} } as RunExecReturn;
+    
+    for(let i=0; i<bits.length; i++ ) {
+      switch(bits[i][0]) {
+      case '>': {
+        let annoying= parseHeader2(bits[i]);
+        out.reqt[annoying[0]]=annoying[1];
+        break;
+        }
+      case '<': {
+        let annoying= parseHeader2(bits[i]);
+        out.resp[annoying[0]]=annoying[1];
+        break;
+      }
+      default: break;
+    }
+    }
+    return out;
+  }
+
+  // > GET /api/shared-state HTTP/2
+  // < HTTP/2 200
+  function parseHeader2(str:string):Array<string> {
+    str=str.trim();
+    str=str.substring(1, str.length);
+    str=str.trim();
+    if( str.indexOf(':')===-1 ) {
+      if( str.indexOf("HTTP/")===0 ) {
+        return [ "status", str.substring( str.indexOf(' ')+1, str.length ) ];
+
+      } else {
+        return [ "method", str.substring(0, str.indexOf(' ') ) ];
+      }
+      
+    } else {
+      return [ 
+      str.substring(0, str.indexOf(':')).trim(), 
+      str.substring( str.indexOf(':')+2, str.length).trim(),
+      ];
+    }
+  }
+
+  let args:Array<string>=[
+      "-v", "-k", "-m1", url,  
+  ];
+  if(extra && ( "method" in extra) && extra['method']) {
+    args.push( "-X"+extra['method'].toUpperCase() );
+  }
+  if(extra &&( "body" in extra) && extra['body']) {
+    args.push( "-d");
+    args.push( extra['body'] );
+  }
+  if(extra && ("headers" in extra) ) {
+    for(let i of extra.headers ) {
+      args.push( "-H"+i+":"+extra.headers[i] );
+    }
+  }
+  const options:FileExecFlags = { windowsHide:true, shell:false };
+  execFile("/usr/bin/curl", args, options, CB);
+  });
+}

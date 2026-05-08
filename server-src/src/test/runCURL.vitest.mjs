@@ -1,7 +1,8 @@
 import { assert, describe, it, expect, assertType, beforeAll, afterAll } from "vitest";
 
-import { delay, runFetch, runExecProcessOnUrl} from "../../../common/util";
- 
+import { delay, runFetch, } from "../../../common/util";
+import { runExecProcessOnUrl} from "../../../common/cURL";
+
 describe("I can compile external script handling", () => {
   const TARGET = "https://app.hiss:3001/api/shared-state";
 
