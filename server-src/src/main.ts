@@ -1,5 +1,5 @@
 import { NestFactory } from "@nestjs/core";
-import { ValidationPipe } from "@nestjs/common";
+import { ValidationPipe, ConsoleLogger } from "@nestjs/common";
 import { FastifyAdapter } from "@nestjs/platform-fastify";
 import fastify from "fastify";
 import fastifyStatic from "@fastify/static";
@@ -37,6 +37,7 @@ const VALID_ROUTES=[
   "/asset/shopping.es.min.mjs",
   "/asset/logo.png",
   "/asset/worker1.es.min.mjs",
+  "/api/shared-state",
 ];
 
 
@@ -81,14 +82,16 @@ function extractEnv(env: NodeJS.ProcessEnv): ControlledEnv {
   if (env.SHOPPING_KEY) {
     out.SSLkey = "" + env.SHOPPING_KEY;
   }
-  if (env.SHOPPING_PASSPHRASE) {
+  // in theory i want a password on the cert.   So this code supports it
+  // in practice, its less use, and am using PK8 files that doesnt include it (so storybook works cleanly)
+  if ( "SHOPPING_PASSPHRASE" in env) {
     out.passphrase = "" + env.SHOPPING_PASSPHRASE;
   }
   if (env.SHOPPING_CERT) {
     out.SSLcert = "" + env.SHOPPING_CERT;
   }
   if (out.SSLkey === "/tmp/" || out.SSLcert === "/tmp/" || out.passphrase === "enter a password") {
-    throw new Error("For production, you must specify both the CA and the cert... $SHOPPING_KEY, $SHOPPING_CERT  ");
+    throw new Error("For production, you must specify both the CA and the cert... $SHOPPING_KEY, $SHOPPING_CERT ");
   }
   return out;
 }
@@ -159,10 +162,9 @@ function createstaticAssets(httpsOptions: SecureServerOptions): FastifyAdapter {
   });
   
   inst.addHook("onRequest", (req: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction): void => {
-    const URN= new URL(req.url);
-    if(!VALID_ROUTES.includes( URN.pathname)) {
-      console.warn( "ALERT ALERT "+(new Date()).toISOString()+ " UNKNOWN REQUEST URL ", req.hostname, req.headers);
-      // this should fall though to the defaulkt route...
+    if(!VALID_ROUTES.includes( req.url)) {
+      console.warn( "ALERT ALERT "+(new Date()).toISOString()+ " UNKNOWN REQUEST URL ", req.host, req.url, req.headers);
+      // this should fall though to the default route...
     }
 /* // when I looked more, it was the client setting this header,. so dont need this step.
     if( req.headers["content-type"]?.startsWith("image") ) {
@@ -197,6 +199,7 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
   const app: NestFastifyApplication = await NestFactory.create<NestFastifyApplication>(
     ShoppingModule,
     fast, // FastifyHttp2SecureOptions
+    { logger: new ConsoleLogger({ json: true, prefix: 'shop', colors: false,}) }
   );
   app.enableCors({ credentials: true });
   app.useGlobalPipes(
@@ -212,7 +215,8 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
   // https://dev.to/axiom_agent/nodejs-graceful-shutdown-the-right-way-sigterm-connection-draining-and-kubernetes-fp8
   const DYING = function (): void {
     console.log("Closing service on " + vars.SIpAddr + ":" + vars.SPort);
-    process.exit(127); // or the terminal isn't returned
+    // this was closing the socket, but then that was migrated into the framework, so gone
+    process.exit(127);    // or the terminal isn't returned
   };
 
   process.on("uncaughtException", async function (err: Error): Promise<void> {

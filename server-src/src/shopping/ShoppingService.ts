@@ -178,7 +178,7 @@ export class ShoppingService {
       }
     }
     if (FAIL > 0) {
-      throw new Error("Transactiomn rejected, invalid data supplied.");
+      throw new Error("Transaction rejected, invalid data supplied.");
     }
     return dat;
   }

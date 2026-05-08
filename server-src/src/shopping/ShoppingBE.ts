@@ -1,4 +1,4 @@
-import { Controller, Header, Body, HttpCode, Get, Post } from "@nestjs/common";
+import { Controller, Header, Body, HttpCode, Get, Post, Head, Options, ValidationPipe } from "@nestjs/common";
 // import { GoneException } from '@nestjs/common/exceptions';
 import { ParseArrayPipe } from "@nestjs/common";
 // import { ServeStaticModule } from '@nestjs/serve-static';
@@ -40,8 +40,28 @@ export class ShoppingBE {
   @Header("Content-Type", "application/json")
   @Header("Accept", "application/json")
   @Header("Pragma", "no-cache")
-  public async save(dat: Array<SaveStructDto>): Promise<string> {
-    // the extra validation is inside the impl, and will throw if needed
+  public async save(@Body(ValidationPipe) dat: Array<SaveStructDto>): Promise<string> {
+     // the extra validation is inside the impl, and will throw if needed
     return await this.impl.save(dat);
   }
+
+/* // seem to be supplied by default
+  @Head("/shared-state")
+  @HttpCode(200)
+  @Header("Cache-Control", "no-store, no-cache, must-revalidate")
+  @Header("Content-Language", "en-GB")
+  @Header("Content-Type", "application/json")
+  @Header("Pragma", "no-cache")
+  public headRequest():void {  }
+
+  @Options("/shared-state")
+  @HttpCode(200)
+  @Header("Cache-Control", "no-store, no-cache, must-revalidate")
+  @Header("Content-Language", "en-GB")
+  @Header("Content-Type", "application/json")
+  @Header("Pragma", "no-cache")
+  public optionsRequest():string { 
+    return "implement me";
+   }
+*/
 }
