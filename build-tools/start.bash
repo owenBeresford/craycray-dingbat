@@ -7,12 +7,14 @@ if [ -f $PIDFN ]; then
 fi; 
 if [ -n "$CURSERVICE" ]; then 
 	if [ $CURSERVICE -gt 100 ]; then
+		echo "Sent a kill(15) to [old instance] $CURSERVICE"
 		kill $CURSERVICE; 
 	fi
 fi; 
 rm $PIDFN 2>/dev/null
 if [ "$1" = "-q" ]; then
-	return
+	reset 
+	exit
 fi	
 
 if [ "client-src" == "`basename $PWD`" -o "server-src" == "`basename $PWD`" ] ;then
@@ -26,6 +28,7 @@ fi
 export SHOPPING_CERT=./dist/private/server.pem
 export SHOPPING_KEY=./dist/private/private.key  
 export SHOPPING_PASSPHRASE=""
+export NODE_DEBUG='https,http'
 # export NODE_DEBUG='tls,https'
 
 node ./dist/main.min.mjs & 
