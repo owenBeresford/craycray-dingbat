@@ -24,6 +24,7 @@ if(mode!="production") {
 // https://vitejs.dev/config/
 /// <reference types="vitest/config" />
 export default defineConfig({
+	base: "/",
 	plugins: [ vue() ],
 	server: {
       hmr: false

@@ -3,26 +3,28 @@ import type {
   RouterOptions,
   RouteRecordRaw,
   RouteLocationNormalized,
-  RouteLocationNormalizedLoadedGeneric,
+  RouteLocationNormalizedGeneric, 
+  RouteLocationNormalizedLoadedGeneric, 
+  NavigationGuardNext,
+  NavigationGuardReturn,
 } from "vue-router";
 
 import ListOfLists from "./ListOfLists.vue";
 import ThisList from "./ThisList.vue";
 import UnknownRoute from "./UnknownRoute.vue";
-import { wrap_getMyIP } from "../../../common/util";
 import { useStore } from "../services/Store";
-import { ListData } from "../services/DataFactory";
+// import { ListData } from "../services/DataFactory";
 
-const { currentData, updateData, initData } = ListData;
-/**
+ /**
    * StaticRoutes
-   * ilibrary standard file, holding the mspping of URN to Componment/ screen
+   * library-standard file, holding the mspping of URN to Componment/ screen
 	- the functions below are described in the Vue docs, and they are predictable.
  
    * @public
    */
-export const StaticRoutes = createRouter({
-  history: createWebHistory(wrap_getMyIP()),
+ export const StaticRoutes = createRouter({
+  history: createWebHistory("/"),
+  strict:false,
   routes: [
     // For the Meta sections
     // https://stackoverflow.com/questions/51639850/how-to-change-page-titles-when-using-vue-router
@@ -42,7 +44,7 @@ export const StaticRoutes = createRouter({
       component: ListOfLists,
       meta: { title: "All your shopping lists" },
       props: (route: RouteLocationNormalized): Record<string, any> => {
-        return { ...route.params, currentStateKey: "listoflists2", fixPath: swapPath };
+        return { ...route.params,  currentStateKey: "listoflists2", fixPath: swapPath };
       },
     },
     {
@@ -54,10 +56,12 @@ export const StaticRoutes = createRouter({
         return { ...route.params, shopStore: useStore(), currentStateKey: "thislist1" };
       },
     },
+    // possible @TODO IOIO XXX 
     //    { path: '/install', name:'install', ...? },
     {
       path: "/:pathMatch(.*)*",
       name: "not-found",
+      meta: { title: "Unable to perform your last request" },
       component: UnknownRoute,
       props: (route: RouteLocationNormalized): Record<string, any> => {
         return { ...route.params, errpath: `${route.path}`, currentStateKey: "unknownRoute" + route.path };
@@ -65,6 +69,19 @@ export const StaticRoutes = createRouter({
     },
   ] as Array<RouteRecordRaw>,
 } as RouterOptions);
+
+/*
+StaticRoutes.beforeEach(
+  async (
+    to:RouteLocationNormalizedGeneric, 
+    from:RouteLocationNormalizedLoadedGeneric, 
+    next:NavigationGuardNext )
+    :Promise<NavigationGuardReturn> => {
+    console.
+    log(`Pointless log to show feature ${from} -> ${to}`); 
+    next();
+});
+*/
 
 /**
  * swapPath
