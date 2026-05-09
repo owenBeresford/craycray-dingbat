@@ -162,7 +162,7 @@ function createstaticAssets(httpsOptions: SecureServerOptions): FastifyAdapter {
   });
   inst.get("*", (request: FastifyRequest, reply: FastifyReply) => {
     console.log("WILD CARD route");
-    reply.status(200).type("text/html; charset=utf8").sendFile("index.html");
+    reply.status(218).type("text/html; charset=utf8").sendFile("index.html");
   });
   
   inst.addHook("onRequest", (req: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction): void => {
