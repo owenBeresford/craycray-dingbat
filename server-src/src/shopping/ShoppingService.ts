@@ -19,7 +19,7 @@ if (basename(__dirname) === "shopping") {
 }
 const SOL_STORE_IMAGE = path.join(base, "dist", "private", "list.json");
 
-console.log("For "+process.pid+", my data file is "+ SOL_STORE_IMAGE );
+console.log("For " + process.pid + ", my data file is " + SOL_STORE_IMAGE);
 /**
  * ShoppingService 
  * An actual class 

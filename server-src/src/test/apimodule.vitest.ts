@@ -1,7 +1,7 @@
 import { assert, describe, it, expect, assertType, beforeAll, afterAll } from "vitest";
 // https://scribe.rip/@azizzouaghia/setting-up-basic-api-testing-with-supertest-cucumber-jest-and-typescript-8c6a23c045a1
- 
-import { delay, runFetch,} from "../../../common/util";
+
+import { delay, runFetch } from "../../../common/util";
 import { runExecProcessOnUrl } from "../../../common/cURL";
 import { ShoppingBE } from "../shopping/ShoppingBE";
 import { ShoppingService } from "../shopping/ShoppingService";
@@ -22,11 +22,11 @@ describe("I can use API module", () => {
 
   it("can POST the API", async () => {
     // made data from fixture...
-    let res: SimpleResponse = await runExecProcessOnUrl(TARGET, 
-        { method: "POST", 
-          body: JSON.stringify(transform2SaveStruct(fixture1())), 
-          headers:{'Content-Type': 'application/json; charset=utf-8'} }
-        );
+    let res: SimpleResponse = await runExecProcessOnUrl(TARGET, {
+      method: "POST",
+      body: JSON.stringify(transform2SaveStruct(fixture1())),
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+    });
     expect(res.ok);
     expect(res.status).toBe(201);
     expect(res.headers.get("Content-Type")).toMatch(/json/);
@@ -41,10 +41,10 @@ describe("I can use API module", () => {
 
   it("more complex API session [1]", async () => {
     // made data from fixture...
-    let res: SimpleResponse = await runExecProcessOnUrl(TARGET, { 
-      method: "POST", 
-      body: JSON.stringify(transform2SaveStruct(fixture1())) ,
-      headers:{'Content-Type': 'application/json; charset=utf-8', 'Accept':'application/json; charset=utf-8'} 
+    let res: SimpleResponse = await runExecProcessOnUrl(TARGET, {
+      method: "POST",
+      body: JSON.stringify(transform2SaveStruct(fixture1())),
+      headers: { "Content-Type": "application/json; charset=utf-8", Accept: "application/json; charset=utf-8" },
     });
     expect(res.ok);
     expect(res.status).toBe(201);
@@ -56,22 +56,22 @@ describe("I can use API module", () => {
         let obj = JSON.parse(new String(res.body).trim());
         expect(obj.statusCode).toBe(204);
       }
-    } catch (e:unknown) {
+    } catch (e: unknown) {
       console.log("[FIRST] Test quit early saying " + (e as Error).message);
       expect(false).toBe(true);
     }
 
-    res  = await runExecProcessOnUrl(TARGET, undefined);
+    res = await runExecProcessOnUrl(TARGET, undefined);
     expect(res.ok);
     expect(res.status).toBe(200);
     expect(res.headers.get("Content-Type")).toMatch(/json/);
     // assertType<Array<SaveStruct>>(res.body);
-    expect(res.body.length).toBeGreaterThan (3);
+    expect(res.body.length).toBeGreaterThan(3);
 
-    res  = await runExecProcessOnUrl(TARGET, { 
-      method: "post", 
-      body: JSON.stringify(transform2SaveStruct(fixture3())) ,
-      headers:{'Content-Type': 'application/json; charset=utf-8', 'Accept':'application/json; charset=utf-8' } 
+    res = await runExecProcessOnUrl(TARGET, {
+      method: "post",
+      body: JSON.stringify(transform2SaveStruct(fixture3())),
+      headers: { "Content-Type": "application/json; charset=utf-8", Accept: "application/json; charset=utf-8" },
     });
     expect(res.ok);
     expect(res.status).toBe(201);
@@ -93,7 +93,7 @@ describe("I can use API module", () => {
     expect(res.status).toBe(200);
     expect(res.headers.get("Content-Type")).toMatch(/json/);
     assertType<Array<SaveStruct>>(res.body);
-    expect(res.body.length).toBeGreaterThan (4);
+    expect(res.body.length).toBeGreaterThan(4);
   });
 
   // IOIO XXX add a wonky object to POST, to show error state is sensible

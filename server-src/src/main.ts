@@ -28,18 +28,17 @@ import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import { ShoppingModule } from "./shopping/shopping-module";
 const { __dirname, __filename } = getGlobals(import.meta.url);
 
-const VALID_ROUTES=[
-  '/',
-  '/index.html',
-  "/asset/favicon.ico" ,
-  "/asset/manifest.json"  ,
+const VALID_ROUTES = [
+  "/",
+  "/index.html",
+  "/asset/favicon.ico",
+  "/asset/manifest.json",
   "/asset/shopping.min.css",
   "/asset/shopping.es.min.mjs",
   "/asset/logo.png",
   "/asset/worker1.es.min.mjs",
   "/api/shared-state",
 ];
-
 
 // At runtime the values are forced to be int or string
 // so for example bash functions get mashed into strings, and the Node process will crash.
@@ -84,7 +83,7 @@ function extractEnv(env: NodeJS.ProcessEnv): ControlledEnv {
   }
   // in theory i want a password on the cert.   So this code supports it
   // in practice, its less use, and am using PK8 files that doesnt include it (so storybook works cleanly)
-  if ( "SHOPPING_PASSPHRASE" in env) {
+  if ("SHOPPING_PASSPHRASE" in env) {
     out.passphrase = "" + env.SHOPPING_PASSPHRASE;
   }
   if (env.SHOPPING_CERT) {
@@ -164,20 +163,20 @@ function createstaticAssets(httpsOptions: SecureServerOptions): FastifyAdapter {
     console.log("WILD CARD route");
     reply.status(218).type("text/html; charset=utf8").sendFile("index.html");
   });
-  
+
   inst.addHook("onRequest", (req: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction): void => {
-    if(!VALID_ROUTES.includes( req.url)) {
-      console.warn( "ALERT ALERT "+(new Date()).toISOString()+ " UNKNOWN REQUEST URL ", req.host, req.url, req.headers);
+    if (!VALID_ROUTES.includes(req.url)) {
+      console.warn("ALERT ALERT " + new Date().toISOString() + " UNKNOWN REQUEST URL ", req.host, req.url, req.headers);
       // this should fall though to the default route...
     }
-/* // when I looked more, it was the client setting this header,. so dont need this step.
+    /* // when I looked more, it was the client setting this header,. so dont need this step.
     if( req.headers["content-type"]?.startsWith("image") ) {
       reply.removeHeader("pragma");
     }
 */
     done();
   });
-  
+
   return fast;
 }
 
@@ -195,7 +194,7 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
     key: fs.readFileSync(vars.SSLkey as string, "utf8"),
     cert: fs.readFileSync(vars.SSLcert as string, "utf8"),
     passphrase: vars.passphrase as string,
-//    allowHTTP1: true, // the bot is really keen on this.  I would like not have it
+    //    allowHTTP1: true, // the bot is really keen on this.  I would like not have it
   };
 
   const fast = createstaticAssets(httpsOptions);
@@ -203,7 +202,7 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
   const app: NestFastifyApplication = await NestFactory.create<NestFastifyApplication>(
     ShoppingModule,
     fast, // FastifyHttp2SecureOptions
-    { logger: new ConsoleLogger({ json: true, prefix: 'shop', colors: false,}) }
+    { logger: new ConsoleLogger({ json: true, prefix: "shop", colors: false }) },
   );
   app.enableCors({ credentials: true });
   app.useGlobalPipes(
@@ -220,7 +219,7 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
   const DYING = function (): void {
     console.log("Closing service on " + vars.SIpAddr + ":" + vars.SPort);
     // this was closing the socket, but then that was migrated into the framework, so gone
-    process.exit(127);    // or the terminal isn't returned
+    process.exit(127); // or the terminal isn't returned
   };
 
   process.on("uncaughtException", async function (err: Error): Promise<void> {

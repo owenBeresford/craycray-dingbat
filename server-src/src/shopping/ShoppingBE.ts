@@ -41,11 +41,11 @@ export class ShoppingBE {
   @Header("Accept", "application/json")
   @Header("Pragma", "no-cache")
   public async save(@Body(ValidationPipe) dat: Array<SaveStructDto>): Promise<string> {
-     // the extra validation is inside the impl, and will throw if needed
+    // the extra validation is inside the impl, and will throw if needed
     return await this.impl.save(dat);
   }
 
-/* // seem to be supplied by default
+  /* // seem to be supplied by default
   @Head("/shared-state")
   @HttpCode(200)
   @Header("Cache-Control", "no-store, no-cache, must-revalidate")
