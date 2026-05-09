@@ -20,13 +20,15 @@ WARN: to-date not actually ran this yet.
 ### To use
 
 
-* clone repo to a big screen device
-* Read the file, then Run build-tools/checksum.bash  this create scripts and runs `npm i` twice
+* Clone repo to a big screen device
+* Read the file, then Run build-tools/checksum.bash  this creates certs and runs `npm i` twice
 * OR run `npm i` in each package directory, and build your own certs (maybe from **Letsencrypt**?) 
 * run `npm run build:app`
 * run `npm run app`
 * launch on phone or desktop and build your initial lists (labour-intensive here)
+* Use the install feature on phones, if you think the app is use the time typing.
 * Nag me for JSON import from XYZ other platform capacity
+* Think about scan barcode on older packet https://www.actowizsolutions.com/uk-grocery-api-real-time-data-tesco-aldi-asda-sainsburys.php
 
 * Advanced use: read TODO list
 
@@ -88,7 +90,8 @@ If this was paid work, I would be using a more graphical and less indexable file
 
 
 User journeys:
-* user1 tries app by going to my LAN, opening supplied URL in phone
+-----
+* user1 tries app by going to the LAN, opening supplied URL in phone
 * sees context help, likely skims, closes
 * sees lists
 * taps to open a list
@@ -97,21 +100,35 @@ User journeys:
 * looks at burger menu
 * closes the PWA
 
+-----
 * user2 actually uses app by opening it
-* starts a new list with the 'new' button
+* starts a new list with the 'new list' button
 * then spends 30min browsing cupboards, and adding items to list as necessary
 * hits save to persist this list; does not close the PWA app
 * engages transport to get to shops
 * buys items, and swipes the items off
 * closes app without saving it, so swiped list isn't persisted
 
+-----
 * next week, user2 opens the PWA, 
 * and sees the list of lists on loading; then loads the list they made previously
 * repeats shopping process
 
-* user1 returns to the PWA, and builds a christmas shopping list
-* then saves it
+-----
+* user1 returns to the PWA, and builds a Christmas shopping list
+* Then enters a sensible name and saves it
 
-* several months later; user1 goers shopping with the handily saved list
+----
+* user1 knows they entered an item, but has lost it. 
+   * This is a point of friction on freeware from 'Driod.
+* They use the search feature as it seems relevant to their needs.
+* This builds a new list of items that match that description. 
+   * Each result includes a link back to the original list.
+* They find their lost item, and swipe it, so no-one can see it.
+* They save the list, and close the app.
+* The new list could be saved, although its recommended to enter a meaningful name first. 
+
+-----
+* Several months later; user1 goes Xmas shopping with the handily saved list
 
 

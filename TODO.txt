@@ -7,11 +7,13 @@ DETAILS TO COMPLETE FOR RELEASE
 - think about best name for ShopState
 - Make better favico
 - consider badges, css backdrop not working
-- workout if MotionStream->significance and signifcanceAsPercentage should use same thresholds
+- Workout if MotionStream->significance and signifcanceAsPercentage should use same thresholds
 - May be need to re-add STORE.getters
-- engineer thing to that actual network code is masked in story tests... another connection type
-- replace self-signed-certs with real-ones via lets-encrypt
-- storybook "run tests" on page load
+- Engineer thing to that actual network code is masked in story tests... another connection type
+- Replace self-signed-certs with real-ones via lets-encrypt
+- Storybook "run tests" on page load
+- Scroll to top marker, if the list is longer than the page
+- Search feature
 
 LOW IMPACT, nioce to haves
 - Maybe functions can have runtime behaviour from function name, supported by https://github.com/Guichaguri/cross-caller/blob/main/src/index.ts
