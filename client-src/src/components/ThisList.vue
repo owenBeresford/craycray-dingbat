@@ -2,15 +2,15 @@
   <div class="aList" :data-testid="testId" :key="currentStateKey">
     <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="betterId" :testId="viewId" />
     <ul class="buttonRow">
-      <li class="bigger">{{ list.nom }}</li>
+      <li class="bigger"><h3>{{ list.nom }}</h3></li>
+      <li > <img width="40" height="40" :src="logoPath" aria-hidden="true" role="presentation" :alt="text.imgAlt"  /> </li>
       <li :title="text.addTitle">
-        <img width="40" height="40" :src="logoPath" aria-hidden="true" role="presentation" :alt="text.imgAlt"  />
         <span
           role="button"
-          v-touch.once="onAdd"
-          @click.once="onAdd"
           class="button"
-          @keypress.once="onAdd"
+          v-touch.prevent.once="onAdd"
+          @click.prevent.once="onAdd"
+          @keypress.prevent.once="onAdd"
           v-html="text.addName"
         ></span>
       </li>
@@ -168,7 +168,6 @@ export default defineComponent({
 
     onAdd(e: GuessEvent): boolean {
       this.getInput = "";
-      e.preventDefault();
       this.cb = (d1: string | null): void => {
         if (d1 === null) {
           this.canSeeInput = false;
