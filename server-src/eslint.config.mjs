@@ -58,7 +58,7 @@ export default [
       "no-template-curly-in-string": "warn",
       "use-isnan": "warn",
       "no-eval": "warn",
-		"class-methods-use-this":"warn",
+      "class-methods-use-this": "warn",
       "no-negated-condition": "off",
       // legacy only.
       //		"eslint-plugin-no-http-protocol/no-http-protocol": ["warn"],
@@ -118,7 +118,7 @@ export default [
         fetch: "readonly",
       },
       parser: tseslint.parser,
-      parserOptions: { programs: [ tsParser.createProgram("./tsconfig.json")] },
+      parserOptions: { programs: [tsParser.createProgram("./tsconfig.json")] },
     },
     ignores: [
       "dist/*",

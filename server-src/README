@@ -1,8 +1,8 @@
 spam a quick koa project
 edit config to shout/die if world accessible IP
 create /api/save and /api/load which accept or emit whole JSON files
-       just dump files to file system, as this is LAN only
-create /api/list 
+just dump files to file system, as this is LAN only
+create /api/list
 create /install that supplies the CacheStorage/ and service workers
 creating /help would be a good idea
 
@@ -79,4 +79,3 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
-

@@ -3,42 +3,33 @@
     "target": "esnext",
     "module": "esnext",
     "strict": true,
-	"strictNullChecks":true,
+    "strictNullChecks": true,
     "jsx": "preserve",
     "experimentalDecorators": true,
-	"strictPropertyInitialization":false,
-	"emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
+    "emitDecoratorMetadata": true,
     "allowJs": true,
     "declaration": true,
     "declarationDir": "../common/types",
-	"isolatedModules": true,
+    "isolatedModules": true,
     "moduleResolution": "node",
-	"noResolve":false,
+    "noResolve": false,
     "esModuleInterop": true,
-	"extendedDiagnostics":false,
-	"downlevelIteration": true,
+    "extendedDiagnostics": false,
+    "downlevelIteration": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
     "sourceMap": false,
-	"skipLibCheck": true,
+    "skipLibCheck": true,
     "baseUrl": ".",
 
-    "types": [ "vitest", "vite", "node" ],
+    "types": ["vitest", "vite", "node"],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
-    "lib": [ 
-	  "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-     ]
-	},
-  "include": [ "src/shopping/*.ts", "src/*.ts" ],
-  "exclude": [
-   "node_modules"
-  ]
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+  },
+  "include": ["src/shopping/*.ts", "src/*.ts"],
+  "exclude": ["node_modules"]
 }
