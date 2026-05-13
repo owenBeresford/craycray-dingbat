@@ -99,7 +99,6 @@ export class RemoteStorage implements Storable, DistantStorable {
           bad(err);
         })
         .then((goutte: Response | void):void => {
-console.log("UIUIUI Did a fetch with ", REQT, "got ", goutte, "UIUIUIU");
           if (goutte) {
              if (!goutte.ok) {
               return bad(new Error("Server sent an error http status " + goutte.status));
@@ -139,8 +138,7 @@ console.log("UIUIUI Did a fetch with ", REQT, "got ", goutte, "UIUIUIU");
   public async loadState(): Promise<Array<SaveStruct>> {
     return new Promise((good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
       const REQT: RequestInit = Object.assign(this.other, { method: "GET", body: null, mode:'no-cors' }) as RequestInit;
-console.log("load state headers?",  REQT );      
-      globalThis
+       globalThis
         .fetch(this.url, REQT)
         .catch((err: unknown) => {
           console.warn("FAILED TO LOAD STATE", (err as Error).message);
