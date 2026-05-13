@@ -24,6 +24,8 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 			cd client-src
 		fi
 	fi
+
+
 	$NODEBIN $EXECDIR/vite --config ./vite.config.mjs build --l info
 	ret=$?
 	if [ $ret -ne 0 ]; then
@@ -42,6 +44,13 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 	else 
 		cp dist/worker1.es.mjs ../dist/public/worker1.es.min.mjs
 	fi
+
+	bigVersion=`node -v | sed -e "s/v//" -e "s/\..*//"`
+	if [ "$bigVersion" -lt "24" ]; then
+		echo "NVM seems absent from this shell.  Currently limping on node $bigVersion"
+		exit 3
+	fi
+
 
 	$NODEBIN $EXECDIR/uglifycss --max-line-len 2000 ./src/assets/shopping.css >./shopping.tmp.css
 	ret=$?
