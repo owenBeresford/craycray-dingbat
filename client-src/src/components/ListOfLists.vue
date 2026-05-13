@@ -6,7 +6,7 @@
           <span>
           <img width="30" height="30" :src="logoPath" aria-hidden="true" role="presentation" alt="The app logo - Improve text here" />
           </span>
-          <span class="centre" role="button">
+          <span class="centre" role="button" :title="`This links leads to the list called '${i.nom}'`">
           <router-link :to="`${mapURL('aList', i.id)}`" class="button">{{ i.nom }}</router-link>
           </span>
           <span>
