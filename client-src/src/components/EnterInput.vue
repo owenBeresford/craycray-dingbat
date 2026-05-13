@@ -113,13 +113,13 @@ export default defineComponent({
   watch: {
     val(nouveau:string, vieux:string ):void {
 //      if (_LOGGING_) {
-        console.log(`EnterInput: Running watch ${vieux} => ${nouveau}.`);
+        console.log(`EnterInput: Running watch on input '${vieux}' => '${nouveau}'.`);
 //      }
       this.oVal = nouveau;
     },
     visible(nouveau:string, vieux:string):void {
       this.bShow=!!nouveau;
-console.log("XXX new value in viibility","new value", nouveau, this.bShow, "old value", vieux );
+// console.log("XXX new value in visibility","new value", nouveau, this.bShow, "old value", vieux );
       if (this.bShow) {
         setTimeout(() => {
           const élément: HTMLInputElement = this.$refs.enterIt as HTMLInputElement;
@@ -142,9 +142,8 @@ console.log("XXX new value in viibility","new value", nouveau, this.bShow, "old 
     },
 
     onUpdate(e: GuessEvent): void {
-console.warn("EnterInput.onUpdate running again. ", e);      
       if (!this.bShow) {
-console.warn("EnterInput.onUpdate  event this component isn't active, but has input events");
+        console.warn("EnterInput.onUpdate  event this component isn't active, but has input events");
         return;
       }
 
