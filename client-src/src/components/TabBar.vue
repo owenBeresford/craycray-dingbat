@@ -12,27 +12,26 @@
           <router-link class="button" :to="urls[1]">{{ menu.newName }}</router-link>
         </li>
         <li :title="menu.findTitle">
-          <span class="button" 
+          <span class="button"
             role="button"
-            @click.prevent="onFind"
-            v-touch.prevent="onFind"
-            @keypress="onFind"
+            @click.prevent="onSearch"
+            v-touch.prevent="onSearch"
+            @keypress="onSearch"
           >{{ menu.findItem }}</span>
         </li>
-        
+
         <li>
           <span
-            class="obmenu foldPoint"
+            class="menuTrigger"
             aria-haspopup="menu"
-            :aria-pressed="menuOpen"
+            :aria-pressed="menuStateRef"
             role="button"
             @click.prevent="onMenu"
             v-touch="onMenu"
             @keypress="onMenu"
             :title="menu.actualMenuTitle"
-            v-html="menuLabel"
           ></span>
-          <menu :class="menuState" role="navigation" :data-testId="menuId">
+          <menu class="menuTrigger" role="navigation" :data-testId="menuId" :aria-hidden="!menuStateRef">
             <li>
               <span
                 role="button"
@@ -124,33 +123,31 @@
         </li>
       </ul>
     </div>
-    <EnterInput :val="getInput" :visible="visible" :cb="CB" :testid="inputId" :currentStateKey="EIK"></EnterInput>
+    <EnterInput :val="getInputRef" :visible="visibleRef" :cb="CBRef" :testid="inputId" :currentStateKey="EIK"></EnterInput>
   </div>
 </template>
 
 <script lang="ts">
 // https://github.com/josueggh/a11y-cheatsheet
-import { defineComponent } from "vue";
+import { defineComponent, inject, ref } from "vue";
 import type { MethodOptions } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useStore } from "../services/Store";
+import type { COMPLETE_STORE } from '../services/Store';
 import { AList } from "../services/AList";
 import { ListData, setupCurrentList } from "../services/DataFactory";
 import { useCacheWrapper, CacheWrapper } from "../workers/InstallWorker";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
-import { useUserActions } from '../services/UserActions';
-import type { ExternalMethods } from '../services/UserActions';
+import { useUserActions, noop } from '../services/UserActions';
+import type { ExternalMethods, CBType } from '../services/UserActions';
 import { StaticRoutes } from "./Routing";
 import EnterInput from "./EnterInput.vue";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { TabBarProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
-// a:shopStore, b:FactoryArtefact, c:CacheWrapper, d:RouteRecordNormalized 
-const stack:ExternalMethods = useUserActions(useStore(), setupCurrentList(undefined), useCacheWrapper(), useRoute() );
-
 
 /**
    * TabBar
@@ -175,7 +172,24 @@ export default defineComponent({
       },
     },
   },
-  inject: [ 'dataOnLoad' ],
+ // inject: [ 'dataOnLoad' ],
+  setup() {
+    const dataOnLoad:boolean=inject<boolean>('dataOnLoad');
+    const visibleRef = ref<boolean>(false);
+    const getInputRef= ref<string>("") ;
+    const CBRef= ref<CBType>(noop); 
+    const storeRef =ref<COMPLETE_STORE>(useStore());   
+    const menuStateRef= ref<boolean>( false);
+
+    let stack:ExternalMethods;
+    try {
+      stack = useUserActions(useStore(), ListData, useCacheWrapper(), useRoute() );
+      let annoying =stack.mount( {visibleRef, getInputRef, CBRef, storeRef, menuStateRef, ListData} );
+      return { extraMethods:annoying, dataOnLoad, menuStateRef, visibleRef, getInputRef, CBRef, storeRef, ctx:{visibleRef, getInputRef, CBRef, storeRef, menuStateRef} };
+    } catch(e:unknown) {
+      console.log("TabBar.setup():",  (e as Error).message );
+    }
+  },
   data(): TabBarProps {
     const CACHE: CacheWrapper = useCacheWrapper();
     let état = "button";
@@ -191,7 +205,6 @@ export default defineComponent({
       menuOpen: false,
       getInput: "",
       loadedStateKey:"",
-      visible: false,
       CB: Function as any,
       installEnabled: état,
       EIK: this.$props.currentStateKey + "false",
@@ -221,6 +234,8 @@ export default defineComponent({
         saveName: TEXT.get("menu.saveName"),
         revertTitle: TEXT.get("menu.revertTitle"),
         revertName: TEXT.get("menu.revertName"),
+        findItem: TEXT.get("menu.findItem"),
+        findTitle:  TEXT.get("menu.findTitle"),
         outro: TEXT.get("menu.outro"),
       },
     } satisfies TabBarProps;
@@ -229,71 +244,13 @@ export default defineComponent({
     if (!this.shopStore) {
       throw new Error("You must hava a real Store (Vuex Object, not a actual shop) to run the App.");
     }
-    console.log("This should have some data in it.  ListData.currentData");
-    console.dir(ListData.currentData);
-    console.log([mapURL("allList", null), mapURL("aList", -1)]);
-
+    this.initGeneratedMethods();
   },
-  methods: stack.mount([
-    // These functions are mounted to the component object inside mount() call.
-    // The TS error checking isn't seeing runtime behaviour
-    function onMenu(e: GuessEvent): boolean {
-      // IOIO can simplify this code to be CSS rendering, and just menu state set here
-      if (this.menuLabel ===  TEXT.get("menu.symbol")) {
-        this.menuLabel = TEXT.get("cross");
-        this.menuState = "obmenu";
-        // ".tabBar.buttonRow .obmenu.foldPoint"
-        this.menuOpen = true;
-      } else {
-        this.menuLabel =  TEXT.get("menu.symbol");
-        this.menuState = "hide";
-        this.menuOpen = false;
-      }
-      return false;
-    },
-   function onName( ): boolean {
-      const liste = ListData.currentData.get(this.shopStore.state.currentId);
-      if (!liste) {
-        console.warn("EDIT NAME: got bad id, don't know how to proceed");
-        return false;
-      }
-      this.getInput = liste.nom ?? TEXT.get("menu.renameSupport");
-      const SELF=this;
-      this.CB = (d1: string | null): any => {
-        if (d1 === null) {
-          SELF.visible = false;
-          return;
-        }
-        if (!SELF.shopStore) {
-          throw new Error("2357675675357578 Impossible");
-        }
-        liste.editName(d1);
-        ListData.currentData.put(SELF.shopStore.state.currentId, liste);
-        SELF.visible = false;
-        StaticRoutes.push({ name: "list-everything" });
-      };
-      this.visible = true;
-      return false;
-    },
-    function onSearch(e: GuessEvent): boolean {
-       this.getInput ="";
-       const SELF=this;
-       // this is an arrow function, so 
-       this.CB = (d1: string | null): any => {
-        if (d1 === null || d1==="") {
-          SELF.visible = false;
-          return;
-        }
- 
-        let newList=AList.serps( 
-            ListData.currentData.searchItems( d1)
-            );
-        SELF.visible = false;
-        StaticRoutes.push({ name: "serps", state: { payload: newList } });
-      };
-        SELF.visible=true;
-        return false;
-    },    
-   ], this),
+  methods: {
+  ...(() => ({}))(), // placeholder to keep Vue happy
+  initGeneratedMethods() {
+    Object.assign(this, this.extraMethods);
+  }
+},
 });
 </script>

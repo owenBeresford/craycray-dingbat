@@ -1,10 +1,10 @@
 import { defineComponent } from "vue";
-import type { MethodOptions } from "vue";
+import type { MethodOptions, Ref } from "vue";
 import type { RouteRecordNormalized } from "vue-router";
 
 import { AList } from "../services/AList";
 import { CacheWrapper } from "../workers/InstallWorker";
-import { StaticRoutes } from "./Routing";
+import { StaticRoutes } from "../components/Routing";
 import { hashState } from "../../../common/util";
 import { useUIText } from "../services/Localisation";
 import type { FactoryArtefact } from "../services/DataFactory";
@@ -13,10 +13,13 @@ import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-test
 import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
 
 export type UserAction = (e: GuessEvent) => boolean;
+export interface MenuStateType {
+  visibleRef:Ref<boolean> , getInputRef:Ref<stringn> , CBRef:Ref<(a:MenuStateType)=>void>, storeRef:Ref<COMPLETE_STORE>, menuStateRef:Ref<boolean>
+}
 // IOIO this type is abit of a hack...
 export type DefinedComponent = ReturnValue<defineComponent>;
 export interface ExternalMethods {
-  mount(bound: Array<UserAction>, obj: DefinedComponent): MethodOptions;
+  mount( ): MethodOptions;
 }
 
 
@@ -79,20 +82,20 @@ class UserActions implements ExternalMethods {
     this.store = ss;
     this.cache = ca;
     this.data = ld;
-    this.loadedStateKey = hashState(this.data.currentData.list());
 
-    if (!this.route) {
-      throw new Error("The vue Route isn't present");
-    }
     if (!this.store) {
       throw new Error("The Store of ShopState isn't present");
     }
     if (!this.cache) {
       throw new Error("The CacheWrapper isn't present");
     }
-    if (!this.data) {
+    if (!this.data || !this.data.currentData) {
       throw new Error("The Data Factory isn't present");
     }
+    if (!this.route) {
+      throw new Error("The vue Route isn't present");
+    }
+    this.loadedStateKey = hashState(this.data.currentData.list());
   }
 
   /**
@@ -100,23 +103,34 @@ class UserActions implements ExternalMethods {
    * The accessible util to assign all the boilerplate code to the event handlers.
    * See HOC in a OO class
  
-   * @param {Array<UserAction>} bound
-   * @param {DefinedComponent} obj
+   * @param {MenuStateType } ctx
    * @public
    * @returns {MethodOptions}
    */
-  mount(bound: Array<UserAction>, obj: DefinedComponent): MethodOptions {
-    let ret = {};
-    for (let i = 0; i < bound.length; i++) {
-      ret[bound[i].name] = this.wrapper(bound[i].bind(obj), false);
-    }
-    ret.onIntersitial = this.wrapper(this.onIntersitial, true);
-    ret.onInstall = this.wrapper(this.onInstall, true);
-    ret.onUnique = this.wrapper(this.onUnique, true);
-    ret.onDuplicate = this.wrapper(this.onDuplicate, true);
-    ret.onSave = this.wrapper(this.onSave, true);
-    ret.onRevert = this.wrapper(this.onRevert, true);
-    ret.onSearch = this.wrapper(this.onSearch, true);
+  mount(ctx:MenuStateType  ): MethodOptions {
+    let ret ={
+    [Symbol.iterator]() {
+      const ar= Object.values(this);
+      let i=0;
+      return {
+      next() {
+
+        if(i<ar.length) { let tmp={ value: ar[i], done: false }; i++; return tmp; }
+        else { return { done: true }; }
+      }
+    };
+    },
+  };
+  
+    ret.onName = this.wrapper(this.onName, ctx);
+    ret.onSearch = this.wrapper(this.onSearch, ctx);
+    ret.onMenu = this.wrapper(this.onMenu, ctx);
+    ret.onIntersitial = this.wrapper(this.onIntersitial, ctx);
+    ret.onInstall = this.wrapper(this.onInstall, ctx);
+    ret.onUnique = this.wrapper(this.onUnique, ctx);
+    ret.onDuplicate = this.wrapper(this.onDuplicate, ctx);
+    ret.onSave = this.wrapper(this.onSave, ctx);
+    ret.onRevert = this.wrapper(this.onRevert, ctx);
     return ret;
   }
 
@@ -125,11 +139,11 @@ class UserActions implements ExternalMethods {
    * A function -makin- function that creates boilerplate
  
    * @param {UserAction} f1
-   * @param {boolean} bind
+   * @param {MenuStateType} ctx
    * @public
    * @returns {UserAction }
    */
-  wrapper(f1: UserAction, bind: boolean): UserAction {
+  wrapper(f1: UserAction, ctx:MenuStateType ): UserAction {
     return function (e: GuessEvent): boolean {
       if (e.type && e.type === "mouseup") {
         return false;
@@ -137,8 +151,8 @@ class UserActions implements ExternalMethods {
 	    if ('data' in this && !this.data.currentData) { 
         return false;
       }
-      bind && f1.bind(this);
-      f1(e); // return void mostly
+      f1=f1.bind(this);
+      f1( ctx); // return void mostly
       return false;
     }.bind(this);
   }
@@ -150,8 +164,8 @@ class UserActions implements ExternalMethods {
    * @public
    * @returns {void}
    */
-  onIntersitial(): void {
-    console.log("Trying to show help", this.route.path);
+  onIntersitial(ctx:MenuStateType): void {
+    console.log("Trying to show help for screen: " , this.route.path);
     if (this.store.state.currentURL !== this.route.path) {
       console.warn("The state.currentURL hasn't updated!", this.store.state.currentURL, this.route.path);
       this.store.commit("setPath", this.route.path);
@@ -166,7 +180,7 @@ class UserActions implements ExternalMethods {
    * @public
    * @returns {boolean}
    */
-  onInstall(): boolean {
+  onInstall(ctx:MenuStateType): boolean {
     if (location.protocol !== "https:") {
       console.warn("Install button is disabled, you need to use HTTPS.");
       return false;
@@ -188,7 +202,7 @@ class UserActions implements ExternalMethods {
    * @public
    * @returns {void}
    */
-  onUnique(): void {
+  onUnique(ctx:MenuStateType): void {
     const liste = this.data.currentData.get(this.store.state.currentId);
     if (liste) {
       liste.unique();
@@ -203,7 +217,7 @@ class UserActions implements ExternalMethods {
    * @public
    * @returns {void}
    */
-  onDuplicate(): void {
+  onDuplicate(ctx:MenuStateType): void {
     const liste = this.data.currentData.get(this.store.state.currentId);
 
     if (liste) {
@@ -221,7 +235,7 @@ class UserActions implements ExternalMethods {
    * @public
    * @returns {boolean}
    */
-  onSave(): boolean {
+  onSave(ctx:MenuStateType): boolean {
     if (this.loadedStateKey === hashState(this.data.currentData.list())) {
       console.log("Data is identical as last save ");
       return false;
@@ -240,7 +254,7 @@ class UserActions implements ExternalMethods {
    * @public
    * @returns [boolean]
    */
-  onRevert(): boolean {
+  onRevert(ctx:MenuStateType): boolean {
     if (this.loadedStateKey === hashState(this.data.currentData.list())) {
       console.log("Data is identical to initial state ");
       return false;
@@ -249,4 +263,68 @@ class UserActions implements ExternalMethods {
     this.data.currentData.loadAllLists();
     return false;
   }
+
+  onMenu(ctx:MenuStateType): void {
+     ctx.menuStateRef.value=!ctx.menuStateRef.value;
+  }
+
+  onSearch(ctx:MenuStateType): boolean {
+    ctx.getInputRef.value ="";
+    createSearchCallback(ctx, ctx.storeRef ) ;
+    ctx.visibleRef.value=true;
+    return false;
+  }
+
+  onName(ctx:MenuStateType ): boolean {
+      const liste = ListData.currentData.get(this.store.state.currentId);
+      if (!liste) {
+        console.warn("EDIT NAME: got bad id, don't know how to proceed");
+        return false;
+      }
+      createNameCallback(ctx, ctx.storeRef );
+      ctx.getInputRef.value = liste.nom ?? TEXT.get("menu.renameSupport");
+      ctx.visibleRef.value = true;
+      return false;
+  }    
+
+
 }
+
+export type CBType=(d1: string | null) => any;
+export function noop(str:string|null):void {};
+
+
+  function createNameCallback(ctx:MenuStateType, store:COMPLETE_STORE ):void {
+    ctx.CBRef.value= (d1: string | null): any => {
+        if (d1 === null) {
+          ctx.visibleRef.value = false;
+          return;
+        }
+
+        const liste = ctx.ListData.currentData.get( ctx.storeRef.value.state.currentId);
+        liste.editName(d1);
+        ctx.ListData.value.currentData.put( store.state.currentId, liste);
+        ctx.visibleRef.value = false;
+        StaticRoutes.push({ name: "list-everything" });
+    };
+  }
+  function createSearchCallback(ctx:MenuStateType, store:COMPLETE_STORE ):void {
+    ctx.CBRef.value=(d1: string | null): any => {
+        if (d1 === null || d1==="") {
+          ctx.visibleRef.value = false;
+          return;
+        }
+
+        console.info("Starting a search for '"+d1+"'");        
+        let newList:AList=AList.serps(
+            ctx.ListData.currentData.searchItems( d1)
+            );
+        ctx.visibleRef.value = false;
+        store.value.commit("setPayload", newList);
+
+        StaticRoutes.push({ 
+            name: "serps",  
+            params: { term: d1 }, 
+          });
+      };
+  }   
