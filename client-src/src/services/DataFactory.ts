@@ -4,8 +4,8 @@ import { useRoute } from "vue-router";
 
 import { extractId } from "./util";
 import { AList, EMPTY_LIST } from "./AList";
-import type { Listable } from '../types/ListCollection';
- 
+import type { Listable } from "../types/ListCollection";
+
 // import { ListService } from "./ListService";
 import { useLocal } from "./LocalCopy";
 import { useMsgDistrib } from "./MessageDistribution";
@@ -94,7 +94,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
     if (retour.currentData && _LOGGING_) {
       console.log("KKK createDataFactory (with a mock) ListData.currentData id:", idOf(retour.currentData));
     }
-    retour.initData = function ():void {};
+    retour.initData = function (): void {};
     return retour as Readonly<FactoryArtefact>;
   }
 

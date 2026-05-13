@@ -11,20 +11,20 @@ export interface ListOfListsProps {
   instanceId: string;
   shoppingLists: Array<ListStruct>;
   mapURL: (a: string, b: number | null) => string;
-  logoPath:string;
+  logoPath: string;
   viewId: string;
   listId: string;
-  secondId:string;
+  secondId: string;
 }
 
 export interface EnterInputProps {
-  bIsMobile:  boolean; 
+  bIsMobile: boolean;
   bShow: boolean;
   oVal: string;
   cross: string;
-  instanceId: string; 
+  instanceId: string;
   desktopId: string;
-  commitId: string; 
+  commitId: string;
   mobileId: string;
   cancelId: string;
   text: Record<string, string>;
@@ -41,8 +41,8 @@ export interface ThisListProps {
   nextTestId: string;
   bisMobile: boolean;
   aListId: string;
-  list:AList;
-  logoPath:string;
+  list: AList;
+  logoPath: string;
   viewId: string;
   text: Record<string, string>;
 }
@@ -55,7 +55,7 @@ export interface MainAppProps {
 type MapUrlType = (nom: string, id: number | null) => string;
 
 export interface TabBarProps {
-  loadedStateKey:string,
+  loadedStateKey: string;
   menuLabel: string;
   menuState: string;
   menuOpen: boolean;

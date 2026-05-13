@@ -5,7 +5,7 @@ import { JsonSerializer, throwError, JsonProperty, JsonObject } from "typescript
 
 import type { ListStruct, Listable } from "../../types/ListCollection";
 import { AList } from "../../services/AList";
- 
+
 // This is just a test object.
 @JsonObject()
 class Book {
@@ -17,7 +17,7 @@ class Book {
 }
 
 describe("test on json object (to see if tech works)", () => {
-  it("Can load service", ():void => {
+  it("Can load service", (): void => {
     const book: Book = new Book();
     book.name = "Moby Dick";
     book.publishYear = 1892;
@@ -38,7 +38,9 @@ describe("test on json object (to see if tech works)", () => {
     let book3: Book;
     try {
       book3 = new Book();
-      book3.publishYear = ():void =>{ console.log("Alle yur BASIS are belangt om ons."); };
+      book3.publishYear = (): void => {
+        console.log("Alle jullie BASIS zijn belangt om ons.");
+      };
       expect(typeof book3).toBe("object");
       console.log("working book (check values):", book3);
     } catch (e: unknown) {
@@ -63,8 +65,8 @@ describe("test on AList", () => {
     tt.id = 1;
     tt.éléments = [] as Array<string>;
     expect(tt).toBeTruthy();
-    expect( tt.nom).toBe("NEWNAME" );
-    expect( tt.énumérer).toBe( 2);
+    expect(tt.nom).toBe("NEWNAME");
+    expect(tt.énumérer).toBe(2);
   });
 
   it("attempt2 ", () => {

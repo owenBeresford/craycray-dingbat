@@ -165,7 +165,7 @@ function UITextFactory(lang: string): UItext {
     hiddenReference.add("menu.actualMenuTitle", "Show or hide the extra features.");
     hiddenReference.add("menu.findItem", "Find 🔍");
     hiddenReference.add("menu.findTitle", "Search across items on this device.");
-     
+
     hiddenReference.add(
       "menu.installTitle",
       "Copy app to your phone, for offline usage. Needed once. Requires HTTPS to run"
@@ -191,22 +191,33 @@ function UITextFactory(lang: string): UItext {
     hiddenReference.add("list.addItemName", "Add item");
     hiddenReference.add("list.imgAlt", "The app logo - Improve text here");
 
-    hiddenReference.add("serps.intro", "The local matches to your recent search are below.   the SERPS are presented as a list, and may be saved as a new list if this is useful.");
+    hiddenReference.add(
+      "serps.intro",
+      "The local matches to your recent search are below.   the SERPS are presented as a list, and may be saved as a new list if this is useful."
+    );
     hiddenReference.add("serps.imgAlt", "The app logo - Improve text here");
-    hiddenReference.add("serps.nout", "Did you enter a previous search query? This is the search *results* screen.  The input is at the top in the tabBar");
-    hiddenReference.add('serps.itemTitle', "A match"),
-    hiddenReference.add('serps.listLink', "This links to the original list, to be able to edit it"),
-    hiddenReference.add('serps.itemDTTitle', "Big screen interactions are: swipe/ discard item from this search results."),
-    hiddenReference.add('serps.itemMBTitle', "Mobile interactionas are: swipe/ discard item from this search results."),
-
-    hiddenReference.addArray("firstUse", [
-      "&nbsp; ",
-      "Hello, this is a shopping list hack, hosted locally on your phone.",
-      "&nbsp; ",
-      "This message will clear in a few seconds.",
-      "&nbsp; ",
-      "NB: Help can be reloaded via the menu, 'show help'.",
-    ]);
+    hiddenReference.add(
+      "serps.nout",
+      "Did you enter a previous search query? This is the search *results* screen.  The input is at the top in the tabBar"
+    );
+    hiddenReference.add("serps.itemTitle", "A match"),
+      hiddenReference.add("serps.listLink", "This links to the original list, to be able to edit it"),
+      hiddenReference.add(
+        "serps.itemDTTitle",
+        "Big screen interactions are: swipe/ discard item from this search results."
+      ),
+      hiddenReference.add(
+        "serps.itemMBTitle",
+        "Mobile interactionas are: swipe/ discard item from this search results."
+      ),
+      hiddenReference.addArray("firstUse", [
+        "&nbsp; ",
+        "Hello, this is a shopping list hack, hosted locally on your phone.",
+        "&nbsp; ",
+        "This message will clear in a few seconds.",
+        "&nbsp; ",
+        "NB: Help can be reloaded via the menu, 'show help'.",
+      ]);
     hiddenReference.addArray("list-all", [
       "&nbsp; ",
       "This screen lists the shopping lists that you have locally.",

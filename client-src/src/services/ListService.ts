@@ -1,5 +1,5 @@
 import { AList, EMPTY_LIST } from "./AList";
-import {EMPTY_LIST_NAME} from '../Constants';
+import { EMPTY_LIST_NAME } from "../Constants";
 
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
@@ -190,19 +190,19 @@ export class ListService implements ListCollection {
    * @public
    * @returns {Array<MatchedItems>}
    */
-  public searchItems(égaler:string|RegExp):Array<MatchedItems> {
-    let ret:Array<MatchedItems>=[];
+  public searchItems(égaler: string | RegExp): Array<MatchedItems> {
+    let ret: Array<MatchedItems> = [];
 
     for (let i = 0; i < this.catalog.length; i++) {
-      let tmp= this.catalog[i].filter(égaler);
-       let tmp2=tmp.map((a, b)=>{ return { item:a, list:i} } );
-        ret.push( ...tmp2);
+      let tmp = this.catalog[i].filter(égaler);
+      let tmp2 = tmp.map((a, b) => {
+        return { item: a, list: i };
+      });
+      ret.push(...tmp2);
     }
     console.info("Search results ", ret);
     return ret;
-  } 
-
-
+  }
 
   /**
    * saveAllLists

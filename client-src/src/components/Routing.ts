@@ -3,8 +3,8 @@ import type {
   RouterOptions,
   RouteRecordRaw,
   RouteLocationNormalized,
-  RouteLocationNormalizedGeneric, 
-  RouteLocationNormalizedLoadedGeneric, 
+  RouteLocationNormalizedGeneric,
+  RouteLocationNormalizedLoadedGeneric,
   NavigationGuardNext,
   NavigationGuardReturn,
 } from "vue-router";
@@ -16,16 +16,16 @@ import UnknownRoute from "./UnknownRoute.vue";
 import { useStore } from "../services/Store";
 // import { ListData } from "../services/DataFactory";
 
- /**
+/**
    * StaticRoutes
    * library-standard file, holding the mspping of URN to Componment/ screen
 	- the functions below are described in the Vue docs, and they are predictable.
  
    * @public
    */
- export const StaticRoutes = createRouter({
+export const StaticRoutes = createRouter({
   history: createWebHistory("/"),
-  strict:false,
+  strict: false,
   routes: [
     // For the Meta sections
     // https://stackoverflow.com/questions/51639850/how-to-change-page-titles-when-using-vue-router
@@ -45,7 +45,7 @@ import { useStore } from "../services/Store";
       component: ListOfLists,
       meta: { title: "All your shopping lists" },
       props: (route: RouteLocationNormalized): Record<string, any> => {
-        return { ...route.params,  currentStateKey: "listoflists2", fixPath: swapPath };
+        return { ...route.params, currentStateKey: "listoflists2", fixPath: swapPath };
       },
     },
     {
@@ -63,13 +63,13 @@ import { useStore } from "../services/Store";
       meta: { title: "Your search query result data." },
       component: SearchList,
       props: (route: RouteLocationNormalized): Record<string, any> => {
-        return { ...route.params,  currentStateKey: "searchlist1" };
+        return { ...route.params, currentStateKey: "searchlist1" };
       },
     },
     // possible @TODO IOIO XXX     this is available as a button
     //    { path: '/install', name:'install', ... },
     // also
-    //    { path:'/welcome', name:'docs', ...} 
+    //    { path:'/welcome', name:'docs', ...}
     {
       path: "/:pathMatch(.*)*",
       name: "not-found",

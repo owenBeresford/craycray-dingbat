@@ -56,10 +56,10 @@ export class RemoteStorage implements Storable, DistantStorable {
       globalThis
         .fetch(SELF.url, REQT)
         .then((resp: Response): boolean => {
-           clearTimeout(sortie);
-           sortie = undefined;
+          clearTimeout(sortie);
+          sortie = undefined;
           if (!didTimeOut) {
-            good( Math.round(resp.status / 100) === 2);
+            good(Math.round(resp.status / 100) === 2);
           } else {
             bad(EEE);
           }
@@ -98,9 +98,9 @@ export class RemoteStorage implements Storable, DistantStorable {
         .catch((err: Error) => {
           bad(err);
         })
-        .then((goutte: Response | void):void => {
+        .then((goutte: Response | void): void => {
           if (goutte) {
-             if (!goutte.ok) {
+            if (!goutte.ok) {
               return bad(new Error("Server sent an error http status " + goutte.status));
             }
 
@@ -137,21 +137,25 @@ export class RemoteStorage implements Storable, DistantStorable {
    */
   public async loadState(): Promise<Array<SaveStruct>> {
     return new Promise((good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
-      const REQT: RequestInit = Object.assign(this.other, { method: "GET", body: null, mode:'no-cors' }) as RequestInit;
-       globalThis
+      const REQT: RequestInit = Object.assign(this.other, {
+        method: "GET",
+        body: null,
+        mode: "no-cors",
+      }) as RequestInit;
+      globalThis
         .fetch(this.url, REQT)
         .catch((err: unknown) => {
           console.warn("FAILED TO LOAD STATE", (err as Error).message);
           return bad(new Error("No data was found"));
         })
-        .then((filet: Response | void):void => {
+        .then((filet: Response | void): void => {
           if (!filet) {
             return bad(new Error("Valid HTTP, but got nothing back"));
           }
           if (!filet.ok) {
             return bad(new Error("Server sent an error http status " + filet.status));
           }
-          filet.text().then(function (text: string):void {
+          filet.text().then(function (text: string): void {
             good(transform2list(text));
           });
         });

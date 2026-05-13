@@ -42,15 +42,15 @@ export const STORE: COMPLETE_STORE = createStore({
       currentURL: "",
       showHelp: false,
       currentId: -1,
-      serps:null,
+      serps: null,
     } satisfies ShopState;
   },
   mutations: {
     setPath(state: ShopState, nn: string): void {
       state.currentURL = nn;
     },
-    setPayload(state: ShopState, nn:AList ):void {
-      state.serps=nn;
+    setPayload(state: ShopState, nn: AList): void {
+      state.serps = nn;
     },
     show(state: ShopState, nn: boolean): void {
       state.showHelp = nn;

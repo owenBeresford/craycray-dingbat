@@ -2,13 +2,12 @@
 // globalSetup: "./src/test/vitest.setup.ts",
 //
 /// <reference types="../../../common/types/env.d.ts" />
- 
+
 export async function setup(): Promise<void> {
   Object.defineProperty(globalThis, "_LOGGING_", {
     value: process.env.NODE_ENV !== "production",
-    writable: true
-});
-
+    writable: true,
+  });
 }
 console.warn("Vitest setup file is excecuted ");
 export async function teardown(): Promise<void> {}
@@ -18,4 +17,3 @@ export async function teardown(): Promise<void> {}
 // beforeEach(() => {  // Do something here\n })
 // afterEach(() =>  {  // Do something here\n })
 //
- 

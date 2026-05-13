@@ -1,5 +1,5 @@
 {
-"type":"json",
+  "type": "json",
   "parserOptions": {
     "ecmaVersion": 2021,
     "sourceType": "module"

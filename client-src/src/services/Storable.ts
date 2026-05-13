@@ -33,16 +33,18 @@ export function transform2text(dat: any): string {
  * @returns {Array<SaveStruct>}
  */
 export function transform2list(dat: string): Array<SaveStruct> {
-  let thing:Object=[];
+  let thing: Object = [];
   try {
-    thing =JSON.parse(dat);
-  } catch(e:unknown ) {
+    thing = JSON.parse(dat);
+  } catch (e: unknown) {
     console.log("JSON parsing broke ", (e as Error).message);
   }
 
-  if(!Array.isArray( thing)) { throw new Error("This should be an Array"); }
+  if (!Array.isArray(thing)) {
+    throw new Error("This should be an Array");
+  }
   // Push into AList, then export to SaveStruct
-  return thing as Array<SaveStruct>; 
+  return thing as Array<SaveStruct>;
 }
 
 /**

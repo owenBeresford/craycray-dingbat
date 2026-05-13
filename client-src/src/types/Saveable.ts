@@ -1,4 +1,4 @@
-import type { SaveStruct } from '../../../common/types/SaveStruct';
+import type { SaveStruct } from "../../../common/types/SaveStruct";
 
 export interface Storable {
   saveProperty(nom: string, dat: string): boolean;

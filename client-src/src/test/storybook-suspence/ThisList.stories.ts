@@ -131,7 +131,7 @@ export const TrackTextRendered2: Story = {
 
     // IOIO XXX there is one one list displayed here.  DUMP TEST
 
-    expect((canvas.queryByTestId("test17Input1") as HTMLDialogElement ).open).toBe(false);
+    expect((canvas.queryByTestId("test17Input1") as HTMLDialogElement).open).toBe(false);
     const btn = canvas.getByRole("button", { name: /Add item/i });
     expect(btn).toBeVisible();
     await userEvent.click(btn);
@@ -210,7 +210,7 @@ export const TrackTextRendered2_5: Story = {
     // the +2 is due to two textnodes
 
     // IOIO XXX there is one one list displayed here.  DUMP TEST
-    expect((canvas.queryByTestId("test175Input1") as HTMLDialogElement ).open).toBe(false);
+    expect((canvas.queryByTestId("test175Input1") as HTMLDialogElement).open).toBe(false);
     const btn = canvas.getByRole("button", { name: /Add item/i });
     expect(btn).toBeVisible();
     await userEvent.click(btn);
@@ -276,7 +276,7 @@ export const TrackTextRendered3: Story = {
     expect(list.childNodes.length).toBe(9 + 2); // it correctly loads 1st list in fixture
 
     // IOIO XXX there is one one list displayed here.  DUMP TEST
-    expect((canvas.queryByTestId("test18Input1") as HTMLDialogElement ).open).toBe(false);
+    expect((canvas.queryByTestId("test18Input1") as HTMLDialogElement).open).toBe(false);
     const btn = canvas.getByRole("button", { name: /Add item/i });
     expect(btn).toBeVisible();
     await userEvent.click(btn);
@@ -348,7 +348,7 @@ export const TrackTextRendered4: Story = {
     expect(list.childNodes.length).toBe(60 + 2); // it correctly loads 1st list in fixture
 
     // IOIO XXX there is one one list displayed here.  DUMP TEST
-    expect((canvas.queryByTestId("test19Input1") as HTMLDialogElement ).open).toBe(false);
+    expect((canvas.queryByTestId("test19Input1") as HTMLDialogElement).open).toBe(false);
     const btn = canvas.getByRole("button", { name: /Add item/i });
     expect(btn).toBeVisible();
     await userEvent.click(btn);
@@ -420,7 +420,7 @@ export const TrackTextRendered5: Story = {
     expect(list.childNodes.length).toBe(5 + 2); // it correctly loads 1st list in fixture
 
     // IOIO XXX there is one one list displayed here.  DUMP TEST
-    expect((canvas.queryByTestId("test20Input1") as HTMLDialogElement ).open).toBe(false);
+    expect((canvas.queryByTestId("test20Input1") as HTMLDialogElement).open).toBe(false);
     const btn = canvas.getByRole("button", { name: /Add item/i });
     expect(btn).toBeVisible();
     await userEvent.click(btn);

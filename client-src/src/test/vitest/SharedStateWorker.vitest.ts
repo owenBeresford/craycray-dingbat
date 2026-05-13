@@ -3,7 +3,7 @@ import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vite
 
 import { SharedStateWorker, useSSW } from "../../workers/SharedStateWorker";
 import type { DelayCallbackType, DataPipeline } from "../../types/Saveable";
-import type { SaveStruct } from '../../../../common/types/SaveStruct';
+import type { SaveStruct } from "../../../../common/types/SaveStruct";
 
 import { TestLocation } from "../MockLocation";
 

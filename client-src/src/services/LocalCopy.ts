@@ -1,6 +1,6 @@
 import { transform2text, transform2list } from "./Storable";
 import type { Storable } from "../types/Saveable";
-import type { SaveStruct } from '../../../common/types/SaveStruct';
+import type { SaveStruct } from "../../../common/types/SaveStruct";
 import { APP_NAME } from "../Constants";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 

@@ -66,7 +66,7 @@ export class SharedStateWorker implements DataPipeline {
     const SELF = this;
 
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const ATTEMPT = async ( good: PromiseSucceed<boolean>, bad: PromiseReject ): Promise<void> => {
+      const ATTEMPT = async (good: PromiseSucceed<boolean>, bad: PromiseReject): Promise<void> => {
         let access = await SELF.conn.poll();
         if (access) {
           SELF.conn
@@ -84,7 +84,9 @@ export class SharedStateWorker implements DataPipeline {
             });
         } else {
           // I think I need to replace this section
-          setTimeout(()=> { return ATTEMPT( good, bad); }, SELF.delay(SELF));
+          setTimeout(() => {
+            return ATTEMPT(good, bad);
+          }, SELF.delay(SELF));
         }
       };
       await ATTEMPT(good, bad);
@@ -115,10 +117,12 @@ export class SharedStateWorker implements DataPipeline {
               return bad(err as Error);
             });
         } else {
-          setTimeout(()=> { return ATTEMPT( good, bad); }, SELF.delay(SELF));
+          setTimeout(() => {
+            return ATTEMPT(good, bad);
+          }, SELF.delay(SELF));
         }
       };
-      
+
       await ATTEMPT(good, bad);
     });
   }

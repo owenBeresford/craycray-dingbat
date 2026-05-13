@@ -6,7 +6,7 @@ import type { BasicThreadable } from "../types/BasicThreadable";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
 import { transform2list, packMsg } from "./Storable";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
- 
+
 type Timer = number;
 
 /**
@@ -112,15 +112,15 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
   protected receipt(ev: MessageEvent): void {
     const expédition: ShippingStruct = ev.data as ShippingStruct;
     console.log(
-      "BROWSER recieved MSG sent to " +WORKER_NAME ,
+      "BROWSER recieved MSG sent to " + WORKER_NAME,
       expédition.action,
       expédition.data,
       "isolated",
       typeof crossOriginIsolated,
       crossOriginIsolated
     );
-    if(ev.srcElement.name !==WORKER_NAME ) {
-    // if (ev.origin !== this.goodSource) {
+    if (ev.srcElement.name !== WORKER_NAME) {
+      // if (ev.origin !== this.goodSource) {
       console.warn("Recv msg from un-authorised source " + ev.origin);
       return;
     }
@@ -151,7 +151,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
       }
       used = true;
     }
-  
+
     if (expédition.action === ("status-payload" as ActionEnum)) {
       console.log("TEST **Add more code here**\n[ STATUS REPORT ]=", expédition.data);
       used = true;
@@ -195,7 +195,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
    * @returns {Promise<boolean>}
    */
   public saveState(dat: Array<SaveStruct>): Promise<boolean> {
-    if( globalThis._LOGGING_) {
+    if (globalThis._LOGGING_) {
       console.log("TEST sending MSG from the UI to the worker");
     }
     if (!this.worker) {
@@ -234,7 +234,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
     this.worker.postMessage(expédition, undefined);
     let poignée: Timer | null = null;
     const ATTEMPT = async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject): Promise<void> => {
-       if (SELF.state.length) {
+      if (SELF.state.length) {
         if (poignée) {
           clearTimeout(poignée);
           poignée = null;
@@ -250,7 +250,9 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
           }
           bad(new Error("No response from worker thread in " + PMQUE_ATTEMPTS + "*" + PMQUE_TIMER + "ms.  Aborting "));
         } else {
-          poignée = +setTimeout(()=> {return ATTEMPT(good, bad); }, PMQUE_TIMER);
+          poignée = +setTimeout(() => {
+            return ATTEMPT(good, bad);
+          }, PMQUE_TIMER);
         }
       }
     };

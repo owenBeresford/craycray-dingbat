@@ -12,7 +12,7 @@ const meta: Meta<typeof EnterInput> = {
 export default meta;
 type Story = StoryObj<typeof EnterInput>;
 
-const CB1=fn(function() {} );
+const CB1 = fn(function () {});
 export const EntirelyPassive: Story = {
   args: {
     val: "",
@@ -132,7 +132,7 @@ export const ExpectedRendering4: Story = {
     await userEvent.type(input1, "a new thing");
     await userEvent.click(await canvas.findByDisplayValue("Set"));
 
-    expect(((await canvas.queryByTestId("test7")) as HTMLDialogElement).open).toBe( false);
+    expect(((await canvas.queryByTestId("test7")) as HTMLDialogElement).open).toBe(false);
   },
 };
 
@@ -151,33 +151,32 @@ export const ToggleCapacity1: Story = {
     expect(await canvas.getByTestId("test25")).toBeVisible();
     if (isMobile()) {
       return;
-    } 
+    }
 
     // https://markaicode.com/storybook-interaction-tests/#
     const input1 = canvas.getByTestId("test25desk1");
     await userEvent.type(input1, "a new thing");
-    await userEvent.click( await canvas.findByDisplayValue("Set"));
+    await userEvent.click(await canvas.findByDisplayValue("Set"));
     expect(((await canvas.queryByTestId("test25")) as HTMLDialogElement).open).toBe(false);
-    ToggleCapacity1.args.visible=false;
-    ToggleCapacity1.args.visible=true;
+    ToggleCapacity1.args.visible = false;
+    ToggleCapacity1.args.visible = true;
     await delay(1000);
-    (await canvas.queryByTestId("test25") as HTMLDialogElement).open=true;
+    ((await canvas.queryByTestId("test25")) as HTMLDialogElement).open = true;
 
     await userEvent.type(input1, "another thing");
-    await userEvent.click( await canvas.findByDisplayValue("Set"));
-    ToggleCapacity1.args.visible=false;
-    ToggleCapacity1.args.visible=true;
-    await delay(1000);  // this test is to show the expected operation is stable, and it shows weakness in test tech, #leSigh.
+    await userEvent.click(await canvas.findByDisplayValue("Set"));
+    ToggleCapacity1.args.visible = false;
+    ToggleCapacity1.args.visible = true;
+    await delay(1000); // this test is to show the expected operation is stable, and it shows weakness in test tech, #leSigh.
 
     expect(((await canvas.queryByTestId("test25")) as HTMLDialogElement).open).toBe(false);
-    (await canvas.queryByTestId("test25") as HTMLDialogElement).open=true;
+    ((await canvas.queryByTestId("test25")) as HTMLDialogElement).open = true;
 
     await userEvent.type(input1, "keep going");
-    await userEvent.click( await canvas.findByDisplayValue("Set"));
+    await userEvent.click(await canvas.findByDisplayValue("Set"));
 
     expect(((await canvas.queryByTestId("test25")) as HTMLDialogElement).open).toBe(false);
   },
 };
-
 
 // IOIO XXX add test for open/close multiple times

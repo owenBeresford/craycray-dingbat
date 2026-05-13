@@ -27,7 +27,7 @@
 .tabBar .button * {
   color: #fff;
 }
-.tabBar ul> li>.button {
+.tabBar ul > li > .button {
   width: 100%;
 }
 
@@ -106,13 +106,15 @@
   text-align: left;
   padding-left: 0px;
 }
-.tabBar.buttonRow menu.menuTrigger small { font-size:60%; } 
-.tabBar.buttonRow menu.menuTrigger[aria-hidden=false] {
+.tabBar.buttonRow menu.menuTrigger small {
+  font-size: 60%;
+}
+.tabBar.buttonRow menu.menuTrigger[aria-hidden="false"] {
   z-index: 1;
   position: fixed;
   right: 50px;
   width: 10em;
-  top:2em;
+  top: 2em;
   display: block;
 }
 
@@ -121,11 +123,11 @@
   text-shadow: 0 0 0 #222;
   padding: 0.5em 1em 0.5em 1em;
 }
-.tabBar.buttonRow ul > li span.menuTrigger::before { 
+.tabBar.buttonRow ul > li span.menuTrigger::before {
   content: "☰";
 }
 .tabBar.buttonRow ul li span.menuTrigger[aria-pressed="true"]::before {
-  content:"❌";
+  content: "❌";
 }
 
 .tabBar.buttonRow > li span.menuTrigger:hover {
@@ -148,7 +150,7 @@
   margin-right: auto;
   margin-top: 1em;
 }
- 
+
 .ListOfList ul .button {
   margin-bottom: 0.4em;
   margin-top: 0.4em;
@@ -161,19 +163,40 @@
   overflow-x: hidden;
 }
 
-.ListOfList .row { display:flex; align-items: center;  justify-content: space-evenly;  flex-direction: row; 
-  white-space: nowrap; margin-bottom: 0.6em;  width: calc(100% - 0.5em); }
-
-.ListOfList .row span:last-child { justify-content:flex-end; padding-left:1em; }
-.ListOfList .row span:first-child { justify-content:flex-start; padding-right:1em; }
-
-.ListOfList a { min-width:10em; max-width:26em; }
-
-.ListOfList .centre:focus-within  {
-  background:#ddd;
+.ListOfList .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: row;
+  white-space: nowrap;
+  margin-bottom: 0.6em;
+  width: calc(100% - 0.5em);
 }
-.ListOfList img { height: 30px; width:30px; overflow-x: clip;
-  overflow-y: clip; margin-right:0.3em; } 
+
+.ListOfList .row span:last-child {
+  justify-content: flex-end;
+  padding-left: 1em;
+}
+.ListOfList .row span:first-child {
+  justify-content: flex-start;
+  padding-right: 1em;
+}
+
+.ListOfList a {
+  min-width: 10em;
+  max-width: 26em;
+}
+
+.ListOfList .centre:focus-within {
+  background: #ddd;
+}
+.ListOfList img {
+  height: 30px;
+  width: 30px;
+  overflow-x: clip;
+  overflow-y: clip;
+  margin-right: 0.3em;
+}
 
 /* ********************************************************* */
 .unknownRoute {
@@ -211,7 +234,10 @@
   background-color: white;
   border: 1em #eee solid;
 }
-dialog.enterInput::backdrop { background-color:rgba(39, 39, 39, 0.3); pointer-events: none; }
+dialog.enterInput::backdrop {
+  background-color: rgba(39, 39, 39, 0.3);
+  pointer-events: none;
+}
 
 .enterInput p {
   white-space: nowrap;
@@ -288,12 +314,25 @@ dialog.enterInput::backdrop { background-color:rgba(39, 39, 39, 0.3); pointer-ev
 /* ********************************************************* */
 /* this is for SERPS  */
 
-.serps .buttonRow { display:block; margin-left:0rem; list-style-type: none; }
-.serps .buttonRow li { display:inline; white-space:nowrap; margin:0.5em; }
-.serps .buttonRow li h3 { display:inline-block; }
-.serps .buttonRow li:first-child { margin-bottom:1em; }
-.serps ul.aList  { max-width:max-content; }
-
+.serps .buttonRow {
+  display: block;
+  margin-left: 0rem;
+  list-style-type: none;
+}
+.serps .buttonRow li {
+  display: inline;
+  white-space: nowrap;
+  margin: 0.5em;
+}
+.serps .buttonRow li h3 {
+  display: inline-block;
+}
+.serps .buttonRow li:first-child {
+  margin-bottom: 1em;
+}
+.serps ul.aList {
+  max-width: max-content;
+}
 
 /* ********************************************************* */
 /* this is for ThisList */
@@ -319,7 +358,6 @@ div.aList {
 .aList .buttonRow {
   margin-left: 0px;
   margin-bottom: 1em;
-
 }
 .aList .buttonRow li {
   display: inline-block;
@@ -329,10 +367,10 @@ div.aList {
   color: #fff;
 }
 .aList .buttonRow li.bigger {
-   font-size:120%;
-   line-height:0.9;
-   font-weight:600;
-  color:#020202; 
+  font-size: 120%;
+  line-height: 0.9;
+  font-weight: 600;
+  color: #020202;
 }
 
 div.aList ul.buttonRow li span {
@@ -363,7 +401,8 @@ div.aList ul.buttonRow li span {
 }
 
 .wholePage {
-  height: 100%; font-family:system-ui;
+  height: 100%;
+  font-family: system-ui;
 }
 
 /* A useful class that will slap a big warning on span containing images (various formats) 

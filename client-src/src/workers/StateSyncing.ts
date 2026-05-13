@@ -7,12 +7,11 @@ import { WORKER_NAME } from "../Constants";
 import { useSSW } from "./SharedStateWorker";
 import { transform2text, transform2list, packMsg } from "../services/Storable";
 
-
 export {};
 declare const self: DedicatedWorkerGlobalScope;
 
 //if (! globalThis.Worker ) {
-  // I think this error report is too late, here.  BUT, if it is absent, still whine about it
+// I think this error report is too late, here.  BUT, if it is absent, still whine about it
 //  throw new Error("Runtime doesn't support Workers, FAIL, ABORT.");
 //}
 
@@ -21,7 +20,8 @@ const STATE: DataPipeline = useSSW(self.location);
 // this module is a Worker object, and runs as a second thread in the browser.
 // The UI thread drives MessageDistribution
 const goodSource: Readonly<string> = self.location.protocol + "//" + self.location.hostname + ":" + self.location.port;
-if (_LOGGING_) { // test only logging
+if (_LOGGING_) {
+  // test only logging
   console.log("CODE under TEST started " + process.pid, goodSource);
 }
 
@@ -36,14 +36,15 @@ if (_LOGGING_) { // test only logging
 self.onmessage = async function (ev: MessageEvent): Promise<void> {
   console.log(
     "WORKER THREAD received MSG sent to " + ev.srcElement.name,
-     (ev.data as ShippingStruct).action,
+    (ev.data as ShippingStruct).action,
     (ev.data as ShippingStruct).data,
     "isolated",
-    "COI:", crossOriginIsolated,
-   );
- 
-  if(ev.srcElement.name !==WORKER_NAME ) {
-    console.warn("Recv msg from un-authorised source " + ev.origin  );
+    "COI:",
+    crossOriginIsolated
+  );
+
+  if (ev.srcElement.name !== WORKER_NAME) {
+    console.warn("Recv msg from un-authorised source " + ev.origin);
     return;
   }
 
@@ -51,15 +52,15 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
   let isDone = false;
 
   if (("save-payload" as ActionEnum) === payload.action) {
-    await STATE.pushWhenAble( transform2list(payload.data));
-    let tt2: ShippingStruct = packMsg("save-payload", {wrote:payload.data.length, duration:-1}); 
-    self.postMessage( transform2text(tt2), undefined);
+    await STATE.pushWhenAble(transform2list(payload.data));
+    let tt2: ShippingStruct = packMsg("save-payload", { wrote: payload.data.length, duration: -1 });
+    self.postMessage(transform2text(tt2), undefined);
     isDone = true;
   }
   if (("load-request" as ActionEnum) === payload.action) {
     let tt1: Array<SaveStruct> = await STATE.pullWhenAble();
-    let tt2: ShippingStruct = packMsg("ret-payload", tt1); 
-    self.postMessage( transform2text(tt2), undefined);
+    let tt2: ShippingStruct = packMsg("ret-payload", tt1);
+    self.postMessage(transform2text(tt2), undefined);
     isDone = true;
   }
   if (("status-request" as ActionEnum) === payload.action) {

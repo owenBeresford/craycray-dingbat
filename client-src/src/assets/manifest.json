@@ -1,5 +1,5 @@
 {
-  "id":"https://owenberesford.me.uk/resource/product-engineer-portfolio",
+  "id": "https://owenberesford.me.uk/resource/product-engineer-portfolio",
   "short_name": "Shop",
   "name": "Shopping list",
   "description": "Our domestic shopping-list tool.  This exists as Google freeware doesn't have enough UX.  Please read actual project page for more details.",
@@ -7,7 +7,7 @@
   "start_url": "/list-all",
   "background_color": "#eee",
   "orientation": "portrait",
-   "icons": [
+  "icons": [
     {
       "src": "logo.png",
       "sizes": "48x48",

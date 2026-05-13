@@ -2,8 +2,10 @@
   <div class="aList" :data-testid="testId" :key="currentStateKey">
     <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="betterId" :testId="viewId" />
     <ul class="buttonRow">
-      <li class="bigger"><h3>{{ list.nom }}</h3></li>
-      <li > <img width="40" height="40" :src="logoPath" aria-hidden="true" role="presentation" :alt="text.imgAlt"  /> </li>
+      <li class="bigger">
+        <h3>{{ list.nom }}</h3>
+      </li>
+      <li><img width="40" height="40" :src="logoPath" aria-hidden="true" role="presentation" :alt="text.imgAlt" /></li>
       <li :title="text.addTitle">
         <span
           role="button"
@@ -57,7 +59,7 @@ import { ListData, setupCurrentList, idOf } from "../services/DataFactory";
 import { AList, EMPTY_LIST } from "../services/AList";
 import { MotionStream } from "../services/MotionStream";
 import { extractId } from "../services/util";
-import { isMobile, clearSelection } from '../../../common/util';
+import { isMobile, clearSelection } from "../../../common/util";
 import { LOGO_PATH } from "../Constants";
 
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
@@ -102,7 +104,7 @@ export default defineComponent({
     }, // TS: "Store<ShopState>"
   },
   created() {
-     if (currentData && _LOGGING_) {
+    if (currentData && _LOGGING_) {
       console.log("KKK thisList.created  ListData.currentData id:", idOf(currentData));
     }
     if (_LOGGING_) {
@@ -111,7 +113,7 @@ export default defineComponent({
   },
   mounted() {
     const itinéraire = useRoute();
-    this.list.importTest( setupCurrentList(itinéraire ) as AList);
+    this.list.importTest(setupCurrentList(itinéraire) as AList);
     if (this.shopStore) {
       this.shopStore.commit("setPath", itinéraire.path);
       this.shopStore.commit("setId", this.id);
@@ -120,12 +122,10 @@ export default defineComponent({
     }
     const flux = new MotionStream();
     flux.register("0", this.finalise.bind(this));
-    this.flux=flux;
-
+    this.flux = flux;
   },
   inject: ["helpText", "canSeeHelp", "ttl"],
   data(): ThisListProps {
-
     return {
       id: NEW_LIST,
       list: EMPTY_LIST,
@@ -134,13 +134,12 @@ export default defineComponent({
       cb: Function as any,
       offset: -1,
       bisMobile: isMobile(),
-      logoPath: LOGO_PATH, 
+      logoPath: LOGO_PATH,
       text: {
         addTitle: TEXT.get("list.additemTitle"),
         currentTitle: TEXT.get("list.curListsTitle"),
         addName: TEXT.get("list.addItemName"),
-        imgAlt:TEXT.get("list.imgAlt"),
-
+        imgAlt: TEXT.get("list.imgAlt"),
       },
       childId: this.$props.testId + "Child1",
       nextTestId: this.$props.testId + "Input1",

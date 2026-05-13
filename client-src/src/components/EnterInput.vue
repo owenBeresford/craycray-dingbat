@@ -62,7 +62,7 @@ import { defineComponent, ref } from "vue";
 import { isMobile } from "../../../common/util";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import { useUIText } from "../services/Localisation";
-import type { EnterInputProps } from '../types/ComponentProps';
+import type { EnterInputProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 /**
@@ -89,10 +89,10 @@ export default defineComponent({
     currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
   },
-  data():EnterInputProps {
+  data(): EnterInputProps {
     let id = this.$props.testId;
     return {
-      oVal: ""+this.$props.val,
+      oVal: "" + this.$props.val,
       bIsMobile: isMobile(),
       bShow: this.$props.visible,
       cross: TEXT.get("cross"),
@@ -111,15 +111,15 @@ export default defineComponent({
     } satisfies EnterInputProps;
   },
   watch: {
-    val(nouveau:string, vieux:string ):void {
-//      if (_LOGGING_) {
-        console.log(`EnterInput: Running watch on input '${vieux}' => '${nouveau}'.`);
-//      }
+    val(nouveau: string, vieux: string): void {
+      //      if (_LOGGING_) {
+      console.log(`EnterInput: Running watch on input '${vieux}' => '${nouveau}'.`);
+      //      }
       this.oVal = nouveau;
     },
-    visible(nouveau:string, vieux:string):void {
-      this.bShow=!!nouveau;
-// console.log("XXX new value in visibility","new value", nouveau, this.bShow, "old value", vieux );
+    visible(nouveau: string, vieux: string): void {
+      this.bShow = !!nouveau;
+      // console.log("XXX new value in visibility","new value", nouveau, this.bShow, "old value", vieux );
       if (this.bShow) {
         setTimeout(() => {
           const élément: HTMLInputElement = this.$refs.enterIt as HTMLInputElement;
@@ -151,9 +151,8 @@ export default defineComponent({
       const chaîne = "" + this.oVal;
       this.oVal = "";
       this.cb(chaîne);
-      this.bShow=!this.bShow;
+      this.bShow = !this.bShow;
       (document.querySelector("dialog#enterinput") as HTMLDialogElement).open = false;
-
     },
   },
 });
