@@ -16,7 +16,7 @@
             class="button"
             role="button"
             @click.prevent="onSearch"
-            v-touch.prevent="onSearch"
+            v-touch="onSearch"
             @keypress="onSearch"
             >{{ menu.findItem }}</span
           >

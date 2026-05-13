@@ -271,6 +271,12 @@ dialog.enterInput::backdrop {
   right: -40px;
   top: -24px;
 }
+@media screen and (max-width: 400px) {
+  .enterInput .labelRow span.cancel {
+    right: -7.5em;
+    top: -3em;
+  }
+}
 .enterInput .labelRow span.cancel:hover {
   background-color: #eee;
 }
