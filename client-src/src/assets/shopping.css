@@ -70,6 +70,8 @@
   width: 1.5em;
   line-height: 0.66;
 }
+
+
 @media screen and (max-width: 400px) {
   .tabBar {
     display: block;
@@ -95,9 +97,7 @@
   .buttonRow li {
     margin-left: 0.8em;
   }
-  .tabBar ul li:first-child {
-    margin-left: 0em;
-  }
+   .tabBar.buttonRow ul>li { width: 5.5em; }
 }
 .tabBar.buttonRow menu.menuTrigger {
   display: none;
@@ -118,6 +118,14 @@
   display: block;
 }
 
+@media screen and (max-width: 400px) {
+  .tabBar.buttonRow menu.menuTrigger[aria-hidden=false] {
+    top:3em;
+    right: 0em;
+    width: 16em;
+    height: fit-content;
+  }
+}
 .tabBar.buttonRow ul > li span.menuTrigger {
   color: transparent;
   text-shadow: 0 0 0 #222;
@@ -149,6 +157,9 @@
   margin-left: auto;
   margin-right: auto;
   margin-top: 1em;
+}
+@media screen and (max-width: 400px) {
+  .ListOfList.view { margin-top:2em; }
 }
 
 .ListOfList ul .button {
@@ -396,7 +407,7 @@ div.aList ul.buttonRow li span {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  min-width: 575px;
+  min-width: 100vw;
   height: 95vh;
 }
 
