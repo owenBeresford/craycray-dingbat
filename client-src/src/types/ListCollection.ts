@@ -10,6 +10,8 @@ export interface ListCollection {
   put(id: number, ret: AList): boolean;
   merge(next: ListCollection): boolean;
   append(ret: AList): boolean;
+  searchItems(égaler:string|RegExp):Array<MatchedItems>;
+  
   //  store(ret: AList, offset: number): boolean;
   saveAllLists(): Promise<boolean>;
   loadAllLists(): boolean;
@@ -31,6 +33,8 @@ export interface ListStruct {
 
 export interface Listable {
   éléments: Array<string>;
+  manual(nom: string, id: number): Listable;
+  serps( dat:Array<MatchedItems> ):Listable;
 
   add(nouveau: string): boolean;
   edit(offset: number, nouveau: string): boolean;
@@ -40,4 +44,10 @@ export interface Listable {
   editName(nouveau: string): boolean;
   unique(): boolean;
   view(): ListStruct;
+  filter( égaler:string|Regexp ):Array<string> ;
+}
+
+export interface MatchedItems {
+  item:string;
+  list:number;
 }

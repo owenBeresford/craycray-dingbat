@@ -21,6 +21,7 @@ export function mapURL(nom: string, id: number | null): string {
     console.error(`Loading an unknown URL name: ${nom}`);
     return "";
   }
+  // IOIO XXX TODO if later has more than 1 replacement, replace this function
   if (typeof id === "number") {
     return URLs[nom].replace("[1]", `${id}`);
   }

@@ -55,6 +55,7 @@ export interface MainAppProps {
 type MapUrlType = (nom: string, id: number | null) => string;
 
 export interface TabBarProps {
+  loadedStateKey:string,
   menuLabel: string;
   menuState: string;
   menuOpen: boolean;
