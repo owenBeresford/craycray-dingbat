@@ -104,7 +104,7 @@ export const TrackTextRendered8: Story = {
         // TODO change button name to reflect current state
       } catch (e: unknown) {
         // This label will depend on current state, so can fail at some points
-        console.log("SELF CREATED MESSAGE: ", (e as Error).message);
+        console.log("Error handler in unit-test ", (e as Error).message);
       }
     });
 
