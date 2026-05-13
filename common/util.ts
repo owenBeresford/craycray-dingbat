@@ -211,7 +211,7 @@ export async function runFetch(
       status:trans.status,
     } as SimpleResponse;
   } catch (e:unknown) {
-// console.log("outer error formatter in my fetch", e);
+// console.log("outer error formatter in my fetch", (e as Error).message);
     return returnBad(
       trap,
       new Error("ERROR getting asset " + url + " " + (e as Error).message),
