@@ -2,6 +2,7 @@ Don't call lists "list X", or all the labelling gets confused "list list X".
 
 DETAILS TO COMPLETE FOR RELEASE
 - ESLINT ON VUE FILES
+- LAN DNS alias #leSigh
 - increase tests
 - StateSyncing test cover full state map - when threads work.
 - think about best name for ShopState
@@ -12,13 +13,12 @@ DETAILS TO COMPLETE FOR RELEASE
 - Engineer thing to that actual network code is masked in story tests... another connection type
 - Replace self-signed-certs with real-ones via lets-encrypt
 - Storybook "run tests" on page load
-- Scroll to top marker, if the list is longer than the page
-- Search feature
 
 LOW IMPACT, nioce to haves
 - Maybe functions can have runtime behaviour from function name, supported by https://github.com/Guichaguri/cross-caller/blob/main/src/index.ts
 - Look at eslint-plugin-unicorn, might reduce problems on eslint + TS
 - interaction: status bar/ message board
+- Scroll to top marker, if the list is longer than the page
 - pour les mot variable privé, traduire en francias 
 - ShoppingService test, add fixtures to extend load() testing
 - find my list local IP code 

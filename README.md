@@ -26,7 +26,7 @@ WARN: to-date not actually ran this yet.
 * run `npm run build:app`
 * run `npm run app`
 * launch on phone or desktop and build your initial lists (labour-intensive here)
-* Use the install feature on phones, if you think the app is use the time typing.
+* Use the install feature on phones, if you think the app is useful including the time typing.
 * Nag me for JSON import from XYZ other platform capacity
 * Think about scan barcode on older packet https://www.actowizsolutions.com/uk-grocery-api-real-time-data-tesco-aldi-asda-sainsburys.php
 
@@ -102,31 +102,32 @@ User journeys:
 
 -----
 * user2 actually uses app by opening it
-* starts a new list with the 'new list' button
-* then spends 30min browsing cupboards, and adding items to list as necessary
-* hits save to persist this list; does not close the PWA app
-* engages transport to get to shops
-* buys items, and swipes the items off
-* closes app without saving it, so swiped list isn't persisted
+* Starts a new list with the 'new list' button
+* Then spends 30min browsing cupboards, and adding items to list as necessary
+* Hits save to persist this list; does not close the PWA app
+* engages transport to get to shops.
+* Buys items, and swipes the items off.
+* Closes app without saving it, so swiped list isn't persisted
 
 -----
 * next week, user2 opens the PWA, 
-* and sees the list of lists on loading; then loads the list they made previously
+* and sees the list of lists on loading; then loads the list they made previously.
 * repeats shopping process
 
 -----
-* user1 returns to the PWA, and builds a Christmas shopping list
-* Then enters a sensible name and saves it
+* user1 returns to the PWA, and builds a Christmas shopping list.
+* Then enters a sensible name and saves it.
 
 ----
 * user1 knows they entered an item, but has lost it. 
    * This is a point of friction on freeware from 'Driod.
-* They use the search feature as it seems relevant to their needs.
-* This builds a new list of items that match that description. 
+* They use the search feature on the main tabBar as it seems relevant to their needs.
+* This supplies a new list of items that match that search term. 
    * Each result includes a link back to the original list.
-* They find their lost item, and swipe it, so no-one can see it.
-* They save the list, and close the app.
-* The new list could be saved, although its recommended to enter a meaningful name first. 
+* This finds their lost item,
+* They enter the original list, and swipe the item, so no-one can see it.
+* They save this list, and close the app.
+* The new results list could be saved, although its recommended to enter a meaningful name first. 
 
 -----
 * Several months later; user1 goes Xmas shopping with the handily saved list
