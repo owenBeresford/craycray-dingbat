@@ -118,11 +118,13 @@ export default defineComponent({
     } else {
       console.assert(this.shopStore, "ThisList: At mounted() stage, do not have a state storage?!");
     }
+    const flux = new MotionStream();
+    flux.register("0", this.finalise.bind(this));
+    this.flux=flux;
+
   },
   inject: ["helpText", "canSeeHelp", "ttl"],
   data(): ThisListProps {
-    const flux = new MotionStream();
-    flux.register("0", this.finalise.bind(this));
 
     return {
       id: NEW_LIST,
@@ -130,7 +132,6 @@ export default defineComponent({
       getInput: "",
       canSeeInput: false,
       cb: Function as any,
-      stream: flux,
       offset: -1,
       bisMobile: isMobile(),
       logoPath: LOGO_PATH, 
@@ -224,13 +225,13 @@ export default defineComponent({
       e.preventDefault();
       const agaçant = e!.currentTarget as HTMLElement;
       this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
-      this.stream.start(e);
+      this.flux.start(e);
     },
 
     onDragStop(e: MouseEvent): void {
       e.preventDefault();
       const agaçant = e!.currentTarget as HTMLElement;
-      this.stream.end(e);
+      this.flux.end(e);
       clearSelection();
     },
 
@@ -252,13 +253,13 @@ export default defineComponent({
         buttons: 1,
       } as MouseEventInit);
 
-      this.stream.end(e2);
+      this.flux.end(e2);
       clearSelection();
     },
 
     onDragMove(e: MouseEvent): void {
       e.preventDefault();
-      this.stream.addEvent(e);
+      this.flux.addEvent(e);
     },
   },
 });
