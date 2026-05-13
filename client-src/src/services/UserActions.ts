@@ -52,7 +52,7 @@ const TEXT = useUIText();
 /**
  * @class UserActions
  * A class to make the TabBar simpler.   This also improves testability.
- 
+
  * @access public
  */
 class UserActions implements ExternalMethods {
@@ -73,7 +73,7 @@ class UserActions implements ExternalMethods {
  * @param {CacheWrapper} ca
  * @param {FactoryArtefact} ld
  * @public
- * @returns {ExternalMethods} 
+ * @returns {ExternalMethods}
  */
   public constructor(
     rr: RouteRecordNormalized,
@@ -105,7 +105,7 @@ class UserActions implements ExternalMethods {
    * mount
    * The accessible util to assign all the boilerplate code to the event handlers.
    * See HOC in a OO class
- 
+
    * @param {MenuStateType } ctx
    * @public
    * @returns {MethodOptions}
@@ -144,7 +144,7 @@ class UserActions implements ExternalMethods {
   /**
    * wrapper
    * A function -makin- function that creates boilerplate
- 
+
    * @param {UserAction} f1
    * @param {MenuStateType} ctx
    * @public
@@ -167,7 +167,7 @@ class UserActions implements ExternalMethods {
   /**
    * onIntersitial
    * Event handler to load Interstitials
- 
+
    * @public
    * @returns {void}
    */
@@ -183,7 +183,7 @@ class UserActions implements ExternalMethods {
   /**
    * onInstall
    * Event handler to exec "install" to a phone
- 
+
    * @public
    * @returns {boolean}
    */
@@ -205,7 +205,7 @@ class UserActions implements ExternalMethods {
   /**
    * onUnique
    * Event handler to exec the unique filter on this list
- 
+
    * @public
    * @returns {void}
    */
@@ -220,7 +220,7 @@ class UserActions implements ExternalMethods {
   /**
    * onDuplicate
    * Event handler to copy the current list
- 
+
    * @public
    * @returns {void}
    */
@@ -238,7 +238,7 @@ class UserActions implements ExternalMethods {
   /**
    * onSave
    * Event handler to push current state to the server
- 
+
    * @public
    * @returns {boolean}
    */
@@ -257,7 +257,7 @@ class UserActions implements ExternalMethods {
   /**
    * onRevert
    * Event handler to revert local state to what is stored on the server
- 
+
    * @public
    * @returns [boolean]
    */
@@ -271,10 +271,26 @@ class UserActions implements ExternalMethods {
     return false;
   }
 
+  /**
+   * onMenu
+   * Event handler to toggle the menu
+
+   * @param {MenuStateType} ctx
+   * @public
+   * @returns {void}
+   */
   onMenu(ctx: MenuStateType): void {
     ctx.menuStateRef.value = !ctx.menuStateRef.value;
   }
 
+  /**
+   * onSearch
+   * Event handler to perform a search
+
+   * @param {MenuStateType} ctx
+   * @public
+   * @returns {boolean}
+   */
   onSearch(ctx: MenuStateType): boolean {
     ctx.getInputRef.value = "";
     createSearchCallback(ctx, ctx.storeRef);
@@ -282,6 +298,14 @@ class UserActions implements ExternalMethods {
     return false;
   }
 
+  /**
+   * onName
+   * Event handler to perform a list name change
+
+   * @param {MenuStateType} ctx
+   * @public
+   * @returns {boolean}
+   */
   onName(ctx: MenuStateType): boolean {
     const liste = ListData.currentData.get(this.store.state.currentId);
     if (!liste) {
@@ -298,6 +322,16 @@ class UserActions implements ExternalMethods {
 export type CBType = (d1: string | null) => any;
 export function noop(str: string | null): void {}
 
+/**
+ * createNameCallback
+ * An isolated code section to create a EnterInput callback
+ * very IMPURE
+
+ * @param (MenuStateType) ctx
+ * @param {COMPLETE_STORE} store
+ * @public
+ * @returns {void}
+ */
 function createNameCallback(ctx: MenuStateType, store: COMPLETE_STORE): void {
   ctx.CBRef.value = (d1: string | null): any => {
     if (d1 === null) {
@@ -313,6 +347,16 @@ function createNameCallback(ctx: MenuStateType, store: COMPLETE_STORE): void {
   };
 }
 
+/**
+ * createSearchCallback
+ * An isolated code section to create a EnterInput callback
+ * very IMPURE
+
+ * @param (MenuStateType) ctx
+ * @param {COMPLETE_STORE} store
+ * @public
+ * @returns {void}
+ */
 function createSearchCallback(ctx: MenuStateType, store: COMPLETE_STORE): void {
   ctx.CBRef.value = (d1: string | null): any => {
     if (d1 === null || d1 === "") {
