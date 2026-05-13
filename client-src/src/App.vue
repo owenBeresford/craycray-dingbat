@@ -1,6 +1,6 @@
 <template>
   <div class="wholePage" :data-testid="instanceId" :key="currentStateKey">
-    <TabBar currentStateKey="tabar1" :testid="tabId" />
+    <TabBar currentStateKey="tabar1" :data-testid="tabId" />
     <router-view class="view" />
   </div>
 </template>
