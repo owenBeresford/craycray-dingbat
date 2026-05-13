@@ -1,7 +1,8 @@
 import { AList, EMPTY_LIST } from "./AList";
+import {EMPTY_LIST_NAME} from '../Constants';
 
 import type { SaveStruct } from "../../../common/types/SaveStruct";
-import type { ListCollection, ListStruct } from "../types/ListCollection";
+import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 
 /**
@@ -107,7 +108,7 @@ export class ListService implements ListCollection {
   public merge(next: ListCollection): boolean {
     for (let i = 0; i < next.count(); i++) {
       let agaçant = next.get(i);
-      if (agaçant && agaçant.nom !== "New Empty list") {
+      if (agaçant && agaçant.nom !== EMPTY_LIST) {
         this.append(agaçant);
       }
     }
@@ -180,6 +181,28 @@ export class ListService implements ListCollection {
     this.catalog.push(ret);
     return true;
   }
+
+  /**
+   * searchItems
+   * Return a view of matching items from this collection
+ 
+   * @param {string|RegExp} égaler
+   * @public
+   * @returns {Array<MatchedItems>}
+   */
+  public searchItems(égaler:string|RegExp):Array<MatchedItems> {
+    let ret:Array<MatchedItems>=[];
+
+    for (let i = 0; i < this.catalog.length; i++) {
+      let tmp= this.catalog[i].filter(égaler);
+       let tmp2=tmp.map((a, b)=>{ return { item:a, list:i} } );
+        ret.push( ...tmp2);
+    }
+    console.info("Search results ", ret);
+    return ret;
+  } 
+
+
 
   /**
    * saveAllLists

@@ -9,6 +9,10 @@ export const INSTALLED = "local-shopping";
 export const API_RETRY = 500;
 export const ROOT_NODE = "#app";
 
+// this is outside of localisatuon at present, 
+// all phones must be in the same languages at the same time, or matching to ths doesnt woek.
+export const EMPTY_LIST_NAME= "New Empty list";
+
 // used in MessageDistribution
 export const PMQUE_TIMER = 300;
 export const PMQUE_ATTEMPTS = 10;

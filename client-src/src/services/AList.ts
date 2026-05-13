@@ -1,4 +1,6 @@
 import { JsonSerializer, throwError, JsonProperty, JsonObject } from "typescript-json-serializer";
+
+import {EMPTY_LIST_NAME} from '../Constants';
 import type { Listable, ListStruct } from "../types/ListCollection";
 import type { TestDataSchema } from '../../../common/types/TestDataSchema';
 
@@ -65,6 +67,19 @@ export class AList implements Listable, ListStruct {
     liste.énumérer = 0;
     liste.id = id;
     liste.éléments = [] as Array<string>;
+    return liste;
+  }
+
+  // each item also has an id, 
+  // need top add type, when add component
+  public static serps( dat:Array<MatchedItems> ):AList  {
+    let liste = new AList();
+    liste.nom="Search results";
+    liste.créé = new Date();
+    liste.modifié = new Date();
+    liste.énumérer =dat.length;
+    liste.id =-1; // not valid to save as is
+    liste.éléments = [...dat];
     return liste;
   }
 
@@ -225,6 +240,32 @@ export class AList implements Listable, ListStruct {
   public view(): ListStruct {
     return { ...this } as ListStruct;
   }
+
+  /**
+   * filter
+   * A util to supply matching items from the list
+ 
+   * @param {string|Regexp} égaler
+   * @public
+   * @returns {Array<string>} 
+   */
+  public filter( égaler:string|Regexp ):Array<string> {
+    let term:RegExp;
+    if(typeof égaler === "string") {
+      term=new RegExp(égaler, 'i');
+    } else {
+      term=égaler;
+    }
+
+    let ret:Array<string>=[];
+    const FIX_TYPE=Array.from(this.éléments );
+    for(let i=0;i<FIX_TYPE.length; i++) {
+      if(FIX_TYPE[i].match( term)) {
+        ret.push(FIX_TYPE[i]);
+      }
+    }
+    return ret;
+  }
 }
 
-export const EMPTY_LIST = AList.manual("New Empty list", 1);
+export const EMPTY_LIST = AList.manual(EMPTY_LIST_NAME, 1);
