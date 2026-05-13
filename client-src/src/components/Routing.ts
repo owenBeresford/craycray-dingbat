@@ -11,6 +11,7 @@ import type {
 
 import ListOfLists from "./ListOfLists.vue";
 import ThisList from "./ThisList.vue";
+import SearchList from "./SearchList.vue";
 import UnknownRoute from "./UnknownRoute.vue";
 import { useStore } from "../services/Store";
 // import { ListData } from "../services/DataFactory";
@@ -56,8 +57,19 @@ import { useStore } from "../services/Store";
         return { ...route.params, shopStore: useStore(), currentStateKey: "thislist1" };
       },
     },
-    // possible @TODO IOIO XXX 
-    //    { path: '/install', name:'install', ...? },
+    {
+      path: "/located/:term",
+      name: "serps",
+      meta: { title: "Your search query result data." },
+      component: SearchList,
+      props: (route: RouteLocationNormalized): Record<string, any> => {
+        return { ...route.params,  currentStateKey: "searchlist1" };
+      },
+    },
+    // possible @TODO IOIO XXX     this is available as a button
+    //    { path: '/install', name:'install', ... },
+    // also
+    //    { path:'/welcome', name:'docs', ...} 
     {
       path: "/:pathMatch(.*)*",
       name: "not-found",

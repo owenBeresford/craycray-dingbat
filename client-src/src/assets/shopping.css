@@ -48,9 +48,9 @@
   vertical-align: middle;
   margin-bottom: 0px;
 }
-.tabBar.buttonRow li .foldPoint {
-  font-size: 200%;
-  font-weight: 600;
+.tabBar.buttonRow li .menuTrigger {
+  font-size: 170%;
+  font-weight: 400;
   display: inline-block;
   width: 2em;
   display: inline-block;
@@ -62,9 +62,9 @@
   margin: 0.3em;
   margin-bottom: 0px;
 }
-.tabBar.buttonRow li .foldPoint[aria-pressed="false"] {
-  font-size: 170%;
-  font-weight: 400;
+.tabBar.buttonRow li .menuTrigger[aria-pressed="true"] {
+  font-size: 200%;
+  font-weight: 600;
   margin: 0.3em;
   margin-right: 0.6em;
   width: 1.5em;
@@ -99,29 +99,43 @@
     margin-left: 0em;
   }
 }
-.tabBar.buttonRow menu.obmenu {
-  z-index: 1;
-  position: fixed;
-  right: 50px;
-  width: 10em;
+.tabBar.buttonRow menu.menuTrigger {
+  display: none;
   background-color: #eee;
   border: 1em #eee solid;
   text-align: left;
   padding-left: 0px;
 }
-.tabBar.buttonRow ul > li span.obmenu {
+.tabBar.buttonRow menu.menuTrigger small { font-size:60%; } 
+.tabBar.buttonRow menu.menuTrigger[aria-hidden=false] {
+  z-index: 1;
+  position: fixed;
+  right: 50px;
+  width: 10em;
+  top:2em;
+  display: block;
+}
+
+.tabBar.buttonRow ul > li span.menuTrigger {
   color: transparent;
   text-shadow: 0 0 0 #222;
   padding: 0.5em 1em 0.5em 1em;
 }
-.tabBar.buttonRow > li span.obmenu:hover {
+.tabBar.buttonRow ul > li span.menuTrigger::before { 
+  content: "☰";
+}
+.tabBar.buttonRow ul li span.menuTrigger[aria-pressed="true"]::before {
+  content:"❌";
+}
+
+.tabBar.buttonRow > li span.menuTrigger:hover {
   background-color: #eee;
 }
-.tabBar.buttonRow menu.obmenu li {
+.tabBar.buttonRow menu.menuTrigger li {
   display: inline-block;
   width: 100%;
 }
-.tabBar.buttonRow menu.obmenu .button {
+.tabBar.buttonRow menu.menuTrigger .button {
   display: inline-block;
   width: 100%;
 }
@@ -270,6 +284,16 @@ dialog.enterInput::backdrop { background-color:rgba(39, 39, 39, 0.3); pointer-ev
     width: 400px;
   }
 }
+
+/* ********************************************************* */
+/* this is for SERPS  */
+
+.serps .buttonRow { display:block; margin-left:0rem; list-style-type: none; }
+.serps .buttonRow li { display:inline; white-space:nowrap; margin:0.5em; }
+.serps .buttonRow li h3 { display:inline-block; }
+.serps .buttonRow li:first-child { margin-bottom:1em; }
+.serps ul.aList  { max-width:max-content; }
+
 
 /* ********************************************************* */
 /* this is for ThisList */
