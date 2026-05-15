@@ -62,19 +62,13 @@ import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
 import { MotionStream } from "../services/MotionStream";
 import { useSearchActions, SearchActions } from "../services/SearchActions";
-import type { ExternalMethods } from "../services/BaseActions";
+import type { ExternalMethods, SearchStateType } from "../services/BaseActions";
 import type { COMPLETE_STORE } from '../services/Store';
+import type { SearchProps, SearchStaticData } from '../types/ComponentProps'; 
 // import { StaticRoutes } from "./Routing";
 // import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 // import type { SerpsProps } from "../types/ComponentProps";
 
-interface SearchProps {
-  term: string;
-  currentStateKey: string;
-  testId:string;
-  route:RouteRecordNormalized;
-  shopState: COMPLETE_STORE;
-}
 
 
 const TEXT = useUIText();
@@ -111,19 +105,19 @@ export default defineComponent({
 
       stack = useSearchActions( list, flux );
       return {
-        extraMethods: stack.mount({helpTextRef, canSeeHelpRef, ttlRef }, SearchActions),
+        extraMethods: stack.mount({ }, SearchActions),
         helpTextRef,
         canSeeHelpRef,
         ttlRef,
         list,
         hasData,
-        ctx: {   }, // empty!!
+        ctx: {   } as SearchStateType, // empty!!
       };
     } catch (e: unknown) {
       console.log("SearchResults.setup():", (e as Error).message);
     }
   },
-  data() {
+  data():SearchStaticData {
     let nom: Array<string> = [];
     for (let i = 0; i < ListData.currentData.count(); i++) {
       nom[i] = ListData.currentData.get(i).nom;
@@ -146,7 +140,7 @@ export default defineComponent({
         itemDTTitle: TEXT.get("serps.itemDTTitle"),
         itemMBTitle: TEXT.get("serps.itemMBTitle"),
       },
-    };
+    } satisfies SearchStaticData;
   },
   computed: {
     // here 'init' is a contraction of 'initialised'.  Maybe I should have written i10d

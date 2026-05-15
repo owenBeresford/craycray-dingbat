@@ -17,7 +17,7 @@ export interface ListOfListsProps {
   secondId: string;
 }
 
-export interface EnterInputProps {
+export interface EnterInputStaticData {
   bIsMobile: boolean;
   bShow: boolean;
   oVal: string;
@@ -30,7 +30,7 @@ export interface EnterInputProps {
   text: Record<string, string>;
 }
 
-export interface ThisListProps {
+export interface ThisListStaticData {
   id: number;
   getInput: string;
   canSeeInput: boolean;
@@ -52,9 +52,28 @@ export interface MainAppProps {
   instanceId: string;
 }
 
+export interface SearchProps {
+  term: string;
+  currentStateKey: string;
+  testId:string;
+  route:RouteRecordNormalized;
+  shopState: COMPLETE_STORE;
+}
+
+export interface SearchStaticData {
+  aListId: string;
+  viewId:string; 
+  logoPath: string;
+  mapURL: MapUrlType;
+  bisMobile: boolean;
+  listTitles: Array<string>;
+  text: Record<string,string>;
+}      
+
+
 type MapUrlType = (nom: string, id: number | null) => string;
 
-export interface TabBarProps {
+export interface TabBarStaticData {
   loadedStateKey: string;
   menuLabel: string;
   menuState: string;
@@ -73,7 +92,7 @@ export interface TabBarProps {
   menu: Record<string, string>; // l12n data
 }
 
-export interface UnknownRouteProps {
+export interface UnknownRouteStaticData {
   mapURL: MapUrlType;
   cross: string;
   store: Store<ShopState>;
@@ -82,7 +101,7 @@ export interface UnknownRouteProps {
   text: Record<string, string>;
 }
 
-export interface InterstitialProps {
+export interface InterstitialStaticData {
   instanceId: string;
   closeId: string;
   local: LocalCopy;

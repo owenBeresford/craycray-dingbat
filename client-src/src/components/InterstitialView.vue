@@ -25,7 +25,7 @@ import { useUIText } from "../services/Localisation";
 import { useLocal } from "../services/LocalCopy";
 import { KNOWN_PHONE } from "../Constants";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
-import type { StrictArray, InterstitialProps } from "../types/ComponentProps";
+import type { StrictArray, InterstitialStaticData } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 /**
@@ -53,7 +53,7 @@ export default defineComponent({
     currentStateKey: { type: [String, Object], required: true },
     testId: { type: String, default: "test0" },
   },
-  data(): InterstitialProps {
+  data(): InterstitialStaticData {
     let id = this.$props.testId;
     let chaine = "";
     if (typeof this.$props.currentStateKey === "string") {
@@ -84,7 +84,7 @@ console.log("IOIOIO have composite statekey in initerstitial, not expected  IOIO
         label1: TEXT.get("interstitial.label1"),
       },
       currentStateKey2: chaine,
-    } satisfies InterstitialProps;
+    } satisfies InterstitialStaticData;
   },
   mounted() {
     // this.local = useLocal();

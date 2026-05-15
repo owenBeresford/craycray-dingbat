@@ -63,7 +63,7 @@ import { isMobile, clearSelection } from "../../../common/util";
 import { LOGO_PATH } from "../Constants";
 
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
-import type { ThisListProps } from "../types/ComponentProps";
+import type { ThisListStaticData } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 const { currentData, updateData, initData } = ListData;
@@ -125,7 +125,7 @@ export default defineComponent({
     this.flux = flux;
   },
   inject: ["helpText", "canSeeHelp", "ttl"],
-  data(): ThisListProps {
+  data(): ThisListStaticData {
     return {
       id: NEW_LIST,
       list: EMPTY_LIST,
@@ -145,7 +145,7 @@ export default defineComponent({
       nextTestId: this.$props.testId + "Input1",
       aListId: this.$props.testId + "List1",
       viewId: this.$props.testId + "View1",
-    } satisfies ThisListProps;
+    } satisfies ThisListStaticData;
   },
   computed: {
     helpId(): string {

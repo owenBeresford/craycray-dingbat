@@ -17,6 +17,11 @@ export interface MenuStateType {
   menuStateRef: Ref<boolean>;
 }
 
+export interface SearchStateType {
+}
+
+
+
 // IOIO this type is abit of a hack...
 // export type DefinedComponent = ReturnValue<defineComponent>;
 export interface ExternalMethods {

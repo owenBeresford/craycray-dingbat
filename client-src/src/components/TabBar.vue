@@ -153,7 +153,7 @@ import type { ExternalMethods, CBType } from "../services/BaseActions";
 // import { StaticRoutes } from "./Routing";
 import EnterInput from "./EnterInput.vue";
 // import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
-import type { TabBarProps } from "../types/ComponentProps";
+import type { TabBarStaticData } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 
@@ -205,7 +205,7 @@ export default defineComponent({
       console.log("TabBar.setup():", (e as Error).message, (e as Error).stack.substring(0, 200) );
     }
   },
-  data(): TabBarProps {
+  data(): TabBarStaticData {
     const CACHE: CacheWrapper = useCacheWrapper();
     let état = "button";
     if (location.protocol !== "https:") {
@@ -252,7 +252,7 @@ export default defineComponent({
         findTitle: TEXT.get("menu.findTitle"),
         outro: TEXT.get("menu.outro"),
       },
-    } satisfies TabBarProps;
+    } satisfies TabBarStaticData;
   },
   mounted() {
     if (!this.shopStore) {

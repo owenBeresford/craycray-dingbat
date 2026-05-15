@@ -7,7 +7,7 @@ import { AList } from "./AList";
 import { MotionStream } from "./MotionStream";
 import { isMobile, clearSelection } from "../../../common/util";
 
-import type { UserAction, MenuStateType, ExternalMethods, CBType } from './BaseActions';
+import type { UserAction, ExternalMethods, CBType, SearchStateType } from './BaseActions';
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
 
@@ -60,14 +60,14 @@ export class SearchActions extends BaseActions implements ExternalMethods {
    }
  
 
-    onSwipe(dir: string, e: TouchEvent, ctx:MenuStateType): void {
+    onSwipe(dir: string, e: TouchEvent, ctx:SearchStateType): void {
       const agaçant = e!.currentTarget as HTMLElement;
       this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
       console.log(`Deleting list element [${this.offset}] = ${agaçant.innerText}`);
       this.onFinalise();
     }
 
-    onFinalise(e:unknown, ctx:MenuStateType): void {
+    onFinalise(e:unknown, ctx:SearchStateType): void {
       if (this.offset >= 0 && this.offset < this.list.énumérer) {
         this.list.remove(this.offset);
       } else {
@@ -75,19 +75,19 @@ export class SearchActions extends BaseActions implements ExternalMethods {
       }
     }
 
-    onDragStart(e: MouseEvent, ctx:MenuStateType): void {
+    onDragStart(e: MouseEvent, ctx:SearchStateType): void {
       const agaçant = e!.currentTarget as HTMLElement;
       this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
       this.flux.start(e);
     }
 
-    onDragStop(e: MouseEvent, ctx:MenuStateType ): void {
+    onDragStop(e: MouseEvent, ctx:SearchStateType ): void {
       const agaçant = e!.currentTarget as HTMLElement;
       this.flux.end(e);
       clearSelection();
     }
 
-    onDragExit(e: FocusEvent, ctx:MenuStateType): void {
+    onDragExit(e: FocusEvent, ctx:SearchStateType): void {
       // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent
       // new MouseEvent(typeArg, mouseEventInit);
       let e3: HTMLElement = e.relatedTarget as HTMLElement;
@@ -108,7 +108,7 @@ export class SearchActions extends BaseActions implements ExternalMethods {
       clearSelection();
     }
 
-    onDragMove(e: MouseEvent, ctx:MenuStateType): void {
+    onDragMove(e: MouseEvent, ctx:SearchStateType): void {
       this.flux.addEvent(e);
     }
 

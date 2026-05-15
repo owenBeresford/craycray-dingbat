@@ -52,7 +52,7 @@ export class TabActions extends BaseActions implements ExternalMethods {
 
   protected loadedStateKey: string;
 
-  /**
+/**
  * Boring con'tor
  * This has params to make building unit-tests easier.
  // NOTE:  not injected: StaticRoutes
