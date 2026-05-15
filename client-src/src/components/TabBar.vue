@@ -28,7 +28,7 @@
             aria-haspopup="menu"
             :aria-pressed="menuStateRef"
             role="button"
-            @click.prevent="onMenu"
+            @click.prevent="onMenu" 
             v-touch="onMenu"
             @keypress="onMenu"
             :title="menu.actualMenuTitle"
@@ -138,21 +138,21 @@
 <script lang="ts">
 // https://github.com/josueggh/a11y-cheatsheet
 import { defineComponent, inject, ref } from "vue";
-import type { MethodOptions } from "vue";
+// import type { MethodOptions } from "vue";
 import { useRoute } from "vue-router";
 
 import { useStore } from "../services/Store";
 import type { COMPLETE_STORE } from "../services/Store";
-import { AList } from "../services/AList";
+// import { AList } from "../services/AList";
 import { ListData, setupCurrentList } from "../services/DataFactory";
 import { useCacheWrapper, CacheWrapper } from "../workers/InstallWorker";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
-import { useUserActions, noop } from "../services/UserActions";
-import type { ExternalMethods, CBType } from "../services/UserActions";
-import { StaticRoutes } from "./Routing";
+import { useTabActions, noop, TabActions } from "../services/TabActions";
+import type { ExternalMethods, CBType } from "../services/BaseActions";
+// import { StaticRoutes } from "./Routing";
 import EnterInput from "./EnterInput.vue";
-import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
+// import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { TabBarProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
@@ -180,7 +180,6 @@ export default defineComponent({
       },
     },
   },
-  // inject: [ 'dataOnLoad' ],
   setup() {
     const dataOnLoad: boolean = inject<boolean>("dataOnLoad");
     const visibleRef = ref<boolean>(false);
@@ -191,10 +190,9 @@ export default defineComponent({
 
     let stack: ExternalMethods;
     try {
-      stack = useUserActions(useStore(), ListData, useCacheWrapper(), useRoute());
-      let annoying = stack.mount({ visibleRef, getInputRef, CBRef, storeRef, menuStateRef, ListData });
+      stack = useTabActions(useStore(), ListData, useCacheWrapper(), useRoute());
       return {
-        extraMethods: annoying,
+        extraMethods: stack.mount({ visibleRef, getInputRef, CBRef, storeRef, menuStateRef, ListData }, TabActions),
         dataOnLoad,
         menuStateRef,
         visibleRef,
@@ -204,7 +202,7 @@ export default defineComponent({
         ctx: { visibleRef, getInputRef, CBRef, storeRef, menuStateRef },
       };
     } catch (e: unknown) {
-      console.log("TabBar.setup():", (e as Error).message);
+      console.log("TabBar.setup():", (e as Error).message, (e as Error).stack.substring(0, 200) );
     }
   },
   data(): TabBarProps {
@@ -221,7 +219,6 @@ export default defineComponent({
       menuState: "hide",
       menuOpen: false,
       getInput: "",
-      loadedStateKey: "",
       CB: Function as any,
       installEnabled: état,
       EIK: this.$props.currentStateKey + "false",

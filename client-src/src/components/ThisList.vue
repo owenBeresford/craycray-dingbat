@@ -1,6 +1,6 @@
 <template>
   <div class="aList" :data-testid="testId" :key="currentStateKey">
-    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="betterId" :testId="viewId" />
+    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="helpId" :testId="viewId" />
     <ul class="buttonRow">
       <li class="bigger">
         <h3>{{ list.nom }}</h3>
@@ -58,7 +58,7 @@ import { useUIText } from "../services/Localisation";
 import { ListData, setupCurrentList, idOf } from "../services/DataFactory";
 import { AList, EMPTY_LIST } from "../services/AList";
 import { MotionStream } from "../services/MotionStream";
-import { extractId } from "../services/util";
+// import { extractId } from "../services/util";
 import { isMobile, clearSelection } from "../../../common/util";
 import { LOGO_PATH } from "../Constants";
 
@@ -113,7 +113,7 @@ export default defineComponent({
   },
   mounted() {
     const itinéraire = useRoute();
-    this.list.importTest(setupCurrentList(itinéraire) as AList);
+    this.list.importTest( setupCurrentList(itinéraire) as AList );
     if (this.shopStore) {
       this.shopStore.commit("setPath", itinéraire.path);
       this.shopStore.commit("setId", this.id);
@@ -148,7 +148,7 @@ export default defineComponent({
     } satisfies ThisListProps;
   },
   computed: {
-    betterId(): string {
+    helpId(): string {
       return this.$props.currentStateKey + "view";
     },
     actualList(): Array<string> {
@@ -158,14 +158,9 @@ export default defineComponent({
       return [] as Array<string>;
     },
   },
-  methods: {
-    onSave(e: GuessEvent): void {
-      e.preventDefault();
-      if (currentData) {
-        currentData.saveAllLists();
-      }
-    },
 
+
+  methods: {
     onAdd(e: GuessEvent): boolean {
       this.getInput = "";
       this.cb = (d1: string | null): void => {

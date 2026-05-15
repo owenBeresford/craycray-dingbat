@@ -97,7 +97,7 @@ export default defineComponent({
       instanceId: this.$props.testId,
       viewId: this.$props.testId + "View1",
       listId: this.$props.testId + "List1",
-      secondId: this.$props.currentStateKey + "view",
+      secondId: this.$props.currentStateKey + "View",
 
       logoPath: LOGO_PATH,
       shoppingLists: chose,

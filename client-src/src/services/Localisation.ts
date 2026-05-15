@@ -190,7 +190,6 @@ function UITextFactory(lang: string): UItext {
     hiddenReference.add("list.curListsTitle", "Current lists.  Desktop: long touch to edit, swipe left to delete.");
     hiddenReference.add("list.addItemName", "Add item");
     hiddenReference.add("list.imgAlt", "The app logo - Improve text here");
-
     hiddenReference.add(
       "serps.intro",
       "The local matches to your recent search are below.   the SERPS are presented as a list, and may be saved as a new list if this is useful."
@@ -210,6 +209,8 @@ function UITextFactory(lang: string): UItext {
         "serps.itemMBTitle",
         "Mobile interactionas are: swipe/ discard item from this search results."
       ),
+////////// gap to split add() from addArray()   /////////////////////////////////////////////////
+
       hiddenReference.addArray("firstUse", [
         "&nbsp; ",
         "Hello, this is a shopping list hack, hosted locally on your phone.",
@@ -234,6 +235,15 @@ function UITextFactory(lang: string): UItext {
       "Swipe an item left to remove it when you physically have it.",
       "Use 'add item' option to extend the list.",
       "",
+    ]);
+    hiddenReference.addArray("serps", [
+      "&nbsp; ",
+      "This screen visualises your previous search.",
+      "There is a link to the original list next to each match, to be able to edit that list.",
+      "&nbsp; ",
+      "The results can be saved as a list",
+      "To help your future self, it is suggeested to set a better name on the list.",
+      "&nbsp; ",
     ]);
     hiddenReference.addArray("menu", [
       "The menu in the top right supplies:",

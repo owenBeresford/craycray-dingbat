@@ -11,7 +11,6 @@
  * Util to extract a List Id from an URL. 
  * according to the manuals I found; doing it like this is the approved solution.
  * this type whoffle is because someone said this could be an array. #leSigh
- * #TODO Maybe should live in util
  
  * @param {string | string[] | null} src
  * @public

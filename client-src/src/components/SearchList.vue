@@ -1,5 +1,6 @@
 <template>
   <div id="serpsContainer" class="serps" :key="currentStateKey" :data-testId="testId">
+    <InterstitialView :display="helpTextRef" :show="canSeeHelpRef" :ttl="ttlRef" :currentStateKey="helpId" :testId="viewId" />
     <p>{{ text.intro }}</p>
     <ul class="buttonRow">
       <li>
@@ -46,31 +47,44 @@
 
 <script lang="ts">
 // https://github.com/josueggh/a11y-cheatsheet
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 import type { MethodOptions } from "vue";
 import { useRoute } from "vue-router";
+import type { RouteRecordNormalized } from "vue-router";
 
+import InterstitialView from "./InterstitialView.vue";
 import { LOGO_PATH } from "../Constants";
 import { isMobile } from "../../../common/util";
 import { useStore } from "../services/Store";
 import { AList } from "../services/AList";
 import { ListData, setupCurrentList } from "../services/DataFactory";
-import { useCacheWrapper, CacheWrapper } from "../workers/InstallWorker";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
-import { useUserActions } from "../services/UserActions";
-import type { ExternalMethods } from "../services/UserActions";
-import { StaticRoutes } from "./Routing";
-import EnterInput from "./EnterInput.vue";
-import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
-import type { TabBarProps } from "../types/ComponentProps";
+import { MotionStream } from "../services/MotionStream";
+import { useSearchActions, SearchActions } from "../services/SearchActions";
+import type { ExternalMethods } from "../services/BaseActions";
+import type { COMPLETE_STORE } from '../services/Store';
+// import { StaticRoutes } from "./Routing";
+// import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
+// import type { SerpsProps } from "../types/ComponentProps";
+
+interface SearchProps {
+  term: string;
+  currentStateKey: string;
+  testId:string;
+  route:RouteRecordNormalized;
+  shopState: COMPLETE_STORE;
+}
+
 
 const TEXT = useUIText();
 export default defineComponent({
   name: "SearchList",
+  components: { InterstitialView },
   props: {
     currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
+    term:{ type:String, default:"" },
     shopStore: {
       type: Object,
       default: () => {
@@ -84,22 +98,42 @@ export default defineComponent({
       },
     },
   },
-  inject: [],
+   setup(props: SearchProps) {
+    const helpTextRef:string = inject<string>("helpText");
+    const canSeeHelpRef:boolean = inject<boolean>("canSeeHelp");
+    const ttlRef:string = inject<number>("ttl");
+
+    let stack: ExternalMethods;
+    try {
+     const flux = new MotionStream();
+     const list: AList= AList.serps( ListData.currentData.searchItems( props.term) );
+     const hasData: boolean = list.énumérer > 0; 
+
+      stack = useSearchActions( list, flux );
+      return {
+        extraMethods: stack.mount({helpTextRef, canSeeHelpRef, ttlRef }, SearchActions),
+        helpTextRef,
+        canSeeHelpRef,
+        ttlRef,
+        list,
+        hasData,
+        ctx: {   }, // empty!!
+      };
+    } catch (e: unknown) {
+      console.log("SearchResults.setup():", (e as Error).message);
+    }
+  },
   data() {
-    let list: AList = this.$props.shopStore.state.serps;
-    let hasData: boolean = list.énumérer > 0;
     let nom: Array<string> = [];
     for (let i = 0; i < ListData.currentData.count(); i++) {
       nom[i] = ListData.currentData.get(i).nom;
     }
-    // console.log("This should be a list ", nom, list.éléments );
 
     return {
-      aListId: this.$props.testId + "results1",
+      aListId: this.$props.testId + "Results1",
+      viewId: this.$props.testId + "View1",
       logoPath: LOGO_PATH,
       mapURL,
-      list,
-      hasData,
       bisMobile: isMobile(),
       listTitles: nom,
 
@@ -122,13 +156,20 @@ export default defineComponent({
       }
       return [] as Array<string>;
     },
+    helpId():string {
+      return this.$props.currentStateKey + "view";
+    }
   },
-  created() {
-    // the state data in the link is populated in TabBar.onSearch
-    // instant, as local to local
+  mounted() {
+     this.$props.shopStore.commit("setPath", this.route.path);
+     this.initGeneratedMethods();
   },
   methods: {
-    // ? see ThisList
+     ...(() => ({}))(), // placeholder to keep Vue happy
+
+    initGeneratedMethods() {
+      Object.assign(this, this.extraMethods);
+    },
   },
 });
 </script>

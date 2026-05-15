@@ -28,6 +28,7 @@ export const mapForHelp = (state: COMPLETE_STORE, specific: string): string => {
     "/list-all": "list-all",
     "/list": "list-id",
     "/menu": "menu",
+    "/located": "serps"
     // /install . . .
   };
   return MM[ceci];
