@@ -31,7 +31,7 @@ WARN: to-date not actually ran this yet.
 * Think about scan barcode on older packet https://www.actowizsolutions.com/uk-grocery-api-real-time-data-tesco-aldi-asda-sainsburys.php
 
 * Advanced use: read TODO list
-
+* WARN: DO NOT edit code-base without an IDE. (I'm  using glyths that are not found on a EN-US keyboard, so you need auto-complete).   Config/ Constant files are in ASCII 127 to be be more broadly compatible.   
 
 ### Basic file system
 

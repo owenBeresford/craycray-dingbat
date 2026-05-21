@@ -24,6 +24,7 @@ LOW IMPACT, nioce to haves
 - find my list local IP code 
 - Localisation getting placeholders/ formatstr, then map ListOfList
 - this might be child components being ready before parent.  [Vue warn]: injection "shopping" not found.
+- Work out if I can afford to strip my "disable TS when its limitations are loud and annoying" https://dev.to/softwarejutsu/understanding-typescripts-comments-ts-ignore-ts-expect-error-and-friends-38p9
 - implement my DOCS file (JSON validation)
 - look at atomic IO in Node.  #leSigh.  A write isn't likely to collide with a read, but if it did the reader gets a mess.
 - Maybe lineup state-keys to show net status in later builds
