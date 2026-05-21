@@ -10,7 +10,7 @@
   "scripts": {
     "start": "../build-tools/start.bash ",
     "stop": "../build-tools/start.bash -q",
-	"build:app":"export NODE_ENV=production;../build-tools/build.bash",
+    "build:app": "export NODE_ENV=production;../build-tools/build.bash",
     "build:fe": "export NODE_ENV=production;../build-tools/build.bash --fe",
     "build:be": "export NODE_ENV=production;../build-tools/build.bash --be",
     "test:fe": "export NODE_ENV=development;  ../build-tools/test.bash --fe;  echo 'Add more tests!!!'",
@@ -20,13 +20,13 @@
     "clean": "../build-tools/clean.bash",
     "storybook": "node ./node_modules/.bin/storybook dev -p 6006 --https --ssl-cert ./src/assets/cert.pem --ssl-key ./src/assets/private.key ; node ./node_modules/.bin/storybook dev -p 6006 -c ./.storybook-suspence/ --https --ssl-cert ./src/assets/cert.pem --ssl-key ./src/assets/private.key ",
     "build-storybook": "node ./node_modules/.bin/storybook build; node ./node_modules/.bin/storybook build -c ./.storybook-suspence/"
-
   },
   "main": "main.mjs",
   "dependencies": {
     "@vue/runtime-core": "^3.2.33",
     "common-es": "^1.0.1",
     "foundation-sites": "^6.7.4",
+    "ts-md5": "^2.0.1",
     "typescript-json-serializer": "^6.0.1",
     "vector2d": "^3.0.0",
     "vue": "^3.2.33",
