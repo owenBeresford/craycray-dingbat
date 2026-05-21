@@ -1,4 +1,5 @@
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
+import { BaseList } from './AList';
 
 // a set of listables, carefuly different method names to reduce kaos
 export interface ListCollection<T> {

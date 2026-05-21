@@ -74,7 +74,7 @@ import InterstitialView from "./InterstitialView.vue";
 import { LOGO_PATH } from "../Constants";
 import { isMobile } from "../../../common/util";
 import { useStore } from "../services/Store";
-import { StdList. SearchList, BaseList } from "../services/AList";
+import { StdList, SearchList, BaseList } from "../services/AList";
 import { ListData, setupCurrentList } from "../services/DataFactory";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
@@ -165,7 +165,7 @@ export default defineComponent({
   computed: {
     // here 'init' is a contraction of 'initialised'.  Maybe I should have written i10d
     initList(): Array<MatchedItems> {
-      if ("list" in this && this.list instanceof BaseList) {
+      if ("list" in this && this.list instanceof StdList) {
         return this.list.export<string>();
       }
       return [] as Array<MatchedItems>;

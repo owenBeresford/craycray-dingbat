@@ -30,7 +30,7 @@ function convertEpoch2Date(i: number): Date {
  * @public
  * @returns {BaseList<T>}
  */
-class BaseList<T> implements InstanceListable<T>, ListStruct {
+export class BaseList<T> implements InstanceListable<T>, ListStruct {
   @JsonProperty({ name: "name", required: true })
   public nom: string;
 
