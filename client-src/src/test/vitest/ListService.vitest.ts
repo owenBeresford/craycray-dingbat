@@ -2,10 +2,10 @@ import { assert, describe, it, expect, expectTypeOf, assertType } from "vitest";
 import { LocalStorage } from "node-localstorage";
 
 import { ListService } from "../../services/ListService";
-import { AList } from "../../services/AList";
+import { StdList } from "../../services/AList";
 import { createDataFactory } from "../../services/DataFactory";
 import type { FactoryArtefact } from "../../services/DataFactory";
-import type { ListStruct, Listable, ListCollection } from "../../types/ListCollection";
+import type { ListStruct, InstanceListable, ListCollection } from "../../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../../../../common/types/promises";
 import { fixture1, fixture2, fixture3, fixture4 } from "../../../../common/fixture-lists";
 
@@ -25,7 +25,7 @@ describe("I can use ListService", () => {
         return;
       }
       assertType<FactoryArtefact>(tt);
-      assertType<ListCollection>(tt.currentData);
+      assertType<ListCollection<string>>(tt.currentData);
 
       good(true);
     });
@@ -38,7 +38,7 @@ describe("I can use ListService", () => {
         bad(new Error("#toFix Fixture returned null?"));
         return;
       }
-      const ls: ListCollection = FACT.currentData;
+      const ls: ListCollection<string> = FACT.currentData;
 
       expect(ls.create("item1")).toBe(1);
       expect(ls.create("item2")).toBe(2);
@@ -49,7 +49,7 @@ describe("I can use ListService", () => {
         bad(new Error("#toFix Fixture returned null?"));
         return;
       }
-      const ls2: ListCollection = FACT2.currentData;
+      const ls2: ListCollection<string> = FACT2.currentData;
 
       expect(ls2.create("item3")).toBe(3);
       expect(ls2.create("item4")).toBe(4);
@@ -67,7 +67,7 @@ describe("I can use ListService", () => {
         bad(new Error("#toFix Fixture returned null?"));
         return;
       }
-      const ls: ListCollection = FACT.currentData;
+      const ls: ListCollection<string> = FACT.currentData;
       expect(ls.poll()).toBe(true);
       // something to enumerate other states
       good(true);
@@ -81,7 +81,7 @@ describe("I can use ListService", () => {
         bad(new Error("#toFix Fixture returned null?"));
         return;
       }
-      const ls: ListCollection = FACT.currentData;
+      const ls: ListCollection<string> = FACT.currentData;
       expect(ls.create("item1")).toBe(1);
       expect(ls.create("item2")).toBe(2);
       expect(ls.create("item3")).toBe(3);
@@ -108,15 +108,15 @@ describe("I can use ListService", () => {
         return;
       }
 
-      const ls: ListCollection = FACT.currentData;
+      const ls: ListCollection<string> = FACT.currentData;
       expect(ls.create("item1")).toBe(1);
       expect(ls.create("item2")).toBe(2);
       expect(ls.create("item3")).toBe(3);
 
-      let tmp: AList | undefined = ls.get(2);
-      expect(tmp instanceof AList).toBe(true);
+      let tmp: InstanceListable<string> | undefined = ls.get(2);
+      expect(tmp instanceof StdList).toBe(true);
       tmp = ls.get(3);
-      expect(tmp instanceof AList).toBe(true);
+      expect(tmp instanceof StdList).toBe(true);
 
       tmp = ls.get(144);
       expect(typeof tmp === "undefined").toBe(true);
@@ -132,14 +132,14 @@ describe("I can use ListService", () => {
         return;
       }
 
-      const ls: ListCollection = FACT.currentData;
+      const ls: ListCollection<string> = FACT.currentData;
       expect(ls.create("item1")).toBe(1);
 
-      expect(ls.put(2, AList.manual("item2", 2))).toBe(true);
+      expect(ls.put(2, StdList.manual<string, StdList>("item2", 2))).toBe(true);
       // can overwrite
-      expect(ls.put(2, AList.manual("item2", 2))).toBe(true);
+      expect(ls.put(2, StdList.manual<string, StdList>("item2", 2))).toBe(true);
 
-      expect(ls.put(1024, AList.manual("item2", 1024))).toBe(true);
+      expect(ls.put(1024, StdList.manual<string, StdList>("item2", 1024))).toBe(true);
       good(true);
     });
   });
@@ -152,7 +152,7 @@ describe("I can use ListService", () => {
         return;
       }
 
-      const ls: ListCollection = FACT.currentData;
+      const ls: ListCollection<string> = FACT.currentData;
       expect(ls.create("item1")).toBe(1);
       expect(ls.create("item2")).toBe(2);
       expect(ls.create("item3")).toBe(3);
@@ -170,17 +170,17 @@ describe("I can use ListService", () => {
         bad(new Error("#toFix Fixture returned null?"));
         return;
       }
-      const ls: ListCollection = FACT.currentData;
+      const ls: ListCollection<string> = FACT.currentData;
 
       expect(ls.create("item1")).toBe(1);
       expect(ls.create("item2")).toBe(2);
       expect(ls.create("item3")).toBe(3);
 
-      expect(ls.put(2, AList.manual("item2", 2))).toBe(true);
+      expect(ls.put(2, StdList.manual<string, StdList>("item2", 2))).toBe(true);
       // can overwrite
-      expect(ls.put(2, AList.manual("item2", 2))).toBe(true);
+      expect(ls.put(2, StdList.manual<string, StdList>("item2", 2))).toBe(true);
 
-      expect(ls.put(1024, AList.manual("item2", 1024))).toBe(true);
+      expect(ls.put(1024, StdList.manual<string, StdList>("item2", 1024))).toBe(true);
       good(true);
     });
   });

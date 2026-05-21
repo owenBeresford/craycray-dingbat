@@ -1,9 +1,9 @@
-import { AList } from "./AList";
+import { StdList } from "./AList";
 import { ListService } from "./ListService";
 
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { LocalCopy } from "./LocalCopy";
-import type { ListCollection } from "../types/ListCollection";
+// import type { ListCollection } from "../types/ListCollection";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
 //import type { Listable, ListStruct } from "../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
@@ -14,7 +14,7 @@ import type { PromiseSucceed, PromiseReject } from "../../../common/types/promis
 
  * @public
  */
-export class NetworkedListService extends ListService implements ListCollection {
+export class NetworkedListService extends ListService {
   protected remote: DistantStorable;
   protected local: LocalCopy;
 
@@ -85,7 +85,7 @@ export class NetworkedListService extends ListService implements ListCollection 
 
   /**
    * mapper
-   * Util to convert listea between formats SaveStruct -> AList
+   * Util to convert listea between formats SaveStruct -> StdList
    * Mutates current Collections state
 
    * @param {Array<SaveStruct>} liste
@@ -96,12 +96,12 @@ export class NetworkedListService extends ListService implements ListCollection 
     //  eslint-disable-next-line no-restricted-syntax, guard-for-in, no-for-in-array
     for (const i in liste) {
       if (liste[i].name) {
-        const tt = AList.manual(liste[i].name, liste[i].id);
+        const tt = StdList.manual<string, StdList>(liste[i].name, liste[i].id);
         tt.créé = new Date(liste[i].created);
         tt.modifié = new Date(liste[i].edited);
         tt.énumérer = liste[i].count;
         tt.éléments = [...liste[i].list];
-        this.catalog.push(<AList>tt);
+        this.catalog.push(tt as StdList);
       } else {
         console.warn("Unpacked list [" + i + "] has no name; Que?");
       }

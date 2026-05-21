@@ -5,7 +5,7 @@ import { ListService } from "../../services/ListService";
 // import { AList } from "../../services/AList";
 import { createDataFactory } from "../../services/DataFactory";
 import type { FactoryArtefact } from "../../services/DataFactory";
-import type { ListStruct, Listable, ListCollection } from "../../types/ListCollection";
+import type { ListStruct, InstanceListable, ListCollection } from "../../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../../../../common/types/promises";
 
 describe("I can use NetworkedListService", () => {
@@ -18,7 +18,7 @@ describe("I can use NetworkedListService", () => {
       expect(typeof tt).toBe("object");
       assertType<FactoryArtefact>(tt);
       if (!tt.currentData) return;
-      assertType<ListCollection>(tt.currentData);
+      assertType<ListCollection<string>>(tt.currentData);
 
       good(true);
     });

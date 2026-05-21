@@ -1,4 +1,4 @@
-import { AList } from "./AList";
+import { StdList } from "./AList";
 import { ListService } from "./ListService";
 import type { ListCollection } from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
@@ -11,7 +11,7 @@ import type { PromiseSucceed, PromiseReject } from "../../../common/types/promis
  
  * @public
  */
-export class TestListService extends ListService implements ListCollection {
+export class TestListService extends ListService implements ListCollection<string> {
   /**
    * constructor
    * Normal Con'tor
@@ -24,7 +24,7 @@ export class TestListService extends ListService implements ListCollection {
     super();
     for (let i = 0; i < src.length; i++) {
       // Id0 is not a valid list-id, it is reserved for error spotting.
-      this.put(i + 1, AList.importTest(src[i]));
+      this.put(i + 1, StdList.importTest<string, StdList>(src[i]));
     }
     console.log(`Imported a initial state of ${src.length} TEST items.`);
   }

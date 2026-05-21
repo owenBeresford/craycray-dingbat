@@ -1,7 +1,7 @@
 import { JsonSerializer, throwError, JsonProperty, JsonObject } from "typescript-json-serializer";
 
 import { EMPTY_LIST_NAME } from "../Constants";
-import type { Listable, ListStruct } from "../types/ListCollection";
+import type { InstanceListable, ModuleListable, ListStruct, MatchedItems, ExtendedListable } from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 
 /**
@@ -16,23 +16,7 @@ function convertEpoch2Date(i: number): Date {
   return new Date(i);
 }
 
-/**
- * AList 
- * An Entity to manage validation and serialisation for Shopping lists
- * Currently uses JSONObject for meta-data management.
- 
- * @public
- */
-JsonObject();
-export class AList implements Listable, ListStruct {
-  /*
-  protected nom:string;
-  protected créé:Date;
-  protected modifié:Date;
-  protected énumérer:number;
-  protected id:number;
-  protected éléments: Array<string>;
-*/
+class BaseList<T> implements InstanceListable<T>, ListStruct {
   @JsonProperty({ name: "name", required: true })
   public nom: string;
 
@@ -49,7 +33,7 @@ export class AList implements Listable, ListStruct {
   public id: number;
 
   @JsonProperty({ name: "list", required: true, type: Array })
-  public éléments: Array<string>;
+  public éléments: Array<T>;
 
   /**
    * manual
@@ -57,67 +41,37 @@ export class AList implements Listable, ListStruct {
  
    * @param {string} nouveau
    * @public
-   * @returns {AList}
+   * @returns {StdList}
    */
-  public static manual(nom: string, id: number): AList {
-    let liste = new AList();
+  public static manual<V1, V extends BaseList<V1>>(this: { new(): V }, nom: string, id: number):V {
+    let liste = new this();
     liste.nom = nom;
     liste.créé = new Date();
     liste.modifié = new Date();
     liste.énumérer = 0;
     liste.id = id;
-    liste.éléments = [] as Array<string>;
-    return liste;
-  }
-
-  // each item also has an id,
-  // need top add type, when add component
-  public static serps(dat: Array<MatchedItems>): AList {
-    let liste = new AList();
-    liste.nom = "Search results";
-    liste.créé = new Date();
-    liste.modifié = new Date();
-    liste.énumérer = dat.length;
-    liste.id = -1; // not valid to save as is
-    liste.éléments = [...dat];
+    liste.éléments = [] as Array<V1>;
     return liste;
   }
 
   /**
    * importTest
-   * a util func to get Fixtures into the local AList[]
+   * a util func to get Fixtures into the local StdList[]
+   * Hope the type magic holds in tests etc.  This *should* genericly choose the correct type
  
    * @param {TestDataSchema} origine
    * @public
-   * @returns {AList}
+   * @returns {U} - probably U=Stdlist, but this is reusable
    */
-  public static importTest(origine: TestDataSchema): AList {
-    const liste = new AList();
+  public static importTest<T, U extends BaseList<T>>(this: { new():U }, origine: TestDataSchema):U {
+    const liste = new this();
     liste.nom = origine.name;
     liste.créé = origine.created;
     liste.modifié = origine.edited;
     liste.énumérer = origine.count;
     liste.id = origine.id;
-    liste.éléments = [...origine.list];
+    liste.éléments = [...origine.list as Array<T>];
     return liste;
-  }
-
-  /**
-   * importTest
-   * a util func to get Fixtures into the local AList[]
-
-   * @param {AList} origine
-   * @public
-   * @returns {AList}
-   */
-  public importTest(origine: AList): AList {
-    this.nom = origine.nom;
-    this.créé = origine.créé;
-    this.modifié = origine.modifié;
-    this.énumérer = origine.énumérer;
-    this.id = origine.id;
-    this.éléments = [...origine.éléments];
-    return this;
   }
 
   /**
@@ -138,13 +92,15 @@ export class AList implements Listable, ListStruct {
 
   /**
    * add
+   * This function has no type flex on purpose.  
+   * It only makes sense for building lists with.
    * Add another item to the current list
  
-   * @param  {string} nouveau
+   * @param  {T} nouveau - often T=string
    * @public
    * @returns {boolean}
    */
-  public add(nouveau: string): boolean {
+  public add(nouveau: T): boolean {
     this.éléments.push(nouveau);
     // lint complains when I use ++
     this.énumérer += 1;
@@ -154,15 +110,17 @@ export class AList implements Listable, ListStruct {
 
   /**
    * edit
-   * change an entry in the list
+   * Change an entry in the list
+   * This function has no type flex on purpose.  
+   * It only makes sense for building lists with.
    * Maybe should rename to editItem() ?
  
    * @param {number} indice
-   * @param {string} nouveau
+   * @param {T} nouveau
    * @public
    * @returns {boolean}
    */
-  public edit(indice: number, nouveau: string): boolean {
+  public edit(indice: number, nouveau: T): boolean {
     if (indice < 0 || indice > this.énumérer) {
       return false;
     }
@@ -192,12 +150,12 @@ export class AList implements Listable, ListStruct {
    * import
    * Append a list of items to this list (as one call)
  
-   * @param {Array<string>} relevé 
+   * @param {Array<T>} relevé - probably T=string 
    * @public
    * @returns {boolean}
    */
-  public import(relevé: Array<string>): boolean {
-    this.éléments.push(...relevé);
+  public import(relevé: Array<T>): boolean {
+    this.éléments.push(...relevé );
     this.énumérer += relevé.length;
     this.modifié = new Date();
     return true;
@@ -208,9 +166,9 @@ export class AList implements Listable, ListStruct {
    * Return a dupe of this list's items
  
    * @public
-   * @returns {Array<string>}
+   * @returns {Array<T>} - often T=string
    */
-  public export(): Array<string> {
+  public export(): Array<T> {
     return [...this.éléments];
   }
 
@@ -222,7 +180,7 @@ export class AList implements Listable, ListStruct {
    * @returns {boolean}
    */
   public unique(): boolean {
-    const s1: Set<string> = new Set<string>(this.éléments);
+    let s1: Set<T> = new Set<T>(this.éléments);
     this.éléments.splice(0, this.éléments.length);
     this.éléments.push(...s1);
     this.modifié = new Date();
@@ -240,24 +198,42 @@ export class AList implements Listable, ListStruct {
     return { ...this } as ListStruct;
   }
 
+  
+}
+
+
+/**
+ * StdList 
+ * An Entity to manage validation and serialisation for Shopping lists
+ * Currently uses JSONObject^H^H^H^H^H^Htypescript-json-serializer for meta-data management.
+ 
+ * @public
+ */
+JsonObject();
+export class StdList extends BaseList<string> implements ExtendedListable<string>, ListStruct {
+
   /**
    * filter
    * A util to supply matching items from the list
+   * According to current business logic, this MUST BE called on a StdList, as there is no case for searching on a Search result.
+   * 
+   * At runtime, it was shown that the data validation class had supplied an Object with number fields names, rather thana an Array.
+   * Hence I use Array.from()
  
-   * @param {string|Regexp} égaler
+   * @param {string|RegExp} égaler
    * @public
    * @returns {Array<string>} 
    */
-  public filter(égaler: string | Regexp): Array<string> {
+  public filter(égaler: string | RegExp): Array<string> {
     let term: RegExp;
     if (typeof égaler === "string") {
       term = new RegExp(égaler, "i");
     } else {
       term = égaler;
     }
-
+ 
     let ret: Array<string> = [];
-    const FIX_TYPE = Array.from(this.éléments);
+    const FIX_TYPE:Array<string> = Array.from(this.éléments);
     for (let i = 0; i < FIX_TYPE.length; i++) {
       if (FIX_TYPE[i].match(term)) {
         ret.push(FIX_TYPE[i]);
@@ -265,6 +241,51 @@ export class AList implements Listable, ListStruct {
     }
     return ret;
   }
+
+  /**
+   * importTest
+   * a util func to get Fixtures into the local StdList[]
+
+   * @param {StdList} origine
+   * @public
+   * @returns {StdList}
+   
+   public importTest<U1, U extends BaseList<U1>>(this: { new():U }, origine: TestDataSchema): U {
+
+    this.nom = origine.name;
+    this.créé = origine.created;
+    this.modifié = origine.modified;
+    this.énumérer = origine.count;
+    this.id = origine.id;
+    this.éléments = [...origine.list];
+    return this as U;
+  }  */
 }
 
-export const EMPTY_LIST = AList.manual(EMPTY_LIST_NAME, 1);
+/**
+ * SearchList 
+ * An Entity to manage validation and serialisation for Shopping lists
+ * Currently uses JSONObject^H^H^H^H^H^Htypescript-json-serializer for meta-data management.
+ 
+ * I hope the other public bits get inherited, as it SHOULD DO. it would in Golang.
+ * @public
+ */
+JsonObject();
+export class SearchList extends BaseList<MatchedItems> implements InstanceListable<MatchedItems>, ListStruct {
+
+  // each item also has an id,
+  // need to add type, when add component
+  public static serps(dat: Array<MatchedItems>): SearchList {
+    let liste = new SearchList();
+    liste.nom = "Search results";
+    liste.créé = new Date();
+    liste.modifié = new Date();
+    liste.énumérer = dat.length;
+    liste.id = -1; // not valid to save as is
+    liste.éléments = [...dat];
+    return liste;
+  }
+}
+
+export const EMPTY_LIST:StdList = StdList.manual<string, StdList>(EMPTY_LIST_NAME, 1) as StdList;
+

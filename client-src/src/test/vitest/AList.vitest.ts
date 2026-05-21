@@ -3,8 +3,8 @@
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 import { JsonSerializer, throwError, JsonProperty, JsonObject } from "typescript-json-serializer";
 
-import type { ListStruct, Listable } from "../../types/ListCollection";
-import { AList } from "../../services/AList";
+import type { ListStruct, InstanceListable } from "../../types/ListCollection";
+import { StdList } from "../../services/AList";
 
 // This is just a test object.
 @JsonObject()
@@ -50,14 +50,14 @@ describe("test on json object (to see if tech works)", () => {
 });
 
 // the real unit-test
-describe("test on AList", () => {
+describe("test on StdList", () => {
   it("Can load service", () => {
     // https://copyprogramming.com/howto/typescript-check-if-object-is-of-interface
     // https://github.com/vitest-dev/vitest/issues/8387
-    assertType<ListStruct>(AList.manual("test0", 1));
-    expect(AList.manual("test1", 1)).toBeTruthy();
+    assertType<ListStruct>(StdList.manual<string, StdList>("test0", 1));
+    expect(StdList.manual<string, StdList>("test1", 1)).toBeTruthy();
 
-    let tt = new AList();
+    let tt = new StdList();
     tt.nom = "NEWNAME";
     tt.créé = new Date();
     tt.modifié = new Date();
@@ -70,7 +70,7 @@ describe("test on AList", () => {
   });
 
   it("attempt2 ", () => {
-    let obj = AList.manual("test1", 1);
+    let obj = StdList.manual<string, StdList>("test1", 1);
     expect(obj).toBeTruthy();
     obj.énumérer = 2;
     obj.id = 1;
