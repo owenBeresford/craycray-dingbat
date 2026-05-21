@@ -10,11 +10,12 @@ import { hashState } from "../../../common/util";
 import { useUIText } from "./Localisation";
 import { ListData } from "./DataFactory";
 
-import type { UserAction, MenuStateType, FakeThis, ExternalMethods, CBType } from "./BaseActions";
 import type { FactoryArtefact } from "./DataFactory";
 import type { COMPLETE_STORE } from "./Store";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
+import type { ExternalMethods, FakeThis, UserAction, CBType } from '../types/Actionables';
+
 
 /**
  * useTabActions
@@ -57,7 +58,7 @@ export class TabActions extends BaseActions {
 
   public loadedStateKey: string;
 
-  /**
+ /**
  * Boring con'tor
  * This has params to make building unit-tests easier.
  // NOTE:  not injected: StaticRoutes
@@ -99,6 +100,8 @@ export class TabActions extends BaseActions {
    * onIntersitial
    * Event handler to load Interstitials
 
+   * @param {GuesEvent} ignored - maintained for API compat, this is ignored
+   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {void}
    */
@@ -115,6 +118,8 @@ export class TabActions extends BaseActions {
    * onInstall
    * Event handler to exec "install" to a phone
 
+   * @param {GuesEvent} ignored - maintained for API compat, this is ignored
+   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {boolean}
    */
@@ -137,6 +142,8 @@ export class TabActions extends BaseActions {
    * onUnique
    * Event handler to exec the unique filter on this list
 
+   * @param {GuesEvent} ignored - maintained for API compat, this is ignored
+   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {void}
    */
@@ -154,6 +161,8 @@ export class TabActions extends BaseActions {
    * onDuplicate
    * Event handler to copy the current list
 
+   * @param {GuesEvent} ignored - maintained for API compat, this is ignored
+   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {void}
    */
@@ -178,6 +187,8 @@ export class TabActions extends BaseActions {
    * onSave
    * Event handler to push current state to the server
 
+   * @param {GuesEvent} ignored - maintained for API compat, this is ignored
+   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {boolean}
    */
@@ -200,6 +211,8 @@ export class TabActions extends BaseActions {
    * onRevert
    * Event handler to revert local state to what is stored on the server
 
+   * @param {GuesEvent} ignored - maintained for API compat, this is ignored
+   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns [boolean]
    */
@@ -219,7 +232,8 @@ export class TabActions extends BaseActions {
    * onMenu
    * Event handler to toggle the menu
 
-   * @param {FakeThis} ctx
+   * @param {GuesEvent} ignored - maintained for API compat, this is ignored
+   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {void}
    */
@@ -231,7 +245,8 @@ export class TabActions extends BaseActions {
    * onSearch
    * Event handler to perform a search
 
-   * @param {FakeThis} ctx
+   * @param {GuesEvent} ignored - maintained for API compat, this is ignored
+   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {boolean}
    */
@@ -245,9 +260,10 @@ export class TabActions extends BaseActions {
   /**
    * onName
    * Event handler to perform a list name change
-   * @YODO if Route is show-all, abort with dedicated warning
+   * @TODO if Route is show-all, abort with dedicated warning
 
-   * @param {FakeThis} ctx
+   * @param {GuesEvent} ignored - maintained for API compat, this is ignored
+   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {boolean}
    */
@@ -301,7 +317,7 @@ function createNameCallback(ctx: FakeThis): void {
  * An isolated code section to create a EnterInput callback
  * very IMPURE
 
- * @param (FakeThis) ctx
+ * @param {FakeThis} ctx
  * @public
  * @returns {void}
  */
@@ -324,3 +340,4 @@ function createSearchCallback(ctx: FakeThis): void {
     });
   };
 }
+

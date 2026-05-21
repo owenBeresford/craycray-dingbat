@@ -143,7 +143,7 @@ export class NetworkedListService extends ListService {
       return;
     });
 
-    // i hope this works.  JS ha no spinlocks
+    // i hope this works.  JS has no spinlocks
     return répondeur;
   }
 }

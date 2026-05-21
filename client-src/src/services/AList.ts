@@ -22,6 +22,14 @@ function convertEpoch2Date(i: number): Date {
   return new Date(i);
 }
 
+/**
+ * BaseList<T> 
+ * A common ancestor for more valuable implementations.
+ * Never instantiated by itelf
+ 
+ * @public
+ * @returns {BaseList<T>}
+ */
 class BaseList<T> implements InstanceListable<T>, ListStruct {
   @JsonProperty({ name: "name", required: true })
   public nom: string;
@@ -44,7 +52,8 @@ class BaseList<T> implements InstanceListable<T>, ListStruct {
   /**
    * manual
    * like a con'tor, named as the super class needs the con'tor slot.
- 
+
+   * @param { "new (): V" } this - TS magic to have correct type at runtime for any child class
    * @param {string} nouveau
    * @public
    * @returns {StdList}
@@ -65,6 +74,7 @@ class BaseList<T> implements InstanceListable<T>, ListStruct {
    * a util func to get Fixtures into the local StdList[]
    * Hope the type magic holds in tests etc.  This *should* genericly choose the correct type
  
+   * @param { "new (): V" } this - TS magic to have correct type at runtime for any child class
    * @param {TestDataSchema} origine
    * @public
    * @returns {U} - probably U=Stdlist, but this is reusable
@@ -98,7 +108,6 @@ class BaseList<T> implements InstanceListable<T>, ListStruct {
 
   /**
    * add
-   * This function has no type flex on purpose.  
    * It only makes sense for building lists with.
    * Add another item to the current list
  
@@ -117,7 +126,6 @@ class BaseList<T> implements InstanceListable<T>, ListStruct {
   /**
    * edit
    * Change an entry in the list
-   * This function has no type flex on purpose.  
    * It only makes sense for building lists with.
    * Maybe should rename to editItem() ?
  
@@ -169,7 +177,7 @@ class BaseList<T> implements InstanceListable<T>, ListStruct {
 
   /**
    * export
-   * Return a dupe of this list's items
+   * Return a dupe of this list's items, as Array, not a class
  
    * @public
    * @returns {Array<T>} - often T=string
@@ -180,7 +188,7 @@ class BaseList<T> implements InstanceListable<T>, ListStruct {
 
   /**
    * unique
-   * Edit current list to remove dupes
+   * Mutate current list to remove dupes
  
    * @public
    * @returns {boolean}
@@ -261,7 +269,8 @@ export class StdList extends BaseList<string> implements ExtendedListable<string
     this.id = origine.id;
     this.éléments = [...origine.list];
     return this as U;
-  }  */
+  } 
+ */
 }
 
 /**
@@ -274,9 +283,18 @@ export class StdList extends BaseList<string> implements ExtendedListable<string
  */
 JsonObject();
 export class SearchList extends BaseList<MatchedItems> implements InstanceListable<MatchedItems>, ListStruct {
+
+/**
+ * serps
+ * A method to convert a search result into an list object to be-able-to render it
   // each item also has an id,
   // need to add type, when add component
-  public static serps(dat: Array<MatchedItems>): SearchList {
+ 
+ * @param {Array<MatchedItems>} dat
+ * @public
+ * @return {SearchList }
+ */
+   public static serps(dat: Array<MatchedItems>): SearchList {
     let liste = new SearchList();
     liste.nom = "Search results";
     liste.créé = new Date();
@@ -288,4 +306,7 @@ export class SearchList extends BaseList<MatchedItems> implements InstanceListab
   }
 }
 
+/**
+ A handy list so there are no null-pointers 
+ */
 export const EMPTY_LIST: StdList = StdList.manual<string, StdList>(EMPTY_LIST_NAME, 1) as StdList;

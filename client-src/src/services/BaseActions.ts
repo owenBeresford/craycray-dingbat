@@ -6,31 +6,12 @@ import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-test
 import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
 import type { COMPLETE_STORE } from "./Store";
 import type { FactoryArtefact } from "./DataFactory";
-
-type SaferFunctionType = (...args: any[]) => any;
-export type FakeThis = Record<string, Ref<any>>;
-export type UserAction = (e: GuessEvent, ctx: FakeThis) => boolean;
-export type CBType = (d1: string | null) => any;
-
-// less portable, but mostly common
-export interface MenuStateType {
-  visibleRef: Ref<boolean>;
-  getInputRef: Ref<string>;
-  CBRef: Ref<(a: string | null) => void>;
-  storeRef: Ref<COMPLETE_STORE>;
-  menuStateRef: Ref<boolean>;
-}
-
-export interface SearchStateType {}
-
-export interface ExternalMethods {
-  mount(ctx: Object, mapClass: ExternalMethods): MethodOptions;
-}
+import type { ExternalMethods, FakeThis, UserAction, CBType } from '../types/Actionables';
 
 /**
  * @class BaseActions
- * A class to make the TabBar simpler.   This also improves testability.
- * This module does not include a use* function.  Please subclass 
+ * A class to make the components with many actions simpler.   This also improves testability.
+ * This module does not and should not include a use* function.  **Please subclass**
 
  * @access public
  */
@@ -105,4 +86,12 @@ export abstract class BaseActions implements ExternalMethods {
   }
 }
 
+/**
+ * noop
+ * A function that specifically does nothing, but is callable, to be a default action
+
+ * @param {string | null} str
+ * @public
+ * @returns {void}
+ */
 export function noop(str: string | null): void {}

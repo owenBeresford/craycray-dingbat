@@ -8,10 +8,20 @@ import { SearchList } from "./AList";
 import { MotionStream } from "./MotionStream";
 import { isMobile, clearSelection } from "../../../common/util";
 
-import type { UserAction, ExternalMethods, FakeThis, CBType, SearchStateType } from "./BaseActions";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
+import type { ExternalMethods, FakeThis, UserAction, CBType } from '../types/Actionables';
 
+
+/**
+ * useSearchActions
+ * A standard use* function. 
+ 
+ * @param {SearchList} a
+ * @param {MotionStream} b
+ * @public
+ * @returns {ExternalMethods } - actually a SearchActions instance
+ */
 export function useSearchActions(a: SearchList, b: MotionStream): ExternalMethods {
   return new SearchActions(a, b);
 }
@@ -28,7 +38,7 @@ export class SearchActions extends BaseActions implements ExternalMethods {
   protected flux: MotionStream;
   protected offset: number;
 
-  /**
+/**
  * Boring con'tor
  * This has params to make building unit-tests easier.
  // NOTE:  not injected: StaticRoutes

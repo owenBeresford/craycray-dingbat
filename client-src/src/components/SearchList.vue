@@ -80,7 +80,7 @@ import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
 import { MotionStream } from "../services/MotionStream";
 import { useSearchActions, SearchActions } from "../services/SearchActions";
-import type { ExternalMethods, SearchStateType } from "../services/BaseActions";
+import type { ExternalMethods, FakeThis } from "../services/BaseActions";
 import type { COMPLETE_STORE } from '../services/Store';
 import type { SearchProps, SearchStaticData } from '../types/ComponentProps';
 // import { StaticRoutes } from "./Routing";
@@ -129,7 +129,7 @@ export default defineComponent({
         ttlRef,
         list,
         hasData,
-        ctx: {   } as SearchStateType, // empty!!
+        ctx: {   } as FakeThis, // empty!!
       };
     } catch (e: unknown) {
       console.log("SearchResults.setup():", (e as Error).message);

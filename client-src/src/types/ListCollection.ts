@@ -64,3 +64,4 @@ export interface MatchedItems {
 }
 
 export type WholeClass<T> = InstanceListable<T> & ListStruct;
+
