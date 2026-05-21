@@ -24,7 +24,7 @@
 	"skipLibCheck": true,
     "baseUrl": ".",
 	"outDir": "../dist/types/",
-    "types": [  "node", "vitest", "vite", "../common/types/env.d.ts", "./src/types/shims-vue.d.ts" ],
+    "types": [  "node", "vitest", "vite", "@vue/runtime-dom", "../common/types/env.d.ts", "./src/types/shims-vue.d.ts" ],
     "paths": {
       "@/*": [
         "src/*"
@@ -44,7 +44,8 @@
     ".storybook",
     "**/*.stories.ts",
     "**/*.stories.tsx",
-    "**/*.stories.mdx"
+    "**/*.stories.mdx",
+	"**/*.mdx"
   ], /* this blob is from a bot, I may strip it later.  The goal was eslint in Vue SFC, and it didn't deliver */
 	"vueCompilerOptions": {
 		"strictTemplates":true,
