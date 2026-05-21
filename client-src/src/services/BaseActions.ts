@@ -6,7 +6,7 @@ import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-test
 import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
 import type { COMPLETE_STORE } from "./Store";
 import type { FactoryArtefact } from "./DataFactory";
-import type { ExternalMethods, FakeThis, UserAction, CBType } from '../types/Actionables';
+import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Actionables";
 
 /**
  * @class BaseActions

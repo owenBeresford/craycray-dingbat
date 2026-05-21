@@ -76,15 +76,6 @@ export interface SearchStaticData {
 type MapUrlType = (nom: string, id: number | null) => string;
 
 export interface TabBarStaticData {
-  loadedStateKey: string;
-  menuLabel: string;
-  menuState: string;
-  menuOpen: boolean;
-  getInput: string;
-  visible: boolean;
-  CB: Function;
-  mapURL: MapUrlType;
-  CACHE: CacheWrapper;
   installEnabled: string;
   EIK: string;
   menuId: string;

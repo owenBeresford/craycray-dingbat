@@ -8,10 +8,10 @@ import { SearchList } from "./AList";
 import { MotionStream } from "./MotionStream";
 import { isMobile, clearSelection } from "../../../common/util";
 
+import type { FactoryArtefact } from "./DataFactory";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
-import type { ExternalMethods, FakeThis, UserAction, CBType } from '../types/Actionables';
-
+import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Actionables";
 
 /**
  * useSearchActions
@@ -22,8 +22,8 @@ import type { ExternalMethods, FakeThis, UserAction, CBType } from '../types/Act
  * @public
  * @returns {ExternalMethods } - actually a SearchActions instance
  */
-export function useSearchActions(a: SearchList, b: MotionStream): ExternalMethods {
-  return new SearchActions(a, b);
+export function useSearchActions(a: SearchList, b: MotionStream, c:FactoryArtefact): ExternalMethods {
+  return new SearchActions(a, b, c);
 }
 
 /**
@@ -38,7 +38,7 @@ export class SearchActions extends BaseActions implements ExternalMethods {
   protected flux: MotionStream;
   protected offset: number;
 
-/**
+  /**
  * Boring con'tor
  * This has params to make building unit-tests easier.
  // NOTE:  not injected: StaticRoutes
@@ -48,11 +48,12 @@ export class SearchActions extends BaseActions implements ExternalMethods {
  * @public
  * @returns {ExternalMethods}
  */
-  public constructor(al: SearchList, ms: MotionStream) {
+  public constructor(al: SearchList, ms: MotionStream, ld:FactoryArtefact ) {
     super();
     this.offset = 0;
     this.list = al;
     this.flux = ms;
+    this.data = ld;
 
     if (!this.list) {
       throw new Error("The results aren't populated, this module makes no sense");

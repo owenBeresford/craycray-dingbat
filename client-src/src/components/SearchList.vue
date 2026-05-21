@@ -29,7 +29,7 @@
 
     <ul class="aList" :data-testId="aListId">
       <li v-html="text.nout" v-show="!hasData"></li>
-      <li v-for="(i, j) in initList" :key="j" :title="text.itemTitle">
+      <li v-for="(i, j) in initList" :key="i.key" :title="text.itemTitle">
         <span role="button" :title="text.listLink">
           From
           <router-link :to="`${mapURL('aList', i.list)}`" class="button"
@@ -81,13 +81,11 @@ import { useUIText } from "../services/Localisation";
 import { MotionStream } from "../services/MotionStream";
 import { useSearchActions, SearchActions } from "../services/SearchActions";
 import type { ExternalMethods, FakeThis } from "../services/BaseActions";
-import type { COMPLETE_STORE } from '../services/Store';
-import type { SearchProps, SearchStaticData } from '../types/ComponentProps';
+import type { COMPLETE_STORE } from "../services/Store";
+import type { SearchProps, SearchStaticData } from "../types/ComponentProps";
 // import { StaticRoutes } from "./Routing";
 // import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 // import type { SerpsProps } from "../types/ComponentProps";
-
-
 
 const TEXT = useUIText();
 export default defineComponent({
@@ -96,7 +94,7 @@ export default defineComponent({
   props: {
     currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
-    term:{ type:String, default:"" },
+    term: { type: String, default: "" },
     shopStore: {
       type: Object,
       default: () => {
@@ -110,32 +108,32 @@ export default defineComponent({
       },
     },
   },
-   setup(props: SearchProps) {
-    const helpTextRef:string = inject<string>("helpText");
-    const canSeeHelpRef:boolean = inject<boolean>("canSeeHelp");
-    const ttlRef:string = inject<number>("ttl");
+  setup(props: SearchProps) {
+    const helpTextRef: string = inject<string>("helpText");
+    const canSeeHelpRef: boolean = inject<boolean>("canSeeHelp");
+    const ttlRef: string = inject<number>("ttl");
 
     let stack: ExternalMethods;
     try {
-     const flux = new MotionStream();
-     const list: SearchList= SearchList.serps( ListData.currentData.searchItems( props.term) );
-     const hasData: boolean = list.énumérer > 0;
+      const flux = new MotionStream();
+      const list: SearchList = SearchList.serps(ListData.currentData.searchItems(props.term));
+   //   const hasData: boolean = list.énumérer > 0;
 
-      stack = useSearchActions( list, flux );
+      stack = useSearchActions(list, flux, ListData );
       return {
-        extraMethods: stack.mount({ }, stack),
+        extraMethods: stack.mount({}, stack),
         helpTextRef,
         canSeeHelpRef,
         ttlRef,
         list,
-        hasData,
-        ctx: {   } as FakeThis, // empty!!
+      //  hasData,
+        ctx: {} as FakeThis, // empty!!
       };
     } catch (e: unknown) {
       console.log("SearchResults.setup():", (e as Error).message);
     }
   },
-  data():SearchStaticData {
+  data(): SearchStaticData {
     let nom: Array<string> = [];
     for (let i = 0; i < ListData.currentData.count(); i++) {
       nom[i] = ListData.currentData.get(i).nom;
@@ -144,6 +142,7 @@ export default defineComponent({
     return {
       aListId: this.$props.testId + "Results1",
       viewId: this.$props.testId + "View1",
+      saveId: this.$props.testId + "Save1",
       logoPath: LOGO_PATH,
       mapURL,
       bisMobile: isMobile(),
@@ -157,29 +156,49 @@ export default defineComponent({
         listLink: TEXT.get("serps.listLink"),
         itemDTTitle: TEXT.get("serps.itemDTTitle"),
         itemMBTitle: TEXT.get("serps.itemMBTitle"),
-        saveLabel:"Add Text",
-        saveTitle:"Add text",
+        saveLabel: TEXT.get("serps.saveLabel"),
+        saveTitle: TEXT.get("serps.saveTitle"),
       },
     } satisfies SearchStaticData;
   },
+  watch:{
+    initList(nouveau: string, vieux: string): void {
+       console.log(`computed value '${vieux}' => '${nouveau}'.`);
+    },
+   },
   computed: {
     // here 'init' is a contraction of 'initialised'.  Maybe I should have written i10d
     initList(): Array<MatchedItems> {
-      if ("list" in this && this.list instanceof StdList) {
-        return this.list.export<string>();
+console.log("initList hack,,", this.list instanceof StdList, this.list instanceof SearchList, this.list.export<string>() ); 
+      if ("list" in this && this.list instanceof SearchList) {
+        let tmp= this.list.export<string>();
+        for(let i in tmp) {
+          let tmp2=tmp[i].item;
+          tmp2=tmp2.replace(/ \t\"\'/, "_");
+          tmp[i].key=`item_${tmp2}+${tmp[i].list}`;
+        } 
+console.log("initList hack,,", tmp); 
+
+        return tmp;
       }
       return [] as Array<MatchedItems>;
     },
-    helpId():string {
+    hasData(): boolean {
+       if ("list" in this && this.list instanceof StdList) {
+        return this.list.énumérer>0;
+      }
+      return false;
+    },
+    helpId(): string {
       return this.$props.currentStateKey + "view";
-    }
+    },
   },
   mounted() {
-     this.$props.shopStore.commit("setPath", this.route.path);
-     this.initGeneratedMethods();
+    this.$props.shopStore.commit("setPath", this.route.path);
+    this.initGeneratedMethods();
   },
   methods: {
-     ...(() => ({}))(), // placeholder to keep Vue happy
+    ...(() => ({}))(), // placeholder to keep Vue happy
 
     initGeneratedMethods() {
       Object.assign(this, this.extraMethods);
