@@ -3,17 +3,18 @@ import type { MethodOptions, Ref } from "vue";
 import type { RouteRecordNormalized } from "vue-router";
 
 import { BaseActions  } from './BaseActions';
-import { AList } from "./AList";
+
+import { SearchList } from "./AList";
 import { MotionStream } from "./MotionStream";
 import { isMobile, clearSelection } from "../../../common/util";
 
-import type { UserAction, ExternalMethods, CBType, SearchStateType } from './BaseActions';
+import type { UserAction, ExternalMethods, FakeThis, CBType, SearchStateType } from './BaseActions';
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
 
 
 export function useSearchActions(
-  a: AList,
+  a: SearchList,
   b:MotionStream,
  ): ExternalMethods {
   return new SearchActions( a, b);
@@ -27,23 +28,24 @@ export function useSearchActions(
  * @access public
  */
 export class SearchActions extends BaseActions implements ExternalMethods {
-  protected list: AList;
+  protected list: SearchList;
   protected flux:MotionStream;
+  protected offset:number;
  
 /**
  * Boring con'tor
  * This has params to make building unit-tests easier.
  // NOTE:  not injected: StaticRoutes
  *
- * @param {AList} al
+ * @param {SearchList} al
  * @param {MotionStream} ms
  * @public
  * @returns {ExternalMethods}
  */
   public constructor(
-    al: AList,
+    al: SearchList,
     ms:MotionStream
-   ): SearchActions {
+   ) {
     super();
     this.offset=0;
     this.list = al;
@@ -60,14 +62,14 @@ export class SearchActions extends BaseActions implements ExternalMethods {
    }
  
 
-    onSwipe(dir: string, e: TouchEvent, ctx:SearchStateType): void {
+    onSwipe(dir: string, e: TouchEvent, ctx:FakeThis): void {
       const agaçant = e!.currentTarget as HTMLElement;
       this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
       console.log(`Deleting list element [${this.offset}] = ${agaçant.innerText}`);
-      this.onFinalise();
+      this.onFinalise(e, ctx);
     }
 
-    onFinalise(e:unknown, ctx:SearchStateType): void {
+    onFinalise(e:unknown, ctx:FakeThis|undefined): void {
       if (this.offset >= 0 && this.offset < this.list.énumérer) {
         this.list.remove(this.offset);
       } else {
@@ -75,19 +77,19 @@ export class SearchActions extends BaseActions implements ExternalMethods {
       }
     }
 
-    onDragStart(e: MouseEvent, ctx:SearchStateType): void {
+    onDragStart(e: MouseEvent, ctx:FakeThis): void {
       const agaçant = e!.currentTarget as HTMLElement;
       this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
       this.flux.start(e);
     }
 
-    onDragStop(e: MouseEvent, ctx:SearchStateType ): void {
+    onDragStop(e: MouseEvent, ctx:FakeThis ): void {
       const agaçant = e!.currentTarget as HTMLElement;
       this.flux.end(e);
       clearSelection();
     }
 
-    onDragExit(e: FocusEvent, ctx:SearchStateType): void {
+    onDragExit(e: FocusEvent, ctx:FakeThis): void {
       // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent
       // new MouseEvent(typeArg, mouseEventInit);
       let e3: HTMLElement = e.relatedTarget as HTMLElement;
@@ -108,8 +110,13 @@ export class SearchActions extends BaseActions implements ExternalMethods {
       clearSelection();
     }
 
-    onDragMove(e: MouseEvent, ctx:SearchStateType): void {
+    onDragMove(e: MouseEvent, ctx:FakeThis): void {
       this.flux.addEvent(e);
     }
+
+    onSave(e: MouseEvent, ctx:FakeThis): void {
+      console.error("56756723423547234 Add some code here");
+    }
+
 
 }

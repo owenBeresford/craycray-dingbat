@@ -7,6 +7,7 @@
         <h3>{{ list.nom }}</h3>
       </li>
       <li><img width="40" height="40" :src="logoPath" aria-hidden="true" role="presentation" :alt="text.imgAlt" /></li>
+      <li><span :data-testId="saveId" class="button" role="button" :title="text.saveTitle" v-html="text.saveLabel" v-touch.once="onSave" @click.once="onSave" @keypress.once="onSave"></span></li>
     </ul>
 
     <ul class="aList" :data-testId="aListId">
@@ -56,7 +57,7 @@ import InterstitialView from "./InterstitialView.vue";
 import { LOGO_PATH } from "../Constants";
 import { isMobile } from "../../../common/util";
 import { useStore } from "../services/Store";
-import { AList } from "../services/AList";
+import { StdList. SearchList, BaseList } from "../services/AList";
 import { ListData, setupCurrentList } from "../services/DataFactory";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
@@ -100,12 +101,12 @@ export default defineComponent({
     let stack: ExternalMethods;
     try {
      const flux = new MotionStream();
-     const list: AList= AList.serps( ListData.currentData.searchItems( props.term) );
+     const list: SearchList= SearchList.serps( ListData.currentData.searchItems( props.term) );
      const hasData: boolean = list.énumérer > 0; 
 
       stack = useSearchActions( list, flux );
       return {
-        extraMethods: stack.mount({ }, SearchActions),
+        extraMethods: stack.mount({ }, stack),
         helpTextRef,
         canSeeHelpRef,
         ttlRef,
@@ -139,16 +140,18 @@ export default defineComponent({
         listLink: TEXT.get("serps.listLink"),
         itemDTTitle: TEXT.get("serps.itemDTTitle"),
         itemMBTitle: TEXT.get("serps.itemMBTitle"),
+        saveLabel:"Add Text",
+        saveTitle:"Add text",
       },
     } satisfies SearchStaticData;
   },
   computed: {
     // here 'init' is a contraction of 'initialised'.  Maybe I should have written i10d
-    initList(): Array<string> {
-      if ("list" in this && this.list instanceof AList) {
-        return this.list.export();
+    initList(): Array<MatchedItems> {
+      if ("list" in this && this.list instanceof BaseList) {
+        return this.list.export<string>();
       }
-      return [] as Array<string>;
+      return [] as Array<MatchedItems>;
     },
     helpId():string {
       return this.$props.currentStateKey + "view";

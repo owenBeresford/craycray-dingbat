@@ -180,7 +180,7 @@ export default defineComponent({
       },
     },
   },
-  setup() {
+  async setup() {
     const dataOnLoad: boolean = inject<boolean>("dataOnLoad");
     const visibleRef = ref<boolean>(false);
     const getInputRef = ref<string>("");
@@ -190,9 +190,9 @@ export default defineComponent({
 
     let stack: ExternalMethods;
     try {
-      stack = useTabActions(useStore(), ListData, useCacheWrapper(), useRoute());
+      stack = await useTabActions(useStore(), ListData, useCacheWrapper(), useRoute());
       return {
-        extraMethods: stack.mount({ visibleRef, getInputRef, CBRef, storeRef, menuStateRef, ListData }, TabActions),
+        extraMethods: stack.mount({ visibleRef, getInputRef, CBRef, storeRef, menuStateRef, ListData }, stack),
         dataOnLoad,
         menuStateRef,
         visibleRef,

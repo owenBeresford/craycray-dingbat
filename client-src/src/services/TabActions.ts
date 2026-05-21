@@ -1,14 +1,16 @@
 import { defineComponent } from "vue";
 import type { MethodOptions, Ref } from "vue";
-import type { RouteRecordNormalized } from "vue-router";
+import type { RouteRecordNormalized, RouteLocationNormalizedLoadedGeneric } from "vue-router";
 
 import { BaseActions  } from './BaseActions';
-import type { UserAction, MenuStateType, ExternalMethods, CBType } from './BaseActions';
-import { AList } from "./AList";
+import { StdList, SearchList } from "./AList";
 import { CacheWrapper } from "../workers/InstallWorker";
 import { StaticRoutes } from "../components/Routing";
 import { hashState } from "../../../common/util";
 import { useUIText } from "./Localisation";
+import { ListData } from "./DataFactory";
+
+import type { UserAction, MenuStateType, FakeThis, ExternalMethods, CBType } from './BaseActions';
 import type { FactoryArtefact } from "./DataFactory";
 import type { COMPLETE_STORE } from "./Store";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
@@ -23,17 +25,21 @@ import type { ListCollection, ListStruct, MatchedItems } from "../types/ListColl
  * @param {COMPLETE_STORE} a
  * @param {FactoryArtefact} b
  * @param {CacheWrapper} c
- * @param {RouteRecordNormalized} d
+ * @param {RouteLocationNormalizedLoadedGeneric} d
  * @public
  * @returns {ExternalMethods}
  */
-export function useTabActions(
+export async function useTabActions(
   a: COMPLETE_STORE,
   b: FactoryArtefact,
   c: CacheWrapper,
-  d: RouteRecordNormalized
-): ExternalMethods {
-  return new TabActions(d, a, c, b);
+  d: RouteLocationNormalizedLoadedGeneric
+): Promise<ExternalMethods> {
+  let tmp = new TabActions(d, a, c, b);
+   if( b.currentData) {
+    tmp.loadedStateKey = await hashState(b.currentData.list());
+   }
+   return tmp;
 }
 
 const TEXT = useUIText();
@@ -43,21 +49,21 @@ const TEXT = useUIText();
  * A class to make the TabBar simpler.   This also improves testability.
 
  * @access public
- */
-export class TabActions extends BaseActions implements ExternalMethods {
+ */  // implements ExternalMethods
+export class TabActions extends BaseActions  {
   protected store: COMPLETE_STORE;
-  protected route: RouteRecordNormalized;
+  protected route: RouteLocationNormalizedLoadedGeneric;
   protected cache: CacheWrapper;
   protected data: FactoryArtefact;
 
-  protected loadedStateKey: string;
+  public loadedStateKey: string;
 
 /**
  * Boring con'tor
  * This has params to make building unit-tests easier.
  // NOTE:  not injected: StaticRoutes
  *
- * @param {RouteRecordNormalized} rr
+ * @param {RouteLocationNormalizedLoadedGeneric} rr
  * @param {shopStore} ss
  * @param {CacheWrapper} ca
  * @param {FactoryArtefact} ld
@@ -65,11 +71,11 @@ export class TabActions extends BaseActions implements ExternalMethods {
  * @returns {ExternalMethods}
  */
   public constructor(
-    rr: RouteRecordNormalized,
+    rr: RouteLocationNormalizedLoadedGeneric,
     ss: COMPLETE_STORE,
     ca: CacheWrapper,
     ld: FactoryArtefact
-  ): TabActions {
+  ) {
     super();
     this.route = rr;
     this.store = ss;
@@ -87,8 +93,7 @@ export class TabActions extends BaseActions implements ExternalMethods {
     }
     if (!this.route) {
       throw new Error("The vue Route isn't present");
-    }
-    this.loadedStateKey = hashState(this.data.currentData.list());
+    } 
   }
 
   /**
@@ -98,7 +103,7 @@ export class TabActions extends BaseActions implements ExternalMethods {
    * @public
    * @returns {void}
    */
-  onIntersitial(ctx: MenuStateType): void {
+  onIntersitial(ignored:GuessEvent, ctx: FakeThis): void {
     if (this.store.state.currentURL !== this.route.path) {
       console.warn("The state.currentURL hasn't updated!", this.store.state.currentURL, this.route.path);
       this.store.commit("setPath", this.route.path);
@@ -114,18 +119,18 @@ export class TabActions extends BaseActions implements ExternalMethods {
    * @public
    * @returns {boolean}
    */
-  onInstall(ctx: MenuStateType): boolean {
+  onInstall(ignored:GuessEvent, ctx: FakeThis): boolean {
     if (location.protocol !== "https:") {
       console.warn("Install button is disabled, you need to use HTTPS.");
       return false;
     }
-    if (this.CACHE.check()) {
+    if (this.cache.check()) {
       console.warn("App thinks its already installed.");
       return false;
     }
 
     console.log("Trying to install App to local device.");
-    this.CACHE.install();
+    this.cache.install();
     return false;
   }
 
@@ -136,10 +141,12 @@ export class TabActions extends BaseActions implements ExternalMethods {
    * @public
    * @returns {void}
    */
-  onUnique(ctx: MenuStateType): void {
+  onUnique(ignored:GuessEvent, ctx: FakeThis): void {
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
     const liste = this.data.currentData.get(this.store.state.currentId);
     if (liste) {
       liste.unique();
+      // @ts-ignore  - there are no undef() at runtime after the con'tor.  
       this.data.currentData.put(this.store.state.currentId, liste);
     }
   }
@@ -151,12 +158,15 @@ export class TabActions extends BaseActions implements ExternalMethods {
    * @public
    * @returns {void}
    */
-  onDuplicate(ctx: MenuStateType): void {
-    const liste = this.data.currentData.get(this.store.state.currentId);
+  onDuplicate(ignored:GuessEvent, ctx:FakeThis): void {
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+    const liste:Stdlist = this.data.currentData.get(this.store.state.currentId);
 
     if (liste) {
-      const extra = Object.assign(AList.manual(`DUP: ${liste.nom}`, this.data.currentData.count()), liste);
+      // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+      const extra:StdList = Object.assign(StdList.manual<string, StdList>(`DUP: ${liste.nom}`, this.data.currentData.count()) as StdList, liste);
       extra.editName(`DUP: ${liste.nom}`);
+      // @ts-ignore  - there are no undef() at runtime after the con'tor.  
       this.data.currentData.append(extra);
     }
     StaticRoutes.push({ name: "list-everything" });
@@ -169,14 +179,17 @@ export class TabActions extends BaseActions implements ExternalMethods {
    * @public
    * @returns {boolean}
    */
-  onSave(ctx: MenuStateType): boolean {
-    if (this.loadedStateKey === hashState(this.data.currentData.list())) {
+  async onSave(ignored:GuessEvent, ctx: FakeThis): Promise<boolean> {
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+    if (this.loadedStateKey === await hashState(this.data.currentData.list())) {
       console.log("Data is identical as last save ");
       return false;
     }
 
     console.log("Saving list to local cache list, for all lists");
-    this.loadedStateKey = hashState(this.data.currentData.list());
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+    this.loadedStateKey = await hashState(this.data.currentData.list());
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
     this.data.currentData.saveAllLists();
     return false;
   }
@@ -188,12 +201,14 @@ export class TabActions extends BaseActions implements ExternalMethods {
    * @public
    * @returns [boolean]
    */
-  onRevert(ctx: MenuStateType): boolean {
-    if (this.loadedStateKey === hashState(this.data.currentData.list())) {
+  async onRevert(ignored:GuessEvent, ctx: FakeThis): Promise<boolean> {
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+    if (this.loadedStateKey === await hashState(this.data.currentData.list())) {
       console.log("Data is identical to initial state ");
       return false;
     }
     console.log("Rebuilding data from cache for all lists");
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
     this.data.currentData.loadAllLists();
     return false;
   }
@@ -202,11 +217,11 @@ export class TabActions extends BaseActions implements ExternalMethods {
    * onMenu
    * Event handler to toggle the menu
 
-   * @param {MenuStateType} ctx
+   * @param {FakeThis} ctx
    * @public
    * @returns {void}
    */
-  onMenu(ctx: MenuStateType): void {
+  onMenu(ignored:GuessEvent, ctx: FakeThis): void {
     ctx.menuStateRef.value = !ctx.menuStateRef.value;
   }
 
@@ -214,11 +229,11 @@ export class TabActions extends BaseActions implements ExternalMethods {
    * onSearch
    * Event handler to perform a search
 
-   * @param {MenuStateType} ctx
+   * @param {FakeThis} ctx
    * @public
    * @returns {boolean}
    */
-  onSearch(ctx: MenuStateType): boolean {
+  onSearch(ignored:GuessEvent, ctx: FakeThis): boolean {
     ctx.getInputRef.value = "";
     createSearchCallback(ctx );
     ctx.visibleRef.value = true;
@@ -230,12 +245,13 @@ export class TabActions extends BaseActions implements ExternalMethods {
    * Event handler to perform a list name change
    * @YODO if Route is show-all, abort with dedicated warning
 
-   * @param {MenuStateType} ctx
+   * @param {FakeThis} ctx
    * @public
    * @returns {boolean}
    */
-  onName(ctx: MenuStateType): boolean {
-    const liste = ListData.currentData.get(this.store.state.currentId);
+  onName(ignored:GuessEvent, ctx: FakeThis): boolean {
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+    const liste:StdList = this.data.currentData.get(this.store.state.currentId) as StdList;
     if (!liste) {
       console.warn("EDIT NAME: got bad id, don't know how to proceed");
       return false;
@@ -246,7 +262,7 @@ export class TabActions extends BaseActions implements ExternalMethods {
     return false;
   }
 }
-
+ 
 export {noop } from './BaseActions';
 
 /**
@@ -254,20 +270,25 @@ export {noop } from './BaseActions';
  * An isolated code section to create a EnterInput callback
  * very IMPURE
 
- * @param (MenuStateType) ctx
+ * @param (FakeThis) ctx
  * @public
  * @returns {void}
  */
-function createNameCallback(ctx: MenuStateType ): void {
+function createNameCallback(ctx: FakeThis ): void {
   ctx.CBRef.value = (d1: string | null): any => {
     if (d1 === null) {
       ctx.visibleRef.value = false;
       return;
     }
 
-    const liste = ctx.ListData.currentData.get(ctx.storeRef.value.state.currentId);
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+    const liste = ListData.currentData.get(ctx.storeRef.value.state.currentId);
+    if(!liste) {
+      throw new Error("THe currentId "+ctx.storeRef.value.state.currentId+"in the state/ session is invalid.");
+    }
     liste.editName(d1);
-    ctx.ListData.value.currentData.put(ctx.storeRef.state.currentId, liste);
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+    ListData.currentData.put(ctx.storeRef.state.currentId, liste);
     ctx.visibleRef.value = false;
     StaticRoutes.push({ name: "list-everything" });
   };
@@ -278,11 +299,11 @@ function createNameCallback(ctx: MenuStateType ): void {
  * An isolated code section to create a EnterInput callback
  * very IMPURE
 
- * @param (MenuStateType) ctx
+ * @param (FakeThis) ctx
  * @public
  * @returns {void}
  */
-function createSearchCallback(ctx: MenuStateType ): void {
+function createSearchCallback(ctx: FakeThis ): void {
   ctx.CBRef.value = (d1: string | null): any => {
     if (d1 === null || d1 === "") {
       ctx.visibleRef.value = false;
@@ -290,7 +311,8 @@ function createSearchCallback(ctx: MenuStateType ): void {
     }
 
     console.info("Starting a search for '" + d1 + "'");
-    let newList: AList = AList.serps(ctx.ListData.currentData.searchItems(d1));
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+    let newList: SearchList = SearchList.serps( ListData.currentData.searchItems(d1));
     ctx.visibleRef.value = false;
     ctx.storeRef.value.commit("setPayload", newList);
 
