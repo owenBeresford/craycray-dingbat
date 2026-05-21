@@ -3,6 +3,7 @@ import { toHex as monkeyPatch_toHex } from '../server-src/node_modules/es-arrayb
 import type { PromiseSucceed, PromiseReject } from "./types/promises";
 import type { SimpleResponse } from './util';
 
+// I extracted Struct to make the code easier, so I had named fields.
 export interface FileExecFlags {
   cwd?:string|URL; 
   env?:Object;
@@ -24,10 +25,20 @@ interface RunExecReturn {
 };
 
 
-// https://nodejs.org/api/child_process.html#child_processexecfilefile-args-options-callback
+
+/**
+ * runExecProcessOnUrl
+ * A util to run a HTTP2 compat client to be able to test the API correctly.
+ 
+ * @param {string} url
+ * @param {RequestInit | undefined} extra
+ * @see [https://nodejs.org/api/child_process.html#child_processexecfilefile-args-options-callback ]
+ * @public
+ * @returns {Promise<SimpleResponse>}
+ */
 export async function runExecProcessOnUrl(
-    url: string,
-    extra:RequestInit | undefined
+     url: string,
+     extra:RequestInit | undefined
         ):Promise<SimpleResponse> {
   var execFile:Function; 
   if (typeof process !== "object") {
@@ -66,6 +77,14 @@ export async function runExecProcessOnUrl(
     return good(exit);
   };
 
+  /**
+   * parseHeaders
+   * Translate flat plain-text of cURL output into a struct
+ 
+   * @param {string} str
+   * @public
+   * @returns {RunExecReturn } 
+   */
   function parseHeaders(str:string):RunExecReturn {
     let bits:Array<string>=str.split("\n");
     let out={reqt:{}, resp:{} } as RunExecReturn;
@@ -88,8 +107,18 @@ export async function runExecProcessOnUrl(
     return out;
   }
 
+  /**
+   * parseHeader2
+   * Tokenise a single heder into a more useful structure
+
+   * Nopte two odfd cases, in HTTP2 look like this: 	 
   // > GET /api/shared-state HTTP/2
   // < HTTP/2 200
+
+   * @param {string} str
+   * @public
+   * @returns {Array<string>}
+   */
   function parseHeader2(str:string):Array<string> {
     str=str.trim();
     str=str.substring(1, str.length);

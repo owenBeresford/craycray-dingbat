@@ -1,5 +1,5 @@
 import type { TestDataSchema } from "./types/TestDataSchema";
-import type {SaveStruct } from "./types/SaveStruct";
+import type { SaveStruct } from "./types/SaveStruct";
 
 export function transform2SaveStruct(din:Array<TestDataSchema>):Array<SaveStruct> {
   let out:Array<SaveStruct> =[];
