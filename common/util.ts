@@ -1,4 +1,5 @@
 import type { SaveStruct } from './types/SaveStruct';
+import type { ListStruct } from "../client-src/src/types/ListCollection";  // maybe should move this
 import { toHex as monkeyPatch_toHex } from '../server-src/node_modules/es-arraybuffer-base64/Uint8Array.prototype.toHex';
 import type { PromiseSucceed, PromiseReject } from "./types/promises";
 
@@ -127,12 +128,12 @@ if(!('toHex' in Uint8Array.prototype)) {
  * Create a predictable hash of blob of data to support idempotency and duplicate collapse.
    // this is 1handed hashing, not cmp capacity
 
- * @param {Array<SaveStruct>} dat
+ * @param {Array<SaveStruct|ListStruct>} dat - this data isnt read, its just packed
  * @param {Readonly<string>="SHA-256"} hash - the algorithm to apply, in 'spec naming notation'
  * @public
  * @returns {string} - hex encoded
  */
-export async function hashState(dat:Array<SaveStruct>, hash:Readonly<string>="SHA-256"):Promise<string>{
+export async function hashState(dat:Array<SaveStruct|ListStruct>, hash:Readonly<string>="SHA-256"):Promise<string>{
   let step1:string= JSON.stringify(dat);
       //step2:  this step should be obsolete/ irrelevant, but is critical failure if absent
   let step2 = new TextEncoder().encode(step1);

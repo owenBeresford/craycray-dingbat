@@ -1,6 +1,7 @@
 import type { SaveStruct } from './types/SaveStruct';
 import { toHex as monkeyPatch_toHex } from '../server-src/node_modules/es-arraybuffer-base64/Uint8Array.prototype.toHex';
 import type { PromiseSucceed, PromiseReject } from "./types/promises";
+import type { SimpleResponse } from './util';
 
 export interface FileExecFlags {
   cwd?:string|URL; 
@@ -28,39 +29,36 @@ export async function runExecProcessOnUrl(
     url: string,
     extra:RequestInit | undefined
         ):Promise<SimpleResponse> {
-  var execFile:Function;
+  var execFile:Function; 
   if (typeof process !== "object") {
     throw new Error("Runtime: runExecProcessOnUrl() should only be used inside Node");  // a browser
   } else {
-    if(! execFile ) {
+    if(typeof execFile =='undefined') {
       let tmp=await import('node:child_process');
       execFile = tmp.execFile;
     }
   }
 
   return new Promise(async (good: PromiseSucceed<SimpleResponse>, bad: PromiseReject) => {
-// stderr has headers
+  // stderr has headers
   // stdout has response body
-  const CB=(error:Error, stdout:string| Buffer, stderr: string|Buffer ):void => {
+  const CB=(error:Error, stdout:string, stderr: string ):void => {
+
     if(error) {
       console.error("cURL failed:", error.message);
       return bad(error);
     }
-    if(stdout instanceof Buffer) {
-      stdout=stdout.toString();
-    }
-    if(stderr instanceof Buffer) {
-      stderr=stderr.toString();
-    }
 
-    let headers=parseHeaders(stderr);
+    let annoying1:string =((stdout as any) instanceof Buffer)? stdout.toString() : stdout;
+    let annoying2:string =((stderr as any) instanceof Buffer)? stderr.toString() : stderr;
+    let headers=parseHeaders( annoying2);
     let h2=new Headers();
     for(let i in headers.resp ) {
       h2.append( i, headers.resp[i] );
     }
 
     let exit:SimpleResponse= {
-        body: stdout.trim(),
+        body: annoying1.trim(),
         headers: h2,
         ok: Math.floor( parseInt(headers.resp['status'], 10) /100) === 2,
         status: parseInt(headers.resp['status'], 10 ),
@@ -120,11 +118,12 @@ export async function runExecProcessOnUrl(
   }
   if(extra &&( "body" in extra) && extra['body']) {
     args.push( "-d");
-    args.push( extra['body'] );
+    args.push( extra.body.toString() );
   }
-  if(extra && ("headers" in extra) ) {
-    for(let i of extra.headers ) {
-      args.push( "-H"+i+":"+extra.headers[i] );
+  if(extra && ("headers" in extra) && extra.headers ) {
+    let tmp=new Headers(extra.headers );
+    for(let i of tmp) {
+      args.push( "-H"+i[0]+":"+i[1] );
     }
   }
   const options:FileExecFlags = { windowsHide:true, shell:false };
