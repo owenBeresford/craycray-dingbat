@@ -180,7 +180,6 @@ export const ListData: FactoryArtefact = createDataFactory(undefined);
  * May add further ways to set the list id in later editions.
  
  * @param {undefined|RouteLocationNormalizedLoadedGeneric} itinéraire ~ huge great big type is from vue-router
-// currentData:ListCollection | undefined
  * @public
  * @returns {Promise<InstanceListable<string>>}
  */

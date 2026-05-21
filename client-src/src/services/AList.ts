@@ -283,8 +283,7 @@ export class StdList extends BaseList<string> implements ExtendedListable<string
  */
 JsonObject();
 export class SearchList extends BaseList<MatchedItems> implements InstanceListable<MatchedItems>, ListStruct {
-
-/**
+  /**
  * serps
  * A method to convert a search result into an list object to be-able-to render it
   // each item also has an id,
@@ -294,7 +293,7 @@ export class SearchList extends BaseList<MatchedItems> implements InstanceListab
  * @public
  * @return {SearchList }
  */
-   public static serps(dat: Array<MatchedItems>): SearchList {
+  public static serps(dat: Array<MatchedItems>): SearchList {
     let liste = new SearchList();
     liste.nom = "Search results";
     liste.créé = new Date();

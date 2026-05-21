@@ -1,5 +1,5 @@
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
-import { BaseList } from './AList';
+import { BaseList } from "./AList";
 
 // a set of listables, carefuly different method names to reduce kaos
 export interface ListCollection<T> {
@@ -62,7 +62,7 @@ export interface ExtendedListable<T> extends InstanceListable<T> {
 export interface MatchedItems {
   item: string;
   list: number;
+  key?:string;
 }
 
 export type WholeClass<T> = InstanceListable<T> & ListStruct;
-
