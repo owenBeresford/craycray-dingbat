@@ -3,6 +3,7 @@ import { Vector } from "vector2d/src/Vector";
 import { isMobile, windowSize, rad2deg } from "../../../common/util";
 import { MOBILE_THRESHOLD, BIG_THRESHOLD, ANGLE_ACCURACY } from "../Constants";
 import type { CBTYPE, Motionable } from "../types/Motionable";
+import type { FakeThis } from "../services/BaseActions";
 
 /**
  * MotionStream 
@@ -94,8 +95,8 @@ export class MotionStream implements Motionable {
           const i2 = parseInt(i, 10);
           // TEST VALUES: 8 + 20 < 0 && 8 - 20 >0
           if (angle + ANGLE_ACCURACY > i2 && angle - ANGLE_ACCURACY < i2) {
-            obj();
-            // move these next 2 lines if you want to allow more than one CB per gesture
+            obj(e, undefined);
+             // move these next 2 lines if you want to allow more than one CB per gesture
             found = true;
             break;
           }

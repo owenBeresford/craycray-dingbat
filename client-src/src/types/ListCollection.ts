@@ -1,18 +1,19 @@
-import { AList } from "../services/AList";
+import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 
-export interface ListCollection {
+// a set of listables, carefuly different method names to reduce kaos
+export interface ListCollection<T> {
   create(nom: string): number;
   poll(): Promise<boolean>;
   count(): number;
   delete(id: number): boolean;
   list(): Array<ListStruct>;
-  get(id: number): AList | undefined;
-  put(id: number, ret: AList): boolean;
-  merge(next: ListCollection): boolean;
-  append(ret: AList): boolean;
+  get(id: number): InstanceListable<T> | undefined;
+  put(id: number, ret: InstanceListable<T>): boolean;
+  merge(next: ListCollection<T>): boolean;
+  append(ret: InstanceListable<T>): boolean;
   searchItems(égaler: string | RegExp): Array<MatchedItems>;
 
-  //  store(ret: AList, offset: number): boolean;
+  //  store(ret: StdList, offset: number): boolean;
   saveAllLists(): Promise<boolean>;
   loadAllLists(): boolean;
 }
@@ -31,23 +32,37 @@ export interface ListStruct {
   id: number;
 }
 
-export interface Listable {
-  éléments: Array<string>;
-  manual(nom: string, id: number): Listable;
-  serps(dat: Array<MatchedItems>): Listable;
+export interface InstanceListable<T> {
+  éléments:Array<T>;
 
-  add(nouveau: string): boolean;
-  edit(offset: number, nouveau: string): boolean;
+  // instance functions
+  add(nouveau: T): boolean;
+  edit(offset: number, nouveau: T): boolean;
   remove(offset: number): boolean;
-  import(relevé: Array<string>): boolean;
-  export(): Array<string>;
+  import(relevé: Array<T>): boolean;
+  export(): Array<T>;
   editName(nouveau: string): boolean;
   unique(): boolean;
   view(): ListStruct;
-  filter(égaler: string | Regexp): Array<string>;
+
 }
+
+// this is for static functions.  Interfaces in TS cannot use the keyword static
+export interface ModuleListable<T> {
+//  new(): InstanceListable<T>;
+  importTest<T, U extends BaseList<T>>(this: { new():U }, origine: TestDataSchema):U;
+  manual<T, V extends BaseList<T>>(this: { new(): V }, nom: string, id: number):V; 
+
+}
+
+// only implemented on StdList, and generates other flavours of Listable
+export interface ExtendedListable<T> extends InstanceListable<T> {
+  filter(égaler: string | RegExp): Array<string>;
+} 
 
 export interface MatchedItems {
   item: string;
   list: number;
 }
+
+export type WholeClass<T> = InstanceListable<T> & ListStruct;

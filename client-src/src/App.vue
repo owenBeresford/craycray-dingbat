@@ -23,7 +23,7 @@ import TabBar from "./components/TabBar.vue";
 const tmp: FactoryArtefact = createDataFactory(fixture1());
 
 // the fixture is alway present, no race condition possible
-ListData.updateData(tmp.currentData ?? ({} as ListCollection));
+ListData.updateData(tmp.currentData ?? ({} as ListCollection<string>));
 
 export default defineComponent({
   name: "ShoppingApp",

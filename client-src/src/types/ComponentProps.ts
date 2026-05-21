@@ -1,11 +1,14 @@
-import type { Listable, ListStruct, ListCollection } from "./ListCollection";
-import type { Motionable } from "./Motionable";
-import { AList } from "../services/AList";
-import { CacheWrapper } from "../workers/InstallWorker";
-import type { LocalCopy } from "../services/LocalCopy";
+import type { RouteRecordNormalized } from "vue-router";
 
+import { StdList, SearchList } from "../services/AList";
+import { CacheWrapper } from "../workers/InstallWorker";
+
+import type { InstanceListable, ModuleListable, ListStruct, ListCollection } from "./ListCollection";
+import type { Motionable } from "./Motionable";
+import type { LocalCopy } from "../services/LocalCopy";
 import type { ShopState } from "../types/ShopState";
 import type { Store } from "vuex";
+import type {COMPLETE_STORE} from '../services/Store'; 
 
 export interface ListOfListsProps {
   instanceId: string;
@@ -41,7 +44,7 @@ export interface ThisListStaticData {
   nextTestId: string;
   bisMobile: boolean;
   aListId: string;
-  list: AList;
+  list: StdList;
   logoPath: string;
   viewId: string;
   text: Record<string, string>;

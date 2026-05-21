@@ -9,3 +9,11 @@ declare module "*.vue" {
   const component: DefineComponent<{}, {}, any>;
   export default component;
 }
+
+declare namespace JSX {
+  interface IntrinsicElements {
+    [elem: string]: any;
+  }
+}
+console.log("Have run the namespace file");
+

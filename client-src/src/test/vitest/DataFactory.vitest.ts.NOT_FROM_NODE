@@ -15,10 +15,10 @@ describe("test on DataFactory ", () => {
     expect(typeof OBJ).toBe("object");
     expectTypeOf(OBJ).toExtend<FactoryArtefact>();
 
-    assertType<(a: ListCollection) => void>(OBJ.updateData);
+    assertType<(a: ListCollection<string>) => void>(OBJ.updateData);
     assertType<() => void>(OBJ.initData);
 
-    // async function DataFactory(): Promise<ListCollection>
+    // async function DataFactory(): Promise<ListCollection<string>>
     console.log(
       "IOIO XXX Edit Networking objects, and run dataFactory again, and show its different. I guess Function.name assists"
     );
@@ -31,7 +31,7 @@ describe("test on DataFactory ", () => {
     expect(OBJ.currentData?.get(1)).not.toBe(undefined);
     expect(OBJ.currentData?.get(1)?.nom).toBe("list 1");
     // leSigh, the below doesn't compile.
-    //  assertType<ListCollection>(OBJ.currentData);
+    //  assertType<ListCollection<string>>(OBJ.currentData);
     const REPLACE1 = new ListService();
     REPLACE1.put(1, AList.importTest(simple_fixture2()[0]));
 

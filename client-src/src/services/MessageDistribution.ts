@@ -62,7 +62,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
    */
   public forkThread(): boolean {
     try {
-      if (typeof globalThis.Worker === "object" || typeof globalThis.Worker === "function") {
+      if (typeof globalThis.Worker === "function") {
         // eslint says not to await on this...??
         this.worker = new Worker(MSG_THREAD, { credentials: "same-origin", name: WORKER_NAME, type: "module" });
       }
@@ -119,7 +119,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
       typeof crossOriginIsolated,
       crossOriginIsolated
     );
-    if (ev.srcElement.name !== WORKER_NAME) {
+    if (ev.srcElement!.name !== WORKER_NAME) {
       // if (ev.origin !== this.goodSource) {
       console.warn("Recv msg from un-authorised source " + ev.origin);
       return;

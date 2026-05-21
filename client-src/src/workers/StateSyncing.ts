@@ -35,7 +35,7 @@ if (_LOGGING_) {
  */
 self.onmessage = async function (ev: MessageEvent): Promise<void> {
   console.log(
-    "WORKER THREAD received MSG sent to " + ev.srcElement.name,
+    "WORKER THREAD received MSG sent to " + ev.srcElement.id,
     (ev.data as ShippingStruct).action,
     (ev.data as ShippingStruct).data,
     "isolated",
@@ -43,7 +43,7 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
     crossOriginIsolated
   );
 
-  if (ev.srcElement.name !== WORKER_NAME) {
+  if (ev.srcElement!.name !== WORKER_NAME) {
     console.warn("Recv msg from un-authorised source " + ev.origin);
     return;
   }

@@ -5,6 +5,7 @@ import type { NavigationGuard, RouteRecordRaw } from "vue-router";
 // import type { Decorator, StoryContext } from "@storybook/vue3";
 // import { createRouter, createMemoryHistory, useRoute, routeLocationKey } from "vue-router";
 // import type { Store } from "vuex";
+import { useRoute } from "vue-router";
 
 import ThisList from "../../components/ThisList.vue";
 import UnknownRoute from "../../components/UnknownRoute.vue";

@@ -3,8 +3,7 @@ import type { RouteLocationNormalizedLoadedGeneric } from "vue-router";
 import { useRoute } from "vue-router";
 
 import { extractId } from "./util";
-import { AList, EMPTY_LIST } from "./AList";
-import type { Listable } from "../types/ListCollection";
+import { StdList, EMPTY_LIST } from "./AList";
 
 // import { ListService } from "./ListService";
 import { useLocal } from "./LocalCopy";
@@ -13,7 +12,7 @@ import { createRemoteService, DELAY_FOR_API } from "../Constants";
 import { TestListService } from "./TestListService";
 import { NetworkedListService } from "./NetworkedListService";
 
-import type { ListCollection } from "../types/ListCollection";
+import type { InstanceListable, ModuleListable, ListCollection } from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
 import type { MessageDistribution } from "./MessageDistribution";
@@ -42,8 +41,8 @@ Note **: MesaggeDistribution class will ensure the data gets to the phone,
 
 // This interface should be kept here, as I think it will mutate
 export interface FactoryArtefact {
-  currentData: ListCollection | undefined;
-  updateData: (a: ListCollection) => void;
+  currentData: ListCollection<string> | undefined;
+  updateData: (a: ListCollection<string>) => void;
   initData: () => void;
 }
 
@@ -98,7 +97,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
     return retour as Readonly<FactoryArtefact>;
   }
 
-  /**
+ /**
  * currentNetworkConfig
  * A "use function" to create ListCollections, which has different composition depending on network settings
  * @TODO add simplification when Storybook or Vitest is running
@@ -141,11 +140,11 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
  * BUT NOT CHANGE THE POINTER.
  * "slap mutex on now!", only do not need to, as its JS.
 
- * @param {ListCollection} next
+ * @param {ListCollection<string>} next
  * @public
  * @returns {void}
  */
-  function updateData(next: ListCollection): void {
+  function updateData(next: ListCollection<string>): void {
     if (retour.currentData && _LOGGING_) {
       console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
     }
@@ -183,12 +182,12 @@ export const ListData: FactoryArtefact = createDataFactory(undefined);
  * @param {undefined|RouteLocationNormalizedLoadedGeneric} itinéraire ~ huge great big type is from vue-router
 // currentData:ListCollection | undefined
  * @public
- * @returns {Promise<Listable>}
+ * @returns {Promise<InstanceListable<string>>}
  */
-export function setupCurrentList(itinéraire: undefined | RouteLocationNormalizedLoadedGeneric): Listable {
+export function setupCurrentList(itinéraire: undefined | RouteLocationNormalizedLoadedGeneric): InstanceListable<string> {
   let id: number = 0;
   let liste = EMPTY_LIST;
-  let currentData: ListCollection | undefined;
+  let currentData: ListCollection<string> | undefined;
   // let currentData:ListCollection|undefined =ListData.currentData;
   try {
     if (!itinéraire) {
@@ -198,7 +197,7 @@ export function setupCurrentList(itinéraire: undefined | RouteLocationNormalize
     id = extractId(itinéraire.params.index);
     currentData = ListData.currentData;
     if (currentData) {
-      liste = currentData.get(id) ?? EMPTY_LIST;
+      liste = (currentData.get(id) as StdList) ?? EMPTY_LIST;
     }
     if (currentData && _LOGGING_) {
       console.log("KKK setupCurrentList currentData id:", idOf(currentData), " AND ", id);
@@ -211,7 +210,7 @@ export function setupCurrentList(itinéraire: undefined | RouteLocationNormalize
     // the second branch is stupid, but shouldnt be possible
     liste = EMPTY_LIST;
     if (currentData) {
-      liste = currentData.get(backupId) ?? EMPTY_LIST;
+      liste = (currentData.get(backupId) as StdList) ?? EMPTY_LIST;
     }
     id = backupId;
     if (currentData && _LOGGING_) {
@@ -221,7 +220,7 @@ export function setupCurrentList(itinéraire: undefined | RouteLocationNormalize
 
   if (!currentData || currentData.count() === 0) {
     console.warn("Local components have no data, check the API is running.");
-    return EMPTY_LIST;
+    return EMPTY_LIST as StdList;
   } else {
     return liste;
   }

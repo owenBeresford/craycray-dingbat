@@ -56,7 +56,7 @@ import InterstitialView from "./InterstitialView.vue";
 import { useStore } from "../services/Store";
 import { useUIText } from "../services/Localisation";
 import { ListData, setupCurrentList, idOf } from "../services/DataFactory";
-import { AList, EMPTY_LIST } from "../services/AList";
+import { StdList, EMPTY_LIST } from "../services/AList";
 import { MotionStream } from "../services/MotionStream";
 // import { extractId } from "../services/util";
 import { isMobile, clearSelection } from "../../../common/util";
@@ -113,7 +113,7 @@ export default defineComponent({
   },
   mounted() {
     const itinéraire = useRoute();
-    this.list.importTest( setupCurrentList(itinéraire) as AList );
+    this.list.importTest<string, StdList>( setupCurrentList(itinéraire) as StdList );
     if (this.shopStore) {
       this.shopStore.commit("setPath", itinéraire.path);
       this.shopStore.commit("setId", this.id);
@@ -121,6 +121,7 @@ export default defineComponent({
       console.assert(this.shopStore, "ThisList: At mounted() stage, do not have a state storage?!");
     }
     const flux = new MotionStream();
+    // There will be type errors here  UPDATE: hope not
     flux.register("0", this.finalise.bind(this));
     this.flux = flux;
   },
@@ -152,8 +153,8 @@ export default defineComponent({
       return this.$props.currentStateKey + "view";
     },
     actualList(): Array<string> {
-      if (this.list instanceof AList) {
-        return this.list.export();
+      if (this.list instanceof StdList) {
+        return this.list.export<string>();
       }
       return [] as Array<string>;
     },
@@ -206,8 +207,8 @@ export default defineComponent({
       console.log(`Deleting list element [${this.offset}] = ${agaçant.innerText}`);
       this.finalise();
     },
-
-    finalise(): void {
+ 
+    finalise(ignored:GuessEvent, ignored2:Record<string,Function>|undefined): void {
       if (this.offset >= 0 && this.offset < this.list.énumérer) {
         this.list.remove(this.offset);
       } else {

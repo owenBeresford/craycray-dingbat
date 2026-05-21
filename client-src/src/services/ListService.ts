@@ -1,4 +1,4 @@
-import { AList, EMPTY_LIST } from "./AList";
+import { StdList, EMPTY_LIST } from "./AList";
 import { EMPTY_LIST_NAME } from "../Constants";
 
 import type { SaveStruct } from "../../../common/types/SaveStruct";
@@ -11,8 +11,8 @@ import type { PromiseSucceed, PromiseReject } from "../../../common/types/promis
  
  * @public
  */
-export class ListService implements ListCollection {
-  protected catalog: Array<AList>;
+export class ListService implements ListCollection<string> {
+  protected catalog: Array<StdList>;
 
   /**
    * constructor
@@ -36,7 +36,7 @@ export class ListService implements ListCollection {
    */
   public create(nom: string): number {
     const LEN = this.catalog.length;
-    this.catalog.push(AList.manual(nom, LEN));
+    this.catalog.push(StdList.manual<string, StdList>(nom, LEN));
     return LEN + 1;
   }
 
@@ -105,10 +105,10 @@ export class ListService implements ListCollection {
    * @public
    * @returns {boolean}
    */
-  public merge(next: ListCollection): boolean {
+  public merge(next: ListCollection<string>): boolean {
     for (let i = 0; i < next.count(); i++) {
-      let agaçant = next.get(i);
-      if (agaçant && agaçant.nom !== EMPTY_LIST) {
+      let agaçant:StdList = next.get(i) as StdList; 
+      if (agaçant && agaçant.nom !== EMPTY_LIST_NAME) {
         this.append(agaçant);
       }
     }
@@ -137,15 +137,15 @@ export class ListService implements ListCollection {
  
    * @param {number} id
    * @public
-   * @returns {AList | undefined}
+   * @returns {StdList | undefined}
    */
-  public get(id: number): AList | undefined {
+  public get(id: number): StdList | undefined {
     if (this.isNotValidId(id) || !(id in this.catalog)) {
       console.warn("ERROR: Cannot load list with id=" + id + " " + JSON.stringify(this.catalog.keys()));
       return undefined;
     }
     let objet = this.catalog[id];
-    if (objet === null) {
+    if (objet === null) {  // washing to a more useful placeholder
       return undefined;
     }
     return objet;
@@ -156,11 +156,11 @@ export class ListService implements ListCollection {
    * Set a particular item in a named slot.
  
    * @param {number} id
-   * @param {AList} ret
+   * @param {StdList} ret
    * @public
    * @returns {boolean}
    */
-  public put(id: number, ret: AList): boolean {
+  public put(id: number, ret: StdList): boolean {
     if (this.isNotValidId(id)) {
       console.warn("ERROR: Cannot put list with id=" + id);
       return false;
@@ -173,11 +173,11 @@ export class ListService implements ListCollection {
    * append
    * Add a List to end of collection
  
-   * @param {AList} ret
+   * @param {StdList} ret
    * @public
    * @returns {boolean}
    */
-  public append(ret: AList): boolean {
+  public append(ret: StdList): boolean {
     this.catalog.push(ret);
     return true;
   }

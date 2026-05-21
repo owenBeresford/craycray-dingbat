@@ -148,9 +148,9 @@ export const TrackTextRendered8: Story = {
       }
       STORE.commit("setId", 1);
 
-      let before = NEWDATA.currentData.get(1)?.export();
+      let before = NEWDATA.currentData.get(1)?.export<string>();
       await userEvent.click(canvas.getByText("Make unique"));
-      expect(before!.length).toBeGreaterThan(NEWDATA.currentData.get(1)!.export().length);
+      expect(before!.length).toBeGreaterThan(NEWDATA.currentData.get(1)!.export<string>().length);
     });
 
     await step("Save all", async () => {

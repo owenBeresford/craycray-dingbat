@@ -122,7 +122,7 @@ export class RemoteStorage implements Storable, DistantStorable {
           } else {
             return bad(new Error("Valid HTTP, but null response"));
           }
-          return "value for eslint.";
+          // return "value for eslint.";
         });
     });
   }

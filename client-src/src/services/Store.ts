@@ -3,7 +3,8 @@ import { createStore, useStore as originalUseStore } from "vuex";
 
 import { APP_NAME } from "../Constants";
 import type { ShopState } from "../types/ShopState";
-
+import type { ModuleListable, InstanceListable, MatchedItems } from '../types/ListCollection';
+  
 /**
  * mapForHelp
  * Convert a URN to the symbol for the relevant interstitial text
@@ -43,14 +44,14 @@ export const STORE: COMPLETE_STORE = createStore({
       currentURL: "",
       showHelp: false,
       currentId: -1,
-      serps: null,
+    //  serps: null,
     } satisfies ShopState;
   },
   mutations: {
     setPath(state: ShopState, nn: string): void {
       state.currentURL = nn;
     },
-    setPayload(state: ShopState, nn: AList): void {
+    setPayload(state: ShopState, nn: InstanceListable<MatchedItems>): void {
       state.serps = nn;
     },
     show(state: ShopState, nn: boolean): void {
