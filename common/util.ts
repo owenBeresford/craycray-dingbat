@@ -1,6 +1,7 @@
-import type { SaveStruct } from './types/SaveStruct';
-import type { ListStruct } from "../client-src/src/types/ListCollection";  // maybe should move this
-import { toHex as monkeyPatch_toHex } from '../server-src/node_modules/es-arraybuffer-base64/Uint8Array.prototype.toHex';
+import {Md5 } from '../client-src/node_modules/ts-md5/dist/md5';
+
+import type { SaveStruct } from "./types/SaveStruct";
+import type { ListStruct } from "../client-src/src/types/ListCollection"; // maybe should move this
 import type { PromiseSucceed, PromiseReject } from "./types/promises";
 
 /**
@@ -12,7 +13,7 @@ import type { PromiseSucceed, PromiseReject } from "./types/promises";
  */
 export function isMobile(): boolean {
   try {
-    return globalThis.matchMedia("(any-pointer:coarse)").matches ? true: false;
+    return globalThis.matchMedia("(any-pointer:coarse)").matches ? true : false;
   } catch (e) {
     return true;
   }
@@ -34,7 +35,7 @@ export async function delay(ms: number): Promise<void> {
  * windowSize
  * Compute current window size
 
- * @see [https://stackoverflow.com/a/28241682 ]
+ * @see [https://stackoverflow.com/a/28241682]
  * @public
  * @returns {Array<number>}
  */
@@ -115,14 +116,6 @@ export function clearSelection(): void {
   }
 }
 
-if(!( globalThis.crypto || globalThis.crypto.subtle) ) {
-  throw new Error("JS runtime doesn't allow access to crypt/ hash functions.  Cannot proceed");
-}
-
-if(!('toHex' in Uint8Array.prototype)) {
-  Uint8Array.prototype.toHex=monkeyPatch_toHex;
-}
-
 /**
  * hashState
  * Create a predictable hash of blob of data to support idempotency and duplicate collapse.
@@ -133,14 +126,11 @@ if(!('toHex' in Uint8Array.prototype)) {
  * @public
  * @returns {string} - hex encoded
  */
-export async function hashState(dat:Array<SaveStruct|ListStruct>, hash:Readonly<string>="SHA-256"):Promise<string>{
-  let step1:string= JSON.stringify(dat);
-      //step2:  this step should be obsolete/ irrelevant, but is critical failure if absent
-  let step2 = new TextEncoder().encode(step1);
-  let step3 = await globalThis.crypto.subtle.digest(hash, step2);
-  return new Uint8Array(step3).toHex();
+export function hashState(
+  dat: Array<SaveStruct | ListStruct>,
+): string {
+  return  Md5.hashStr( JSON.stringify(dat));
 }
-
 
 export type Fetch = (u: string, o: RequestInit) => Promise<Response>;
 export type Fetchable = Fetch | null;
@@ -149,7 +139,7 @@ export interface SimpleResponse {
   body: object | string;
   headers: Headers;
   ok: boolean;
-  status:number;
+  status: number;
 }
 
 /**
@@ -164,29 +154,27 @@ export interface SimpleResponse {
  * @throws {Error} = predictably, in case of network issue
  * @returns {Promise<SimpleResponse>}
  */
-export async function runFetch(
-  url: string,
-  trap: boolean,
-  extra:RequestInit | undefined
-): Promise<SimpleResponse> {
+export async function runFetch(url: string, trap: boolean, extra: RequestInit | undefined): Promise<SimpleResponse> {
   const f: Fetch = globalThis.fetch;
-  const returnBad = (trap: boolean, err: Error, stat:number): SimpleResponse => {
+  const returnBad = (trap: boolean, err: Error, stat: number): SimpleResponse => {
     if (trap) {
       return {
         body: "nothing",
         headers: {} as Headers,
         ok: false,
-        status:stat,
+        status: stat,
       } as SimpleResponse;
     } else {
       throw err;
     }
   };
-  if( typeof extra === "undefined" ) { extra={} as RequestInit; }
-  let trans: Response ={} as Response;
+  if (typeof extra === "undefined") {
+    extra = {} as RequestInit;
+  }
+  let trans: Response = {} as Response;
   try {
-    let head:RequestInit=Object.assign({}, extra, { credentials: "same-origin", } );
-    trans = await f(url, head ) as Response;
+    let head: RequestInit = Object.assign({}, extra, { credentials: "same-origin" });
+    trans = (await f(url, head)) as Response;
     if (!trans.ok) {
       return returnBad(trap, new Error("ERROR getting asset " + url), trans.status);
     }
@@ -195,11 +183,7 @@ export async function runFetch(
     }
 
     let payload = "";
-    if (
-      ((trans.headers as Headers).get("content-type") as string)
-        .toLowerCase()
-        .startsWith("application/json")
-    ) {
+    if (((trans.headers as Headers).get("content-type") as string).toLowerCase().startsWith("application/json")) {
       payload = await trans.json();
     } else {
       payload = await trans.text();
@@ -209,15 +193,14 @@ export async function runFetch(
       body: payload,
       headers: trans.headers,
       ok: true,
-      status:trans.status,
+      status: trans.status,
     } as SimpleResponse;
-  } catch (e:unknown) {
-// console.log("outer error formatter in my fetch", (e as Error).message);
+  } catch (e: unknown) {
+    // console.log("outer error formatter in my fetch", (e as Error).message);
     return returnBad(
       trap,
       new Error("ERROR getting asset " + url + " " + (e as Error).message),
-      (trans?trans.status:500 )
+      trans ? trans.status : 500
     );
   }
 }
-

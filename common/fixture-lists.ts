@@ -1,11 +1,11 @@
 import type { TestDataSchema } from "./types/TestDataSchema";
 import type { SaveStruct } from "./types/SaveStruct";
 
-export function transform2SaveStruct(din:Array<TestDataSchema>):Array<SaveStruct> {
-  let out:Array<SaveStruct> =[];
+export function transform2SaveStruct(din: Array<TestDataSchema>): Array<SaveStruct> {
+  let out: Array<SaveStruct> = [];
 
-  for(let i=0; i<din.length; i++) {
-    out[i]={ ...din[i], created:din[i].created.getTime(), edited:din[i].edited.getTime(), };
+  for (let i = 0; i < din.length; i++) {
+    out[i] = { ...din[i], created: din[i].created.getTime(), edited: din[i].edited.getTime() };
   }
   return out;
 }

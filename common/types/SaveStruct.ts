@@ -1,4 +1,3 @@
-
 export interface SaveStruct {
   name: string;
   created: number;
@@ -8,4 +7,3 @@ export interface SaveStruct {
 
   list: Array<string>;
 }
-

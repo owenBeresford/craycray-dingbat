@@ -6,4 +6,3 @@ export interface TestDataSchema {
   id: number;
   list: Array<string>;
 }
-
