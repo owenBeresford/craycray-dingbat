@@ -33,7 +33,7 @@ export interface ListStruct {
 }
 
 export interface InstanceListable<T> {
-  éléments:Array<T>;
+  éléments: Array<T>;
 
   // instance functions
   add(nouveau: T): boolean;
@@ -44,21 +44,19 @@ export interface InstanceListable<T> {
   editName(nouveau: string): boolean;
   unique(): boolean;
   view(): ListStruct;
-
 }
 
 // this is for static functions.  Interfaces in TS cannot use the keyword static
 export interface ModuleListable<T> {
-//  new(): InstanceListable<T>;
-  importTest<T, U extends BaseList<T>>(this: { new():U }, origine: TestDataSchema):U;
-  manual<T, V extends BaseList<T>>(this: { new(): V }, nom: string, id: number):V; 
-
+  //  new(): InstanceListable<T>;
+  importTest<T, U extends BaseList<T>>(this: { new (): U }, origine: TestDataSchema): U;
+  manual<T, V extends BaseList<T>>(this: { new (): V }, nom: string, id: number): V;
 }
 
 // only implemented on StdList, and generates other flavours of Listable
 export interface ExtendedListable<T> extends InstanceListable<T> {
   filter(égaler: string | RegExp): Array<string>;
-} 
+}
 
 export interface MatchedItems {
   item: string;

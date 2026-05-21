@@ -2,7 +2,7 @@ import { defineComponent } from "vue";
 import type { MethodOptions, Ref } from "vue";
 import type { RouteRecordNormalized, RouteLocationNormalizedLoadedGeneric } from "vue-router";
 
-import { BaseActions  } from './BaseActions';
+import { BaseActions } from "./BaseActions";
 import { StdList, SearchList } from "./AList";
 import { CacheWrapper } from "../workers/InstallWorker";
 import { StaticRoutes } from "../components/Routing";
@@ -10,13 +10,12 @@ import { hashState } from "../../../common/util";
 import { useUIText } from "./Localisation";
 import { ListData } from "./DataFactory";
 
-import type { UserAction, MenuStateType, FakeThis, ExternalMethods, CBType } from './BaseActions';
+import type { UserAction, MenuStateType, FakeThis, ExternalMethods, CBType } from "./BaseActions";
 import type { FactoryArtefact } from "./DataFactory";
 import type { COMPLETE_STORE } from "./Store";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
 
- 
 /**
  * useTabActions
  * The standard access util
@@ -36,10 +35,10 @@ export async function useTabActions(
   d: RouteLocationNormalizedLoadedGeneric
 ): Promise<ExternalMethods> {
   let tmp = new TabActions(d, a, c, b);
-   if( b.currentData) {
+  if (b.currentData) {
     tmp.loadedStateKey = await hashState(b.currentData.list());
-   }
-   return tmp;
+  }
+  return tmp;
 }
 
 const TEXT = useUIText();
@@ -49,8 +48,8 @@ const TEXT = useUIText();
  * A class to make the TabBar simpler.   This also improves testability.
 
  * @access public
- */  // implements ExternalMethods
-export class TabActions extends BaseActions  {
+ */ // implements ExternalMethods
+export class TabActions extends BaseActions {
   protected store: COMPLETE_STORE;
   protected route: RouteLocationNormalizedLoadedGeneric;
   protected cache: CacheWrapper;
@@ -58,7 +57,7 @@ export class TabActions extends BaseActions  {
 
   public loadedStateKey: string;
 
-/**
+  /**
  * Boring con'tor
  * This has params to make building unit-tests easier.
  // NOTE:  not injected: StaticRoutes
@@ -93,7 +92,7 @@ export class TabActions extends BaseActions  {
     }
     if (!this.route) {
       throw new Error("The vue Route isn't present");
-    } 
+    }
   }
 
   /**
@@ -103,7 +102,7 @@ export class TabActions extends BaseActions  {
    * @public
    * @returns {void}
    */
-  onIntersitial(ignored:GuessEvent, ctx: FakeThis): void {
+  onIntersitial(ignored: GuessEvent, ctx: FakeThis): void {
     if (this.store.state.currentURL !== this.route.path) {
       console.warn("The state.currentURL hasn't updated!", this.store.state.currentURL, this.route.path);
       this.store.commit("setPath", this.route.path);
@@ -119,7 +118,7 @@ export class TabActions extends BaseActions  {
    * @public
    * @returns {boolean}
    */
-  onInstall(ignored:GuessEvent, ctx: FakeThis): boolean {
+  onInstall(ignored: GuessEvent, ctx: FakeThis): boolean {
     if (location.protocol !== "https:") {
       console.warn("Install button is disabled, you need to use HTTPS.");
       return false;
@@ -141,12 +140,12 @@ export class TabActions extends BaseActions  {
    * @public
    * @returns {void}
    */
-  onUnique(ignored:GuessEvent, ctx: FakeThis): void {
-    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+  onUnique(ignored: GuessEvent, ctx: FakeThis): void {
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.
     const liste = this.data.currentData.get(this.store.state.currentId);
     if (liste) {
       liste.unique();
-      // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+      // @ts-ignore  - there are no undef() at runtime after the con'tor.
       this.data.currentData.put(this.store.state.currentId, liste);
     }
   }
@@ -158,15 +157,18 @@ export class TabActions extends BaseActions  {
    * @public
    * @returns {void}
    */
-  onDuplicate(ignored:GuessEvent, ctx:FakeThis): void {
-    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
-    const liste:Stdlist = this.data.currentData.get(this.store.state.currentId);
+  onDuplicate(ignored: GuessEvent, ctx: FakeThis): void {
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.
+    const liste: Stdlist = this.data.currentData.get(this.store.state.currentId);
 
     if (liste) {
-      // @ts-ignore  - there are no undef() at runtime after the con'tor.  
-      const extra:StdList = Object.assign(StdList.manual<string, StdList>(`DUP: ${liste.nom}`, this.data.currentData.count()) as StdList, liste);
+      // @ts-ignore  - there are no undef() at runtime after the con'tor.
+      const extra: StdList = Object.assign(
+        StdList.manual<string, StdList>(`DUP: ${liste.nom}`, this.data.currentData.count()) as StdList,
+        liste
+      );
       extra.editName(`DUP: ${liste.nom}`);
-      // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+      // @ts-ignore  - there are no undef() at runtime after the con'tor.
       this.data.currentData.append(extra);
     }
     StaticRoutes.push({ name: "list-everything" });
@@ -179,17 +181,17 @@ export class TabActions extends BaseActions  {
    * @public
    * @returns {boolean}
    */
-  async onSave(ignored:GuessEvent, ctx: FakeThis): Promise<boolean> {
-    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
-    if (this.loadedStateKey === await hashState(this.data.currentData.list())) {
+  async onSave(ignored: GuessEvent, ctx: FakeThis): Promise<boolean> {
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.
+    if (this.loadedStateKey === (await hashState(this.data.currentData.list()))) {
       console.log("Data is identical as last save ");
       return false;
     }
 
     console.log("Saving list to local cache list, for all lists");
-    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.
     this.loadedStateKey = await hashState(this.data.currentData.list());
-    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.
     this.data.currentData.saveAllLists();
     return false;
   }
@@ -201,14 +203,14 @@ export class TabActions extends BaseActions  {
    * @public
    * @returns [boolean]
    */
-  async onRevert(ignored:GuessEvent, ctx: FakeThis): Promise<boolean> {
-    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
-    if (this.loadedStateKey === await hashState(this.data.currentData.list())) {
+  async onRevert(ignored: GuessEvent, ctx: FakeThis): Promise<boolean> {
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.
+    if (this.loadedStateKey === (await hashState(this.data.currentData.list()))) {
       console.log("Data is identical to initial state ");
       return false;
     }
     console.log("Rebuilding data from cache for all lists");
-    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.
     this.data.currentData.loadAllLists();
     return false;
   }
@@ -221,7 +223,7 @@ export class TabActions extends BaseActions  {
    * @public
    * @returns {void}
    */
-  onMenu(ignored:GuessEvent, ctx: FakeThis): void {
+  onMenu(ignored: GuessEvent, ctx: FakeThis): void {
     ctx.menuStateRef.value = !ctx.menuStateRef.value;
   }
 
@@ -233,9 +235,9 @@ export class TabActions extends BaseActions  {
    * @public
    * @returns {boolean}
    */
-  onSearch(ignored:GuessEvent, ctx: FakeThis): boolean {
+  onSearch(ignored: GuessEvent, ctx: FakeThis): boolean {
     ctx.getInputRef.value = "";
-    createSearchCallback(ctx );
+    createSearchCallback(ctx);
     ctx.visibleRef.value = true;
     return false;
   }
@@ -249,9 +251,9 @@ export class TabActions extends BaseActions  {
    * @public
    * @returns {boolean}
    */
-  onName(ignored:GuessEvent, ctx: FakeThis): boolean {
-    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
-    const liste:StdList = this.data.currentData.get(this.store.state.currentId) as StdList;
+  onName(ignored: GuessEvent, ctx: FakeThis): boolean {
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.
+    const liste: StdList = this.data.currentData.get(this.store.state.currentId) as StdList;
     if (!liste) {
       console.warn("EDIT NAME: got bad id, don't know how to proceed");
       return false;
@@ -262,8 +264,8 @@ export class TabActions extends BaseActions  {
     return false;
   }
 }
- 
-export {noop } from './BaseActions';
+
+export { noop } from "./BaseActions";
 
 /**
  * createNameCallback
@@ -274,20 +276,20 @@ export {noop } from './BaseActions';
  * @public
  * @returns {void}
  */
-function createNameCallback(ctx: FakeThis ): void {
+function createNameCallback(ctx: FakeThis): void {
   ctx.CBRef.value = (d1: string | null): any => {
     if (d1 === null) {
       ctx.visibleRef.value = false;
       return;
     }
 
-    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.
     const liste = ListData.currentData.get(ctx.storeRef.value.state.currentId);
-    if(!liste) {
-      throw new Error("THe currentId "+ctx.storeRef.value.state.currentId+"in the state/ session is invalid.");
+    if (!liste) {
+      throw new Error("THe currentId " + ctx.storeRef.value.state.currentId + "in the state/ session is invalid.");
     }
     liste.editName(d1);
-    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.
     ListData.currentData.put(ctx.storeRef.state.currentId, liste);
     ctx.visibleRef.value = false;
     StaticRoutes.push({ name: "list-everything" });
@@ -303,7 +305,7 @@ function createNameCallback(ctx: FakeThis ): void {
  * @public
  * @returns {void}
  */
-function createSearchCallback(ctx: FakeThis ): void {
+function createSearchCallback(ctx: FakeThis): void {
   ctx.CBRef.value = (d1: string | null): any => {
     if (d1 === null || d1 === "") {
       ctx.visibleRef.value = false;
@@ -311,8 +313,8 @@ function createSearchCallback(ctx: FakeThis ): void {
     }
 
     console.info("Starting a search for '" + d1 + "'");
-    // @ts-ignore  - there are no undef() at runtime after the con'tor.  
-    let newList: SearchList = SearchList.serps( ListData.currentData.searchItems(d1));
+    // @ts-ignore  - there are no undef() at runtime after the con'tor.
+    let newList: SearchList = SearchList.serps(ListData.currentData.searchItems(d1));
     ctx.visibleRef.value = false;
     ctx.storeRef.value.commit("setPayload", newList);
 

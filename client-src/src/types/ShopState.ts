@@ -1,4 +1,4 @@
-import type { InstanceListable, MatchedItems } from './ListCollection';
+import type { InstanceListable, MatchedItems } from "./ListCollection";
 
 // current simple state, TBextended
 export interface ShopState {

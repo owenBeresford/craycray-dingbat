@@ -1,7 +1,13 @@
 import { JsonSerializer, throwError, JsonProperty, JsonObject } from "typescript-json-serializer";
 
 import { EMPTY_LIST_NAME } from "../Constants";
-import type { InstanceListable, ModuleListable, ListStruct, MatchedItems, ExtendedListable } from "../types/ListCollection";
+import type {
+  InstanceListable,
+  ModuleListable,
+  ListStruct,
+  MatchedItems,
+  ExtendedListable,
+} from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 
 /**
@@ -43,7 +49,7 @@ class BaseList<T> implements InstanceListable<T>, ListStruct {
    * @public
    * @returns {StdList}
    */
-  public static manual<V1, V extends BaseList<V1>>(this: { new(): V }, nom: string, id: number):V {
+  public static manual<V1, V extends BaseList<V1>>(this: { new (): V }, nom: string, id: number): V {
     let liste = new this();
     liste.nom = nom;
     liste.créé = new Date();
@@ -63,14 +69,14 @@ class BaseList<T> implements InstanceListable<T>, ListStruct {
    * @public
    * @returns {U} - probably U=Stdlist, but this is reusable
    */
-  public static importTest<T, U extends BaseList<T>>(this: { new():U }, origine: TestDataSchema):U {
+  public static importTest<T, U extends BaseList<T>>(this: { new (): U }, origine: TestDataSchema): U {
     const liste = new this();
     liste.nom = origine.name;
     liste.créé = origine.created;
     liste.modifié = origine.edited;
     liste.énumérer = origine.count;
     liste.id = origine.id;
-    liste.éléments = [...origine.list as Array<T>];
+    liste.éléments = [...(origine.list as Array<T>)];
     return liste;
   }
 
@@ -155,7 +161,7 @@ class BaseList<T> implements InstanceListable<T>, ListStruct {
    * @returns {boolean}
    */
   public import(relevé: Array<T>): boolean {
-    this.éléments.push(...relevé );
+    this.éléments.push(...relevé);
     this.énumérer += relevé.length;
     this.modifié = new Date();
     return true;
@@ -197,10 +203,7 @@ class BaseList<T> implements InstanceListable<T>, ListStruct {
   public view(): ListStruct {
     return { ...this } as ListStruct;
   }
-
-  
 }
-
 
 /**
  * StdList 
@@ -211,7 +214,6 @@ class BaseList<T> implements InstanceListable<T>, ListStruct {
  */
 JsonObject();
 export class StdList extends BaseList<string> implements ExtendedListable<string>, ListStruct {
-
   /**
    * filter
    * A util to supply matching items from the list
@@ -231,9 +233,9 @@ export class StdList extends BaseList<string> implements ExtendedListable<string
     } else {
       term = égaler;
     }
- 
+
     let ret: Array<string> = [];
-    const FIX_TYPE:Array<string> = Array.from(this.éléments);
+    const FIX_TYPE: Array<string> = Array.from(this.éléments);
     for (let i = 0; i < FIX_TYPE.length; i++) {
       if (FIX_TYPE[i].match(term)) {
         ret.push(FIX_TYPE[i]);
@@ -272,7 +274,6 @@ export class StdList extends BaseList<string> implements ExtendedListable<string
  */
 JsonObject();
 export class SearchList extends BaseList<MatchedItems> implements InstanceListable<MatchedItems>, ListStruct {
-
   // each item also has an id,
   // need to add type, when add component
   public static serps(dat: Array<MatchedItems>): SearchList {
@@ -287,5 +288,4 @@ export class SearchList extends BaseList<MatchedItems> implements InstanceListab
   }
 }
 
-export const EMPTY_LIST:StdList = StdList.manual<string, StdList>(EMPTY_LIST_NAME, 1) as StdList;
-
+export const EMPTY_LIST: StdList = StdList.manual<string, StdList>(EMPTY_LIST_NAME, 1) as StdList;

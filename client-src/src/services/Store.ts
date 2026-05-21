@@ -3,8 +3,8 @@ import { createStore, useStore as originalUseStore } from "vuex";
 
 import { APP_NAME } from "../Constants";
 import type { ShopState } from "../types/ShopState";
-import type { ModuleListable, InstanceListable, MatchedItems } from '../types/ListCollection';
-  
+import type { ModuleListable, InstanceListable, MatchedItems } from "../types/ListCollection";
+
 /**
  * mapForHelp
  * Convert a URN to the symbol for the relevant interstitial text
@@ -29,7 +29,7 @@ export const mapForHelp = (state: COMPLETE_STORE, specific: string): string => {
     "/list-all": "list-all",
     "/list": "list-id",
     "/menu": "menu",
-    "/located": "serps"
+    "/located": "serps",
     // /install . . .
   };
   return MM[ceci];
@@ -44,7 +44,7 @@ export const STORE: COMPLETE_STORE = createStore({
       currentURL: "",
       showHelp: false,
       currentId: -1,
-    //  serps: null,
+      //  serps: null,
     } satisfies ShopState;
   },
   mutations: {

@@ -209,7 +209,7 @@ function UITextFactory(lang: string): UItext {
         "serps.itemMBTitle",
         "Mobile interactionas are: swipe/ discard item from this search results."
       ),
-////////// gap to split add() from addArray()   /////////////////////////////////////////////////
+      ////////// gap to split add() from addArray()   /////////////////////////////////////////////////
 
       hiddenReference.addArray("firstUse", [
         "&nbsp; ",

@@ -8,7 +8,7 @@ import type { Motionable } from "./Motionable";
 import type { LocalCopy } from "../services/LocalCopy";
 import type { ShopState } from "../types/ShopState";
 import type { Store } from "vuex";
-import type {COMPLETE_STORE} from '../services/Store'; 
+import type { COMPLETE_STORE } from "../services/Store";
 
 export interface ListOfListsProps {
   instanceId: string;
@@ -58,21 +58,20 @@ export interface MainAppProps {
 export interface SearchProps {
   term: string;
   currentStateKey: string;
-  testId:string;
-  route:RouteRecordNormalized;
+  testId: string;
+  route: RouteRecordNormalized;
   shopState: COMPLETE_STORE;
 }
 
 export interface SearchStaticData {
   aListId: string;
-  viewId:string; 
+  viewId: string;
   logoPath: string;
   mapURL: MapUrlType;
   bisMobile: boolean;
   listTitles: Array<string>;
-  text: Record<string,string>;
-}      
-
+  text: Record<string, string>;
+}
 
 type MapUrlType = (nom: string, id: number | null) => string;
 

@@ -107,7 +107,7 @@ export class ListService implements ListCollection<string> {
    */
   public merge(next: ListCollection<string>): boolean {
     for (let i = 0; i < next.count(); i++) {
-      let agaçant:StdList = next.get(i) as StdList; 
+      let agaçant: StdList = next.get(i) as StdList;
       if (agaçant && agaçant.nom !== EMPTY_LIST_NAME) {
         this.append(agaçant);
       }
@@ -145,7 +145,8 @@ export class ListService implements ListCollection<string> {
       return undefined;
     }
     let objet = this.catalog[id];
-    if (objet === null) {  // washing to a more useful placeholder
+    if (objet === null) {
+      // washing to a more useful placeholder
       return undefined;
     }
     return objet;

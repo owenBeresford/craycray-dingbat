@@ -1,13 +1,30 @@
 <template>
   <div id="serpsContainer" class="serps" :key="currentStateKey" :data-testId="testId">
-    <InterstitialView :display="helpTextRef" :show="canSeeHelpRef" :ttl="ttlRef" :currentStateKey="helpId" :testId="viewId" />
+    <InterstitialView
+      :display="helpTextRef"
+      :show="canSeeHelpRef"
+      :ttl="ttlRef"
+      :currentStateKey="helpId"
+      :testId="viewId"
+    />
     <p>{{ text.intro }}</p>
     <ul class="buttonRow">
       <li>
         <h3>{{ list.nom }}</h3>
       </li>
       <li><img width="40" height="40" :src="logoPath" aria-hidden="true" role="presentation" :alt="text.imgAlt" /></li>
-      <li><span :data-testId="saveId" class="button" role="button" :title="text.saveTitle" v-html="text.saveLabel" v-touch.once="onSave" @click.once="onSave" @keypress.once="onSave"></span></li>
+      <li>
+        <span
+          :data-testId="saveId"
+          class="button"
+          role="button"
+          :title="text.saveTitle"
+          v-html="text.saveLabel"
+          v-touch.once="onSave"
+          @click.once="onSave"
+          @keypress.once="onSave"
+        ></span>
+      </li>
     </ul>
 
     <ul class="aList" :data-testId="aListId">
@@ -65,7 +82,7 @@ import { MotionStream } from "../services/MotionStream";
 import { useSearchActions, SearchActions } from "../services/SearchActions";
 import type { ExternalMethods, SearchStateType } from "../services/BaseActions";
 import type { COMPLETE_STORE } from '../services/Store';
-import type { SearchProps, SearchStaticData } from '../types/ComponentProps'; 
+import type { SearchProps, SearchStaticData } from '../types/ComponentProps';
 // import { StaticRoutes } from "./Routing";
 // import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 // import type { SerpsProps } from "../types/ComponentProps";
@@ -102,7 +119,7 @@ export default defineComponent({
     try {
      const flux = new MotionStream();
      const list: SearchList= SearchList.serps( ListData.currentData.searchItems( props.term) );
-     const hasData: boolean = list.énumérer > 0; 
+     const hasData: boolean = list.énumérer > 0;
 
       stack = useSearchActions( list, flux );
       return {

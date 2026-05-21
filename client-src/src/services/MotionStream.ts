@@ -96,7 +96,7 @@ export class MotionStream implements Motionable {
           // TEST VALUES: 8 + 20 < 0 && 8 - 20 >0
           if (angle + ANGLE_ACCURACY > i2 && angle - ANGLE_ACCURACY < i2) {
             obj(e, undefined);
-             // move these next 2 lines if you want to allow more than one CB per gesture
+            // move these next 2 lines if you want to allow more than one CB per gesture
             found = true;
             break;
           }

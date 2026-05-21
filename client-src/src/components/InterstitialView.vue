@@ -59,7 +59,7 @@ export default defineComponent({
     if (typeof this.$props.currentStateKey === "string") {
       chaine = this.$props.currentStateKey;
     } else {
-console.log("IOIOIO have composite statekey in initerstitial, not expected  IOIOIOIO");      
+      console.log("IOIOIO have composite statekey in initerstitial, not expected  IOIOIOIO");
       chaine = this.$props.currentStateKey.betterId;
     }
 

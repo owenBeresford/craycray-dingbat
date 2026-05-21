@@ -12,7 +12,7 @@ import { defineComponent } from "vue";
 import { TTL_FOR_HELP, DEFAULT_HELP_SHOW } from "./Constants";
 import type { FactoryArtefact } from "./services/DataFactory";
 import type { ListCollection } from "./types/ListCollection";
-import type { MainAppProps } from './types/ComponentProps';
+import type { MainAppProps } from "./types/ComponentProps";
 import { createDataFactory, ListData, setupCurrentList } from "./services/DataFactory";
 import { fixture1 } from "../../common/fixture-lists"; // IOIO
 

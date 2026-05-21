@@ -16,4 +16,3 @@ declare namespace JSX {
   }
 }
 console.log("Have run the namespace file");
-

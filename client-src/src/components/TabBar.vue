@@ -12,14 +12,9 @@
           <router-link class="button" :to="urls[1]">{{ menu.newName }}</router-link>
         </li>
         <li :title="menu.findTitle">
-          <span
-            class="button"
-            role="button"
-            @click.prevent="onSearch"
-            v-touch="onSearch"
-            @keypress="onSearch"
-            >{{ menu.findItem }}</span
-          >
+          <span class="button" role="button" @click.prevent="onSearch" v-touch="onSearch" @keypress="onSearch">{{
+            menu.findItem
+          }}</span>
         </li>
 
         <li>
@@ -28,7 +23,7 @@
             aria-haspopup="menu"
             :aria-pressed="menuStateRef"
             role="button"
-            @click.prevent="onMenu" 
+            @click.prevent="onMenu"
             v-touch="onMenu"
             @keypress="onMenu"
             :title="menu.actualMenuTitle"
@@ -202,7 +197,7 @@ export default defineComponent({
         ctx: { visibleRef, getInputRef, CBRef, storeRef, menuStateRef },
       };
     } catch (e: unknown) {
-      console.log("TabBar.setup():", (e as Error).message, (e as Error).stack.substring(0, 200) );
+      console.log("TabBar.setup():", (e as Error).message, (e as Error).stack.substring(0, 200));
     }
   },
   data(): TabBarStaticData {

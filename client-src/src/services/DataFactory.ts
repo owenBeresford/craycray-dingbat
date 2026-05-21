@@ -97,7 +97,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
     return retour as Readonly<FactoryArtefact>;
   }
 
- /**
+  /**
  * currentNetworkConfig
  * A "use function" to create ListCollections, which has different composition depending on network settings
  * @TODO add simplification when Storybook or Vitest is running
@@ -184,7 +184,9 @@ export const ListData: FactoryArtefact = createDataFactory(undefined);
  * @public
  * @returns {Promise<InstanceListable<string>>}
  */
-export function setupCurrentList(itinéraire: undefined | RouteLocationNormalizedLoadedGeneric): InstanceListable<string> {
+export function setupCurrentList(
+  itinéraire: undefined | RouteLocationNormalizedLoadedGeneric
+): InstanceListable<string> {
   let id: number = 0;
   let liste = EMPTY_LIST;
   let currentData: ListCollection<string> | undefined;

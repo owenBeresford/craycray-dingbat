@@ -113,7 +113,7 @@ export default defineComponent({
   },
   mounted() {
     const itinéraire = useRoute();
-    this.list.importTest<string, StdList>( setupCurrentList(itinéraire) as StdList );
+    this.list.importTest<string, StdList>(setupCurrentList(itinéraire) as StdList);
     if (this.shopStore) {
       this.shopStore.commit("setPath", itinéraire.path);
       this.shopStore.commit("setId", this.id);
@@ -159,7 +159,6 @@ export default defineComponent({
       return [] as Array<string>;
     },
   },
-
 
   methods: {
     onAdd(e: GuessEvent): boolean {
@@ -207,8 +206,8 @@ export default defineComponent({
       console.log(`Deleting list element [${this.offset}] = ${agaçant.innerText}`);
       this.finalise();
     },
- 
-    finalise(ignored:GuessEvent, ignored2:Record<string,Function>|undefined): void {
+
+    finalise(ignored: GuessEvent, ignored2: Record<string, Function> | undefined): void {
       if (this.offset >= 0 && this.offset < this.list.énumérer) {
         this.list.remove(this.offset);
       } else {
