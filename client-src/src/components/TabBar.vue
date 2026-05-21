@@ -46,9 +46,9 @@
                 role="button"
                 class="button"
                 :title="menu.helpTitle"
-                v-touch.prevent="onIntersitial"
-                @click.prevent.once="onIntersitial"
-                @keypress.prevent="onIntersitial"
+                v-touch.prevent="onInterstitial"
+                @click.prevent.once="onInterstitial"
+                @keypress.prevent="onInterstitial"
                 >{{ menu.helpName }}</span
               >
             </li>
@@ -175,7 +175,7 @@ export default defineComponent({
       },
     },
   },
-  async setup() {
+  setup() {
     const dataOnLoad: boolean = inject<boolean>("dataOnLoad");
     const visibleRef = ref<boolean>(false);
     const getInputRef = ref<string>("");
@@ -185,7 +185,7 @@ export default defineComponent({
 
     let stack: ExternalMethods;
     try {
-      stack = await useTabActions(useStore(), ListData, useCacheWrapper(), useRoute());
+      stack = useTabActions(useStore(), ListData, useCacheWrapper(), useRoute());
       return {
         extraMethods: stack.mount({ visibleRef, getInputRef, CBRef, storeRef, menuStateRef, ListData }, stack),
         dataOnLoad,
@@ -208,13 +208,8 @@ export default defineComponent({
     } else if (CACHE.check()) {
       état += " disabled";
     }
-
+ 
     return {
-      menuLabel: TEXT.get("menu.symbol"),
-      menuState: "hide",
-      menuOpen: false,
-      getInput: "",
-      CB: Function as any,
       installEnabled: état,
       EIK: this.$props.currentStateKey + "false",
       inputId: this.testId + "input1",

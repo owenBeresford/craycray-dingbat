@@ -14,8 +14,7 @@ import type { FactoryArtefact } from "./DataFactory";
 import type { COMPLETE_STORE } from "./Store";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
-import type { ExternalMethods, FakeThis, UserAction, CBType } from '../types/Actionables';
-
+import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Actionables";
 
 /**
  * useTabActions
@@ -29,7 +28,7 @@ import type { ExternalMethods, FakeThis, UserAction, CBType } from '../types/Act
  * @public
  * @returns {ExternalMethods}
  */
-export async function useTabActions(
+export function useTabActions(
   a: COMPLETE_STORE,
   b: FactoryArtefact,
   c: CacheWrapper,
@@ -37,7 +36,7 @@ export async function useTabActions(
 ): Promise<ExternalMethods> {
   let tmp = new TabActions(d, a, c, b);
   if (b.currentData) {
-    tmp.loadedStateKey = await hashState(b.currentData.list());
+    tmp.loadedStateKey = hashState(b.currentData.list());
   }
   return tmp;
 }
@@ -58,7 +57,7 @@ export class TabActions extends BaseActions {
 
   public loadedStateKey: string;
 
- /**
+  /**
  * Boring con'tor
  * This has params to make building unit-tests easier.
  // NOTE:  not injected: StaticRoutes
@@ -97,7 +96,7 @@ export class TabActions extends BaseActions {
   }
 
   /**
-   * onIntersitial
+   * onInterstitial
    * Event handler to load Interstitials
 
    * @param {GuesEvent} ignored - maintained for API compat, this is ignored
@@ -105,7 +104,7 @@ export class TabActions extends BaseActions {
    * @public
    * @returns {void}
    */
-  onIntersitial(ignored: GuessEvent, ctx: FakeThis): void {
+  onInterstitial(ignored: GuessEvent, ctx: FakeThis): void {
     if (this.store.state.currentURL !== this.route.path) {
       console.warn("The state.currentURL hasn't updated!", this.store.state.currentURL, this.route.path);
       this.store.commit("setPath", this.route.path);
@@ -194,14 +193,14 @@ export class TabActions extends BaseActions {
    */
   async onSave(ignored: GuessEvent, ctx: FakeThis): Promise<boolean> {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    if (this.loadedStateKey === (await hashState(this.data.currentData.list()))) {
+    if (this.loadedStateKey === hashState(this.data.currentData.list())) {
       console.log("Data is identical as last save ");
       return false;
     }
 
     console.log("Saving list to local cache list, for all lists");
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    this.loadedStateKey = await hashState(this.data.currentData.list());
+    this.loadedStateKey = hashState(this.data.currentData.list());
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     this.data.currentData.saveAllLists();
     return false;
@@ -218,7 +217,7 @@ export class TabActions extends BaseActions {
    */
   async onRevert(ignored: GuessEvent, ctx: FakeThis): Promise<boolean> {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    if (this.loadedStateKey === (await hashState(this.data.currentData.list()))) {
+    if (this.loadedStateKey === hashState(this.data.currentData.list())) {
       console.log("Data is identical to initial state ");
       return false;
     }
@@ -330,14 +329,12 @@ function createSearchCallback(ctx: FakeThis): void {
 
     console.info("Starting a search for '" + d1 + "'");
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    let newList: SearchList = SearchList.serps(ListData.currentData.searchItems(d1));
+//    let newList: SearchList = SearchList.serps(ListData.currentData.searchItems(d1));
     ctx.visibleRef.value = false;
-    ctx.storeRef.value.commit("setPayload", newList);
-
+//    ctx.storeRef.value.commit("setPayload", newList);
     StaticRoutes.push({
       name: "serps",
       params: { term: d1 },
     });
   };
 }
-

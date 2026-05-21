@@ -32,7 +32,7 @@ describe("test on TabActions", () => {
     const storeRef = ref<COMPLETE_STORE>(useStore());
     const menuStateRef = ref<boolean>(false);
     const funcList = [
-      "onIntersitial",
+      "onInterstitial",
       "onInstall",
       "onUnique",
       "onDuplicate",

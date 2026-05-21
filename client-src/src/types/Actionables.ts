@@ -1,4 +1,3 @@
-
 import type { MethodOptions, Ref } from "vue";
 
 type SaferFunctionType = (...args: any[]) => any;
@@ -18,15 +17,11 @@ export interface MenuStateType {
   menuStateRef: Ref<boolean>;
 }
 
-
 export interface SearchStateType {}
-
 
 /**
   The basic type for the Actionables structure
  */
 export interface ExternalMethods {
-  mount(ctx: FakeThis, mapClass: ExternalMethods): MethodOptions
+  mount(ctx: FakeThis, mapClass: ExternalMethods): MethodOptions;
 }
-
-

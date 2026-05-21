@@ -56,7 +56,8 @@ import InterstitialView from "./InterstitialView.vue";
 import { useStore } from "../services/Store";
 import { useUIText } from "../services/Localisation";
 import { ListData, setupCurrentList, idOf } from "../services/DataFactory";
-import { StdList, EMPTY_LIST } from "../services/AList";
+import { StdList, EMPTY_LIS } from "../services/AList";
+import { noop} from '../services/BaseActions';
 import { MotionStream } from "../services/MotionStream";
 // import { extractId } from "../services/util";
 import { isMobile, clearSelection } from "../../../common/util";
@@ -113,6 +114,7 @@ export default defineComponent({
   },
   mounted() {
     const itinéraire = useRoute();
+console.log("ThisList->mounted ", this.list, typeof this.list ); 
     this.list.importTest<string, StdList>(setupCurrentList(itinéraire) as StdList);
     if (this.shopStore) {
       this.shopStore.commit("setPath", itinéraire.path);
@@ -132,7 +134,7 @@ export default defineComponent({
       list: EMPTY_LIST,
       getInput: "",
       canSeeInput: false,
-      cb: Function as any,
+      cb: noop,
       offset: -1,
       bisMobile: isMobile(),
       logoPath: LOGO_PATH,
