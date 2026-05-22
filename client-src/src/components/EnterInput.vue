@@ -119,7 +119,6 @@ export default defineComponent({
     },
     visible(nouveau: string, vieux: string): void {
       this.bShow = !!nouveau;
-      // console.log("XXX new value in visibility","new value", nouveau, this.bShow, "old value", vieux );
       if (this.bShow) {
         setTimeout(() => {
           const élément: HTMLInputElement = this.$refs.enterIt as HTMLInputElement;

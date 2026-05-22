@@ -114,7 +114,6 @@ export default defineComponent({
   },
   mounted() {
     const itinéraire = useRoute();
-console.log("ThisList->mounted ", this.list, typeof this.list ); 
     this.list.importTest<string, StdList>(setupCurrentList(itinéraire) as StdList);
     if (this.shopStore) {
       this.shopStore.commit("setPath", itinéraire.path);

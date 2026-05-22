@@ -117,7 +117,6 @@ export default defineComponent({
     try {
       const flux = new MotionStream();
       const list: SearchList = SearchList.serps(ListData.currentData.searchItems(props.term));
-   //   const hasData: boolean = list.énumérer > 0;
 
       stack = useSearchActions(list, flux, ListData );
       return {
@@ -126,7 +125,6 @@ export default defineComponent({
         canSeeHelpRef,
         ttlRef,
         list,
-      //  hasData,
         ctx: {} as FakeThis, // empty!!
       };
     } catch (e: unknown) {
@@ -161,30 +159,22 @@ export default defineComponent({
       },
     } satisfies SearchStaticData;
   },
-  watch:{
-    initList(nouveau: string, vieux: string): void {
-       console.log(`computed value '${vieux}' => '${nouveau}'.`);
-    },
-   },
-  computed: {
+    computed: {
     // here 'init' is a contraction of 'initialised'.  Maybe I should have written i10d
     initList(): Array<MatchedItems> {
-console.log("initList hack,,", this.list instanceof StdList, this.list instanceof SearchList, this.list.export<string>() ); 
-      if ("list" in this && this.list instanceof SearchList) {
+       if ("list" in this && this.list instanceof SearchList) {
         let tmp= this.list.export<string>();
         for(let i in tmp) {
           let tmp2=tmp[i].item;
-          tmp2=tmp2.replace(/ \t\"\'/, "_");
-          tmp[i].key=`item_${tmp2}+${tmp[i].list}`;
+          tmp2=tmp2.replace(/[ \t\"\']/g, "_");
+          tmp[i].key=`item_${tmp2}${tmp[i].list}`;
         } 
-console.log("initList hack,,", tmp); 
-
         return tmp;
       }
       return [] as Array<MatchedItems>;
     },
     hasData(): boolean {
-       if ("list" in this && this.list instanceof StdList) {
+       if ("list" in this && this.list instanceof SearchList) {
         return this.list.énumérer>0;
       }
       return false;

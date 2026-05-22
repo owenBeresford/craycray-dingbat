@@ -4,9 +4,10 @@ import type { RouteRecordNormalized } from "vue-router";
 
 import { BaseActions } from "./BaseActions";
 
-import { SearchList } from "./AList";
+import { SearchList, StdList } from "./AList";
 import { MotionStream } from "./MotionStream";
 import { isMobile, clearSelection } from "../../../common/util";
+import { StaticRoutes } from "../components/Routing";
 
 import type { FactoryArtefact } from "./DataFactory";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
@@ -116,7 +117,13 @@ export class SearchActions extends BaseActions implements ExternalMethods {
     this.flux.addEvent(e);
   }
 
-  onSave(e: MouseEvent, ctx: FakeThis): void {
-    console.error("56756723423547234 Add some code here");
-  }
+  onSave(e: GuessEvent, ctx: FakeThis): void {
+    let buff:StdList=StdList.manual("Search results", this.data.currentData.count());
+    let tmp=this.list.export();
+    for( let i in tmp ) {
+      buff.add( tmp[i].item);
+    }
+    this.data.currentData.append(buff);
+    StaticRoutes.push({ name: "list-everything" });
+   }
 }
