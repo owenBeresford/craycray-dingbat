@@ -329,9 +329,9 @@ function createSearchCallback(ctx: FakeThis): void {
 
     console.info("Starting a search for '" + d1 + "'");
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-//    let newList: SearchList = SearchList.serps(ListData.currentData.searchItems(d1));
+    //    let newList: SearchList = SearchList.serps(ListData.currentData.searchItems(d1));
     ctx.visibleRef.value = false;
-//    ctx.storeRef.value.commit("setPayload", newList);
+    //    ctx.storeRef.value.commit("setPayload", newList);
     StaticRoutes.push({
       name: "serps",
       params: { term: d1 },

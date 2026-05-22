@@ -32,7 +32,7 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 		echo "Tool main vite exited $ret on *.ts"
 		exit 1
 	else 
-		# TODO work out wghy my FE deps now inject checks against "process.env"
+		# TODO work out why my FE deps now inject checks against "process.env"
 		echo -n "const process={env:{}};" > ../dist/public/shopping.es.min.mjs
 		cat dist/shopping.es.mjs >> ../dist/public/shopping.es.min.mjs
 	fi

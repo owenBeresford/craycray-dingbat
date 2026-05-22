@@ -1,4 +1,4 @@
-import {Md5 } from '../client-src/node_modules/ts-md5/dist/md5';
+import { Md5 } from "../client-src/node_modules/ts-md5/dist/md5";
 
 import type { SaveStruct } from "./types/SaveStruct";
 import type { ListStruct } from "../client-src/src/types/ListCollection"; // maybe should move this
@@ -126,10 +126,8 @@ export function clearSelection(): void {
  * @public
  * @returns {string} - hex encoded
  */
-export function hashState(
-  dat: Array<SaveStruct | ListStruct>,
-): string {
-  return  Md5.hashStr( JSON.stringify(dat));
+export function hashState(dat: Array<SaveStruct | ListStruct>): string {
+  return Md5.hashStr(JSON.stringify(dat));
 }
 
 export type Fetch = (u: string, o: RequestInit) => Promise<Response>;

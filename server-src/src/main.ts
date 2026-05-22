@@ -202,7 +202,7 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
   const app: NestFastifyApplication = await NestFactory.create<NestFastifyApplication>(
     ShoppingModule,
     fast, // FastifyHttp2SecureOptions
-    { logger: new ConsoleLogger({ json: true, prefix: "shop", colors: false }) },
+    { logger: new ConsoleLogger({ json: true, prefix: "shop", colors: false }) }
   );
   app.enableCors({ credentials: true });
   app.useGlobalPipes(
@@ -210,7 +210,7 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
       whitelist: false,
       transform: true,
       transformOptions: { enableImplicitConversion: true },
-    }),
+    })
   );
 
   await app.init();

@@ -23,7 +23,7 @@ import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Act
  * @public
  * @returns {ExternalMethods } - actually a SearchActions instance
  */
-export function useSearchActions(a: SearchList, b: MotionStream, c:FactoryArtefact): ExternalMethods {
+export function useSearchActions(a: SearchList, b: MotionStream, c: FactoryArtefact): ExternalMethods {
   return new SearchActions(a, b, c);
 }
 
@@ -49,7 +49,7 @@ export class SearchActions extends BaseActions implements ExternalMethods {
  * @public
  * @returns {ExternalMethods}
  */
-  public constructor(al: SearchList, ms: MotionStream, ld:FactoryArtefact ) {
+  public constructor(al: SearchList, ms: MotionStream, ld: FactoryArtefact) {
     super();
     this.offset = 0;
     this.list = al;
@@ -118,12 +118,12 @@ export class SearchActions extends BaseActions implements ExternalMethods {
   }
 
   onSave(e: GuessEvent, ctx: FakeThis): void {
-    let buff:StdList=StdList.manual("Search results", this.data.currentData.count());
-    let tmp=this.list.export();
-    for( let i in tmp ) {
-      buff.add( tmp[i].item);
+    let buff: StdList = StdList.manual("Search results", this.data.currentData.count());
+    let tmp = this.list.export();
+    for (let i in tmp) {
+      buff.add(tmp[i].item);
     }
     this.data.currentData.append(buff);
     StaticRoutes.push({ name: "list-everything" });
-   }
+  }
 }

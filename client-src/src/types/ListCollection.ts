@@ -62,7 +62,7 @@ export interface ExtendedListable<T> extends InstanceListable<T> {
 export interface MatchedItems {
   item: string;
   list: number;
-  key?:string;
+  key?: string;
 }
 
 export type WholeClass<T> = InstanceListable<T> & ListStruct;

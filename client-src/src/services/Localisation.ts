@@ -200,27 +200,24 @@ function UITextFactory(lang: string): UItext {
       "Did you enter a previous search query? This is the search *results* screen.  The input is at the top in the tabBar"
     );
     hiddenReference.add("serps.itemTitle", "A match");
-      hiddenReference.add("serps.listLink", "This links to the original list, to be able to edit it");
-      hiddenReference.add(
-        "serps.itemDTTitle",
-        "Big screen interactions are: swipe/ discard item from this search results."
-      );
-      hiddenReference.add(
-        "serps.itemMBTitle",
-        "Mobile interactionas are: swipe/ discard item from this search results."
-      );
-     hiddenReference.add("serps.saveLabel", "Save this");
-     hiddenReference.add("serps.saveTitle", "Convert these results to a normal list, and remember them.");
-      ////////// gap to split add() from addArray()   /////////////////////////////////////////////////
+    hiddenReference.add("serps.listLink", "This links to the original list, to be able to edit it");
+    hiddenReference.add(
+      "serps.itemDTTitle",
+      "Big screen interactions are: swipe/ discard item from this search results."
+    );
+    hiddenReference.add("serps.itemMBTitle", "Mobile interactionas are: swipe/ discard item from this search results.");
+    hiddenReference.add("serps.saveLabel", "Save this");
+    hiddenReference.add("serps.saveTitle", "Convert these results to a normal list, and remember them.");
+    ////////// gap to split add() from addArray()   /////////////////////////////////////////////////
 
-      hiddenReference.addArray("firstUse", [
-        "&nbsp; ",
-        "Hello, this is a shopping list hack, hosted locally on your phone.",
-        "&nbsp; ",
-        "This message will clear in a few seconds.",
-        "&nbsp; ",
-        "NB: Help can be reloaded via the menu, 'show help'.",
-      ]);
+    hiddenReference.addArray("firstUse", [
+      "&nbsp; ",
+      "Hello, this is a shopping list hack, hosted locally on your phone.",
+      "&nbsp; ",
+      "This message will clear in a few seconds.",
+      "&nbsp; ",
+      "NB: Help can be reloaded via the menu, 'show help'.",
+    ]);
     hiddenReference.addArray("list-all", [
       "&nbsp; ",
       "This screen lists the shopping lists that you have locally.",

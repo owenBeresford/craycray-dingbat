@@ -118,7 +118,7 @@ export default defineComponent({
       const flux = new MotionStream();
       const list: SearchList = SearchList.serps(ListData.currentData.searchItems(props.term));
 
-      stack = useSearchActions(list, flux, ListData );
+      stack = useSearchActions(list, flux, ListData);
       return {
         extraMethods: stack.mount({}, stack),
         helpTextRef,
@@ -159,23 +159,23 @@ export default defineComponent({
       },
     } satisfies SearchStaticData;
   },
-    computed: {
+  computed: {
     // here 'init' is a contraction of 'initialised'.  Maybe I should have written i10d
     initList(): Array<MatchedItems> {
-       if ("list" in this && this.list instanceof SearchList) {
-        let tmp= this.list.export<string>();
-        for(let i in tmp) {
-          let tmp2=tmp[i].item;
-          tmp2=tmp2.replace(/[ \t\"\']/g, "_");
-          tmp[i].key=`item_${tmp2}${tmp[i].list}`;
-        } 
+      if ("list" in this && this.list instanceof SearchList) {
+        let tmp = this.list.export<string>();
+        for (let i in tmp) {
+          let tmp2 = tmp[i].item;
+          tmp2 = tmp2.replace(/[ \t\"\']/g, "_");
+          tmp[i].key = `item_${tmp2}${tmp[i].list}`;
+        }
         return tmp;
       }
       return [] as Array<MatchedItems>;
     },
     hasData(): boolean {
-       if ("list" in this && this.list instanceof SearchList) {
-        return this.list.énumérer>0;
+      if ("list" in this && this.list instanceof SearchList) {
+        return this.list.énumérer > 0;
       }
       return false;
     },

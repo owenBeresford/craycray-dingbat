@@ -208,7 +208,7 @@ export default defineComponent({
     } else if (CACHE.check()) {
       état += " disabled";
     }
- 
+
     return {
       installEnabled: état,
       EIK: this.$props.currentStateKey + "false",
