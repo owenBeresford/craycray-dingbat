@@ -2,8 +2,8 @@
   <div class="ListOfList" :data-testid="instanceId" :key="currentStateKey">
     <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="secondId" :testId="viewId" />
     <ul :data-testId="listId">
-      <li v-for="i in shoppingLists" :key="i.id" :title="`Access the ${i.nom} list.`" class="row">
-        <span>
+      <li v-for="i in shoppingLists" :key="i.id" :title="`Access the ${i.nom} list `" class="row flex-container flex-dir-row flex-wrap">
+        <span class="flex-child-auto">
           <img
             width="30"
             height="30"
@@ -13,10 +13,10 @@
             alt="The app logo - Improve text here"
           />
         </span>
-        <span class="centre" role="button" :title="`This links leads to the list called '${i.nom}'`">
+        <span class="centre flex-child-auto" role="button" :title="`This links leads to the list called '${i.nom}'`">
           <router-link :to="`${mapURL('aList', i.id)}`" class="button">{{ i.nom }}</router-link>
         </span>
-        <span>
+        <span class="flex-child-auto">
           ~ from {{ i.créé.getUTCDate() }}-{{ i.créé.getUTCMonth() + 1 }}-{{ i.créé.getUTCFullYear() }},
           {{ i.énumérer }} items.
         </span>
