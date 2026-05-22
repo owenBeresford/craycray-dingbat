@@ -166,7 +166,7 @@ function createstaticAssets(httpsOptions: SecureServerOptions): FastifyAdapter {
 
   inst.addHook("onRequest", (req: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction): void => {
     if (!VALID_ROUTES.includes(req.url)) {
-      console.warn("ALERT ALERT " + new Date().toISOString() + " UNKNOWN REQUEST URL ", req.host, req.url, req.headers);
+      console.warn("ALERT ALERT " + new Date().toISOString() + " UNKNOWN REQUEST URL ", req.host, req.url, req.headers );
       // this should fall though to the default route...
     }
     /* // when I looked more, it was the client setting this header,. so dont need this step.

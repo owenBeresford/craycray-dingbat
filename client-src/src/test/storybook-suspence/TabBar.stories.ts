@@ -76,8 +76,8 @@ export const TrackTextRendered8: Story = {
     });
 
     await step("create new list", async () => {
-      expect(await canvas.findByText("New")).toBeVisible();
-      await userEvent.click(canvas.getByText("New"));
+      expect(await canvas.findByText("New List")).toBeVisible();
+      await userEvent.click(canvas.getByText("New List"));
       // Story may break here
     });
 

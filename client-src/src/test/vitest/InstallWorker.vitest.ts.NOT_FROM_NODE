@@ -5,6 +5,7 @@ import { CacheWrapper, useCacheWrapper } from "../../workers/InstallWorker";
 import { APP_NAME, APP_VERSION, REMOTE_HOST, INSTALLED } from "../../Constants";
 
 // WARN: this test is destructive !!
+console.log(" WARN: this test is destructive !!");
 
 describe("test on InstallWorker ", () => {
   it("Can load InstallWorker", () => {

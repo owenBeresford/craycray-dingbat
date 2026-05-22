@@ -141,6 +141,7 @@ export default defineComponent({
       aListId: this.$props.testId + "Results1",
       viewId: this.$props.testId + "View1",
       saveId: this.$props.testId + "Save1",
+
       logoPath: LOGO_PATH,
       mapURL,
       bisMobile: isMobile(),

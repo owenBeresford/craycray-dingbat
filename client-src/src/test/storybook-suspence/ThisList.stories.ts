@@ -2,9 +2,6 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { vueRouter, asyncVueRouter } from "storybook-vue3-router";
 import { expect, fn, within, userEvent } from "storybook/test";
 import type { NavigationGuard, RouteRecordRaw } from "vue-router";
-// import type { Decorator, StoryContext } from "@storybook/vue3";
-// import { createRouter, createMemoryHistory, useRoute, routeLocationKey } from "vue-router";
-// import type { Store } from "vuex";
 import { useRoute } from "vue-router";
 
 import ThisList from "../../components/ThisList.vue";

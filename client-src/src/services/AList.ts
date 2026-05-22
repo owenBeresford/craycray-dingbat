@@ -72,7 +72,8 @@ export class BaseList<T> implements InstanceListable<T>, ListStruct {
   /**
    * importTest
    * a util func to get Fixtures into the local StdList[]
-   * Hope the type magic holds in tests etc.  This *should* genericly choose the correct type
+   * Hope the type magic holds in tests etc.  This *should* genericly choose the correct type.
+   * THIS IS STATIC, and makes a new object.   There is also StdList->importTest which mutates that object.
  
    * @param { "new (): V" } this - TS magic to have correct type at runtime for any child class
    * @param {TestDataSchema} origine
@@ -259,18 +260,17 @@ export class StdList extends BaseList<string> implements ExtendedListable<string
    * @param {StdList} origine
    * @public
    * @returns {StdList}
-   
-   public importTest<U1, U extends BaseList<U1>>(this: { new():U }, origine: TestDataSchema): U {
-
-    this.nom = origine.name;
-    this.créé = origine.created;
-    this.modifié = origine.modified;
-    this.énumérer = origine.count;
+   */
+   public importTest<U1, U extends BaseList<U1>>(this: { new():U }, origine: BaseList<U1>): U {
+    this.nom = origine.nom;
+    this.créé = origine.créé;
+    this.modifié = origine.modifié;
+    this.énumérer = origine.énumérer;
     this.id = origine.id;
-    this.éléments = [...origine.list];
+    this.éléments = [...origine.éléments];
     return this as U;
   } 
- */
+ 
 }
 
 /**

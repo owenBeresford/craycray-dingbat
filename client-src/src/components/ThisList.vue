@@ -56,7 +56,7 @@ import InterstitialView from "./InterstitialView.vue";
 import { useStore } from "../services/Store";
 import { useUIText } from "../services/Localisation";
 import { ListData, setupCurrentList, idOf } from "../services/DataFactory";
-import { StdList, EMPTY_LIS } from "../services/AList";
+import { StdList, EMPTY_LIST } from "../services/AList";
 import { noop } from "../services/BaseActions";
 import { MotionStream } from "../services/MotionStream";
 // import { extractId } from "../services/util";
