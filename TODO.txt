@@ -2,7 +2,6 @@ Don't call lists "list X", or all the labelling gets confused "list list X".
 
 DETAILS TO COMPLETE FOR RELEASE
 - ESLINT ON VUE FILES
-- LAN DNS alias #leSigh
 - increase tests
 - StateSyncing test cover full state map - when threads work.
 - think about best name for ShopState
@@ -10,9 +9,11 @@ DETAILS TO COMPLETE FOR RELEASE
 - consider badges, css backdrop not working
 - Workout if MotionStream->significance and signifcanceAsPercentage should use same thresholds
 - May be need to re-add STORE.getters
-- Engineer thing to that actual network code is masked in story tests... another connection type
+- Engineer thing to that actual network code is masked in Story tests... another connection type
 - Replace self-signed-certs with real-ones via lets-encrypt
 - Storybook "run tests" on page load
+- Workout if should cache list data in browser cache?
+
 
 LOW IMPACT, nioce to haves
 - Maybe functions can have runtime behaviour from function name, supported by https://github.com/Guichaguri/cross-caller/blob/main/src/index.ts
