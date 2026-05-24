@@ -1,6 +1,6 @@
 <template>
   <div class="aList" :data-testid="testId" :key="currentStateKey">
-    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="helpId" :testId="viewId" />
+    <InterstitialView :display="helpTextRef" :show="canSeeHelpRef" :ttl="ttlRef" :currentStateKey="helpId" :testId="viewId" />
     <ul class="buttonRow">
       <li class="bigger">
         <h3>{{ list.nom }}</h3>
@@ -17,7 +17,7 @@
         ></span>
       </li>
     </ul>
-    <EnterInput :val="getInput" :visible="canSeeInput" :cb="cb" :testId="nextTestId" :currentStateKey="childId" />
+    <EnterInput :val="getInputRef" :visible="canSeeInputRef" :cb="CBRef" :testId="nextTestId" :currentStateKey="childId" />
     <ul class="aList" :data-testId="aListId">
       <li v-for="(i, j) in actualList" :key="j" :title="text.currentTitle">
         <span
@@ -47,8 +47,9 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref} from "vue";
 import { useRoute } from "vue-router";
+import type { Ref } from 'vue';
 
 import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
@@ -57,12 +58,12 @@ import { useStore } from "../services/Store";
 import { useUIText } from "../services/Localisation";
 import { ListData, setupCurrentList, idOf } from "../services/DataFactory";
 import { StdList, EMPTY_LIST } from "../services/AList";
-import { noop } from "../services/BaseActions";
 import { MotionStream } from "../services/MotionStream";
-// import { extractId } from "../services/util";
 import { isMobile, clearSelection } from "../../../common/util";
 import { LOGO_PATH } from "../Constants";
+import {  noop, ThisListActions, useThisListActions } from "../services/ThisListActions";
 
+import type { ExternalMethods, CBType, FakeThis } from "../types/Actionables";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { ThisListStaticData } from "../types/ComponentProps";
 
@@ -104,6 +105,36 @@ export default defineComponent({
       },
     }, // TS: "Store<ShopState>"
   },
+  setup(props: ThisListProps) {
+    const helpTextRef: string = inject<string>("helpText");
+    const canSeeHelpRef: boolean = inject<boolean>("canSeeHelp");
+    const ttlRef: string = inject<number>("ttl");
+    const itinéraire = useRoute();
+    const getInputRef:Ref<string> = ref<string>("");
+    const CBRef:Ref<CBType> = ref<CBType>(noop);
+
+    let stack: ExternalMethods;
+    try {
+      const flux = new MotionStream();
+      const list=EMPTY_LIST;
+      list.importTest<string, StdList>(setupCurrentList(itinéraire) as StdList);
+
+      stack = useThisListActions(list, flux, ListData);
+      return {
+        extraMethods: stack.mount({}, stack),
+        helpTextRef,
+        canSeeHelpRef,
+        ttlRef,
+        getInputRef,
+        CBRef,
+        list,
+        ctx: { canSeeHelpRef, getInputRef, CBRef, list } as FakeThis,  
+      };
+    } catch (e: unknown) {
+      console.log("SearchResults.setup():", (e as Error).message);
+    }
+  },
+
   created() {
     if (currentData && _LOGGING_) {
       console.log("KKK thisList.created  ListData.currentData id:", idOf(currentData));
@@ -111,30 +142,20 @@ export default defineComponent({
     if (_LOGGING_) {
       console.log("KKK ThisList global scope ListData id:", idOf(ListData));
     }
+    this.initGeneratedMethods();
   },
   mounted() {
-    const itinéraire = useRoute();
-    this.list.importTest<string, StdList>(setupCurrentList(itinéraire) as StdList);
     if (this.shopStore) {
       this.shopStore.commit("setPath", itinéraire.path);
       this.shopStore.commit("setId", this.id);
     } else {
       console.assert(this.shopStore, "ThisList: At mounted() stage, do not have a state storage?!");
     }
-    const flux = new MotionStream();
-    // There will be type errors here  UPDATE: hope not
-    flux.register("0", this.finalise.bind(this));
-    this.flux = flux;
+  
   },
-  inject: ["helpText", "canSeeHelp", "ttl"],
   data(): ThisListStaticData {
     return {
       id: NEW_LIST,
-      list: EMPTY_LIST,
-      getInput: "",
-      canSeeInput: false,
-      cb: noop,
-      offset: -1,
       bisMobile: isMobile(),
       logoPath: LOGO_PATH,
       text: {
@@ -159,102 +180,14 @@ export default defineComponent({
       }
       return [] as Array<string>;
     },
+
   },
 
   methods: {
-    onAdd(e: GuessEvent): boolean {
-      this.getInput = "";
-      this.cb = (d1: string | null): void => {
-        if (d1 === null) {
-          this.canSeeInput = false;
-          return;
-        }
-        this.list.add(d1);
-        this.canSeeInput = false;
-      };
-      this.canSeeInput = true;
-      return false;
-    },
+      ...(() => ({}))(), // placeholder to keep TSC happy
 
-    onEdit(e: GuessEvent): boolean {
-      const agaçant = e!.currentTarget as HTMLElement;
-      this.getInput = `${agaçant!.innerText}`;
-      e.preventDefault();
-
-      this.cb = (d1: string | null): void => {
-        if (d1 === null) {
-          this.canSeeInput = false;
-          return;
-        }
-
-        const indice = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
-        if (indice >= 0 && indice < this.list.énumérer) {
-          this.list.edit(indice, d1);
-          this.canSeeInput = false;
-        } else {
-          console.log(`Cannot update list item; bad offset value ${agaçant.innerText}`);
-        }
-      };
-
-      this.canSeeInput = true;
-      return false;
-    },
-
-    onSwipe(dir: string, e: TouchEvent): void {
-      const agaçant = e!.currentTarget as HTMLElement;
-      e.preventDefault();
-      this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
-      console.log(`Deleting list element [${this.offset}] = ${agaçant.innerText}`);
-      this.finalise();
-    },
-
-    finalise(ignored: GuessEvent, ignored2: Record<string, Function> | undefined): void {
-      if (this.offset >= 0 && this.offset < this.list.énumérer) {
-        this.list.remove(this.offset);
-      } else {
-        console.log(`Cannot delete this offset ${this.offset}`);
-      }
-    },
-
-    onDragStart(e: MouseEvent): void {
-      e.preventDefault();
-      const agaçant = e!.currentTarget as HTMLElement;
-      this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
-      this.flux.start(e);
-    },
-
-    onDragStop(e: MouseEvent): void {
-      e.preventDefault();
-      const agaçant = e!.currentTarget as HTMLElement;
-      this.flux.end(e);
-      clearSelection();
-    },
-
-    onDragExit(e: FocusEvent): void {
-      e.preventDefault();
-      // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent
-      // new MouseEvent(typeArg, mouseEventInit);
-      let e3: HTMLElement = e.relatedTarget as HTMLElement;
-      let e2 = new MouseEvent("mouseup", {
-        screenX: e3.scrollLeft,
-        screenY: e3.scrollTop,
-        clientX: e3.scrollLeft,
-        clientY: e3.scrollTop,
-        ctrlKey: false,
-        shiftKey: false,
-        altKey: false,
-        metaKey: false,
-        button: 0,
-        buttons: 1,
-      } as MouseEventInit);
-
-      this.flux.end(e2);
-      clearSelection();
-    },
-
-    onDragMove(e: MouseEvent): void {
-      e.preventDefault();
-      this.flux.addEvent(e);
+    initGeneratedMethods() {
+      Object.assign(this, this.extraMethods);
     },
   },
 });
