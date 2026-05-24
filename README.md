@@ -63,6 +63,10 @@ smaller goals:
 
 	- random config and notes
 
+As a data architecture, my components should have:
+- a stateKey that is an easy summary of current state, so Vue can see if the state has changed cheaply
+- a testId for every HTML element that may need to be directly accessed (mostly used in tests).  This mean multiple testId per component.
+
 
 ### Warnings / Caveats
 
