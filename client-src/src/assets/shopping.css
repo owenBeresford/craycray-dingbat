@@ -120,6 +120,7 @@
   border: 1em #eee solid;
   text-align: left;
   padding-left: 0px;
+  height:fit-content;
 }
 .tabBar.buttonRow menu.menuTrigger small {
   font-size: 60%;
