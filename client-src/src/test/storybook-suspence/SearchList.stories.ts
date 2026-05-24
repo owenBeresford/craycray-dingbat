@@ -25,8 +25,6 @@ const customRoutes: Array<RouteRecordRaw> = [
   },
 ];
 
-
-
 const meta: Meta<typeof SearchList> = {
   component: SearchList,
   title: "render of Search results",
@@ -44,7 +42,7 @@ type Story = StoryObj<typeof SearchList>;
 export const EntirelyPassive: Story = {
   args: {
     currentStateKey: "test30",
-    testId: "test30", 
+    testId: "test30",
   },
 };
 
@@ -52,46 +50,43 @@ export const TrackTextRendered: Story = {
   args: {
     currentStateKey: "test31",
     testId: "test31",
-    term:"Garibaldi",
+    term: "Garibaldi",
     shopStore: STORE,
     route: useRoute(),
   },
 
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-  
-    // might need to add .resolves. to expect statements
-    expect(canvas.queryByTestId("test31")).toBeVisible();  
-    expect( canvas.getByRole("button", { name: /Save this/i }) ).toBeVisible();
-    expect( canvas.getByRole("presentation",) ).toBeVisible(); // the IMG of logo.png
-    expect( canvas.getByRole("Search results")).toBeVisible();
-    expect(canvas.getByText('Did you enter a previous search query')).toBeVisible();
 
+    // might need to add .resolves. to expect statements
+    expect(canvas.queryByTestId("test31")).toBeVisible();
+    expect(canvas.getByRole("button", { name: /Save this/i })).toBeVisible();
+    expect(canvas.getByRole("presentation")).toBeVisible(); // the IMG of logo.png
+    expect(canvas.getByRole("Search results")).toBeVisible();
+    expect(canvas.getByText("Did you enter a previous search query")).toBeVisible();
   },
 };
-
 
 export const TrackTextRendered2: Story = {
   args: {
     currentStateKey: "test32",
     testId: "test32",
-    term:"thing",
+    term: "thing",
     shopStore: STORE,
     route: useRoute(),
   },
 
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-  
-    // might need to add .resolves. to expect statements
-    expect(canvas.queryByTestId("test32")).toBeVisible(); 
-    expect( canvas.getByRole("button", { name: /Save this/i }) ).toBeVisible();
-    expect( canvas.getByRole("presentation") ).toBeVisible(); // the IMG of logo.png
-    expect( canvas.getByRole("Search results")).toBeVisible();
-    expect(canvas.getByText('Did you enter a previous search query')).notToBeVisible();
-   },
-};
 
+    // might need to add .resolves. to expect statements
+    expect(canvas.queryByTestId("test32")).toBeVisible();
+    expect(canvas.getByRole("button", { name: /Save this/i })).toBeVisible();
+    expect(canvas.getByRole("presentation")).toBeVisible(); // the IMG of logo.png
+    expect(canvas.getByRole("Search results")).toBeVisible();
+    expect(canvas.getByText("Did you enter a previous search query")).notToBeVisible();
+  },
+};
 
 export const TrackTextRendered3: Story = {
   ///////////////////////////////////////////////////////////////////////////////
@@ -107,8 +102,8 @@ export const TrackTextRendered3: Story = {
           currentStateKey: "test33",
           testId: "test33",
           shopStore: STORE,
-            term:"thing",
-           route: useRoute(),
+          term: "thing",
+          route: useRoute(),
         };
       },
       template: `<SearchList currentStateKey="test33" testId="test33" shopStore="STORE" term="thing" ></SearchList>`,
@@ -133,10 +128,7 @@ export const TrackTextRendered3: Story = {
     const canvas = within(canvasElement);
     const { currentData, initData, updateData } = ListData;
 
-    expect(canvas.queryByTestId("test33Results1")).toBeVisible();  
-    expect(canvas.queryByTestId("test33Results1").children.length ).toBeGreaterThan(5);  
-
-   },
+    expect(canvas.queryByTestId("test33Results1")).toBeVisible();
+    expect(canvas.queryByTestId("test33Results1").children.length).toBeGreaterThan(5);
+  },
 };
-
-

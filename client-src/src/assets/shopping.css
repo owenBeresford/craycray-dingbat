@@ -85,7 +85,7 @@
   .tabBar ul {
     margin-bottom: 0.2em;
   }
-  
+
   .tabBar div:nth-child(2) {
     display: block;
     width: 100%;
@@ -103,12 +103,12 @@
   }
   .tabBar.buttonRow ul > li > a,
   .tabBar.buttonRow ul > li > span {
-    white-space:nowrap;
-  } 
+    white-space: nowrap;
+  }
   .tabBar.buttonRow ul > li > .button {
-    padding-left:0.5em;
-    padding-right:0.5em;
-  } 
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
 
   .tabBar.buttonRow li .menuTrigger[aria-pressed="true"] {
     font-size: 130%;
@@ -120,7 +120,7 @@
   border: 1em #eee solid;
   text-align: left;
   padding-left: 0px;
-  height:fit-content;
+  height: fit-content;
 }
 .tabBar.buttonRow menu.menuTrigger small {
   font-size: 60%;
@@ -159,11 +159,11 @@
 }
 .tabBar.buttonRow menu.menuTrigger li {
   display: inline-block;
-  width: calc( 100% - 1.6em );
+  width: calc(100% - 1.6em);
 }
 .tabBar.buttonRow menu.menuTrigger .button {
   display: inline-block;
-  width: calc( 100% - 1.6em );
+  width: calc(100% - 1.6em);
 }
 
 /* ********************************************************* */
@@ -176,13 +176,15 @@
 }
 @media screen and (max-width: 400px) {
   .ListOfList ul {
-  width: 100%;
-    }
+    width: 100%;
+  }
   .ListOfList.view {
     margin-top: 2em;
   }
 
-  .ListOfList .flex-wrap {flex-wrap: wrap;  }
+  .ListOfList .flex-wrap {
+    flex-wrap: wrap;
+  }
 }
 
 .ListOfList ul .button {
@@ -209,7 +211,7 @@
 } /* white-space: nowrap; */
 
 .ListOfList .row span:last-child {
- /* justify-content: flex-end; */
+  /* justify-content: flex-end; */
   padding-left: 1em;
 }
 .ListOfList .row span:first-child {
@@ -444,7 +446,7 @@ div.aList ul.buttonRow li span {
 .wholePage {
   height: 100%;
   font-family: system-ui;
- 
+
   text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }

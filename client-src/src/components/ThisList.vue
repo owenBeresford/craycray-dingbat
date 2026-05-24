@@ -1,6 +1,12 @@
 <template>
   <div class="aList" :data-testid="testId" :key="currentStateKey">
-    <InterstitialView :display="helpTextRef" :show="canSeeHelpRef" :ttl="ttlRef" :currentStateKey="helpId" :testId="viewId" />
+    <InterstitialView
+      :display="helpTextRef"
+      :show="canSeeHelpRef"
+      :ttl="ttlRef"
+      :currentStateKey="helpId"
+      :testId="viewId"
+    />
     <ul class="buttonRow">
       <li class="bigger">
         <h3>{{ list.nom }}</h3>
@@ -17,7 +23,13 @@
         ></span>
       </li>
     </ul>
-    <EnterInput :val="getInputRef" :visible="canSeeInputRef" :cb="CBRef" :testId="nextTestId" :currentStateKey="childId" />
+    <EnterInput
+      :val="getInputRef"
+      :visible="canSeeInputRef"
+      :cb="CBRef"
+      :testId="nextTestId"
+      :currentStateKey="childId"
+    />
     <ul class="aList" :data-testId="aListId">
       <li v-for="(i, j) in actualList" :key="j" :title="text.currentTitle">
         <span
@@ -47,9 +59,9 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref} from "vue";
+import { defineComponent, ref } from "vue";
 import { useRoute } from "vue-router";
-import type { Ref } from 'vue';
+import type { Ref } from "vue";
 
 import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
@@ -61,7 +73,7 @@ import { StdList, EMPTY_LIST } from "../services/AList";
 import { MotionStream } from "../services/MotionStream";
 import { isMobile, clearSelection } from "../../../common/util";
 import { LOGO_PATH } from "../Constants";
-import {  noop, ThisListActions, useThisListActions } from "../services/ThisListActions";
+import { noop, ThisListActions, useThisListActions } from "../services/ThisListActions";
 
 import type { ExternalMethods, CBType, FakeThis } from "../types/Actionables";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
@@ -110,13 +122,13 @@ export default defineComponent({
     const canSeeHelpRef: boolean = inject<boolean>("canSeeHelp");
     const ttlRef: string = inject<number>("ttl");
     const itinéraire = useRoute();
-    const getInputRef:Ref<string> = ref<string>("");
-    const CBRef:Ref<CBType> = ref<CBType>(noop);
+    const getInputRef: Ref<string> = ref<string>("");
+    const CBRef: Ref<CBType> = ref<CBType>(noop);
 
     let stack: ExternalMethods;
     try {
       const flux = new MotionStream();
-      const list=EMPTY_LIST;
+      const list = EMPTY_LIST;
       list.importTest<string, StdList>(setupCurrentList(itinéraire) as StdList);
 
       stack = useThisListActions(list, flux, ListData);
@@ -128,7 +140,7 @@ export default defineComponent({
         getInputRef,
         CBRef,
         list,
-        ctx: { canSeeHelpRef, getInputRef, CBRef, list } as FakeThis,  
+        ctx: { canSeeHelpRef, getInputRef, CBRef, list } as FakeThis,
       };
     } catch (e: unknown) {
       console.log("SearchResults.setup():", (e as Error).message);
@@ -151,7 +163,6 @@ export default defineComponent({
     } else {
       console.assert(this.shopStore, "ThisList: At mounted() stage, do not have a state storage?!");
     }
-  
   },
   data(): ThisListStaticData {
     return {
@@ -180,11 +191,10 @@ export default defineComponent({
       }
       return [] as Array<string>;
     },
-
   },
 
   methods: {
-      ...(() => ({}))(), // placeholder to keep TSC happy
+    ...(() => ({}))(), // placeholder to keep TSC happy
 
     initGeneratedMethods() {
       Object.assign(this, this.extraMethods);

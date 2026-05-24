@@ -38,7 +38,7 @@ export function useSearchActions(a: SearchList, b: MotionStream, c: FactoryArtef
 export class SearchActions extends BaseActions implements ExternalMethods {
   protected list: SearchList;
   protected flux: MotionStream;
-  protected data:FactoryArtefact;
+  protected data: FactoryArtefact;
 
   protected offset: number;
 
@@ -70,7 +70,7 @@ export class SearchActions extends BaseActions implements ExternalMethods {
 
   onSwipe(dir: string, e: TouchEvent, ctx: FakeThis): void {
     const agaçant = e!.currentTarget as HTMLElement;
-  //  if(dir !="left") { return; }  // IOIO need to see values first
+    //  if(dir !="left") { return; }  // IOIO need to see values first
     this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
     console.log(`Deleting list element [${this.offset}] = ${agaçant.innerText} - ${dir} direction.`);
     this.onSwipeFinalise(e, ctx);

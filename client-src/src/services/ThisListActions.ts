@@ -22,8 +22,8 @@ import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Act
  * @public
  * @returns {ExternalMethods } - actually a SearchActions instance
  */
-export function useThislistActions( b:Stdlist,  c:MotionStream, d: FactoryArtefact): ExternalMethods {
-  return new ThislistActions( b, c, d);
+export function useThislistActions(b: Stdlist, c: MotionStream, d: FactoryArtefact): ExternalMethods {
+  return new ThislistActions(b, c, d);
 }
 
 export { noop } from "./BaseActions";
@@ -52,13 +52,12 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
  * @public
  * @returns {ExternalMethods}
  */
-  public constructor( al: StdList, ms: MotionStream, ld: FactoryArtefact) {
+  public constructor(al: StdList, ms: MotionStream, ld: FactoryArtefact) {
     super();
     this.offset = 0;
     this.list = al;
     this.flux = ms;
     this.data = ld;
-
 
     if (!this.list) {
       throw new Error("The results aren't populated, this module makes no sense");
@@ -71,24 +70,23 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
     // need to add events for swipe up or down
   }
 
-  onAdd(e: GuessEven, ctx:FakeThis): boolean {
-      ctx.getInputRef = "";
-      ctx.CBRef = (d1: string | null): void => {
-        if (d1 === null) {
-          ctx.canSeeInputRef = false;
-          return;
-        }
-        this.list.add(d1);
+  onAdd(e: GuessEven, ctx: FakeThis): boolean {
+    ctx.getInputRef = "";
+    ctx.CBRef = (d1: string | null): void => {
+      if (d1 === null) {
         ctx.canSeeInputRef = false;
-      };
-      ctx.canSeeInputRef = true;
-      return false;
-  },
-
+        return;
+      }
+      this.list.add(d1);
+      ctx.canSeeInputRef = false;
+    };
+    ctx.canSeeInputRef = true;
+    return false;
+  }
 
   onSwipe(dir: string, e: TouchEvent, ctx: FakeThis): void {
     const agaçant = e!.currentTarget as HTMLElement;
-  //  if(dir !="left") { return; }  // IOIO need to see values first
+    //  if(dir !="left") { return; }  // IOIO need to see values first
     this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
     console.log(`Deleting list element [${this.offset}] = ${agaçant.innerText} - ${dir} direction.`);
     this.onSwipeFinalise(e, ctx);
@@ -106,14 +104,14 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
     const agaçant = e!.currentTarget as HTMLElement;
     this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
 
-    console.log("Start a drag event on ", this.offset );
+    console.log("Start a drag event on ", this.offset);
     this.flux.start(e);
   }
 
   onDragStop(e: MouseEvent, ctx: FakeThis): void {
     const agaçant = e!.currentTarget as HTMLElement;
     this.flux.end(e);
-    console.log("Stop a drag event on ", this.offset );
+    console.log("Stop a drag event on ", this.offset);
     clearSelection();
   }
 
@@ -135,12 +133,11 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
     } as MouseEventInit);
 
     this.flux.end(e2);
-    console.log("Exit a drag event for ", this.offset );
+    console.log("Exit a drag event for ", this.offset);
     clearSelection();
   }
 
   onDragMove(e: MouseEvent, ctx: FakeThis): void {
     this.flux.addEvent(e);
   }
-
 }

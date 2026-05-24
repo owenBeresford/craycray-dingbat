@@ -2,7 +2,12 @@
   <div class="ListOfList" :data-testid="instanceId" :key="currentStateKey">
     <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="secondId" :testId="viewId" />
     <ul :data-testId="listId">
-      <li v-for="i in shoppingLists" :key="i.id" :title="`Access the ${i.nom} list `" class="row flex-container flex-dir-row flex-wrap">
+      <li
+        v-for="i in shoppingLists"
+        :key="i.id"
+        :title="`Access the ${i.nom} list `"
+        class="row flex-container flex-dir-row flex-wrap"
+      >
         <span class="flex-child-auto">
           <img
             width="30"
