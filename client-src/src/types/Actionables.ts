@@ -1,4 +1,7 @@
 import type { MethodOptions, Ref } from "vue";
+import type { COMPLETE_STORE } from '../services/Store';
+import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
+
 
 type SaferFunctionType = (...args: any[]) => any;
 export type FakeThis = Record<string, Ref<any>>;

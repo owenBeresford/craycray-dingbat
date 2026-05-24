@@ -261,14 +261,14 @@ export class StdList extends BaseList<string> implements ExtendedListable<string
    * @public
    * @returns {StdList}
    */
-  public importTest<U1, U extends BaseList<U1>>(this: { new (): U }, origine: BaseList<U1>): U {
+  public importTest(origine: StdList): StdList {
     this.nom = origine.nom;
     this.créé = origine.créé;
     this.modifié = origine.modifié;
     this.énumérer = origine.énumérer;
     this.id = origine.id;
     this.éléments = [...origine.éléments];
-    return this as U;
+    return this;
   }
 }
 

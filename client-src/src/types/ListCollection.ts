@@ -1,5 +1,5 @@
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
-import { BaseList } from "./AList";
+import { BaseList } from "../services/AList";
 
 // a set of listables, carefuly different method names to reduce kaos
 export interface ListCollection<T> {
@@ -57,6 +57,7 @@ export interface ModuleListable<T> {
 // only implemented on StdList, and generates other flavours of Listable
 export interface ExtendedListable<T> extends InstanceListable<T> {
   filter(égaler: string | RegExp): Array<string>;
+  importTest(origine: ExtendedListable<T>): ExtendedListable<T>;
 }
 
 export interface MatchedItems {

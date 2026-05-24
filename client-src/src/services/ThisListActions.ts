@@ -22,7 +22,7 @@ import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Act
  * @public
  * @returns {ExternalMethods } - actually a SearchActions instance
  */
-export function useThislistActions(b: Stdlist, c: MotionStream, d: FactoryArtefact): ExternalMethods {
+export function useThislistActions(b: StdList, c: MotionStream, d: FactoryArtefact): ExternalMethods {
   return new ThislistActions(b, c, d);
 }
 
@@ -66,21 +66,21 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
       throw new Error("The service class (MotionStream) for processing user gestures is absent");
     }
     // this is swipe left
-    this.flux.register("0", this.onFinalise.bind(this));
+    this.flux.register("0", this.onSwipeFinalise.bind(this));
     // need to add events for swipe up or down
   }
 
-  onAdd(e: GuessEven, ctx: FakeThis): boolean {
-    ctx.getInputRef = "";
-    ctx.CBRef = (d1: string | null): void => {
+  onAdd(e: GuessEvent, ctx: FakeThis): boolean {
+    ctx.getInputRef.value = "";
+    ctx.CBRef.value = (d1: string | null): void => {
       if (d1 === null) {
-        ctx.canSeeInputRef = false;
+        ctx.canSeeInputRef.value = false;
         return;
       }
       this.list.add(d1);
-      ctx.canSeeInputRef = false;
+      ctx.canSeeInputRef.value = false;
     };
-    ctx.canSeeInputRef = true;
+    ctx.canSeeInputRef.value = true;
     return false;
   }
 

@@ -187,7 +187,7 @@ export default defineComponent({
     try {
       stack = useTabActions(useStore(), ListData, useCacheWrapper(), useRoute());
       return {
-        extraMethods: stack.mount({ visibleRef, getInputRef, CBRef, storeRef, menuStateRef, ListData }, stack),
+        extraMethods: stack.mount({ visibleRef, getInputRef, CBRef, storeRef, menuStateRef }, stack),
         dataOnLoad,
         menuStateRef,
         visibleRef,

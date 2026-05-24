@@ -33,7 +33,7 @@ export function useTabActions(
   b: FactoryArtefact,
   c: CacheWrapper,
   d: RouteLocationNormalizedLoadedGeneric
-): Promise<ExternalMethods> {
+): ExternalMethods {
   let tmp = new TabActions(d, a, c, b);
   if (b.currentData) {
     tmp.loadedStateKey = hashState(b.currentData.list());
@@ -273,7 +273,8 @@ export class TabActions extends BaseActions {
       console.warn("EDIT NAME: got bad id, don't know how to proceed");
       return false;
     }
-    createNameCallback(ctx);
+
+    createNameCallback(ctx, this.data);
     ctx.getInputRef.value = liste.nom ?? TEXT.get("menu.renameSupport");
     ctx.visibleRef.value = true;
     return false;
@@ -291,7 +292,7 @@ export { noop } from "./BaseActions";
  * @public
  * @returns {void}
  */
-function createNameCallback(ctx: FakeThis): void {
+function createNameCallback(ctx: FakeThis, data:FactoryArtefact): void {
   ctx.CBRef.value = (d1: string | null): any => {
     if (d1 === null) {
       ctx.visibleRef.value = false;
@@ -299,13 +300,13 @@ function createNameCallback(ctx: FakeThis): void {
     }
 
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    const liste = ListData.currentData.get(ctx.storeRef.value.state.currentId);
+    const liste = data.currentData.get(ctx.storeRef.value.state.currentId);
     if (!liste) {
       throw new Error("THe currentId " + ctx.storeRef.value.state.currentId + "in the state/ session is invalid.");
     }
     liste.editName(d1);
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    ListData.currentData.put(ctx.storeRef.state.currentId, liste);
+    data.currentData.put(ctx.storeRef.state.currentId, liste);
     ctx.visibleRef.value = false;
     StaticRoutes.push({ name: "list-everything" });
   };

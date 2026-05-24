@@ -1,5 +1,4 @@
 import type { SaveStruct } from "./types/SaveStruct";
-import { toHex as monkeyPatch_toHex } from "../server-src/node_modules/es-arraybuffer-base64/Uint8Array.prototype.toHex";
 import type { PromiseSucceed, PromiseReject } from "./types/promises";
 import type { SimpleResponse } from "./util";
 

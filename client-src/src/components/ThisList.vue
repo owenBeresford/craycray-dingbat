@@ -129,7 +129,7 @@ export default defineComponent({
     try {
       const flux = new MotionStream();
       const list = EMPTY_LIST;
-      list.importTest<string, StdList>(setupCurrentList(itinéraire) as StdList);
+      list.importTest(setupCurrentList(itinéraire) as StdList);
 
       stack = useThisListActions(list, flux, ListData);
       return {
