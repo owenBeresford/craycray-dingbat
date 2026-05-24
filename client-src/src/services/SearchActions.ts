@@ -20,6 +20,7 @@ import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Act
  
  * @param {SearchList} a
  * @param {MotionStream} b
+ * @param {FactoryArtefact} c
  * @public
  * @returns {ExternalMethods } - actually a SearchActions instance
  */
@@ -37,6 +38,8 @@ export function useSearchActions(a: SearchList, b: MotionStream, c: FactoryArtef
 export class SearchActions extends BaseActions implements ExternalMethods {
   protected list: SearchList;
   protected flux: MotionStream;
+  protected data:FactoryArtefact;
+
   protected offset: number;
 
   /**
@@ -62,17 +65,18 @@ export class SearchActions extends BaseActions implements ExternalMethods {
     if (!this.flux) {
       throw new Error("The service class (MotionStream) for processing user gestures is absent");
     }
-    this.flux.register("0", this.onFinalise.bind(this));
+    this.flux.register("0", this.onSwipeFinalise.bind(this));
   }
 
   onSwipe(dir: string, e: TouchEvent, ctx: FakeThis): void {
     const agaçant = e!.currentTarget as HTMLElement;
+  //  if(dir !="left") { return; }  // IOIO need to see values first
     this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
-    console.log(`Deleting list element [${this.offset}] = ${agaçant.innerText}`);
-    this.onFinalise(e, ctx);
+    console.log(`Deleting list element [${this.offset}] = ${agaçant.innerText} - ${dir} direction.`);
+    this.onSwipeFinalise(e, ctx);
   }
 
-  onFinalise(e: unknown, ctx: FakeThis | undefined): void {
+  onSwipeFinalise(e: unknown, ctx: FakeThis | undefined): void {
     if (this.offset >= 0 && this.offset < this.list.énumérer) {
       this.list.remove(this.offset);
     } else {
