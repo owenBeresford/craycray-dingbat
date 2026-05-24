@@ -89,6 +89,7 @@ export default defineComponent({
   },
   data(): ListOfListsProps {
     // IOIO XXX thats not a realtime view, I might need to replace this, with a prop
+    // i normally do a page refresh to get a fresh set of data.
     let chose: Array<ListStruct> = [];
     if (ListData.currentData) {
       chose = ListData.currentData.list();

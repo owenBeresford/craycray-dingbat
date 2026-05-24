@@ -80,7 +80,8 @@ import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
 import { MotionStream } from "../services/MotionStream";
 import { useSearchActions, SearchActions } from "../services/SearchActions";
-import type { ExternalMethods, FakeThis } from "../services/BaseActions";
+
+import type { ExternalMethods, FakeThis } from "../types/Actionables";
 import type { COMPLETE_STORE } from "../services/Store";
 import type { SearchProps, SearchStaticData } from "../types/ComponentProps";
 // import { StaticRoutes } from "./Routing";
@@ -189,7 +190,7 @@ export default defineComponent({
     this.initGeneratedMethods();
   },
   methods: {
-    ...(() => ({}))(), // placeholder to keep Vue happy
+    ...(() => ({}))(), // placeholder to keep TSC happy
 
     initGeneratedMethods() {
       Object.assign(this, this.extraMethods);

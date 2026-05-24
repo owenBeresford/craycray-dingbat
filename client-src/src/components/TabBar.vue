@@ -144,7 +144,7 @@ import { useCacheWrapper, CacheWrapper } from "../workers/InstallWorker";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
 import { useTabActions, noop, TabActions } from "../services/TabActions";
-import type { ExternalMethods, CBType } from "../services/BaseActions";
+import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Actionables";
 // import { StaticRoutes } from "./Routing";
 import EnterInput from "./EnterInput.vue";
 // import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
@@ -194,7 +194,7 @@ export default defineComponent({
         getInputRef,
         CBRef,
         storeRef,
-        ctx: { visibleRef, getInputRef, CBRef, storeRef, menuStateRef },
+        ctx: { visibleRef, getInputRef, CBRef, storeRef, menuStateRef } as FakeThis,
       };
     } catch (e: unknown) {
       console.log("TabBar.setup():", (e as Error).message, (e as Error).stack.substring(0, 200));
@@ -208,7 +208,7 @@ export default defineComponent({
     } else if (CACHE.check()) {
       état += " disabled";
     }
-
+ 
     return {
       installEnabled: état,
       EIK: this.$props.currentStateKey + "false",
@@ -251,7 +251,7 @@ export default defineComponent({
     this.initGeneratedMethods();
   },
   methods: {
-    ...(() => ({}))(), // placeholder to keep Vue happy
+    ...(() => ({}))(), // placeholder to keep TSC happy
     initGeneratedMethods() {
       Object.assign(this, this.extraMethods);
     },
