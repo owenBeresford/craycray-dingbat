@@ -3,7 +3,7 @@ import { Vector } from "vector2d/src/Vector";
 import { isMobile, windowSize, rad2deg } from "../../../common/util";
 import { MOBILE_THRESHOLD, BIG_THRESHOLD, ANGLE_ACCURACY } from "../Constants";
 import type { CBTYPE, Motionable } from "../types/Motionable";
-import type { FakeThis } from "../services/BaseActions";
+import type { FakeThis } from "../types/Actionables";
 
 /**
  * MotionStream 
