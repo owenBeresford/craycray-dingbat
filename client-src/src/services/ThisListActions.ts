@@ -22,7 +22,7 @@ import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Act
  * @public
  * @returns {ExternalMethods } - actually a SearchActions instance
  */
-export function useThislistActions(b: StdList, c: MotionStream, d: FactoryArtefact): ExternalMethods {
+export function useThisListActions(b: StdList, c: MotionStream, d: FactoryArtefact): ExternalMethods {
   return new ThislistActions(b, c, d);
 }
 
