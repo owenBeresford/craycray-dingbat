@@ -1,4 +1,4 @@
-import { Md5 } from "../client-src/node_modules/ts-md5/dist/md5";
+import { Md5 } from "ts-md5";
 
 import type { SaveStruct } from "./types/SaveStruct";
 import type { ListStruct } from "../client-src/src/types/ListCollection"; // maybe should move this

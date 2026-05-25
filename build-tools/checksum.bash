@@ -42,6 +42,10 @@ if [ ! -f "$BASE/client-src/package-lock.json" ]; then
 	fi
 	echo "Please hold whilst 100+ packages deploy"
 	npm i
+	cd $BASE/common
+	if [! -d ./node_modules ]; then
+		ln -s $BASE/client-src/node_modules ./node_modules
+	fi	
 fi
 if [ ! -f "$BASE/server-src/package-lock.json" ]; then
 	# Yes, I need to check twice
