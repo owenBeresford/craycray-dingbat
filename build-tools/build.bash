@@ -26,7 +26,7 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 	fi
 
 
-	$NODEBIN $EXECDIR/vite --config ./vite.config.mjs build --l info
+	$NODEBIN $EXECDIR/vite --config ./vite.config.mjs build --l info # -m $buildenv
 	ret=$?
 	if [ $ret -ne 0 ]; then
 		echo "Tool main vite exited $ret on *.ts"
@@ -36,13 +36,13 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 		echo -n "const process={env:{}};" > ../dist/public/shopping.es.min.mjs
 		cat dist/shopping.es.mjs >> ../dist/public/shopping.es.min.mjs
 	fi
-	$NODEBIN $EXECDIR/vite --config ./vite.config.test-worker.mjs build --l info
+	$NODEBIN $EXECDIR/vite --config ./vite.config.test-worker.mjs build --l info # -m $buildenv
 	ret=$?
 	if [ $ret -ne 0 ]; then
 		echo "Tool sync vite exited $ret on *.ts"
 		exit 1
 	else 
-		cp dist/worker1.es.mjs ../dist/public/worker1.es.min.mjs
+		mv dist/worker1.es.mjs ../dist/public/worker1.es.min.mjs
 	fi
 
 	bigVersion=`node -v | sed -e "s/v//" -e "s/\..*//"`
