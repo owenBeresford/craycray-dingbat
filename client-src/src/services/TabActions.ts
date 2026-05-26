@@ -292,7 +292,7 @@ export { noop } from "./BaseActions";
  * @public
  * @returns {void}
  */
-function createNameCallback(ctx: FakeThis, data:FactoryArtefact): void {
+function createNameCallback(ctx: FakeThis, data: FactoryArtefact): void {
   ctx.CBRef.value = (d1: string | null): any => {
     if (d1 === null) {
       ctx.visibleRef.value = false;

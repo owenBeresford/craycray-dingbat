@@ -166,10 +166,15 @@ export class BaseList<T> implements InstanceListable<T>, ListStruct {
    * Append a list of items to this list (as one call)
  
    * @param {Array<T>} relevé - probably T=string 
+   * @param {boolean} strict 
    * @public
    * @returns {boolean}
    */
-  public import(relevé: Array<T>): boolean {
+  public import(relevé: Array<T>, strict:boolean): boolean {
+    if(strict) {
+      this.éléments.splice(0, this.éléments.length);
+      this.énumérer =0;
+    }
     this.éléments.push(...relevé);
     this.énumérer += relevé.length;
     this.modifié = new Date();

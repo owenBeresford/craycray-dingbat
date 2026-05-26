@@ -21,6 +21,7 @@ LOW IMPACT, nioce to haves
 - interaction: status bar/ message board
 - Scroll to top marker, if the list is longer than the page
 - pour les mot variable privé, traduire en francias 
+- consider if porting to PointerEvents would be more readable https://www.redblobgames.com/x/2217-vue-pointerevents/ 
 - ShoppingService test, add fixtures to extend load() testing
 - find my list local IP code 
 - Localisation getting placeholders/ formatstr, then map ListOfList

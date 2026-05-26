@@ -37,6 +37,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, "src/main.ts"),
       fileName: (format) => `${ofn}.${format}.mjs`,
     },
+    sourcemap:true,
 	emptyOutDir:true,
     minify: "terser",
     target: "es2022",

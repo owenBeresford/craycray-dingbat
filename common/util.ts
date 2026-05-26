@@ -53,6 +53,7 @@ export function windowSize(): Array<number> {
 /**
  * rad2deg
  * As name says, convert angle unit type
+ * Note Rad is 0 to 2Pi for 360deg
 
  * @param {number} i
  * @public
@@ -100,16 +101,15 @@ export function wrap_getMyIP(): string {
  * @returns {void}
  */
 export function clearSelection(): void {
-  if (typeof process === "object") {
+ //  if (typeof process === "object") {
     // Node doesnt have selection as no screen Object
-    return;
-  }
-
-  if (typeof globalThis.getSelection === "function") {
+//      return;
+//  }
+   if (typeof globalThis.getSelection === "function") {
     // https://developer.mozilla.org/en-US/docs/Web/API/Selection
     const élément: Selection | null = globalThis.getSelection();
-    if (élément) {
-      élément.removeAllRanges();
+     if (élément) {
+       élément.removeAllRanges() ;
     }
   } else {
     console.error("Cannot use window.getSelection or document.selection; what browser is this? ");

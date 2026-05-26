@@ -9,7 +9,7 @@ import { useRoute } from "vue-router";
 
 import type { CBTYPE, Motionable } from "../../types/Motionable";
 import { useTabActions, TabActions, noop } from "../../services/TabActions";
-import { BaseActions } from '../../services/BaseActions'; 
+import { BaseActions } from "../../services/BaseActions";
 import { ListData } from "../../services/DataFactory";
 import { useCacheWrapper } from "../../workers/InstallWorker";
 import { useStore } from "../../services/Store";
@@ -44,7 +44,7 @@ describe("test on TabActions", () => {
       "onName",
     ];
 
-    let obj = txt.mount({ visibleRef, getInputRef, CBRef, storeRef, menuStateRef, }, txt);
+    let obj = txt.mount({ visibleRef, getInputRef, CBRef, storeRef, menuStateRef }, txt);
     expect(typeof obj).toBe("object");
 
     assertType<MethodOptions>(obj);
