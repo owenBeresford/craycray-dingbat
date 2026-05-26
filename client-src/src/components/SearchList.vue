@@ -1,9 +1,9 @@
 <template>
   <div id="serpsContainer" class="serps" :key="currentStateKey" :data-testId="testId">
     <InterstitialView
-      :display="helpTextRef"
-      :show="canSeeHelpRef"
-      :ttl="ttlRef"
+      :display="helpText"
+      :show="canSeeHelp"
+      :ttl="ttl"
       :currentStateKey="helpId"
       :testId="viewId"
     />
@@ -110,9 +110,9 @@ export default defineComponent({
     },
   },
   setup(props: SearchProps) {
-    const helpTextRef: string = inject<string>("helpText");
-    const canSeeHelpRef: boolean = inject<boolean>("canSeeHelp");
-    const ttlRef: string = inject<number>("ttl");
+    const helpText: string = inject<string>("helpText");
+    const canSeeHelp: boolean = inject<boolean>("canSeeHelp");
+    const ttl: string = inject<number>("ttl");
 
     let stack: ExternalMethods;
     try {
@@ -122,9 +122,9 @@ export default defineComponent({
       stack = useSearchActions(list, flux, ListData);
       return {
         extraMethods: stack.mount({}, stack),
-        helpTextRef,
-        canSeeHelpRef,
-        ttlRef,
+        helpText,
+        canSeeHelp,
+        ttl,
         list,
         ctx: {} as FakeThis, // empty!!
       };
