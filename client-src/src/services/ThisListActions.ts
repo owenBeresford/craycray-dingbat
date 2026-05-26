@@ -16,14 +16,15 @@ import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Act
 
 /**
  * useSearchActions
- * A standard use* function. 
- 
- IOIO XXX
+ * A standard use* function.
+
+ * @param {MotionStream} c 
+ * @param {FactoryArtefact} d
  * @public
  * @returns {ExternalMethods } - actually a SearchActions instance
  */
-export function useThisListActions(b: StdList, c: MotionStream, d: FactoryArtefact): ExternalMethods {
-  return new ThislistActions(b, c, d);
+export function useThisListActions( c: MotionStream,d:FactoryArtefact  ): ExternalMethods {
+  return new ThislistActions( c, d );
 }
 
 export { noop } from "./BaseActions";
@@ -36,39 +37,77 @@ export { noop } from "./BaseActions";
  * @access public
  */
 export class ThislistActions extends BaseActions implements ExternalMethods {
-  protected list: StdList;
   protected flux: MotionStream;
+  protected data:FactoryArtefact;
 
   protected offset: number;
 
   /**
  * Boring con'tor
  * This has params to make building unit-tests easier.
- // NOTE:  not injected: StaticRoutes
+ * NOTE:  not injected: StaticRoutes
  *
- * @param {SearchList} al
  * @param {MotionStream} ms
- * IOIO XXX
+ * @param {FactoryArtefact} ld
  * @public
  * @returns {ExternalMethods}
  */
-  public constructor(al: StdList, ms: MotionStream, ld: FactoryArtefact) {
+  public constructor( ms: MotionStream, ld:FactoryArtefact ) {
     super();
     this.offset = 0;
-    this.list = al;
     this.flux = ms;
     this.data = ld;
 
-    if (!this.list) {
-      throw new Error("The results aren't populated, this module makes no sense");
-    }
     if (!this.flux) {
       throw new Error("The service class (MotionStream) for processing user gestures is absent");
     }
+    // need to add events for swipe up or down.  
+    // There is a double mapping for down, as this is a bounded range
+    this.flux.register("90", this.onDragDWNFinalise.bind(this));
+    this.flux.register("270", this.onDragUPFinalise.bind(this));
+    this.flux.register("-90", this.onDragUPFinalise.bind(this));
     // this is swipe left
-    this.flux.register("0", this.onSwipeFinalise.bind(this));
-    // need to add events for swipe up or down
+    this.flux.register("180", this.onSwipeOffFinalise.bind(this));
   }
+
+
+
+  onSwipeOffFinalise(e: unknown, ctx: FakeThis): void {
+    if (this.offset >= 0 && this.offset < ctx.listRef.value.énumérer) {
+      ctx.listRef.value.remove(this.offset);
+    } else {
+      console.log(`Cannot delete this offset ${this.offset}`);
+    }
+  }
+
+  onDragUPFinalise(e:unknown, ctx:FakeThis):void {
+    if (this.offset >= 1 && this.offset < ctx.listRef.value.énumérer) {
+      let tt=ctx.listRef.value.export();
+      let copy=tt[ this.offset];
+      tt[ this.offset] = tt[ this.offset-1];
+      tt[ this.offset-1] =copy;
+      ctx.listRef.value.import(tt, true);
+
+      console.log(`Have a move request for offset ${this.offset}`);
+    } else {
+      console.log(`Cannot move this item ${this.offset}`);
+    }
+  } 
+
+  onDragDWNFinalise(e:unknown, ctx:FakeThis):void {
+    if (this.offset >= 0 && this.offset < ctx.listRef.value.énumérer-1) {
+      let tt=ctx.listRef.value.export();
+      let copy=tt[ this.offset];
+      tt[ this.offset] = tt[ this.offset+1];
+      tt[ this.offset+1] =copy;
+      ctx.listRef.value.import(tt, true);
+
+      console.log(`Have a move request for offset ${this.offset}`, JSON.stringify(ctx.listRef.value.éléments ));
+    } else {
+      console.log(`Cannot move this item ${this.offset}`);
+    }
+  }
+
 
   onAdd(e: GuessEvent, ctx: FakeThis): boolean {
     ctx.getInputRef.value = "";
@@ -77,9 +116,37 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
         ctx.canSeeInputRef.value = false;
         return;
       }
-      this.list.add(d1);
+      ctx.listRef.add(d1);
       ctx.canSeeInputRef.value = false;
     };
+    ctx.canSeeInputRef.value = true;
+    return false;
+  }
+
+  onEdit(e: GuessEvent, ctx: FakeThis): boolean {
+    let agaçant:HTMLElement;
+    if(e instanceof PointerEvent) {
+      agaçant = e!.target as HTMLElement;
+    } else {
+       agaçant = e!.currentTarget as HTMLElement;
+    }
+    ctx.getInputRef.value = `${agaçant!.innerText}`;
+
+    ctx.CBRef.value = (d1: string | null): void => {
+      if (d1 === null) {
+        ctx.canSeeInputRef.value = false;
+        return;
+      }
+
+      const indice = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
+      if (indice >= 0 && indice < ctx.listRef.value.énumérer) {
+        ctx.listRef.value.edit(indice, d1);
+        ctx.canSeeInputRef.value = false;
+      } else {
+        console.log(`Cannot update list item; bad offset value ${agaçant.innerText}`);
+      }
+    };
+
     ctx.canSeeInputRef.value = true;
     return false;
   }
@@ -92,25 +159,25 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
     this.onSwipeFinalise(e, ctx);
   }
 
-  onSwipeFinalise(e: unknown, ctx: FakeThis | undefined): void {
-    if (this.offset >= 0 && this.offset < this.list.énumérer) {
-      this.list.remove(this.offset);
-    } else {
-      console.log(`Cannot delete this offset ${this.offset}`);
-    }
-  }
-
   onDragStart(e: MouseEvent, ctx: FakeThis): void {
     const agaçant = e!.currentTarget as HTMLElement;
     this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
 
     console.log("Start a drag event on ", this.offset);
+  //  agaçant.setPointerCapture(e.pointerId);
+    ctx.draggingRef.value[ this.offset]=true;
     this.flux.start(e);
   }
 
   onDragStop(e: MouseEvent, ctx: FakeThis): void {
     const agaçant = e!.currentTarget as HTMLElement;
-    this.flux.end(e);
+    if( ! ctx.draggingRef.value[ this.offset] ) {
+      console.log("Stop a drag event on ", this.offset);
+      return; 
+    }
+    this.flux.end(e, ctx);
+  //  agaçant.releasePointerCapture(e.pointerId);
+    ctx.draggingRef.value[ this.offset]=false;
     console.log("Stop a drag event on ", this.offset);
     clearSelection();
   }
@@ -119,6 +186,10 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
     // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent
     // new MouseEvent(typeArg, mouseEventInit);
     let e3: HTMLElement = e.relatedTarget as HTMLElement;
+    if( ! ctx.draggingRef.value[ this.offset] ) {
+      console.log("RANDOM Stop a drag event on ", this.offset);
+      return; 
+    }
     let e2: MouseEvent = new MouseEvent("mouseup", {
       screenX: e3.scrollLeft,
       screenY: e3.scrollTop,
@@ -131,13 +202,16 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
       button: 0,
       buttons: 1,
     } as MouseEventInit);
+  //  e3.releasePointerCapture(e.pointerId);
+    ctx.draggingRef.value[ this.offset]=false;
 
-    this.flux.end(e2);
+    this.flux.end(e2, ctx);
     console.log("Exit a drag event for ", this.offset);
     clearSelection();
   }
 
   onDragMove(e: MouseEvent, ctx: FakeThis): void {
+    console.log("Dragmove a drag event on ", e, this.offset);
     this.flux.addEvent(e);
   }
 }

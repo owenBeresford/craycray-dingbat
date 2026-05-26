@@ -1,15 +1,15 @@
 <template>
   <div class="aList" :data-testid="testId" :key="currentStateKey">
     <InterstitialView
-      :display="helpTextRef"
-      :show="canSeeHelpRef"
-      :ttl="ttlRef"
+      :display="helpText"
+      :show="canSeeHelp"
+      :ttl="ttl"
       :currentStateKey="helpId"
       :testId="viewId"
     />
     <ul class="buttonRow">
       <li class="bigger">
-        <h3>{{ list.nom }}</h3>
+        <h3>{{ ctx.listRef.nom }}</h3>
       </li>
       <li><img width="40" height="40" :src="logoPath" aria-hidden="true" role="presentation" :alt="text.imgAlt" /></li>
       <li :title="text.addTitle">
@@ -24,9 +24,9 @@
       </li>
     </ul>
     <EnterInput
-      :val="getInputRef"
-      :visible="canSeeInputRef"
-      :cb="CBRef"
+      :val="ctx.getInputRef.value"
+      :visible="ctx.canSeeInputRef.value"
+      :cb="ctx.CBRef.value"
       :testId="nextTestId"
       :currentStateKey="childId"
     />
@@ -35,9 +35,12 @@
         <span
           v-if="bisMobile"
           class="button info"
+          :aria-grabbed="ctx.draggingRef[j]"
           v-touch="onEdit"
           :data-offset="j"
           v-touch:swipe.left="onSwipe"
+          v-touch:swipe.up="onDragStart"
+          v-touch:swipe.down="onDragStart"
           v-touch-options="{ swipeTolerance: 80, rollOverFrequency: 500 }"
         >
           {{ i }}
@@ -45,12 +48,13 @@
         <span
           v-else
           class="button info"
-          v-touch:longtap="onEdit"
+          :aria-grabbed="ctx.draggingRef[j]"
           :data-offset="j"
-          v-on:mouseleave="onDragStop"
-          v-touch-options="{ dragTolerance: 200, longTapTimeInterval: 1000, rollOverFrequency: 400 }"
-          v-on:mousedown="onDragStart"
-          @blur="onDragExit"
+          v-touch-options="{ dragTolerance: 200, rollOverFrequency: 400 }"
+          v-longpress="onEdit"
+          v-on:mousedown.passive="onDragStart"
+          v-on:mouseleave.passive="onDragStop"
+          @blur.passive="onDragExit"
         >
           {{ i }}
         </span>
@@ -59,9 +63,9 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, inject, toRaw, shallowRef } from "vue";
 import { useRoute } from "vue-router";
-import type { Ref } from "vue";
+import type { Ref, ShallowRef } from "vue";
 
 import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
@@ -77,13 +81,9 @@ import { noop, ThisListActions, useThisListActions } from "../services/ThisListA
 
 import type { ExternalMethods, CBType, FakeThis } from "../types/Actionables";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
-import type { ThisListStaticData } from "../types/ComponentProps";
+import type { ThisListStaticData, ThisListProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
-const { currentData, updateData, initData } = ListData;
-if (ListData.currentData && _LOGGING_) {
-  console.log("KKK ThisList global scope ListData.currentData id:", idOf(ListData.currentData));
-}
 if (_LOGGING_) {
   console.log("KKK ThisList global scope ListData id:", idOf(ListData));
 }
@@ -116,31 +116,33 @@ export default defineComponent({
         return useStore();
       },
     }, // TS: "Store<ShopState>"
-  },
+  } satisfies ThisListProps,
+
   setup(props: ThisListProps) {
-    const helpTextRef: string = inject<string>("helpText");
-    const canSeeHelpRef: boolean = inject<boolean>("canSeeHelp");
-    const ttlRef: string = inject<number>("ttl");
     const itinéraire = useRoute();
+
+    const helpText: string = inject<string>("helpText");
+    const canSeeHelp: boolean = inject<boolean>("canSeeHelp");
+    const ttl: string = inject<number>("ttl");
+    const canSeeInputRef: Ref<boolean> = ref<boolean>(false);
     const getInputRef: Ref<string> = ref<string>("");
     const CBRef: Ref<CBType> = ref<CBType>(noop);
 
     let stack: ExternalMethods;
     try {
       const flux = new MotionStream();
-      const list = EMPTY_LIST;
-      list.importTest(setupCurrentList(itinéraire) as StdList);
+      const liste:StdList = Object.assign( Object.create(Object.getPrototypeOf(EMPTY_LIST)), EMPTY_LIST ) as StdList;
+      liste.importTest(setupCurrentList(itinéraire));
+      const listRef:Ref<StdList> = ref<StdList>(liste);
+      let dragging:Array<boolean>=Array( liste.énumérer);
+      dragging.fill(false);
+      const draggingRef: Ref<Array<boolean>> = ref<Array<boolean>>( dragging );
 
-      stack = useThisListActions(list, flux, ListData);
+      stack = useThisListActions( flux, ListData);
       return {
-        extraMethods: stack.mount({}, stack),
-        helpTextRef,
-        canSeeHelpRef,
-        ttlRef,
-        getInputRef,
-        CBRef,
-        list,
-        ctx: { canSeeHelpRef, getInputRef, CBRef, list } as FakeThis,
+        extraMethods: stack.mount({ getInputRef, CBRef, draggingRef, canSeeInputRef, listRef  } as FakeThis, stack),
+        helpText, canSeeHelp, ttl,
+        ctx: {  getInputRef, CBRef, draggingRef,  canSeeInputRef, listRef } as FakeThis,
       };
     } catch (e: unknown) {
       console.log("SearchResults.setup():", (e as Error).message);
@@ -148,16 +150,15 @@ export default defineComponent({
   },
 
   created() {
-    if (currentData && _LOGGING_) {
-      console.log("KKK thisList.created  ListData.currentData id:", idOf(currentData));
-    }
     if (_LOGGING_) {
       console.log("KKK ThisList global scope ListData id:", idOf(ListData));
     }
     this.initGeneratedMethods();
+console.log( this.ctx  );    
   },
   mounted() {
     if (this.shopStore) {
+      const itinéraire = useRoute();
       this.shopStore.commit("setPath", itinéraire.path);
       this.shopStore.commit("setId", this.id);
     } else {
@@ -186,15 +187,17 @@ export default defineComponent({
       return this.$props.currentStateKey + "view";
     },
     actualList(): Array<string> {
-      if (this.list instanceof StdList) {
-        return this.list.export<string>();
+console.log("WW WW WW",  this.ctx );
+
+      if( this.ctx.listRef.value) {
+        return this.ctx.listRef.value.export<string>();
       }
       return [] as Array<string>;
     },
   },
 
   methods: {
-    ...(() => ({}))(), // placeholder to keep TSC happy
+    ...(() => ({}))(), // placeholder to keep TSC + Bot happy.  This is not callable, as it has no name
 
     initGeneratedMethods() {
       Object.assign(this, this.extraMethods);
