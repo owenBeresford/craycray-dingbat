@@ -74,13 +74,12 @@ export class MotionStream implements Motionable {
    * @public
    * @returns {boolean}
    */
-  public end(e: MouseEvent): boolean {
+  public end(e: MouseEvent, ctx:FakeThis): boolean {
     if (!this.active) {
       return false;
     }
     this.stack.push(new Vector(e.clientX, e.clientY));
     this.active = false;
-
     let offset = 1;
     while (offset < this.stack.length) {
       const cur: Vector = this.clone(0, offset);
@@ -93,18 +92,19 @@ export class MotionStream implements Motionable {
         // eslint-disable-next-line guard-for-in, no-restricted-syntax
         for (const [i, obj] of Object.entries(this.actions)) {
           const i2 = parseInt(i, 10);
-          // TEST VALUES: 8 + 20 < 0 && 8 - 20 >0
           if (angle + ANGLE_ACCURACY > i2 && angle - ANGLE_ACCURACY < i2) {
-            obj(e, undefined);
+            obj(e, ctx);
             // move these next 2 lines if you want to allow more than one CB per gesture
             found = true;
-            break;
+         //   break;
           }
         }
+        this.stack.splice(0, this.stack.length );
         return found;
       }
       offset += 1;
     }
+    this.stack.splice(0, this.stack.length );
     return false;
   }
 
@@ -112,7 +112,7 @@ export class MotionStream implements Motionable {
    * clone
    * Copy a section of the current event stack, and convert to a vector
  
-   * @param {number} o1
+   * @param {number} o1 - stack offset index, o1 is likely to be 0 
    * @param {number} o2
    * @public
    * @returns {Vector}
@@ -134,9 +134,11 @@ export class MotionStream implements Motionable {
    * @public
    * @returns {boolean}
    */
-  public start(e: MouseEvent): boolean {
-    if (this.stack.length) {
-      this.stack.splice(0, this.stack.length);
+  public start(e: MouseEvent, ctx:FakeThis): boolean {
+    if (this.active) {
+      // This case happens when you drag into a different button.
+      this.end(e, ctx); 
+      return true;
     }
     this.stack.push(new Vector(e.clientX, e.clientY));
     this.active = true;
@@ -145,7 +147,8 @@ export class MotionStream implements Motionable {
 
   /**
    * significant
-   * Compute if delta is larger than thresholds
+   * Compute if delta is larger than thresholds,
+   * This means the user has made a noticeable motion, so intensional
    * See {MOBILE_THRESHOLD} and {BIG_THRESHOLD} 
  
    * @param {Vector} delta
@@ -155,18 +158,22 @@ export class MotionStream implements Motionable {
   public significant = (delta: Vector): boolean => {
     const [x, y] = delta.toArray();
     if (this.mobile) {
-      return x > MOBILE_THRESHOLD || y > MOBILE_THRESHOLD;
+      return x > MOBILE_THRESHOLD || x*-1>MOBILE_THRESHOLD || y > MOBILE_THRESHOLD || y*-1>MOBILE_THRESHOLD;
     }
-    return x > BIG_THRESHOLD || y > BIG_THRESHOLD;
+    return x > BIG_THRESHOLD || x*-1 > BIG_THRESHOLD || y > BIG_THRESHOLD || y*-1 > BIG_THRESHOLD;
   };
 
   /**
    * angle
    * Use maths to convert two samples into a angle of motion
+   * output values isn't intuitive, but is consistent with other implementations
  
    * @see [https://taskvio.com/maths/coordinate-geometry-calculators/angle-between-two-vectors-calculator/index.php]
-     As maths notation: 
+   * [see  https://calculator.academy/coordinate-angle-calculator/]
+     A previous maths notation: 
 		 angle = arccos[(xa * xb + ya * yb) / (√(xa2 + ya2) * √(xb2 + yb2))]
+     Current maths notation
+      anjgle=atan( y2-y1, x2-x1)
    * @param {Vector} delta1
    * @param {Vector} delta2
    * @public
@@ -175,11 +182,9 @@ export class MotionStream implements Motionable {
   public angle = (delta1: Vector, delta2: Vector): number => {
     const [x1, y1] = delta1.toArray();
     const [x2, y2] = delta2.toArray();
-
-    const choseA = x1 * x2 + y1 * y2;
-    const choseB = Math.sqrt(x1 * x1 + y1 * y1);
-    const choseC = Math.sqrt(x2 * x2 + y2 * y2);
-    return Math.acos(choseA / (choseB * choseC));
+    let dy=y2-y1;
+    let dx=x2-x1;
+    return Math.atan2(dy, dx);
   };
 
   /**

@@ -25,8 +25,8 @@ export const LOGO_PATH = "/asset/logo.png";
 
 // values for MotionStream
 export const MOBILE_THRESHOLD = 150;
-export const BIG_THRESHOLD = 200;
-export const ANGLE_ACCURACY = 20.0;
+export const BIG_THRESHOLD = 15;  // buttons are currently 13px tall
+export const ANGLE_ACCURACY = 20.0;  // I might need to split miobile and desktop here
 
 // localisation
 export const SUPPORTED_LANGUAGE = "en-GB";
@@ -36,6 +36,9 @@ export const DEFAULT_HELP_SHOW = false;
 
 export const FETCH_TIMEOUT = 500; // ms
 export const DELAY_FOR_API = 500; // ms
+
+// for **mouse** longtaps, that edit an item
+export const DELAY_LONGTAP = 600; // ms
 
 if (typeof globalThis.fetch === "undefined" || !globalThis.fetch) {
   throw new Error("73453894563453 Fetch() not found.  BAILING OUT");
