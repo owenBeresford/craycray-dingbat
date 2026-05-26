@@ -107,4 +107,10 @@ export interface InterstitialStaticData {
   currentStateKey2: string;
 }
 
+export interface ThisListProps {
+  currentStateKey: string;
+  testId: string;
+  shopStore: COMPLETE_STORE;
+}
+
 export type StrictArray = Array<string>;
