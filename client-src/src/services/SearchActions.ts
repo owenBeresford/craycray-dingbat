@@ -76,7 +76,7 @@ export class SearchActions extends BaseActions implements ExternalMethods {
     this.onSwipeFinalise(e, ctx);
   }
 
-  onSwipeFinalise(e: unknown, ctx: FakeThis | undefined): void {
+  onSwipeFinalise(e: unknown, ctx: FakeThis ): void {
     if (this.offset >= 0 && this.offset < this.list.énumérer) {
       this.list.remove(this.offset);
     } else {
@@ -87,12 +87,12 @@ export class SearchActions extends BaseActions implements ExternalMethods {
   onDragStart(e: MouseEvent, ctx: FakeThis): void {
     const agaçant = e!.currentTarget as HTMLElement;
     this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
-    this.flux.start(e);
+    this.flux.start(e, ctx);
   }
 
   onDragStop(e: MouseEvent, ctx: FakeThis): void {
     const agaçant = e!.currentTarget as HTMLElement;
-    this.flux.end(e);
+    this.flux.end(e, ctx);
     clearSelection();
   }
 
@@ -113,7 +113,7 @@ export class SearchActions extends BaseActions implements ExternalMethods {
       buttons: 1,
     } as MouseEventInit);
 
-    this.flux.end(e2);
+    this.flux.end(e2, ctx);
     clearSelection();
   }
 
