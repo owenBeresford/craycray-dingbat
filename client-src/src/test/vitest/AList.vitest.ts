@@ -92,7 +92,7 @@ describe("test on StdList", () => {
     expect(obj.editName("")).not.toBeTruthy();
     expect(obj.nom === "NEWNAME2").toBeTruthy();
 
-    obj.import(["dgdfgdfg", "adasd", "werwerw", "test1"]);
+    obj.import(["dgdfgdfg", "adasd", "werwerw", "test1"], false);
     expect(obj.énumérer).toEqual(9);
   });
 });
