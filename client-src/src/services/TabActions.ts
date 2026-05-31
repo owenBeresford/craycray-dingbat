@@ -115,9 +115,9 @@ export class TabActions extends BaseActions {
       this.store.commit("setPath", this.route.path);
     }
 
-    LOG.addRaw("onInterstitial running IOIO", "debug");
+    LOG.addRaw("Showing the help notes as requested ", "debug");
     // assert( the initersitial is present in the current screen )
- //  this.store.commit("show", false);
+    this.store.commit("show", false);
     this.store.commit("show", true);
     ctx.menuStateRef.value =false;
   }
@@ -133,7 +133,6 @@ export class TabActions extends BaseActions {
    */
   public onInstall(ignored: GuessEvent, ctx: FakeThis): void {
     if (location.protocol !== "https:") {
-      console.warn("Install button is disabled, you need to use HTTPS.");
       LOG.addRaw("Install button is disabled, you need to use HTTPS.", "info");
       return ;
     }
@@ -143,7 +142,7 @@ export class TabActions extends BaseActions {
       return ;
     }
 
-    LOG.addRaw("onInstall running IOIO", "debug");
+    LOG.addRaw("App is running install now", "debug");
     this.cache.install();
     ctx.menuStateRef.value =false;
   }
@@ -160,7 +159,7 @@ export class TabActions extends BaseActions {
   public onUnique(ignored: GuessEvent, ctx: FakeThis): void {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     if(! this.route.params) {
-      LOG.addRaw("cannot run unique(), not on a single list screen", "info");
+      LOG.addRaw("Cannot run unique(), not on a single list screen", "info");
       return;
     }
     const liste = this.data.currentData.get(this.store.state.currentId);
@@ -207,8 +206,7 @@ export class TabActions extends BaseActions {
       ctx.menuStateRef.value =false;
 
     } else {
-      LOG.addRaw("Attempt duplicate list? list not found "+this.store.state.currentId+".", "warn");
-      console.log("dup list broketet", liste );  
+      LOG.addRaw("Attempt duplicate list? BUT list not found "+this.store.state.currentId+".", "warn");
     }
     StaticRoutes.push({ name: "list-everything" });
   }
@@ -301,7 +299,7 @@ export class TabActions extends BaseActions {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     const liste: StdList = this.data.currentData.get(this.store.state.currentId) as StdList;
     if (!liste) {
-      console.warn("EDIT NAME: got bad id, don't know how to proceed");
+      LOG.addRaw("Cannot edit list name, only have a bad ID.", "warn");
       return ;
     }
 
@@ -362,9 +360,7 @@ function createSearchCallback(ctx: FakeThis): void {
       return;
     }
 
-    console.info("Starting a search for '" + d1 + "'");
-    LOG.addRaw("onSearch running IOIO for "+d1, "debug");
-
+    LOG.addRaw("Search running against for "+d1, "info");
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     ctx.visibleRef.value = false;
     StaticRoutes.push({

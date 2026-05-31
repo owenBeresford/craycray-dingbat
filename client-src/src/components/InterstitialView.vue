@@ -90,6 +90,7 @@ export default defineComponent({
     const inner2 = () => {
       this.list.splice(0, this.list.length);
       this.iShow = false;
+      this.store.commit("show", false);
     };
 
     const inner1 = () => {
@@ -97,6 +98,7 @@ export default defineComponent({
       this.list.push(...TEXT.getTemplate(this.display));
       if (this.list.length === 0 || this.list[0] === "") {
         this.iShow = false;
+        this.store.commit("show", false);
       }
       setTimeout(inner2, this.ttl);
     };
@@ -113,6 +115,7 @@ export default defineComponent({
       this.list.push(...TEXT.getTemplate(this.display));
       if (this.list.length === 0 || this.list[0] === "") {
         this.iShow = false;
+        this.store.commit("show", false);
       } else if (this.ttl) {
         setTimeout(inner2, this.ttl);
       }
@@ -120,24 +123,22 @@ export default defineComponent({
   },
   watch: {
     display(val, oldVal): void {
-console.log(`WATCH: looking at store value on display ${oldVal} => ${val} `);  
       // allow infinite displays as ttl=0, just like networking
       if (val && this.ttl) {
         setTimeout(() => {
           this.iShow = false;
+          this.store.commit("show", false);
         }, this.ttl);
       }
     },
 
     show(val, oldVal): void {
-console.log(`WATCH: looking at store value on show ${oldVal} => ${val}`, this.display);       
       this.iShow = val;
     },
     // https://stackoverflow.com/questions/57934943/how-to-watch-for-vuex-state
     "store.state.currentURL":  {
       deep: true,
       handler(val: string, oldVal: string): void {
-console.log(`WATCH: looking at store value on URL: ${oldVal} => ${val} `); 
 
         if (this.firstPass && !this.urlsStack.includes(val)) {
           this.urlsStack.push(val);
@@ -148,7 +149,6 @@ console.log(`WATCH: looking at store value on URL: ${oldVal} => ${val} `);
     },
 
     "store.state.showHelp": function (val, oldVal) {
-console.log(`WATCH: looking at store value on showValue: ${oldVal} => ${val} `, this.firstPass, this.urlsStack); 
       this.iShow = val;
       this.firstPass =true;
       this.urlsStack.splice(0, this.urlsStack.length);
@@ -163,11 +163,13 @@ console.log(`WATCH: looking at store value on showValue: ${oldVal} => ${val} `, 
       if (this.list.length === 0 || this.list[0] === "") {
         this.log.addRaw("Ran store->showHelp(), but have no content to show?", "warn");
         this.iShow = false;
+        this.store.commit("show", false);
       }
     },
 
     hide(e: GuessEvent): void {
       this.iShow = false;
+      this.store.commit("show", false);
     },
 
     changeText(what: string): void {
@@ -176,6 +178,7 @@ console.log(`WATCH: looking at store value on showValue: ${oldVal} => ${val} `, 
       this.list.push(...TEXT.getTemplate(nom));
       if (this.list.length === 0 || this.list[0] === "") {
         this.iShow = false;
+        this.store.commit("show", false);
       }
     },
   },
