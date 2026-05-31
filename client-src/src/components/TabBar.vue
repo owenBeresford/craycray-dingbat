@@ -21,21 +21,23 @@
           <span
             class="menuTrigger"
             aria-haspopup="menu"
-            :aria-pressed="menuStateRef"
+            :aria-pressed="ctx.menuStateRef.value"
             role="button"
             @click.prevent="onMenu"
             v-touch="onMenu"
             @keypress="onMenu"
             :title="menu.actualMenuTitle"
           ></span>
-          <menu class="menuTrigger" role="navigation" :data-testId="menuId" :aria-hidden="!menuStateRef">
+          <menu class="menuTrigger" role="navigation" :data-testId="menuId" :aria-hidden="!ctx.menuStateRef.value">
             <li>
               <span
                 role="button"
+                :aria-disabled="installEnabledBool"
+                :disabled="installEnabledBool || false"
                 :title="menu.installTitle"
                 :class="installEnabled"
                 v-touch.prevent="onInstall"
-                @click.prevent.once="onInstall"
+                @click.prevent="onInstall"
                 @keypress.prevent="onInstall"
               >
                 {{ menu.installName }}
@@ -47,18 +49,19 @@
                 class="button"
                 :title="menu.helpTitle"
                 v-touch.prevent="onInterstitial"
-                @click.prevent.once="onInterstitial"
+                @click.prevent="onInterstitial"
                 @keypress.prevent="onInterstitial"
                 >{{ menu.helpName }}</span
               >
             </li>
             <li>
               <span
-                :aria-disabled="hasData"
+                :aria-disabled="hasDataAndList"
+                :disabled="hasDataAndList || null"
                 role="button"
                 :title="menu.renameTitle"
                 class="button"
-                v-touch="onName"
+                @touch.prevent="onName"
                 @click.prevent="onName"
                 @keypress="onName"
                 >{{ menu.renameName }}</span
@@ -66,7 +69,8 @@
             </li>
             <li>
               <span
-                :aria-disabled="hasData"
+                :aria-disabled="hasDataAndList"
+                :disabled="hasDataAndList || null"
                 :title="menu.dupeTitle"
                 class="button"
                 role="button"
@@ -78,7 +82,8 @@
             </li>
             <li>
               <span
-                :aria-disabled="hasData"
+                :aria-disabled="hasDataAndList"
+                :disabled="hasDataAndList || null"
                 class="button"
                 role="button"
                 :title="menu.uniqTitle"
@@ -91,7 +96,8 @@
             <li>
               <span
                 :title="menu.saveTitle"
-                :aria-disabled="hasData"
+                :aria-disabled="!hasData"
+                :disabled="!hasData || null"
                 role="button"
                 class="button"
                 v-touch="onSave"
@@ -102,12 +108,13 @@
             </li>
             <li>
               <span
-                :aria-disabled="hasData"
-                v-touch.once="onRevert"
+                :aria-disabled="!hasData"
+                :disabled="!hasData || null"
+                v-touch="onRevert"
                 :title="menu.revertTitle"
                 role="button"
-                @click.prevent.once="onRevert"
-                @keypress.prevent.once="onRevert"
+                @click.prevent="onRevert"
+                @keypress.prevent="onRevert"
                 class="button"
               >
                 {{ menu.revertName }}
@@ -121,9 +128,9 @@
       </ul>
     </div>
     <EnterInput
-      :val="getInputRef"
+      :val="ctx.getInputRef.value"
       :visible="visibleRef"
-      :cb="CBRef"
+      :cb="ctx.CBRef.value"
       :testid="inputId"
       :currentStateKey="EIK"
     ></EnterInput>
@@ -132,19 +139,20 @@
 
 <script lang="ts">
 // https://github.com/josueggh/a11y-cheatsheet
-import { defineComponent, inject, ref } from "vue";
+import { defineComponent, inject, ref, toRaw } from "vue";
 // import type { MethodOptions } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import { useStore } from "../services/Store";
-import type { COMPLETE_STORE } from "../services/Store";
 // import { AList } from "../services/AList";
 import { ListData, setupCurrentList } from "../services/DataFactory";
 import { useCacheWrapper, CacheWrapper } from "../workers/InstallWorker";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
 import { useTabActions, noop, TabActions } from "../services/TabActions";
+import type { COMPLETE_STORE } from "../services/Store";
 import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Actionables";
+import type { Loggable } from '../types/Loggable';
 // import { StaticRoutes } from "./Routing";
 import EnterInput from "./EnterInput.vue";
 // import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
@@ -182,6 +190,7 @@ export default defineComponent({
     const CBRef = ref<CBType>(noop);
     const storeRef = ref<COMPLETE_STORE>(useStore());
     const menuStateRef = ref<boolean>(false);
+    const log:Loggable = inject<Loggable>('log');
 
     let stack: ExternalMethods;
     try {
@@ -193,11 +202,13 @@ export default defineComponent({
         visibleRef,
         getInputRef,
         CBRef,
+        log,
         storeRef,
+        route:useRoute(),
         ctx: { visibleRef, getInputRef, CBRef, storeRef, menuStateRef } as FakeThis,
       };
     } catch (e: unknown) {
-      console.log("TabBar.setup():", (e as Error).message, (e as Error).stack.substring(0, 200));
+      log.addRaw("TabBar.setup():", (e as Error).message, (e as Error).stack.substring(0, 200), "error");
     }
   },
   data(): TabBarStaticData {
@@ -208,13 +219,15 @@ export default defineComponent({
     } else if (CACHE.check()) {
       état += " disabled";
     }
-
+   
     return {
       installEnabled: état,
+      installEnabledBool: (état.match(/disabled/g) || []).length !==0 ,
       EIK: this.$props.currentStateKey + "false",
       inputId: this.testId + "input1",
       menuId: this.testId + "Menu1",
       hasData: this.dataOnLoad,
+     // hasDataAndList: (this.dataOnLoad && (Object.keys(this.route.params).length > 0)),
       urls: [mapURL("allList", null), mapURL("aList", -1)],
       menu: {
         header: TEXT.get("menu.header1"),
@@ -243,6 +256,9 @@ export default defineComponent({
         outro: TEXT.get("menu.outro"),
       },
     } satisfies TabBarStaticData;
+  },
+  computed:{
+    hasDataAndList():boolean { return !(this.dataOnLoad && (Object.keys(this.route.params).length > 0));  }
   },
   mounted() {
     if (!this.shopStore) {
