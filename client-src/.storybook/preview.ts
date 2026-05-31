@@ -3,6 +3,8 @@ import "../src/assets/foundation.min.css";
 import { setup, definePreview } from "@storybook/vue3-vite";
 import { createRouter, createWebHistory } from "vue-router";
 import Vue3TouchEvents from "vue3-touch-events";
+import { uselog } from '../src/services/LogStack';
+
 
 //https://storybook.js.org/docs/api/csf/csf-next
 const preview = definePreview({
@@ -42,6 +44,8 @@ setup((app) => {
     app.provide("helpText", "menu");
     app.provide("canSeeHelp", false);
     app.provide("ttl", 5000);
+    app.provide("log", useLog());
+
     app.provide("shopping", {}); // a fake thing, that is unused,
     // BUT adding the fake thing stops other errors #leSigh
   } catch (e) {

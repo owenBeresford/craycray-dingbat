@@ -5,6 +5,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import { Suspense } from "vue";
 import Vue3TouchEvents from "vue3-touch-events";
 import { vueRouter } from "storybook-vue3-router";
+import { uselog } from '../src/services/LogStack';
 
 //https://storybook.js.org/docs/api/csf/csf-next
 const preview = definePreview({
@@ -57,6 +58,7 @@ setup((app) => {
     app.provide("canSeeHelp", false);
     app.provide("ttl", 5000);
     app.provide("shopping", {}); // a fake thing, that is unused,
+    app.provide("log", useLog());
     // BUT adding the fake thing stops other errors #leSigh
   } catch (e) {
     console.error("I do not expect to see this", e);
