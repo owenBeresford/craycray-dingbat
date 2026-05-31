@@ -74,7 +74,7 @@ export class MotionStream implements Motionable {
    * @public
    * @returns {boolean}
    */
-  public end(e: MouseEvent, ctx:FakeThis): boolean {
+  public end(e: MouseEvent, ctx: FakeThis): boolean {
     if (!this.active) {
       return false;
     }
@@ -96,15 +96,15 @@ export class MotionStream implements Motionable {
             obj(e, ctx);
             // move these next 2 lines if you want to allow more than one CB per gesture
             found = true;
-         //   break;
+            //   break;
           }
         }
-        this.stack.splice(0, this.stack.length );
+        this.stack.splice(0, this.stack.length);
         return found;
       }
       offset += 1;
     }
-    this.stack.splice(0, this.stack.length );
+    this.stack.splice(0, this.stack.length);
     return false;
   }
 
@@ -134,10 +134,10 @@ export class MotionStream implements Motionable {
    * @public
    * @returns {boolean}
    */
-  public start(e: MouseEvent, ctx:FakeThis): boolean {
+  public start(e: MouseEvent, ctx: FakeThis): boolean {
     if (this.active) {
       // This case happens when you drag into a different button.
-      this.end(e, ctx); 
+      this.end(e, ctx);
       return true;
     }
     this.stack.push(new Vector(e.clientX, e.clientY));
@@ -158,9 +158,9 @@ export class MotionStream implements Motionable {
   public significant = (delta: Vector): boolean => {
     const [x, y] = delta.toArray();
     if (this.mobile) {
-      return x > MOBILE_THRESHOLD || x*-1>MOBILE_THRESHOLD || y > MOBILE_THRESHOLD || y*-1>MOBILE_THRESHOLD;
+      return x > MOBILE_THRESHOLD || x * -1 > MOBILE_THRESHOLD || y > MOBILE_THRESHOLD || y * -1 > MOBILE_THRESHOLD;
     }
-    return x > BIG_THRESHOLD || x*-1 > BIG_THRESHOLD || y > BIG_THRESHOLD || y*-1 > BIG_THRESHOLD;
+    return x > BIG_THRESHOLD || x * -1 > BIG_THRESHOLD || y > BIG_THRESHOLD || y * -1 > BIG_THRESHOLD;
   };
 
   /**
@@ -182,8 +182,8 @@ export class MotionStream implements Motionable {
   public angle = (delta1: Vector, delta2: Vector): number => {
     const [x1, y1] = delta1.toArray();
     const [x2, y2] = delta2.toArray();
-    let dy=y2-y1;
-    let dx=x2-x1;
+    let dy = y2 - y1;
+    let dx = x2 - x1;
     return Math.atan2(dy, dx);
   };
 
