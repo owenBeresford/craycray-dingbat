@@ -73,13 +73,13 @@ export class SharedStateWorker implements DataPipeline {
             .saveState(json)
             .then((dat: boolean): boolean => {
               if (_LOGGING_) {
-                console.log("save said " + dat);
+                console.log("Save said " + dat);
               }
               good(true);
               return true;
             })
             .catch((err: unknown): void => {
-              console.error("Am connected to wifi; cannot save data ??\nImprove error handler here.");
+              console.error("Am connected to wifi; cannot save data ??\nImprove error handler here. "+ (err as Error).message );
               bad(err as Error);
             });
         } else {

@@ -82,6 +82,7 @@ export interface TabBarStaticData {
   inputId: string;
   urls: Array<string>;
   hasData: boolean;
+  hasDataAndList:boolean;
   menu: Record<string, string>; // l12n data
 }
 
@@ -111,6 +112,14 @@ export interface ThisListProps {
   currentStateKey: string;
   testId: string;
   shopStore: COMPLETE_STORE;
+}
+
+export interface InterstitialProps {
+  ttl: number;
+  display: string;
+  show: boolean;
+  currentStateKey: string;
+  testId: string;
 }
 
 export type StrictArray = Array<string>;
