@@ -71,6 +71,9 @@
   line-height: 0.66;
 }
 
+.tabBar.buttonRow ul > li > .button[aria-disabled=true] { color:grey; }
+
+
 @media screen and (max-width: 400px) {
   .tabBar {
     display: block;
@@ -299,7 +302,7 @@ dialog.enterInput::backdrop {
 }
 @media screen and (max-width: 400px) {
   .enterInput .labelRow span.cancel {
-    right: -7.5em;
+    right: -4em;
     top: -3em;
   }
 }
@@ -355,6 +358,12 @@ dialog.enterInput::backdrop {
 }
 
 /* ********************************************************* */
+.msgBar { display:block; max-height:10em; overflow-y:scroll; }
+.msgBar li { white-space:nowrap; font-size:90%; margin-left:0px; list-style-type: none; }
+
+/* I think popup need data first */
+
+/* ********************************************************* */
 /* this is for SERPS  */
 
 .serps .buttonRow {
@@ -390,9 +399,9 @@ ul.aList {
   margin-right: auto;
 }
 /* IOIO Make more sohisticated */
-.aList .button.info[aria-grabbed=true] { 
-  border: 2px green solid; 
-  z-index:1;
+.aList .button.info[aria-selected="true"] {
+  border: 2px green solid;
+  z-index: 1;
 }
 
 ul.aList li span {
@@ -401,7 +410,7 @@ ul.aList li span {
   color: #333333;
 }
 div.aList {
-  height: calc(100% - 3.75em);
+  max-height: calc(100% - 3.75em);
   overflow-y: scroll;
 }
 .aList .buttonRow {
@@ -430,6 +439,7 @@ div.aList ul.buttonRow li span {
   ul.aList span.button {
     margin-left: calc(50% - 6em);
   }
+  .touchActive { color:red;  border:red 2px solid;  }  
 }
 
 @media screen and (min-width: 400px) {
@@ -446,16 +456,29 @@ div.aList ul.buttonRow li span {
   text-align: center;
   color: #2c3e50;
   min-width: 100%;
-  height: 95vh;
+  height: 100%;
+  touch-action: manipulation;
 }
+menu.tiggerMenu { touch-action: auto; }
 
 .wholePage {
-  height: 100%;
+  height: 100%; width: 100%;
   font-family: system-ui;
-
+  overscroll-behavior-y: none;
   text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
 }
+@media screen and (max-width: 400px) {
+  #app { /* room for browser fixed furniture, leSigh */
+    height:calc(100% - 2em);
+  }
+}
+
 
 /* A useful class that will slap a big warning on span containing images (various formats) 
    Adjust selector to suit needs.  The warning is about 150px on most peoples machines  */
