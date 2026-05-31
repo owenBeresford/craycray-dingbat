@@ -7,7 +7,7 @@
           class="cancel"
           @click.prevent="onCancel"
           @touch.prevent="onCancel"
-          @keypress.once="onCancel"
+          @keypress="onCancel"
           @keyup.esc="onCancel"
           :title="text.title2"
           :aria-label="text.title2"
@@ -82,6 +82,7 @@ const TEXT = useUIText();
 export default defineComponent({
   name: "EnterInput",
   components: {},
+  inject: ["log"],
   props: {
     val: { type: String, default: "" },
     cb: { type: Function, required: true },
@@ -112,13 +113,13 @@ export default defineComponent({
   },
   watch: {
     val(nouveau: string, vieux: string): void {
-      //      if (_LOGGING_) {
-      console.log(`EnterInput: Running watch on input '${vieux}' => '${nouveau}'.`);
-      //      }
+      console.debug(`EnterInput: Running watch on input '${vieux}' => '${nouveau}'.`);
       this.oVal = nouveau;
     },
     visible(nouveau: string, vieux: string): void {
       this.bShow = !!nouveau;
+      console.debug(`EnterInput: Running watch on input '${vieux}' => '${nouveau}' ${ this.bShow }.`);
+
       if (this.bShow) {
         setTimeout(() => {
           const élément: HTMLInputElement = this.$refs.enterIt as HTMLInputElement;
@@ -142,7 +143,7 @@ export default defineComponent({
 
     onUpdate(e: GuessEvent): void {
       if (!this.bShow) {
-        console.warn("EnterInput.onUpdate  event this component isn't active, but has input events");
+        this.log.addRaw("EnterInput.onUpdate  event this component isn't active, but has input events", "warn");
         return;
       }
 

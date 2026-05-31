@@ -24,7 +24,7 @@ import { useStore } from "../services/Store";
    * @public
    */
 export const StaticRoutes = createRouter({
-  history: createWebHistory("/"),
+  history: createWebHistory(),
   strict: false,
   routes: [
     // For the Meta sections

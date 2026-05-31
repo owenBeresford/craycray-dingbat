@@ -5,8 +5,8 @@
         <input
           class="button"
           name="closeUp"
-          @keypress="hide"
-          @click="hide"
+          @keypress.prevent="hide"
+          @click.prevent="hide"
           :value="text.label1"
           :data-testId="closeId"
           :aria-label="text.close1"
@@ -25,7 +25,7 @@ import { useUIText } from "../services/Localisation";
 import { useLocal } from "../services/LocalCopy";
 import { KNOWN_PHONE } from "../Constants";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
-import type { StrictArray, InterstitialStaticData } from "../types/ComponentProps";
+import type { StrictArray, InterstitialStaticData, InterstitialProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 /**
@@ -50,18 +50,13 @@ export default defineComponent({
     ttl: { type: Number, default: 0 },
     display: { type: String, required: true },
     show: { type: Boolean, default: false },
-    currentStateKey: { type: [String, Object], required: true },
+    currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
-  },
+  } satisfies InterstitialProps,
+  inject: ["log"],
   data(): InterstitialStaticData {
     let id = this.$props.testId;
-    let chaine = "";
-    if (typeof this.$props.currentStateKey === "string") {
-      chaine = this.$props.currentStateKey;
-    } else {
-      console.log("IOIOIO have composite statekey in initerstitial, not expected  IOIOIOIO");
-      chaine = this.$props.currentStateKey.betterId;
-    }
+    let chaine = this.$props.currentStateKey;
 
     // this is an override, so the props are applied at loadtime if running inside Storybook,
     // which only applies a partial stack
@@ -76,8 +71,10 @@ export default defineComponent({
       local: useLocal(),
       store: useStore(),
       iShow: shouldShow ? this.$props.show : false,
-      list: [] as StrictArray,
+      // this is the buffer for the help text currently rendered
+      list: [] as StrictArray, 
       firstPass: false,
+      // there is an different help text for each screen, I aim to show each once
       urlsStack: [] as StrictArray,
       text: {
         close1: TEXT.get("interstitial.close1"),
@@ -123,6 +120,7 @@ export default defineComponent({
   },
   watch: {
     display(val, oldVal): void {
+console.log(`WATCH: looking at store value on display ${oldVal} => ${val} `);  
       // allow infinite displays as ttl=0, just like networking
       if (val && this.ttl) {
         setTimeout(() => {
@@ -132,12 +130,15 @@ export default defineComponent({
     },
 
     show(val, oldVal): void {
+console.log(`WATCH: looking at store value on show ${oldVal} => ${val}`, this.display);       
       this.iShow = val;
     },
     // https://stackoverflow.com/questions/57934943/how-to-watch-for-vuex-state
-    "store.state.currentURL": {
+    "store.state.currentURL":  {
       deep: true,
       handler(val: string, oldVal: string): void {
+console.log(`WATCH: looking at store value on URL: ${oldVal} => ${val} `); 
+
         if (this.firstPass && !this.urlsStack.includes(val)) {
           this.urlsStack.push(val);
           this.iShow = true;
@@ -147,7 +148,10 @@ export default defineComponent({
     },
 
     "store.state.showHelp": function (val, oldVal) {
+console.log(`WATCH: looking at store value on showValue: ${oldVal} => ${val} `, this.firstPass, this.urlsStack); 
       this.iShow = val;
+      this.firstPass =true;
+      this.urlsStack.splice(0, this.urlsStack.length);
       this.applyBody();
     },
   },
@@ -157,14 +161,13 @@ export default defineComponent({
       this.list.splice(0, this.list.length);
       this.list.push(...TEXT.getTemplate(nom));
       if (this.list.length === 0 || this.list[0] === "") {
-        console.warn("Ran store->showHelp(), but have no content to show?");
+        this.log.addRaw("Ran store->showHelp(), but have no content to show?", "warn");
         this.iShow = false;
       }
     },
 
     hide(e: GuessEvent): void {
       this.iShow = false;
-      e.preventDefault();
     },
 
     changeText(what: string): void {

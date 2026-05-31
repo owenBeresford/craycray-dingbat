@@ -1,15 +1,9 @@
 <template>
   <div class="aList" :data-testid="testId" :key="currentStateKey">
-    <InterstitialView
-      :display="helpText"
-      :show="canSeeHelp"
-      :ttl="ttl"
-      :currentStateKey="helpId"
-      :testId="viewId"
-    />
+    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="helpId" :testId="viewId" />
     <ul class="buttonRow">
       <li class="bigger">
-        <h3>{{ ctx.listRef.nom }}</h3>
+        <h3>{{ ctx.listRef.value.nom }}</h3>
       </li>
       <li><img width="40" height="40" :src="logoPath" aria-hidden="true" role="presentation" :alt="text.imgAlt" /></li>
       <li :title="text.addTitle">
@@ -34,21 +28,24 @@
       <li v-for="(i, j) in actualList" :key="j" :title="text.currentTitle">
         <span
           v-if="bisMobile"
+          tabindex="0" 
           class="button info"
-          :aria-grabbed="ctx.draggingRef[j]"
-          v-touch="onEdit"
+          :aria-selected="ctx.draggingRef.value[j]"
+          v-touch-class="'touchActive'" 
           :data-offset="j"
+          v-touch="onEdit"
+          @touchstart.prevent="noop"
           v-touch:swipe.left="onSwipe"
           v-touch:swipe.up="onDragStart"
           v-touch:swipe.down="onDragStart"
-          v-touch-options="{ swipeTolerance: 80, rollOverFrequency: 500 }"
+          v-touch-options="{ swipeTolerance: 20, rollOverFrequency: 500, swipeConeSize:0.4 }"
         >
           {{ i }}
         </span>
         <span
           v-else
           class="button info"
-          :aria-grabbed="ctx.draggingRef[j]"
+          :aria-selected="ctx.draggingRef.value[j]"
           :data-offset="j"
           v-touch-options="{ dragTolerance: 200, rollOverFrequency: 400 }"
           v-longpress="onEdit"
@@ -72,6 +69,7 @@ import InterstitialView from "./InterstitialView.vue";
 
 import { useStore } from "../services/Store";
 import { useUIText } from "../services/Localisation";
+import { extractId } from '../services/util'; 
 import { ListData, setupCurrentList, idOf } from "../services/DataFactory";
 import { StdList, EMPTY_LIST } from "../services/AList";
 import { MotionStream } from "../services/MotionStream";
@@ -85,7 +83,7 @@ import type { ThisListStaticData, ThisListProps } from "../types/ComponentProps"
 
 const TEXT = useUIText();
 if (_LOGGING_) {
-  console.log("KKK ThisList global scope ListData id:", idOf(ListData));
+  console.debug("KKK ThisList global scope ListData id:", idOf(ListData));
 }
 
 const NEW_LIST = -1;
@@ -125,48 +123,54 @@ export default defineComponent({
     const canSeeHelp: boolean = inject<boolean>("canSeeHelp");
     const ttl: string = inject<number>("ttl");
     const canSeeInputRef: Ref<boolean> = ref<boolean>(false);
+    const log: Loggable = inject<Loggable>("log");
     const getInputRef: Ref<string> = ref<string>("");
     const CBRef: Ref<CBType> = ref<CBType>(noop);
 
     let stack: ExternalMethods;
     try {
       const flux = new MotionStream();
-      const liste:StdList = Object.assign( Object.create(Object.getPrototypeOf(EMPTY_LIST)), EMPTY_LIST ) as StdList;
+      const liste: StdList = Object.assign(Object.create(Object.getPrototypeOf(EMPTY_LIST)), EMPTY_LIST) as StdList;
       liste.importTest(setupCurrentList(itinéraire));
-      const listRef:Ref<StdList> = ref<StdList>(liste);
-      let dragging:Array<boolean>=Array( liste.énumérer);
+      const listRef: Ref<StdList> = ref<StdList>(liste);
+      let dragging: Array<boolean> = Array(liste.énumérer);
       dragging.fill(false);
-      const draggingRef: Ref<Array<boolean>> = ref<Array<boolean>>( dragging );
+      const draggingRef: Ref<Array<boolean>> = ref<Array<boolean>>(dragging);
 
-      stack = useThisListActions( flux, ListData);
+      stack = useThisListActions(flux, ListData);
       return {
-        extraMethods: stack.mount({ getInputRef, CBRef, draggingRef, canSeeInputRef, listRef  } as FakeThis, stack),
-        helpText, canSeeHelp, ttl,
-        ctx: {  getInputRef, CBRef, draggingRef,  canSeeInputRef, listRef } as FakeThis,
+        extraMethods: stack.mount({ getInputRef, CBRef, draggingRef, canSeeInputRef, listRef } as FakeThis, stack),
+        helpText,
+        canSeeHelp,
+        ttl,
+        ctx: { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef } as FakeThis,
       };
     } catch (e: unknown) {
-      console.log("SearchResults.setup():", (e as Error).message);
+      console.warn("ThisList.setup():", (e as Error).message, (e as Error).stack.substring(0, 200), );
+      log.addRaw("ThisList.setup():"+ (e as Error).message +"  " + (e as Error).stack.substring(0, 200), "error");
     }
   },
 
   created() {
-    if (_LOGGING_) {
-      console.log("KKK ThisList global scope ListData id:", idOf(ListData));
+     if (_LOGGING_) {
+      console.debug("KKK ThisList global scope ListData id:", idOf(ListData));
     }
     this.initGeneratedMethods();
-console.log( this.ctx  );    
   },
   mounted() {
     if (this.shopStore) {
       const itinéraire = useRoute();
       this.shopStore.commit("setPath", itinéraire.path);
-      this.shopStore.commit("setId", this.id);
+      this.id= extractId(itinéraire.params.index ) ?? NEW_LIST;
+
+      this.shopStore.commit("setId", extractId(itinéraire.params.index ) ?? NEW_LIST );
     } else {
       console.assert(this.shopStore, "ThisList: At mounted() stage, do not have a state storage?!");
     }
   },
   data(): ThisListStaticData {
     return {
+      noop,
       id: NEW_LIST,
       bisMobile: isMobile(),
       logoPath: LOGO_PATH,
@@ -187,9 +191,7 @@ console.log( this.ctx  );
       return this.$props.currentStateKey + "view";
     },
     actualList(): Array<string> {
-console.log("WW WW WW",  this.ctx );
-
-      if( this.ctx.listRef.value) {
+      if (this.ctx.listRef.value) {
         return this.ctx.listRef.value.export<string>();
       }
       return [] as Array<string>;

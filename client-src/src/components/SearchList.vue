@@ -1,12 +1,6 @@
 <template>
   <div id="serpsContainer" class="serps" :key="currentStateKey" :data-testId="testId">
-    <InterstitialView
-      :display="helpText"
-      :show="canSeeHelp"
-      :ttl="ttl"
-      :currentStateKey="helpId"
-      :testId="viewId"
-    />
+    <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="helpId" :testId="viewId" />
     <p>{{ text.intro }}</p>
     <ul class="buttonRow">
       <li>
@@ -20,9 +14,9 @@
           role="button"
           :title="text.saveTitle"
           v-html="text.saveLabel"
-          v-touch.once="onSave"
-          @click.once="onSave"
-          @keypress.once="onSave"
+          v-touch.prevent="onSave"
+          @click.prevent="onSave"
+          @keypress.prevent="onSave"
         ></span>
       </li>
     </ul>
@@ -79,14 +73,12 @@ import { ListData, setupCurrentList } from "../services/DataFactory";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
 import { MotionStream } from "../services/MotionStream";
+import { LogService } from '../services/LogStack';
 import { useSearchActions, SearchActions } from "../services/SearchActions";
 
 import type { ExternalMethods, FakeThis } from "../types/Actionables";
 import type { COMPLETE_STORE } from "../services/Store";
 import type { SearchProps, SearchStaticData } from "../types/ComponentProps";
-// import { StaticRoutes } from "./Routing";
-// import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
-// import type { SerpsProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 export default defineComponent({
@@ -113,6 +105,7 @@ export default defineComponent({
     const helpText: string = inject<string>("helpText");
     const canSeeHelp: boolean = inject<boolean>("canSeeHelp");
     const ttl: string = inject<number>("ttl");
+    const log:LogService =inject<LogService>("log");
 
     let stack: ExternalMethods;
     try {
@@ -120,16 +113,18 @@ export default defineComponent({
       const list: SearchList = SearchList.serps(ListData.currentData.searchItems(props.term));
 
       stack = useSearchActions(list, flux, ListData);
+      log.addRaw("User query: "+props.term, "info" );
       return {
         extraMethods: stack.mount({}, stack),
         helpText,
         canSeeHelp,
         ttl,
         list,
+        log,
         ctx: {} as FakeThis, // empty!!
       };
     } catch (e: unknown) {
-      console.log("SearchResults.setup():", (e as Error).message);
+      log.addRaw("SearchResults.setup(): "+ (e as Error).message +"  "+ (e as Error).stack.substring(0, 200), "error" );
     }
   },
   data(): SearchStaticData {
