@@ -34,7 +34,13 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 	else 
 		# TODO work out why my FE deps now inject checks against "process.env"
 		echo -n "const process={env:{}};" > ../dist/public/shopping.es.min.mjs
-		cat dist/shopping.es.mjs >> ../dist/public/shopping.es.min.mjs
+		# Im not setting nODE_ENV here. 
+		# I have logic in vite config to call thing ...-test when NODE_ENV is development
+		if [ -f dist/shopping.es.mjs ]; then 
+			cat dist/shopping.es.mjs >> ../dist/public/shopping.es.min.mjs
+		elif [ -f dist/shopping-test.es.mjs ];then
+			cat dist/shopping-test.es.mjs >> ../dist/public/shopping.es.min.mjs
+		fi
 	fi
 	$NODEBIN $EXECDIR/vite --config ./vite.config.test-worker.mjs build --l info # -m $buildenv
 	ret=$?
@@ -42,7 +48,11 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 		echo "Tool sync vite exited $ret on *.ts"
 		exit 1
 	else 
-		mv dist/worker1.es.mjs ../dist/public/worker1.es.min.mjs
+		if [ -f dist/worker1.es.mjs ]; then
+			mv dist/worker1.es.mjs ../dist/public/worker1.es.min.mjs
+		elif [ -f dist/worker1-test.es.mjs ]; then
+			mv dist/worker1-test.es.mjs ../dist/public/worker1.es.min.mjs
+		fi
 	fi
 
 	bigVersion=`node -v | sed -e "s/v//" -e "s/\..*//"`
