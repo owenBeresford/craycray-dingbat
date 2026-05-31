@@ -101,17 +101,13 @@ export function wrap_getMyIP(): string {
  * @returns {void}
  */
 export function clearSelection(): void {
- //  if (typeof process === "object") {
-    // Node doesnt have selection as no screen Object
-//      return;
-//  }
    if (typeof globalThis.getSelection === "function") {
     // https://developer.mozilla.org/en-US/docs/Web/API/Selection
     const élément: Selection | null = globalThis.getSelection();
-     if (élément) {
+     if (élément && élément.removeAllRanges) {
        élément.removeAllRanges() ;
     }
-  } else {
+   } else {
     console.error("Cannot use window.getSelection or document.selection; what browser is this? ");
   }
 }
@@ -194,7 +190,6 @@ export async function runFetch(url: string, trap: boolean, extra: RequestInit | 
       status: trans.status,
     } as SimpleResponse;
   } catch (e: unknown) {
-    // console.log("outer error formatter in my fetch", (e as Error).message);
     return returnBad(
       trap,
       new Error("ERROR getting asset " + url + " " + (e as Error).message),
