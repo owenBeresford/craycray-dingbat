@@ -1,17 +1,23 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
+import { useArgs } from 'storybook/manager-api';
+import { setup,  } from "@storybook/vue3";
+import { provide } from 'vue';
 import { expect, fn, within, waitFor, userEvent } from "storybook/test";
 
+import { useLog } from "../../services/LogStack";
 import IntersttitialView from "../../components/InterstitialView.vue";
 import { delay } from "../../../../common/util";
 
 const meta: Meta<typeof IntersttitialView> = {
   component: IntersttitialView,
   title: "user training screen with IntersttitialView",
+
 } satisfies Meta<typeof IntersttitialView>;
 
 export default meta;
 type Story = StoryObj<typeof IntersttitialView>;
 
+ 
 export const EntirelyPassive: Story = {
   args: {
     ttl: 0,
@@ -107,5 +113,49 @@ export const RenderingWithButtonEvent: Story = {
     // await userEvent.click(canvas.getByRole('button', { name: /X/i }));
     await userEvent.click(canvas.getByRole("button"));
     expect((canvasElement.childNodes[0] as Comment).data).toEqual("v-if");
+  },
+};
+
+export const VanishingRendering2: Story = {
+  args: {
+    ttl: 3000,
+    display: "firstUse",
+    show: true,
+    currentStateKey: "test21",
+    testId: "test21",
+  },
+  /*
+  render: (args) => ({
+    components: { IntersttitialView  },
+    setup() {
+      provide('log', useLog());
+      return { args };
+    },
+    template: `<IntersttitialView :display="args.display" :show="args.show" :ttl="args.ttl" :currentStateKey="args.currentStateKey" :testId="args.testId" />`
+  }),
+  */
+
+  play: async ({ args, updateArgs, canvasElement }) => {
+    const canvas = within(canvasElement);
+    // might need to add .resolves. to expect statements
+
+    expect(await canvas.getByTestId("test21")).toBeVisible();
+    expect(((await canvas.findByTestId("test21close1")) as HTMLInputElement).value).toBe("X");
+    await userEvent.click(canvas.getByRole("button"));
+    await delay(500);
+    expect(await canvas.getByTestId("test21")).not.toBeVisible();
+
+    updateArgs({ ...args, show: true, });
+    expect(await canvas.getByTestId("test21")).toBeVisible();
+    expect(((await canvas.findByTestId("test21close1")) as HTMLInputElement).value).toBe("X");
+    await userEvent.click(canvas.getByRole("button"));
+    await delay(500);
+
+    updateArgs({ ...args, show: true, });
+    expect(await canvas.getByTestId("test21")).toBeVisible();
+    expect(((await canvas.findByTestId("test21close1")) as HTMLInputElement).value).toBe("X");
+    await userEvent.click(canvas.getByRole("button"));
+    await delay(500);
+
   },
 };
