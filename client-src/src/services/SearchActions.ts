@@ -68,7 +68,7 @@ export class SearchActions extends BaseActions implements ExternalMethods {
     this.flux.register("0", this.onSwipeFinalise.bind(this));
   }
 
-  onSwipe(dir: string, e: TouchEvent, ctx: FakeThis): void {
+  public onSwipe(dir: string, e: TouchEvent, ctx: FakeThis): void {
     const agaçant = e!.currentTarget as HTMLElement;
     //  if(dir !="left") { return; }  // IOIO need to see values first
     this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
@@ -76,7 +76,7 @@ export class SearchActions extends BaseActions implements ExternalMethods {
     this.onSwipeFinalise(e, ctx);
   }
 
-  onSwipeFinalise(e: unknown, ctx: FakeThis ): void {
+  public onSwipeFinalise(e: unknown, ctx: FakeThis): void {
     if (this.offset >= 0 && this.offset < this.list.énumérer) {
       this.list.remove(this.offset);
     } else {
@@ -84,19 +84,19 @@ export class SearchActions extends BaseActions implements ExternalMethods {
     }
   }
 
-  onDragStart(e: MouseEvent, ctx: FakeThis): void {
+  public onDragStart(e: MouseEvent, ctx: FakeThis): void {
     const agaçant = e!.currentTarget as HTMLElement;
     this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
     this.flux.start(e, ctx);
   }
 
-  onDragStop(e: MouseEvent, ctx: FakeThis): void {
+  public onDragStop(e: MouseEvent, ctx: FakeThis): void {
     const agaçant = e!.currentTarget as HTMLElement;
     this.flux.end(e, ctx);
     clearSelection();
   }
 
-  onDragExit(e: FocusEvent, ctx: FakeThis): void {
+  public onDragExit(e: FocusEvent, ctx: FakeThis): void {
     // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent
     // new MouseEvent(typeArg, mouseEventInit);
     let e3: HTMLElement = e.relatedTarget as HTMLElement;
@@ -117,11 +117,11 @@ export class SearchActions extends BaseActions implements ExternalMethods {
     clearSelection();
   }
 
-  onDragMove(e: MouseEvent, ctx: FakeThis): void {
+  public onDragMove(e: MouseEvent, ctx: FakeThis): void {
     this.flux.addEvent(e);
   }
 
-  onSave(e: GuessEvent, ctx: FakeThis): void {
+  public onSave(e: GuessEvent, ctx: FakeThis): void {
     let buff: StdList = StdList.manual("Search results", this.data.currentData.count());
     let tmp = this.list.export();
     for (let i in tmp) {
@@ -130,4 +130,5 @@ export class SearchActions extends BaseActions implements ExternalMethods {
     this.data.currentData.append(buff);
     StaticRoutes.push({ name: "list-everything" });
   }
+  
 }

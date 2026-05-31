@@ -170,10 +170,10 @@ export class BaseList<T> implements InstanceListable<T>, ListStruct {
    * @public
    * @returns {boolean}
    */
-  public import(relevé: Array<T>, strict:boolean): boolean {
-    if(strict) {
+  public import(relevé: Array<T>, strict: boolean): boolean {
+    if (strict) {
       this.éléments.splice(0, this.éléments.length);
-      this.énumérer =0;
+      this.énumérer = 0;
     }
     this.éléments.push(...relevé);
     this.énumérer += relevé.length;

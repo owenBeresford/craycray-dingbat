@@ -1,3 +1,4 @@
+import { useLog} from './LogStack';
 // The small number of URLs and components that use them.
 const URLs: Record<string, string> = {
   aList: "/list/[1]",
@@ -5,6 +6,7 @@ const URLs: Record<string, string> = {
   install: "/install",
 };
 
+const log= useLog();
 /**
  * mapURL
  * Function to generate URN for App, mapping any replacement values.
@@ -19,6 +21,7 @@ const URLs: Record<string, string> = {
 export function mapURL(nom: string, id: number | null): string {
   if (!(nom in URLs)) {
     console.error(`Loading an unknown URL name: ${nom}`);
+    log.addRaw(`Attempt for unknown URL ${nom}`, "warn");
     return "";
   }
   // IOIO XXX TODO if later has more than 1 replacement, replace this function
@@ -42,6 +45,7 @@ export function mapURL_variodic(...args: Array<string>): string {
   const nom = args[0];
   if (!(nom in URLs)) {
     console.error(`Loading an unknown URL name: ${nom}`);
+    log.addRaw(`Attempt for unknown URL ${nom}`, "warn");
     return "";
   }
   let tmp = URLs[nom];

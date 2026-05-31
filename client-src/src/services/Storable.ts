@@ -37,7 +37,7 @@ export function transform2list(dat: string): Array<SaveStruct> {
   try {
     thing = JSON.parse(dat);
   } catch (e: unknown) {
-    console.log("JSON parsing broke ", (e as Error).message);
+    console.warn("JSON parsing broke "+(e as Error).message);
   }
 
   if (!Array.isArray(thing)) {

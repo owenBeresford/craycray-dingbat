@@ -145,7 +145,7 @@ export class RemoteStorage implements Storable, DistantStorable {
       globalThis
         .fetch(this.url, REQT)
         .catch((err: unknown) => {
-          console.warn("FAILED TO LOAD STATE", (err as Error).message);
+          console.warn("Failed to load state", (err as Error).message);
           return bad(new Error("No data was found"));
         })
         .then((filet: Response | void): void => {

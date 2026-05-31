@@ -1,10 +1,13 @@
 import { StdList, EMPTY_LIST } from "./AList";
 import { EMPTY_LIST_NAME } from "../Constants";
+import { useLog} from './LogStack';
 
 import type { SaveStruct } from "../../../common/types/SaveStruct";
+import type { Loggable } from "../types/Loggable";
 import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 
+const log:Loggable = useLog();
 /**
  * ListService 
  * ListService, the class to mediate List storage
@@ -201,7 +204,7 @@ export class ListService implements ListCollection<string> {
       });
       ret.push(...tmp2);
     }
-    console.info("Search results ", ret);
+    log.addRaw("Search results of "+égaler+" are "+ ret, "info");
     return ret;
   }
 

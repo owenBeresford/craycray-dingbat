@@ -7,6 +7,9 @@ import type { ListCollection, ListStruct, MatchedItems } from "../types/ListColl
 import type { COMPLETE_STORE } from "./Store";
 import type { FactoryArtefact } from "./DataFactory";
 import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Actionables";
+import { useLog } from './LogStack';
+
+const LOG=useLog();
 
 /**
  * @class BaseActions
@@ -74,9 +77,12 @@ export abstract class BaseActions implements ExternalMethods {
   wrapper(SELF: BaseActions, f1: UserAction, ctx: FakeThis): UserAction {
     return function (e: GuessEvent): boolean {
       if (e.type && e.type === "mouseup") {
+        LOG.addRaw("event action in Base, mouse UP event", "debug");
         return false;
       }
       if ("data" in (SELF as BaseActions) && !SELF.data.currentData) {
+        LOG.addRaw("event action in Base, no data in currentData ", "debug");
+
         return false;
       }
       f1 = f1.bind(SELF);
