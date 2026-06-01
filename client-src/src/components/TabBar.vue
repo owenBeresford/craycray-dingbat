@@ -33,10 +33,10 @@
               <span
                 role="button"
                 :aria-disabled="installEnabledBool"
-                :disabled="installEnabledBool || false"
+                :disabled="installEnabledBool || null"
                 :title="menu.installTitle"
                 :class="installEnabled"
-                v-touch.prevent="onInstall"
+                v-touch="onInstall"
                 @click.prevent="onInstall"
                 @keypress.prevent="onInstall"
               >
@@ -48,7 +48,8 @@
                 role="button"
                 class="button"
                 :title="menu.helpTitle"
-                v-touch.prevent="onInterstitial"
+                :aria-disabled="false" 
+                v-touch="onInterstitial"
                 @click.prevent="onInterstitial"
                 @keypress.prevent="onInterstitial"
                 >{{ menu.helpName }}</span
@@ -61,7 +62,7 @@
                 role="button"
                 :title="menu.renameTitle"
                 class="button"
-                @touch.prevent="onName"
+                @touch="onName"
                 @click.prevent="onName"
                 @keypress="onName"
                 >{{ menu.renameName }}</span
@@ -74,7 +75,7 @@
                 :title="menu.dupeTitle"
                 class="button"
                 role="button"
-                v-touch.prevent="onDuplicate"
+                v-touch="onDuplicate"
                 @click.prevent="onDuplicate"
                 @keypress.prevent="onDuplicate"
                 >{{ menu.dupeName }}</span
@@ -87,7 +88,7 @@
                 class="button"
                 role="button"
                 :title="menu.uniqTitle"
-                v-touch.prevent="onUnique"
+                v-touch="onUnique"
                 @click.prevent="onUnique"
                 @keypress.prevent="onUnique"
                 >{{ menu.uniqName }}</span
@@ -222,7 +223,7 @@ export default defineComponent({
    
     return {
       installEnabled: état,
-      installEnabledBool: (état.match(/disabled/g) || []).length !==0 ,
+      installEnabledBool: (état.match(/disabled/g) || []).length ===0 ,
       EIK: this.$props.currentStateKey + "false",
       inputId: this.testId + "input1",
       menuId: this.testId + "Menu1",

@@ -9,7 +9,10 @@ import ShoppingApp from "./App.vue";
 
 const TOOL = createApp(ShoppingApp, { currentStateKey: "scr1", instanceId: "v1.1" });
 TOOL.use(StaticRoutes);
-TOOL.use(Vue3TouchEvents as Plugin);
+TOOL.use(
+Vue3TouchEvents as Plugin, 
+{  disableClick: false, passive: false }
+);
 TOOL.use(STORE);
 
 TOOL.directive("longpress", {
