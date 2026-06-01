@@ -48,7 +48,7 @@
                 role="button"
                 class="button"
                 :title="menu.helpTitle"
-                :aria-disabled="false" 
+                :aria-disabled="false"
                 v-touch="onInterstitial"
                 @click.prevent="onInterstitial"
                 @keypress.prevent="onInterstitial"
@@ -153,7 +153,7 @@ import { useUIText } from "../services/Localisation";
 import { useTabActions, noop, TabActions } from "../services/TabActions";
 import type { COMPLETE_STORE } from "../services/Store";
 import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Actionables";
-import type { Loggable } from '../types/Loggable';
+import type { Loggable } from "../types/Loggable";
 // import { StaticRoutes } from "./Routing";
 import EnterInput from "./EnterInput.vue";
 // import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
@@ -191,7 +191,7 @@ export default defineComponent({
     const CBRef = ref<CBType>(noop);
     const storeRef = ref<COMPLETE_STORE>(useStore());
     const menuStateRef = ref<boolean>(false);
-    const log:Loggable = inject<Loggable>('log');
+    const log: Loggable = inject<Loggable>("log");
 
     let stack: ExternalMethods;
     try {
@@ -205,7 +205,7 @@ export default defineComponent({
         CBRef,
         log,
         storeRef,
-        route:useRoute(),
+        route: useRoute(),
         ctx: { visibleRef, getInputRef, CBRef, storeRef, menuStateRef } as FakeThis,
       };
     } catch (e: unknown) {
@@ -220,15 +220,15 @@ export default defineComponent({
     } else if (CACHE.check()) {
       état += " disabled";
     }
-   
+
     return {
       installEnabled: état,
-      installEnabledBool: (état.match(/disabled/g) || []).length ===0 ,
+      installEnabledBool: (état.match(/disabled/g) || []).length === 0,
       EIK: this.$props.currentStateKey + "false",
       inputId: this.testId + "input1",
       menuId: this.testId + "Menu1",
       hasData: this.dataOnLoad,
-     // hasDataAndList: (this.dataOnLoad && (Object.keys(this.route.params).length > 0)),
+      // hasDataAndList: (this.dataOnLoad && (Object.keys(this.route.params).length > 0)),
       urls: [mapURL("allList", null), mapURL("aList", -1)],
       menu: {
         header: TEXT.get("menu.header1"),
@@ -258,8 +258,10 @@ export default defineComponent({
       },
     } satisfies TabBarStaticData;
   },
-  computed:{
-    hasDataAndList():boolean { return !(this.dataOnLoad && (Object.keys(this.route.params).length > 0));  }
+  computed: {
+    hasDataAndList(): boolean {
+      return !(this.dataOnLoad && Object.keys(this.route.params).length > 0);
+    },
   },
   mounted() {
     if (!this.shopStore) {

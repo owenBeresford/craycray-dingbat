@@ -72,7 +72,7 @@ export default defineComponent({
       store: useStore(),
       iShow: shouldShow ? this.$props.show : false,
       // this is the buffer for the help text currently rendered
-      list: [] as StrictArray, 
+      list: [] as StrictArray,
       firstPass: false,
       // there is an different help text for each screen, I aim to show each once
       urlsStack: [] as StrictArray,
@@ -136,10 +136,9 @@ export default defineComponent({
       this.iShow = val;
     },
     // https://stackoverflow.com/questions/57934943/how-to-watch-for-vuex-state
-    "store.state.currentURL":  {
+    "store.state.currentURL": {
       deep: true,
       handler(val: string, oldVal: string): void {
-
         if (this.firstPass && !this.urlsStack.includes(val)) {
           this.urlsStack.push(val);
           this.iShow = true;
@@ -150,7 +149,7 @@ export default defineComponent({
 
     "store.state.showHelp": function (val, oldVal) {
       this.iShow = val;
-      this.firstPass =true;
+      this.firstPass = true;
       this.urlsStack.splice(0, this.urlsStack.length);
       this.applyBody();
     },

@@ -12,11 +12,11 @@
 <script lang="ts">
 // https://github.com/josueggh/a11y-cheatsheet
 import { defineComponent, inject, ref } from "vue";
- 
+
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
-import { useLog } from '../services/LogStack';
+import { useLog } from "../services/LogStack";
 import { useUIText } from "../services/Localisation";
- 
+
 const TEXT = useUIText();
 
 export default defineComponent({
@@ -36,19 +36,18 @@ export default defineComponent({
   data() {
     return {
       msgBodyId: this.$props.testId + "Msgs1",
-      refreshId:this.$props.testId + "Refresh1",
-      
+      refreshId: this.$props.testId + "Refresh1",
     };
   },
-  methods:{
-    refresh:function(e:GuessEvent):void {
-        console.log("Data pretend refresh" );
-    }
+  methods: {
+    refresh: function (e: GuessEvent): void {
+      console.log("Data pretend refresh");
+    },
   },
   computed: {
     // keying structure isnt complex, BUT logging shouldnt change, so keys shouldnt change
-    messages:function ():Array<string> {
-      if( this.msgs) { 
+    messages: function (): Array<string> {
+      if (this.msgs) {
         return this.msgs.readWhole().log;
       } else {
         return [];
@@ -57,6 +56,3 @@ export default defineComponent({
   },
 });
 </script>
-
-
-

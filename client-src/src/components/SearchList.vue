@@ -73,7 +73,7 @@ import { ListData, setupCurrentList } from "../services/DataFactory";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
 import { MotionStream } from "../services/MotionStream";
-import { LogService } from '../services/LogStack';
+import { LogService } from "../services/LogStack";
 import { useSearchActions, SearchActions } from "../services/SearchActions";
 
 import type { ExternalMethods, FakeThis } from "../types/Actionables";
@@ -105,7 +105,7 @@ export default defineComponent({
     const helpText: string = inject<string>("helpText");
     const canSeeHelp: boolean = inject<boolean>("canSeeHelp");
     const ttl: string = inject<number>("ttl");
-    const log:LogService =inject<LogService>("log");
+    const log: LogService = inject<LogService>("log");
 
     let stack: ExternalMethods;
     try {
@@ -113,7 +113,7 @@ export default defineComponent({
       const list: SearchList = SearchList.serps(ListData.currentData.searchItems(props.term));
 
       stack = useSearchActions(list, flux, ListData);
-      log.addRaw("User query: "+props.term, "info" );
+      log.addRaw("User query: " + props.term, "info");
       return {
         extraMethods: stack.mount({}, stack),
         helpText,
@@ -124,7 +124,10 @@ export default defineComponent({
         ctx: {} as FakeThis, // empty!!
       };
     } catch (e: unknown) {
-      log.addRaw("SearchResults.setup(): "+ (e as Error).message +"  "+ (e as Error).stack.substring(0, 200), "error" );
+      log.addRaw(
+        "SearchResults.setup(): " + (e as Error).message + "  " + (e as Error).stack.substring(0, 200),
+        "error"
+      );
     }
   },
   data(): SearchStaticData {

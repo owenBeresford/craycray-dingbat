@@ -130,5 +130,4 @@ export class SearchActions extends BaseActions implements ExternalMethods {
     this.data.currentData.append(buff);
     StaticRoutes.push({ name: "list-everything" });
   }
-  
 }

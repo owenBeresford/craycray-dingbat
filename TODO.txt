@@ -6,19 +6,18 @@ DETAILS TO COMPLETE FOR RELEASE
 - StateSyncing test cover full state map - when threads work.
 - think about best name for ShopState
 - Make better favico
-- consider badges, css backdrop not working
-- Workout if MotionStream->significance and signifcanceAsPercentage should use same thresholds
+- consider badges, and css backdrop not working
 - May be need to re-add STORE.getters
 - Engineer thing to that actual network code is masked in Story tests... another connection type
 - Replace self-signed-certs with real-ones via lets-encrypt
 - Storybook "run tests" on page load
 - Workout if should cache list data in browser cache?
-
+- list sorting? a-z
 
 LOW IMPACT, nioce to haves
 - Maybe functions can have runtime behaviour from function name, supported by https://github.com/Guichaguri/cross-caller/blob/main/src/index.ts
 - Look at eslint-plugin-unicorn, might reduce problems on eslint + TS
-- interaction: status bar/ message board
+- Maybe lineup state-keys to show net status in later builds
 - Scroll to top marker, if the list is longer than the page
 - pour les mot variable privé, traduire en francias 
 - consider if porting to PointerEvents would be more readable https://www.redblobgames.com/x/2217-vue-pointerevents/ 

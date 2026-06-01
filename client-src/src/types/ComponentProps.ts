@@ -82,7 +82,7 @@ export interface TabBarStaticData {
   inputId: string;
   urls: Array<string>;
   hasData: boolean;
-  hasDataAndList:boolean;
+  hasDataAndList: boolean;
   menu: Record<string, string>; // l12n data
 }
 

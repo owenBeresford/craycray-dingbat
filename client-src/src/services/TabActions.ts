@@ -1,13 +1,13 @@
 import type { RouteLocationNormalizedLoadedGeneric } from "vue-router";
 
 import { BaseActions } from "./BaseActions";
-import { StdList  } from "./AList";
+import { StdList } from "./AList";
 import { CacheWrapper } from "../workers/InstallWorker";
 import { StaticRoutes } from "../components/Routing";
 import { hashState } from "../../../common/util";
 import { extractId } from "./util";
 import { useUIText } from "./Localisation";
-import { useLog } from './LogStack';
+import { useLog } from "./LogStack";
 
 import type { FactoryArtefact } from "./DataFactory";
 import type { COMPLETE_STORE } from "./Store";
@@ -40,7 +40,7 @@ export function useTabActions(
 }
 
 const TEXT = useUIText();
-const LOG=useLog();
+const LOG = useLog();
 
 /**
  * @class TabActions
@@ -95,8 +95,8 @@ export class TabActions extends BaseActions {
     if (this.store.state.currentURL !== this.route.path) {
       this.store.commit("setPath", this.route.path);
     }
-    if (this.store.state.currentId<0 ) {
-      this.store.commit("setId", extractId(this.route.params.index ));
+    if (this.store.state.currentId < 0) {
+      this.store.commit("setId", extractId(this.route.params.index));
     }
   }
 
@@ -119,7 +119,7 @@ export class TabActions extends BaseActions {
     // assert( the initersitial is present in the current screen )
     this.store.commit("show", false);
     this.store.commit("show", true);
-    ctx.menuStateRef.value =false;
+    ctx.menuStateRef.value = false;
   }
 
   /**
@@ -134,17 +134,17 @@ export class TabActions extends BaseActions {
   public onInstall(ignored: GuessEvent, ctx: FakeThis): void {
     if (location.protocol !== "https:") {
       LOG.addRaw("Install button is disabled, you need to use HTTPS.", "info");
-      return ;
+      return;
     }
     if (this.cache.check()) {
       LOG.addRaw("App thinks its already installed.", "info");
-      ctx.menuStateRef.value =false;
-      return ;
+      ctx.menuStateRef.value = false;
+      return;
     }
 
     LOG.addRaw("App is running install now", "debug");
     this.cache.install();
-    ctx.menuStateRef.value =false;
+    ctx.menuStateRef.value = false;
   }
 
   /**
@@ -158,21 +158,20 @@ export class TabActions extends BaseActions {
    */
   public onUnique(ignored: GuessEvent, ctx: FakeThis): void {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    if(! this.route.params) {
+    if (!this.route.params) {
       LOG.addRaw("Cannot run unique(), not on a single list screen", "info");
       return;
     }
     const liste = this.data.currentData.get(this.store.state.currentId);
     if (liste) {
       liste.unique();
-      LOG.addRaw("Ran Unique on "+liste.nom+" ("+this.store.state.currentId+")", "info");
+      LOG.addRaw("Ran Unique on " + liste.nom + " (" + this.store.state.currentId + ")", "info");
 
       // @ts-ignore  - there are no undef() at runtime after the con'tor.
       this.data.currentData.put(this.store.state.currentId, liste);
-      ctx.menuStateRef.value =false;
-
+      ctx.menuStateRef.value = false;
     } else {
-      LOG.addRaw("NO LIST FOUND for Unique ("+this.store.state.currentId+")", "warn");
+      LOG.addRaw("NO LIST FOUND for Unique (" + this.store.state.currentId + ")", "warn");
     }
   }
 
@@ -187,7 +186,7 @@ export class TabActions extends BaseActions {
    */
   public onDuplicate(ignored: GuessEvent, ctx: FakeThis): void {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    if(! this.route.params) {
+    if (!this.route.params) {
       LOG.addRaw("cannot run duplicate(), not on a single list screen", "info");
       return;
     }
@@ -202,11 +201,10 @@ export class TabActions extends BaseActions {
       extra.editName(`DUP: ${liste.nom}`);
       // @ts-ignore  - there are no undef() at runtime after the con'tor.
       this.data.currentData.append(extra);
-      LOG.addRaw("Duplicated list "+this.store.state.currentId+" (see list DUP).", "info");
-      ctx.menuStateRef.value =false;
-
+      LOG.addRaw("Duplicated list " + this.store.state.currentId + " (see list DUP).", "info");
+      ctx.menuStateRef.value = false;
     } else {
-      LOG.addRaw("Attempt duplicate list? BUT list not found "+this.store.state.currentId+".", "warn");
+      LOG.addRaw("Attempt duplicate list? BUT list not found " + this.store.state.currentId + ".", "warn");
     }
     StaticRoutes.push({ name: "list-everything" });
   }
@@ -227,12 +225,12 @@ export class TabActions extends BaseActions {
       return false;
     }
 
-     LOG.addRaw("Saving all your current lists to a local cache.", "info");
+    LOG.addRaw("Saving all your current lists to a local cache.", "info");
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     this.loadedStateKey = hashState(this.data.currentData.list());
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     this.data.currentData.saveAllLists();
-     ctx.menuStateRef.value =false;
+    ctx.menuStateRef.value = false;
   }
 
   /**
@@ -253,7 +251,7 @@ export class TabActions extends BaseActions {
     LOG.addRaw("Rebuilding data from cache for all lists.", "info");
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     this.data.currentData.loadAllLists();
-    ctx.menuStateRef.value =false;
+    ctx.menuStateRef.value = false;
   }
 
   /**
@@ -282,7 +280,7 @@ export class TabActions extends BaseActions {
     ctx.getInputRef.value = "";
     createSearchCallback(ctx);
     ctx.visibleRef.value = true;
-    ctx.menuStateRef.value =false;
+    ctx.menuStateRef.value = false;
   }
 
   /**
@@ -300,14 +298,14 @@ export class TabActions extends BaseActions {
     const liste: StdList = this.data.currentData.get(this.store.state.currentId) as StdList;
     if (!liste) {
       LOG.addRaw("Cannot edit list name, only have a bad ID.", "warn");
-      return ;
+      return;
     }
 
     createNameCallback(ctx, this.data);
     ctx.getInputRef.value = liste.nom ?? TEXT.get("menu.renameSupport");
     ctx.visibleRef.value = true;
 
-    ctx.menuStateRef.value =false;
+    ctx.menuStateRef.value = false;
   }
 }
 
@@ -335,7 +333,10 @@ function createNameCallback(ctx: FakeThis, data: FactoryArtefact): void {
     if (!liste) {
       throw new Error("THe currentId " + ctx.storeRef.value.state.currentId + "in the state/ session is invalid.");
     }
-    LOG.addRaw("Editing name on list "+ ctx.storeRef.value.state.currentId +" was "+liste.nom+" becomes "+d1, "info");
+    LOG.addRaw(
+      "Editing name on list " + ctx.storeRef.value.state.currentId + " was " + liste.nom + " becomes " + d1,
+      "info"
+    );
     liste.editName(d1);
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     data.currentData.put(ctx.storeRef.value.state.currentId as number, liste);
@@ -360,7 +361,7 @@ function createSearchCallback(ctx: FakeThis): void {
       return;
     }
 
-    LOG.addRaw("Search running against for "+d1, "info");
+    LOG.addRaw("Search running against for " + d1, "info");
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     ctx.visibleRef.value = false;
     StaticRoutes.push({

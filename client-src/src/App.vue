@@ -10,7 +10,7 @@
 import { defineComponent } from "vue";
 
 import { TTL_FOR_HELP, DEFAULT_HELP_SHOW, LOGGING_ENABLED } from "./Constants";
-import { useLog } from './services/LogStack';
+import { useLog } from "./services/LogStack";
 import type { FactoryArtefact } from "./services/DataFactory";
 import type { ListCollection } from "./types/ListCollection";
 import type { MainAppProps } from "./types/ComponentProps";
@@ -27,8 +27,8 @@ const tmp: FactoryArtefact = createDataFactory(fixture1());
 // the fixture is alway present, no race condition possible
 ListData.updateData(tmp.currentData ?? ({} as ListCollection<string>));
 
-const log=useLog();
- 
+const log = useLog();
+
 export default defineComponent({
   name: "ShoppingApp",
   components: { TabBar, MessageBar },
@@ -49,8 +49,8 @@ export default defineComponent({
     return {
       tabId: this.$props.instanceId + "TabBar1",
       msgId: this.$props.instanceId + "Msg1",
-      msgState: this.$props.currentStateKey+"Msg1",
-      log:log,
+      msgState: this.$props.currentStateKey + "Msg1",
+      log: log,
       loggingEnabled: LOGGING_ENABLED,
     };
   },

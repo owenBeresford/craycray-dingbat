@@ -2,7 +2,7 @@ import type { Vector } from "vector2d/src/Vector";
 import type { MethodOptions, Ref } from "vue";
 
 export type FakeThis = Record<string, Ref<any>>;
-export type CBTYPE = (e: unknown, ctx: FakeThis ) => void;
+export type CBTYPE = (e: unknown, ctx: FakeThis) => void;
 
 export interface Motionable {
   addEvent(e: MouseEvent): boolean;

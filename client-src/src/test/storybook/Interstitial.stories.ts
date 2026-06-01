@@ -7,19 +7,16 @@ import { expect, fn, within, waitFor, userEvent } from "storybook/test";
 // import { useLog } from "../../services/LogStack";
 import InterstitialView from "../../components/InterstitialView.vue";
 import { delay } from "../../../../common/util";
-import { useStore, STORE } from '../../services/Store.js';
-
+import { useStore, STORE } from "../../services/Store.js";
 
 const meta: Meta<typeof InterstitialView> = {
   component: InterstitialView,
   title: "user training screen with InterstitialView",
-
 } satisfies Meta<typeof InterstitialView>;
 
 export default meta;
 type Story = StoryObj<typeof InterstitialView>;
 
- 
 export const EntirelyPassive: Story = {
   args: {
     ttl: 0,
@@ -149,7 +146,7 @@ export const VanishingRendering2: Story = {
   */
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-  //  const [args, updateArgs, resetArgs] = useArgs();
+    //  const [args, updateArgs, resetArgs] = useArgs();
     // might need to add .resolves. to expect statements
 
     expect(await canvas.getByTestId("test21")).toBeVisible();
@@ -157,8 +154,8 @@ export const VanishingRendering2: Story = {
     await userEvent.click(canvas.getByRole("button"));
     await delay(500);
     expect((canvasElement.childNodes[0] as Comment).data).toEqual("v-if");
-   // expect(await canvas.findByTestId("test21")).not.toBeVisible();
-   await STORE.commit("show", true);
+    // expect(await canvas.findByTestId("test21")).not.toBeVisible();
+    await STORE.commit("show", true);
 
     expect(await canvas.getByTestId("test21")).toBeVisible();
     expect(((await canvas.findByTestId("test21close1")) as HTMLInputElement).value).toBe("X");
@@ -166,11 +163,10 @@ export const VanishingRendering2: Story = {
     await delay(500);
     await STORE.commit("show", true);
 
-//    updateArgs({ ...args, show: true, });
+    //    updateArgs({ ...args, show: true, });
     expect(await canvas.getByTestId("test21")).toBeVisible();
     expect(((await canvas.findByTestId("test21close1")) as HTMLInputElement).value).toBe("X");
     await userEvent.click(canvas.getByRole("button"));
     await delay(500);
-
   },
 };

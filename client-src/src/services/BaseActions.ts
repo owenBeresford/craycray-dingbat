@@ -7,9 +7,9 @@ import type { ListCollection, ListStruct, MatchedItems } from "../types/ListColl
 import type { COMPLETE_STORE } from "./Store";
 import type { FactoryArtefact } from "./DataFactory";
 import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Actionables";
-import { useLog } from './LogStack';
+import { useLog } from "./LogStack";
 
-const LOG=useLog();
+const LOG = useLog();
 
 /**
  * @class BaseActions

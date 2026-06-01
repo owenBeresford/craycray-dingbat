@@ -79,7 +79,9 @@ export class SharedStateWorker implements DataPipeline {
               return true;
             })
             .catch((err: unknown): void => {
-              console.error("Am connected to wifi; cannot save data ??\nImprove error handler here. "+ (err as Error).message );
+              console.error(
+                "Am connected to wifi; cannot save data ??\nImprove error handler here. " + (err as Error).message
+              );
               bad(err as Error);
             });
         } else {

@@ -40,7 +40,7 @@ export interface InstanceListable<T> {
   add(nouveau: T): boolean;
   edit(offset: number, nouveau: T): boolean;
   remove(offset: number): boolean;
-  import(relevé: Array<T>, strict:boolean): boolean;
+  import(relevé: Array<T>, strict: boolean): boolean;
   export(): Array<T>;
   editName(nouveau: string): boolean;
   unique(): boolean;

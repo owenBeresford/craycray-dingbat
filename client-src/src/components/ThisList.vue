@@ -28,17 +28,17 @@
       <li v-for="(i, j) in actualList" :key="j" :title="text.currentTitle">
         <span
           v-if="bisMobile"
-          tabindex="0" 
+          tabindex="0"
           class="button info"
           :aria-selected="ctx.draggingRef.value[j]"
-          v-touch-class="'touchActive'" 
+          v-touch-class="'touchActive'"
           :data-offset="j"
           v-touch="onEdit"
           @touchstart.prevent="noop"
           v-touch:swipe.left="onSwipe"
           v-touch:swipe.up="onDragStart"
           v-touch:swipe.down="onDragStart"
-          v-touch-options="{ swipeTolerance: 20, rollOverFrequency: 500, swipeConeSize:0.4 }"
+          v-touch-options="{ swipeTolerance: 20, rollOverFrequency: 500, swipeConeSize: 0.4 }"
         >
           {{ i }}
         </span>
@@ -69,7 +69,7 @@ import InterstitialView from "./InterstitialView.vue";
 
 import { useStore } from "../services/Store";
 import { useUIText } from "../services/Localisation";
-import { extractId } from '../services/util'; 
+import { extractId } from "../services/util";
 import { ListData, setupCurrentList, idOf } from "../services/DataFactory";
 import { StdList, EMPTY_LIST } from "../services/AList";
 import { MotionStream } from "../services/MotionStream";
@@ -146,13 +146,13 @@ export default defineComponent({
         ctx: { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef } as FakeThis,
       };
     } catch (e: unknown) {
-      console.warn("ThisList.setup():", (e as Error).message, (e as Error).stack.substring(0, 200), );
-      log.addRaw("ThisList.setup():"+ (e as Error).message +"  " + (e as Error).stack.substring(0, 200), "error");
+      console.warn("ThisList.setup():", (e as Error).message, (e as Error).stack.substring(0, 200));
+      log.addRaw("ThisList.setup():" + (e as Error).message + "  " + (e as Error).stack.substring(0, 200), "error");
     }
   },
 
   created() {
-     if (_LOGGING_) {
+    if (_LOGGING_) {
       console.debug("KKK ThisList global scope ListData id:", idOf(ListData));
     }
     this.initGeneratedMethods();
@@ -161,9 +161,9 @@ export default defineComponent({
     if (this.shopStore) {
       const itinéraire = useRoute();
       this.shopStore.commit("setPath", itinéraire.path);
-      this.id= extractId(itinéraire.params.index ) ?? NEW_LIST;
+      this.id = extractId(itinéraire.params.index) ?? NEW_LIST;
 
-      this.shopStore.commit("setId", extractId(itinéraire.params.index ) ?? NEW_LIST );
+      this.shopStore.commit("setId", extractId(itinéraire.params.index) ?? NEW_LIST);
     } else {
       console.assert(this.shopStore, "ThisList: At mounted() stage, do not have a state storage?!");
     }

@@ -1,4 +1,4 @@
-import { reactive, readonly } from 'vue';
+import { reactive, readonly } from "vue";
 
 import type { Loggable } from "../types/Loggable";
 import { MAX_LOG_LENGTH, LOGGING_ENABLED } from "../Constants";
@@ -12,10 +12,12 @@ import { MAX_LOG_LENGTH, LOGGING_ENABLED } from "../Constants";
  * @returns {Loggable}
  */
 export function useLog(): Loggable {
-  if(!SELF) { SELF=new LogService(); }
+  if (!SELF) {
+    SELF = new LogService();
+  }
   return SELF;
 }
-let SELF:Loggable;
+let SELF: Loggable;
 
 /**
  * LogService
@@ -29,7 +31,6 @@ let SELF:Loggable;
 export class LogService implements Loggable {
   protected log: Array<string>;
 
-
   /**
      * constructor
      * A boring con'tor
@@ -38,15 +39,15 @@ export class LogService implements Loggable {
      * @returns {self}
      */
   public constructor() {
-    this.log=reactive({
-      log: [  ] as string[]
-            });
+    this.log = reactive({
+      log: [] as string[],
+    });
   }
 
   // @TODO
-  addEvent(e: Event, volume: string): void { }
+  addEvent(e: Event, volume: string): void {}
 
-   /**
+  /**
      * addRaw
      * The "write log" function.  Alters local state, doesn't directly output anything
      * If this requirement scales, make event objects like Stripe / ELK traces
@@ -59,7 +60,9 @@ export class LogService implements Loggable {
      * @returns {void}
      */
   public addRaw(msg: string, volume: string): void {
-    if(!LOGGING_ENABLED) { return; } // reduce RAM used
+    if (!LOGGING_ENABLED) {
+      return;
+    } // reduce RAM used
 
     let d = new Date();
     volume = volume.toUpperCase();

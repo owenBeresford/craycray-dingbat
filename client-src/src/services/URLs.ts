@@ -1,4 +1,4 @@
-import { useLog} from './LogStack';
+import { useLog } from "./LogStack";
 // The small number of URLs and components that use them.
 const URLs: Record<string, string> = {
   aList: "/list/[1]",
@@ -6,7 +6,7 @@ const URLs: Record<string, string> = {
   install: "/install",
 };
 
-const log= useLog();
+const log = useLog();
 /**
  * mapURL
  * Function to generate URN for App, mapping any replacement values.
