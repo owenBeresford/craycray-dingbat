@@ -21,12 +21,12 @@ const prefix = "https://" + REMOTE_HOST;
 // web manifests do not list files, so list lives here
 const FILES: Array<string> = [
   prefix + "/index.html",
-  prefix + "/manifest.json",
-  prefix + "/favicon.ico",
-  prefix + "/logo.png",
-  prefix + "/shopping.min.css",
-  prefix + "/shopping.min.mjs",
-  prefix + "/worker1.min.mjs",
+  prefix + "/asset/manifest.json",
+  prefix + "/asset/favicon.ico",
+  prefix + "/asset/logo.png",
+  prefix + "/asset/shopping.min.css",
+  prefix + "/asset/shopping.es.min.mjs",
+  prefix + "/asset/worker1.es.min.mjs",
 ];
 
 /**
