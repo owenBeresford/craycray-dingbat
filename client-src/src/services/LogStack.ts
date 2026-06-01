@@ -39,7 +39,7 @@ export class LogService implements Loggable {
      */
   public constructor() {
     this.log=reactive({
-      log: [ "some text here" ] as string[]
+      log: [  ] as string[]
             });
   }
 

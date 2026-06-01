@@ -89,8 +89,7 @@ StaticRoutes.beforeEach(
     from:RouteLocationNormalizedLoadedGeneric, 
     next:NavigationGuardNext )
     :Promise<NavigationGuardReturn> => {
-    console.
-    log(`Pointless log to show feature ${from} -> ${to}`); 
+    console.log(`Pointless log to show feature ${from} -> ${to}`); 
     next();
 });
 */
