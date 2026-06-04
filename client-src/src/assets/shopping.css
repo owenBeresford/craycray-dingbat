@@ -418,7 +418,9 @@ ul.aList li span {
   min-width: 12em;
   background-color: #e7e7e7;
   color: #333333;
+  touch-action: none;
 }
+
 div.aList {
   max-height: calc(100% - 3.75em);
   overflow-y: scroll;

@@ -80,13 +80,14 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
     this.flux.register("-90", this.onDragUPFinalise.bind(this));
     // this is swipe left
     this.flux.register("180", this.onSwipeOffFinalise.bind(this));
+    LOG.addRaw("Thislist has Event logging", "debug");
   }
 
   public onSwipeOffFinalise(e: unknown, ctx: ThisListCtx): void {
     if (this.offset >= 0 && this.offset < ctx.listRef.value.énumérer) {
       ctx.listRef.value.remove(this.offset);
-    } else {
-      console.info(`Cannot delete this offset ${this.offset}`);
+    // } else {
+    //  console.info(`Cannot delete this offset ${this.offset}`);
     }
   }
 
@@ -97,15 +98,21 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
       tt[this.offset] = tt[this.offset - 1];
       tt[this.offset - 1] = copy;
       ctx.listRef.value.import(tt, true);
+      
       LOG.addRaw(
         `List ${ctx.listRef.value.nom}, have a move UP request for offset ${this.offset} '${
           ctx.listRef.value.éléments[this.offset]
         }' `,
         "debug"
       );
-      console.debug(`Have a move request for offset ${this.offset}`);
     } else {
-      console.info(`Cannot move this item ${this.offset}`);
+        LOG.addRaw(
+        `Cannot move this item ${this.offset} of '${
+          ctx.listRef.value.éléments[this.offset]
+        }' `,
+        "warn"
+      );
+
     }
   }
 
@@ -122,9 +129,8 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
         }' `,
         "debug"
       );
-      console.debug(`Have a move request for offset ${this.offset}`);
     } else {
-      console.info(`Cannot move this item ${this.offset} `);
+    //  console.info(`Cannot move this item ${this.offset} `);
     }
   }
 
@@ -168,7 +174,7 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
         );
         ctx.canSeeInputRef.value = false;
       } else {
-        console.info(`Cannot update list item; bad offset value for ${agaçant.innerText}`);
+      //  console.info(`Cannot update list item; bad offset value for ${agaçant.innerText}`);
       }
     };
 
@@ -180,7 +186,6 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
     const agaçant = e!.currentTarget as HTMLElement;
     //  if(dir !="left") { return; }  // IOIO need to see values first
     this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
-    console.info(`Deleting list element [${this.offset}] = ${agaçant.innerText} - ${dir} direction.`);
     LOG.addRaw(
       `List ${ctx.listRef.value.nom}, deleting item at offset ${this.offset} '${
         ctx.listRef.value.éléments[this.offset]
@@ -193,9 +198,13 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
   public onDragStart(e: MouseEvent, ctx: ThisListCtx): void {
     const agaçant = e!.currentTarget as HTMLElement;
     this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
-
-    console.debug("Start a drag event on ", this.offset);
-    ctx.draggingRef.value[this.offset] = true;
+    LOG.addRaw(
+      `List ${ctx.listRef.value.nom}, drag start on item '${
+        ctx.listRef.value.éléments[this.offset]
+      }'`,
+      "debug"
+    );
+     ctx.draggingRef.value[this.offset] = true;
     this.flux.start(e, ctx);
   }
 
@@ -207,7 +216,6 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
     }
     this.flux.end(e, ctx);
     ctx.draggingRef.value[this.offset] = false;
-    console.debug("Stop a drag event on ", this.offset);
     LOG.addRaw(
       `List ${ctx.listRef.value.nom}, deleting item at offset ${this.offset} '${
         ctx.listRef.value.éléments[this.offset]
@@ -222,7 +230,7 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
     // new MouseEvent(typeArg, mouseEventInit);
     let e3: HTMLElement = e.relatedTarget as HTMLElement;
     if (!ctx.draggingRef.value[this.offset]) {
-      console.debug("RANDOM Stop a drag event on ", this.offset);
+    //  console.debug("RANDOM Stop a drag event on ", this.offset);
       return;
     }
     let e2: MouseEvent = new MouseEvent("mouseup", {
@@ -240,7 +248,6 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
     ctx.draggingRef.value[this.offset] = false;
 
     this.flux.end(e2, ctx);
-    console.debug("Exit a drag event for ", this.offset);
     LOG.addRaw(
       `List ${ctx.listRef.value.nom}, deleting item at offset ${this.offset} '${
         ctx.listRef.value.éléments[this.offset]
@@ -251,7 +258,7 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
   }
 
   public onDragMove(e: MouseEvent, ctx: ThisListCtx): void {
-    console.debug("Dragmove a drag event on ", e, this.offset);
+  //   console.debug("Dragmove a drag event on ", e, this.offset);
     this.flux.addEvent(e);
   }
 }

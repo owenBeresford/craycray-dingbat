@@ -34,11 +34,10 @@
           v-touch-class="'touchActive'"
           :data-offset="j"
           v-touch="onEdit"
-          @touchstart.prevent="noop"
           v-touch:swipe.left="onSwipe"
           v-touch:swipe.up="onDragStart"
           v-touch:swipe.down="onDragStart"
-          v-touch-options="{ swipeTolerance: 20, rollOverFrequency: 500, swipeConeSize: 0.4 }"
+          v-touch-options="{ swipeTolerance: 10, rollOverFrequency: 500, swipeConeSize: 0.6 }"
         >
           {{ i }}
         </span>

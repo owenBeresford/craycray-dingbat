@@ -18,7 +18,7 @@ TOOL.directive("longpress", {
 
     const start = (e: MouseEvent): void => {
       if (pressTimer === null) {
-        pressTimer = window.setTimeout(() => {
+        pressTimer = window.setTimeout(():void => {
           binding.value(e);
         }, DELAY_LONGTAP);
       }
