@@ -1,18 +1,17 @@
 <template>
   <div class="aList" :data-testid="testId" :key="currentStateKey">
     <InterstitialView :display="helpText" :show="canSeeHelp" :ttl="ttl" :currentStateKey="helpId" :testId="viewId" />
-    <ul class="buttonRow">
-      <li class="bigger">
+    <ul class="buttonRow flex-container">
+      <li class="bigger flex-child-auto shrink">
         <h3>{{ ctx.listRef.value.nom }}</h3>
       </li>
-      <li><img width="40" height="40" :src="logoPath" aria-hidden="true" role="presentation" :alt="text.imgAlt" /></li>
-      <li :title="text.addTitle">
+      <li class="flex-child-grow"><img width="40" height="40" :src="logoPath" aria-hidden="true" role="presentation" :alt="text.imgAlt" /></li>
+      <li class="flex-child-grow" :title="text.addTitle">
         <span
           role="button"
           class="button"
-          v-touch.prevent.once="onAdd"
-          @click.prevent.once="onAdd"
-          @keypress.prevent.once="onAdd"
+          @click.prevent="onAdd"
+          @keypress.prevent="onAdd"
           v-html="text.addName"
         ></span>
       </li>
@@ -25,28 +24,32 @@
       :currentStateKey="childId"
     />
     <ul class="aList" :data-testId="aListId">
-      <li v-for="(i, j) in actualList" :key="j" :title="text.currentTitle">
+      <li v-for="(i, j) in actualList" :key="j" :title="text.currentTitle" class="flex-container">
+        <span :id="`dragHandler${j}`" v-html="dragSymbol"  
+        tabindex="0" v-if="bisMobile" class="dragstr"
+        v-on:pointerdown="onSwipeStart" 
+        v-on:pointermove="onSwipeMove" 
+        v-on:pointerup="onSwipeStop" 
+        v-on:pointercancel="onSwipeStop" 
+        v-on:touchstart.prevent="noop"
+        :data-offset="j" :data-gesture="ctx.gestureRef.value[j]"
+        :aria-selected="ctx.draggingRef.value[j]"
+        ></span>
         <span
           v-if="bisMobile"
           tabindex="0"
-          class="button info"
+          class="button info flex-child-auto"
           :aria-selected="ctx.draggingRef.value[j]"
-          v-touch-class="'touchActive'"
+          v-longpress="onEdit"
           :data-offset="j"
-          v-touch="onEdit"
-          v-touch:swipe.left="onSwipe"
-          v-touch:swipe.up="onDragStart"
-          v-touch:swipe.down="onDragStart"
-          v-touch-options="{ swipeTolerance: 10, rollOverFrequency: 500, swipeConeSize: 0.6 }"
         >
           {{ i }}
         </span>
         <span
           v-else
-          class="button info"
+          class="button info flex-child-auto"
           :aria-selected="ctx.draggingRef.value[j]"
           :data-offset="j"
-          v-touch-options="{ dragTolerance: 200, rollOverFrequency: 400 }"
           v-longpress="onEdit"
           v-on:mousedown.passive="onDragStart"
           v-on:mouseleave.passive="onDragStop"
@@ -73,7 +76,7 @@ import { ListData, setupCurrentList, idOf } from "../services/DataFactory";
 import { StdList, EMPTY_LIST } from "../services/AList";
 import { MotionStream } from "../services/MotionStream";
 import { isMobile, clearSelection } from "../../../common/util";
-import { LOGO_PATH } from "../Constants";
+import { LOGO_PATH, DRAG_HANDLE_SYMBOL } from "../Constants";
 import { noop, ThisListActions, useThisListActions } from "../services/ThisListActions";
 
 import type { ExternalMethods, CBType, FakeThis } from "../types/Actionables";
@@ -89,6 +92,8 @@ const NEW_LIST = -1;
 // This class is using a shared function pointer, as in vue2 the event bus is too slow.
 // If you do parent state updates via it; they take 100ms to propagate, and you see flickers.
 // It is possible that vue3 event bus is faster.
+//   v-touch-class="'touchActive'"    v-touch-options="{ swipeTolerance: 10, rollOverFrequency: 500, swipeConeSize: 0.6 }"  v-touch-options="{ dragTolerance: 200, rollOverFrequency: 400 }"  v-touch.prevent.once="onAdd"
+
 
 /**
    * Thislist
@@ -135,14 +140,18 @@ export default defineComponent({
       let dragging: Array<boolean> = Array(liste.énumérer);
       dragging.fill(false);
       const draggingRef: Ref<Array<boolean>> = ref<Array<boolean>>(dragging);
+      let gesture:Array<string>=[liste.énumérer];
+      gesture.fill("");
+      const gestureRef: Ref<Array<string>> = ref<Array<string>>(gesture);
+
 
       stack = useThisListActions(flux, ListData);
       return {
-        extraMethods: stack.mount({ getInputRef, CBRef, draggingRef, canSeeInputRef, listRef } as FakeThis, stack),
+        extraMethods: stack.mount({ getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef } as FakeThis, stack),
         helpText,
         canSeeHelp,
         ttl,
-        ctx: { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef } as FakeThis,
+        ctx: { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef} as FakeThis,
       };
     } catch (e: unknown) {
       console.warn("ThisList.setup():", (e as Error).message, (e as Error).stack.substring(0, 200));
@@ -173,6 +182,7 @@ export default defineComponent({
       id: NEW_LIST,
       bisMobile: isMobile(),
       logoPath: LOGO_PATH,
+      dragSymbol: DRAG_HANDLE_SYMBOL,
       text: {
         addTitle: TEXT.get("list.additemTitle"),
         currentTitle: TEXT.get("list.curListsTitle"),
