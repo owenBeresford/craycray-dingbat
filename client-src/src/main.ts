@@ -1,15 +1,16 @@
 // import "reflect-metadata";
 import { createApp } from "vue";
 import type { Plugin, DirectiveBinding } from "vue";
-import Vue3TouchEvents from "vue3-touch-events";
+// import Vue3TouchEvents from "vue3-touch-events";
 import { STORE } from "./services/Store";
-import { APP_NAME, ROOT_NODE, DELAY_LONGTAP } from "./Constants";
+import { APP_NAME, ROOT_NODE, MOBILE_LONGTAP, DELAY_LONGTAP } from "./Constants";
+import { isMobile } from "../../common/util";
 import { StaticRoutes } from "./components/Routing";
 import ShoppingApp from "./App.vue";
 
 const TOOL = createApp(ShoppingApp, { currentStateKey: "scr1", instanceId: "v1.1" });
 TOOL.use(StaticRoutes);
-TOOL.use(Vue3TouchEvents as Plugin, { disableClick: false, passive: false });
+// TOOL.use(Vue3TouchEvents as Plugin, { disableClick: false, passive: false });
 TOOL.use(STORE);
 
 TOOL.directive("longpress", {
@@ -17,10 +18,13 @@ TOOL.directive("longpress", {
     let pressTimer: number | null = null;
 
     const start = (e: MouseEvent): void => {
+      let delay=DELAY_LONGTAP;
+      if(isMobile()) { delay = MOBILE_LONGTAP; }
+      
       if (pressTimer === null) {
         pressTimer = window.setTimeout(():void => {
           binding.value(e);
-        }, DELAY_LONGTAP);
+        }, delay);
       }
     };
 

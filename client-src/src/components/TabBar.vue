@@ -12,7 +12,7 @@
           <router-link class="button" :to="urls[1]">{{ menu.newName }}</router-link>
         </li>
         <li :title="menu.findTitle">
-          <span class="button" role="button" @click.prevent="onSearch" v-touch="onSearch" @keypress="onSearch">{{
+          <span class="button" role="button" @click.prevent="onSearch"  @keypress="onSearch">{{
             menu.findItem
           }}</span>
         </li>
@@ -24,7 +24,7 @@
             :aria-pressed="ctx.menuStateRef.value"
             role="button"
             @click.prevent="onMenu"
-            v-touch="onMenu"
+          
             @keypress="onMenu"
             :title="menu.actualMenuTitle"
           ></span>
@@ -36,7 +36,7 @@
                 :disabled="installEnabledBool || null"
                 :title="menu.installTitle"
                 :class="installEnabled"
-                v-touch="onInstall"
+ 
                 @click.prevent="onInstall"
                 @keypress.prevent="onInstall"
               >
@@ -48,8 +48,8 @@
                 role="button"
                 class="button"
                 :title="menu.helpTitle"
-                :aria-disabled="false"
-                v-touch="onInterstitial"
+                aria-disabled="false"
+
                 @click.prevent="onInterstitial"
                 @keypress.prevent="onInterstitial"
                 >{{ menu.helpName }}</span
@@ -62,7 +62,7 @@
                 role="button"
                 :title="menu.renameTitle"
                 class="button"
-                @touch="onName"
+           
                 @click.prevent="onName"
                 @keypress="onName"
                 >{{ menu.renameName }}</span
@@ -75,7 +75,7 @@
                 :title="menu.dupeTitle"
                 class="button"
                 role="button"
-                v-touch="onDuplicate"
+               
                 @click.prevent="onDuplicate"
                 @keypress.prevent="onDuplicate"
                 >{{ menu.dupeName }}</span
@@ -88,7 +88,7 @@
                 class="button"
                 role="button"
                 :title="menu.uniqTitle"
-                v-touch="onUnique"
+               
                 @click.prevent="onUnique"
                 @keypress.prevent="onUnique"
                 >{{ menu.uniqName }}</span
@@ -101,7 +101,7 @@
                 :disabled="!hasData || null"
                 role="button"
                 class="button"
-                v-touch="onSave"
+                
                 @click.prevent="onSave"
                 @keypress.prevent="onSave"
                 >{{ menu.saveName }}</span
@@ -111,7 +111,7 @@
               <span
                 :aria-disabled="!hasData"
                 :disabled="!hasData || null"
-                v-touch="onRevert"
+               
                 :title="menu.revertTitle"
                 role="button"
                 @click.prevent="onRevert"
