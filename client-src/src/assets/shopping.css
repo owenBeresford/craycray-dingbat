@@ -6,7 +6,7 @@
   justify-content: space-around;
 }
 .tabBar {
-  color: #222;
+  color: var(--fg1);
 }
 .tabBar > div {
   width: 50%;
@@ -25,7 +25,7 @@
 }
 .tabBar .button,
 .tabBar .button * {
-  color: #fff;
+  color: var(--bg1);
 }
 .tabBar ul > li > .button {
   width: 100%;
@@ -72,7 +72,7 @@
 }
 
 .tabBar.buttonRow ul > li > .button[aria-disabled="true"] {
-  color: grey;
+  color: var(--colour-disabled);
 }
 
 @media screen and (max-width: 400px) {
@@ -120,8 +120,8 @@
 }
 .tabBar.buttonRow menu.menuTrigger {
   display: none;
-  background-color: #eee;
-  border: 1em #eee solid;
+  background-color: var(--colour-standout);
+  border: 1em var(--colour-standout) solid;
   text-align: left;
   padding-left: 0px;
   height: fit-content;
@@ -148,8 +148,8 @@
 }
 .tabBar.buttonRow ul > li span.menuTrigger {
   color: transparent;
-  text-shadow: 0 0 0 #222;
-  padding: 0.5em 1em 0.5em 1em;
+  text-shadow: 0 0 0 var(--fg1);
+    padding: 0.5em 1em 0.5em 1em;
 }
 .tabBar.buttonRow ul > li span.menuTrigger::before {
   content: "☰";
@@ -159,7 +159,7 @@
 }
 
 .tabBar.buttonRow > li span.menuTrigger:hover {
-  background-color: #eee;
+  background-color: var(--colour-standout);
 }
 .tabBar.buttonRow menu.menuTrigger li {
   display: inline-block;
@@ -250,14 +250,14 @@
 }
 .unknownRoute .error {
   font-size: 300%;
-  background-color: #fdd;
+  background-color: var(--colour-standout);
   width: 2em;
   display: inline-block;
   text-align: center;
   vertical-align: middle;
   align-content: center;
   color: transparent;
-  text-shadow: 0 0 0 #222;
+  text-shadow: 0 0 0 var(--fg1);
   height: 3em;
   line-height: 0.6;
 }
@@ -272,11 +272,12 @@
   width: 20em;
   z-index: 2;
   top: calc(50vh - 3em);
-  background-color: white;
-  border: 1em #eee solid;
+  background-color: var(--colour-maaxcontrast);
+  border: 1em var(--colour-standout) solid;
 }
+/* doesnt seem active */
 dialog.enterInput::backdrop {
-  background-color: rgba(39, 39, 39, 0.3);
+  background-color: var(--fg1);
   pointer-events: none;
 }
 
@@ -308,7 +309,7 @@ dialog.enterInput::backdrop {
   }
 }
 .enterInput .labelRow span.cancel:hover {
-  background-color: #eee;
+  background-color: var(--bg1);
 }
 
 /* ********************************************************* */
@@ -336,13 +337,13 @@ dialog.enterInput::backdrop {
   margin-right: 1em;
   opacity: 1;
   width: 4em;
-  background-color: white;
+  background-color: var(--colour-maaxcontrast);
   margin-top: 0.5em;
   filter: opacity(100%);
 }
 .interstitial ul li.closeUp .button {
   padding: 1em;
-  color: #020202;
+  color: var(--fg1);
   width: 4em;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
@@ -403,58 +404,99 @@ dialog.enterInput::backdrop {
   min-width: 12em;
   list-style-type: none;
 }
-ul.aList {
-  max-width: 12em;
-  margin-left: auto;
-  margin-right: auto;
-}
-/* IOIO Make more sohisticated */
+ 
+/* IOIO Make more sophisticated */
 .aList .button.info[aria-selected="true"] {
-  border: 2px green solid;
+  border: 3px var(--colour-disabled) solid;
   z-index: 1;
 }
+/* IOIO mobile? */
+ul.aList > li { margin-right:1em; justify-content: space-evenly; }
 
-ul.aList li span {
+ul.aList li span.button.info {
   min-width: 12em;
-  background-color: #e7e7e7;
-  color: #333333;
+  margin-bottom:0.1em;
+  border-bottom: var(--colour-maaxcontrast) .8em solid;
+  background-color: var(--bg1);
+  color: var(--fg1);
   touch-action: none;
+  user-select:none;
 }
+
+ul.aList li span.dragstr { 
+  font-size: 1.8em;
+  font-weight:700;
+  padding:0.3em 0.2em;
+  padding-top: 0px;
+  margin-left:2em;
+  display: inline-block;
+}
+ul.aList> li:has( .dragstr[aria-selected="true"] ) {
+  border: 3px var(--colour-standout) solid;
+}
+
+ul.aList> li:has( .dragstr[aria-selected="true"][data-gesture="swipe"] ) {
+  background: var(--colour-destructive);
+  border-color: var(--fg-destructive);
+} 
+ul.aList> li:has( .dragstr[aria-selected="true"][data-gesture="swipe"] ) span.button.info {
+  background: var(--colour-destructive);
+}
+
+   
+ul.aList > li:has( .dragstr[aria-selected="true"][data-gesture*="move"] ) {
+  background: var(--colour-sorting);
+  border-color:var(--fg-sorting);
+}  
+ul.aList > li:has( .dragstr[data-gesture*="receipt"] ) {
+  opacity:0.7;
+}
+
+ul.aList> li:has( .dragstr[data-gesture*="move"] ) span.button.info {
+  background: var(--colour-sorting);
+  border-bottom-color:var(--colour-sorting);   /* #leSigh */
+}
+ul.aList > li:has( .dragstr[data-gesture*="move"] ) {
+  background: var(--colour-sorting);
+ } 
+
 
 div.aList {
   max-height: calc(100% - 3.75em);
   overflow-y: scroll;
 }
+div.aList:has( [aria-selected="true"] ) {
+  overflow-y: hidden;
+}
+
+
 .aList .buttonRow {
   margin-left: 0px;
   margin-bottom: 1em;
+
 }
 .aList .buttonRow li {
   display: inline-block;
   margin-left: 0.3em;
   list-style-type: none;
   width: 7em;
-  color: #fff;
+  color: var(--bg1);
 }
 .aList .buttonRow li.bigger {
   font-size: 120%;
   line-height: 0.9;
   font-weight: 600;
-  color: #020202;
+  color: var(--fg1);
+
+}
+
+@media screen and (max-width: 480px) {
+  .aList.view .buttonRow li:has( img ) { width:fit-content; max-width:4em;  } 
+  .aList.view { width:100%; }
 }
 
 div.aList ul.buttonRow li span {
   min-width: 7em;
-}
-
-@media screen and (max-width: 400px) {
-  ul.aList span.button {
-    margin-left: calc(50% - 6em);
-  }
-  .touchActive {
-    color: red;
-    border: red 2px solid;
-  }
 }
 
 @media screen and (min-width: 400px) {
@@ -462,6 +504,13 @@ div.aList ul.buttonRow li span {
     margin-left: auto;
     margin-right: auto;
   }
+
+/* IOIO Make more sophisticated */
+.aList .button.info[aria-selected="true"] {
+  touch-action: none;
+  user-select:none;
+}
+
 }
 
 /* ********************************************************* */
@@ -469,14 +518,23 @@ div.aList ul.buttonRow li span {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: var( --fg1);
   min-width: 100%;
   height: 100%;
   touch-action: manipulation;
+
+  --colour-destructive: hsl(0, 69%, 66%); 
+  --fg-destructive: rgb(131, 0, 0);
+  --colour-finalise: rgb(142, 218, 142);
+  --colour-sorting:rgb(141, 176, 236);
+  --fg-sorting: rgb(24, 24, 169);
+  --colour-disabled: rgb(107, 107, 107);
+  --colour-standout:hsla(0, 0%, 87%, 0.757);
+  --colour-maaxcontrast:#fff;
+  --fg1:#1f1e1e;
+  --bg1:#f3ffcf;
 }
-menu.tiggerMenu {
-  touch-action: auto;
-}
+
 
 .wholePage {
   height: 100%;
@@ -504,8 +562,8 @@ menu.tiggerMenu {
   z-index: 2;
   line-height: 0.7;
   position: absolute;
-  border: red 2px solid;
-  color: red;
+  border: var(--colour-destructive) 2px solid;
+  color: var(--colour-destructive);
   content: " 🗙 ";
   /* font-size: 8em; */
   font-size: 1.5em;
