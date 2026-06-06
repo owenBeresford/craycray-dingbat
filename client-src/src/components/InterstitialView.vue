@@ -1,5 +1,5 @@
 <template>
-  <div class="interstitial" v-if="iShow" @interstitial="changeText" :data-testid="instanceId" :key="currentStateKey2">
+  <div class="interstitial" v-if="iShow" :data-testid="instanceId" :key="currentStateKey2">
     <ul>
       <li class="closeUp">
         <input
@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useStore, mapForHelp } from "../services/Store";
-import { useUIText } from "../services/Localisation";
+import { useUIText, HELP_TEXT_NAMES } from "../services/Localisation";
 import { useLocal } from "../services/LocalCopy";
 import { KNOWN_PHONE } from "../Constants";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
@@ -152,6 +152,7 @@ export default defineComponent({
       this.firstPass = true;
       this.urlsStack.splice(0, this.urlsStack.length);
       this.applyBody();
+      this.iterateText();
     },
   },
   methods: {
@@ -178,6 +179,17 @@ export default defineComponent({
       if (this.list.length === 0 || this.list[0] === "") {
         this.iShow = false;
         this.store.commit("show", false);
+      }
+    },
+
+    iterateText():void {
+      for (let i =0; i< HELP_TEXT_NAMES.length; i++) {
+        setTimeout( ()=> { 
+          this.store.commit("show", true);
+          console.log("Trying help text: "+HELP_TEXT_NAMES[i], mapForHelp(this.store, HELP_TEXT_NAMES[i]), i );  
+          return this.changeText( HELP_TEXT_NAMES[i] ); 
+                    }, ((i+1)*this.ttl) 
+                  );
       }
     },
   },
