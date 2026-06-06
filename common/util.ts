@@ -101,9 +101,9 @@ export function wrap_getMyIP(): string {
  * @returns {void}
  */
 export function clearSelection(): void {
-   if (typeof globalThis.getSelection === "function") {
+   if (typeof document.getSelection === "function") {
     // https://developer.mozilla.org/en-US/docs/Web/API/Selection
-    const élément: Selection | null = globalThis.getSelection();
+    const élément: Selection | null = document.getSelection();
      if (élément && élément.removeAllRanges) {
        élément.removeAllRanges() ;
     }

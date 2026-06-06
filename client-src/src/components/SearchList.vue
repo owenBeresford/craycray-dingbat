@@ -60,9 +60,9 @@
 <script lang="ts">
 // https://github.com/josueggh/a11y-cheatsheet
 import { defineComponent, inject } from "vue";
-import type { MethodOptions } from "vue";
 import { useRoute } from "vue-router";
 import type { RouteRecordNormalized } from "vue-router";
+import type { MethodOptions } from "vue";
 
 import InterstitialView from "./InterstitialView.vue";
 import { LOGO_PATH } from "../Constants";

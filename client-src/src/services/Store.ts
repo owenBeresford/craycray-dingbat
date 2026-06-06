@@ -24,6 +24,7 @@ export const mapForHelp = (state: COMPLETE_STORE, specific: string): string => {
     ceci = specific;
   }
 
+  // would be nice to masp HELP_TEXZT_NAMES
   const MM: Record<string, string> = {
     "/": "list-all",
     "/list-all": "list-all",
@@ -82,7 +83,7 @@ export function useStore(): COMPLETE_STORE {
 
 // this solution is lighter than "rewire" which is described in
 // https://www.wisdomgeek.com/development/web-development/javascript/how-to-unit-test-private-non-exported-function-in-javascript/
-export const OnlyForTesting = { mapForHelp };
+export const OnlyForTesting = { mapForHelp, STORE, useStore };
 
 /**
 > STORE
