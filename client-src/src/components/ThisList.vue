@@ -5,7 +5,9 @@
       <li class="bigger flex-child-auto shrink">
         <h3>{{ ctx.listRef.value.nom }}</h3>
       </li>
-      <li class="flex-child-grow"><img width="40" height="40" :src="logoPath" aria-hidden="true" role="presentation" :alt="text.imgAlt" /></li>
+      <li class="flex-child-grow">
+        <img width="40" height="40" :src="logoPath" aria-hidden="true" role="presentation" :alt="text.imgAlt" />
+      </li>
       <li class="flex-child-grow" :title="text.addTitle">
         <span
           role="button"
@@ -25,15 +27,20 @@
     />
     <ul class="aList" :data-testId="aListId">
       <li v-for="(i, j) in actualList" :key="j" :title="text.currentTitle" class="flex-container">
-        <span :id="`dragHandler${j}`" v-html="dragSymbol"  
-        tabindex="0" v-if="bisMobile" class="dragstr"
-        v-on:pointerdown="onSwipeStart" 
-        v-on:pointermove="onSwipeMove" 
-        v-on:pointerup="onSwipeStop" 
-        v-on:pointercancel="onSwipeStop" 
-        v-on:touchstart.prevent="noop"
-        :data-offset="j" :data-gesture="ctx.gestureRef.value[j]"
-        :aria-selected="ctx.draggingRef.value[j]"
+        <span
+          :id="`dragHandler${j}`"
+          v-html="dragSymbol"
+          tabindex="0"
+          v-if="bisMobile"
+          class="dragstr"
+          v-on:pointerdown="onSwipeStart"
+          v-on:pointermove="onSwipeMove"
+          v-on:pointerup="onSwipeStop"
+          v-on:pointercancel="onSwipeStop"
+          v-on:touchstart.prevent="noop"
+          :data-offset="j"
+          :data-gesture="ctx.gestureRef.value[j]"
+          :aria-selected="ctx.draggingRef.value[j]"
         ></span>
         <span
           v-if="bisMobile"
@@ -94,7 +101,6 @@ const NEW_LIST = -1;
 // It is possible that vue3 event bus is faster.
 //   v-touch-class="'touchActive'"    v-touch-options="{ swipeTolerance: 10, rollOverFrequency: 500, swipeConeSize: 0.6 }"  v-touch-options="{ dragTolerance: 200, rollOverFrequency: 400 }"  v-touch.prevent.once="onAdd"
 
-
 /**
    * Thislist
    * A component to render the currently edited list.
@@ -140,18 +146,20 @@ export default defineComponent({
       let dragging: Array<boolean> = Array(liste.énumérer);
       dragging.fill(false);
       const draggingRef: Ref<Array<boolean>> = ref<Array<boolean>>(dragging);
-      let gesture:Array<string>=[liste.énumérer];
+      let gesture: Array<string> = [liste.énumérer];
       gesture.fill("");
       const gestureRef: Ref<Array<string>> = ref<Array<string>>(gesture);
 
-
       stack = useThisListActions(flux, ListData);
       return {
-        extraMethods: stack.mount({ getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef } as FakeThis, stack),
+        extraMethods: stack.mount(
+          { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef } as FakeThis,
+          stack
+        ),
         helpText,
         canSeeHelp,
         ttl,
-        ctx: { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef} as FakeThis,
+        ctx: { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef } as FakeThis,
       };
     } catch (e: unknown) {
       console.warn("ThisList.setup():", (e as Error).message, (e as Error).stack.substring(0, 200));

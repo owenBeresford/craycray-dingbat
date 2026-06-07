@@ -3,8 +3,8 @@ import "../src/assets/foundation.min.css";
 import { setup, definePreview } from "@storybook/vue3-vite";
 import { createRouter, createWebHistory } from "vue-router";
 import Vue3TouchEvents from "vue3-touch-events";
-import { useLog } from '../src/services/LogStack';
-import { useStore } from '../src/services/Store';
+import { useLog } from "../src/services/LogStack";
+import { useStore } from "../src/services/Store";
 
 //https://storybook.js.org/docs/api/csf/csf-next
 const preview = definePreview({
@@ -41,7 +41,7 @@ setup((app) => {
   try {
     app.use(router);
     app.use(Vue3TouchEvents);
-    app.use( useStore() );
+    app.use(useStore());
 
     app.provide("helpText", "menu");
     app.provide("canSeeHelp", false);
@@ -54,6 +54,6 @@ setup((app) => {
     console.error("I do not expect to see this", e);
   }
 });
-console.log("XXXX XXXX XXXX separator, (just started storybook preview) XXXX XXXXX XXXXX" );
+console.log("XXXX XXXX XXXX separator, (just started storybook preview) XXXX XXXXX XXXXX");
 
 export default preview;

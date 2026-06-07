@@ -6,7 +6,7 @@ import { StdList } from "./AList";
 import { MotionStream } from "./MotionStream";
 import { useLog } from "./LogStack";
 import { clearSelection } from "../../../common/util";
-import { CSS_SYMBOL_ORDER,CSS_SYMBOL_UP, CSS_SYMBOL_DOWN, CSS_SYMBOL_RECEIPT } from '../Constants';
+import { CSS_SYMBOL_ORDER, CSS_SYMBOL_UP, CSS_SYMBOL_DOWN, CSS_SYMBOL_RECEIPT } from "../Constants";
 
 import type { FactoryArtefact } from "./DataFactory";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
@@ -89,13 +89,11 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
     if (this.offset >= 0 && this.offset < ctx.listRef.value.énumérer) {
       ctx.listRef.value.remove(this.offset);
       LOG.addRaw(
-      `For list ${ctx.listRef.value.nom}, removed item #${this.offset} '${
-        ctx.listRef.value.éléments[this.offset]
-      }'`,
-      "info"
-    );
-    // } else {
-    //  console.info(`Cannot delete this offset ${this.offset}`);
+        `For list ${ctx.listRef.value.nom}, removed item #${this.offset} '${ctx.listRef.value.éléments[this.offset]}'`,
+        "info"
+      );
+      // } else {
+      //  console.info(`Cannot delete this offset ${this.offset}`);
     }
   }
 
@@ -107,7 +105,7 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
       tt[this.offset] = tt[this.offset - 1];
       tt[this.offset - 1] = copy;
       ctx.listRef.value.import(tt, true);
-      
+
       LOG.addRaw(
         `List ${ctx.listRef.value.nom}, have a move UP request for offset ${this.offset} '${
           ctx.listRef.value.éléments[this.offset]
@@ -115,10 +113,7 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
         "debug"
       );
     } else {
-      LOG.addRaw(
-        `Cannot move this item #${this.offset} (invalid id)`,
-        "warn"
-      );
+      LOG.addRaw(`Cannot move this item #${this.offset} (invalid id)`, "warn");
     }
   }
 
@@ -138,15 +133,9 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
         "debug"
       );
     } else {
-      LOG.addRaw(
-        `Cannot move this item ${this.offset} (invalid id)`,
-        "warn"
-      );
+      LOG.addRaw(`Cannot move this item ${this.offset} (invalid id)`, "warn");
     }
   }
-
-
-
 
   public onAdd(e: GuessEvent, ctx: ThisListCtx): boolean {
     ctx.getInputRef.value = "";
@@ -156,10 +145,7 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
         return;
       }
       ctx.listRef.value.add(d1);
-      LOG.addRaw(
-      `For list ${ctx.listRef.value.nom}, added item #${ctx.listRef.value.length} '${d1}'`,
-      "info"
-    );
+      LOG.addRaw(`For list ${ctx.listRef.value.nom}, added item #${ctx.listRef.value.length} '${d1}'`, "info");
       ctx.canSeeInputRef.value = false;
     };
     ctx.canSeeInputRef.value = true;
@@ -178,10 +164,7 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
     ctx.CBRef.value = (d1: string | null): void => {
       if (d1 === null) {
         ctx.canSeeInputRef.value = false;
-         LOG.addRaw(
-        `Edit cancelled this item ${this.offset} (invalid id) ${agaçant.innerText}`,
-        "warn"
-           );
+        LOG.addRaw(`Edit cancelled this item ${this.offset} (invalid id) ${agaçant.innerText}`, "warn");
         return;
       }
 
@@ -196,10 +179,7 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
         );
         ctx.canSeeInputRef.value = false;
       } else {
-         LOG.addRaw(
-        `Cannot edit this item ${this.offset} (invalid id) ${agaçant.innerText}`,
-        "warn"
-           );
+        LOG.addRaw(`Cannot edit this item ${this.offset} (invalid id) ${agaçant.innerText}`, "warn");
       }
     };
 
@@ -214,19 +194,19 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
     const agaçant = e!.target as HTMLElement;
     this.flux.start(e, ctx);
     agaçant.setPointerCapture(e.pointerId);
-    this.activateMotion( agaçant, ctx, "drag start or delete ", true ); 
+    this.activateMotion(agaçant, ctx, "drag start or delete ", true);
   }
 
   public onSwipeMove(e: PointerEvent, ctx: ThisListCtx): void {
-    ctx.gestureRef.value[this.offset]= this.flux.finalVector2text();
-    if(ctx.gestureRef.value[this.offset].match(CSS_SYMBOL_UP) && this.offset< ctx.gestureRef.value.length ) {
-      ctx.gestureRef.value[this.offset+1]=CSS_SYMBOL_ORDER +" "+CSS_SYMBOL_RECEIPT;
-    } else if(ctx.gestureRef.value[this.offset].match(CSS_SYMBOL_DOWN) && this.offset >0 ) {
-      ctx.gestureRef.value[this.offset-1]=CSS_SYMBOL_ORDER +" "+CSS_SYMBOL_RECEIPT;
+    ctx.gestureRef.value[this.offset] = this.flux.finalVector2text();
+    if (ctx.gestureRef.value[this.offset].match(CSS_SYMBOL_UP) && this.offset < ctx.gestureRef.value.length) {
+      ctx.gestureRef.value[this.offset + 1] = CSS_SYMBOL_ORDER + " " + CSS_SYMBOL_RECEIPT;
+    } else if (ctx.gestureRef.value[this.offset].match(CSS_SYMBOL_DOWN) && this.offset > 0) {
+      ctx.gestureRef.value[this.offset - 1] = CSS_SYMBOL_ORDER + " " + CSS_SYMBOL_RECEIPT;
     }
     this.flux.addEvent(e);
   }
- 
+
   public onSwipeStop(e: PointerEvent, ctx: ThisListCtx): void {
     const agaçant = e!.target as HTMLElement;
     if (!ctx.draggingRef.value[this.offset]) {
@@ -234,15 +214,15 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
       return;
     }
     this.flux.end(e, ctx);
-console.log("WWWWW ", ctx.gestureRef.value, this.offset, CSS_SYMBOL_UP, "WWWWWW" );   
-    if(ctx.gestureRef.value[this.offset].match(CSS_SYMBOL_UP) && this.offset>=0 ) {
-      ctx.gestureRef.value[this.offset+1]="";
-    } else if(ctx.gestureRef.value[this.offset].match(CSS_SYMBOL_DOWN) && this.offset< ctx.gestureRef.value.length ) {
-      ctx.gestureRef.value[this.offset-1]="";
+    console.log("WWWWW ", ctx.gestureRef.value, this.offset, CSS_SYMBOL_UP, "WWWWWW");
+    if (ctx.gestureRef.value[this.offset].match(CSS_SYMBOL_UP) && this.offset >= 0) {
+      ctx.gestureRef.value[this.offset + 1] = "";
+    } else if (ctx.gestureRef.value[this.offset].match(CSS_SYMBOL_DOWN) && this.offset < ctx.gestureRef.value.length) {
+      ctx.gestureRef.value[this.offset - 1] = "";
     }
-    ctx.gestureRef.value[this.offset]="";
+    ctx.gestureRef.value[this.offset] = "";
     agaçant.releasePointerCapture(e.pointerId);
-    this.activateMotion( agaçant, ctx, "swap or delete item", false ); 
+    this.activateMotion(agaçant, ctx, "swap or delete item", false);
     clearSelection();
   }
 
@@ -261,9 +241,9 @@ console.log("WWWWW ", ctx.gestureRef.value, this.offset, CSS_SYMBOL_UP, "WWWWWW"
       return;
     }
 
-    this.activateMotion(agaçant, ctx, "deleting item", false); 
+    this.activateMotion(agaçant, ctx, "deleting item", false);
     this.flux.end(e, ctx);
-    ctx.gestureRef.value[this.offset]="";
+    ctx.gestureRef.value[this.offset] = "";
     clearSelection();
   }
 
@@ -275,7 +255,7 @@ console.log("WWWWW ", ctx.gestureRef.value, this.offset, CSS_SYMBOL_UP, "WWWWWW"
       //  console.debug("RANDOM [big screen] Stop a drag event on ", this.offset);
       return;
     }
-    this.activateMotion(e3, ctx, "drag exit (delete?)", false );
+    this.activateMotion(e3, ctx, "drag exit (delete?)", false);
 
     let e2: MouseEvent = new MouseEvent("mouseup", {
       screenX: e3.scrollLeft,
@@ -290,26 +270,19 @@ console.log("WWWWW ", ctx.gestureRef.value, this.offset, CSS_SYMBOL_UP, "WWWWWW"
       buttons: 1,
     } as MouseEventInit);
     this.flux.end(e2, ctx);
-    ctx.gestureRef.value[this.offset]="";
+    ctx.gestureRef.value[this.offset] = "";
     clearSelection();
   }
 
   public onDragMove(e: MouseEvent, ctx: ThisListCtx): void {
     this.flux.addEvent(e);
-    ctx.gestureRef.value[this.offset]= this.flux.finalVector2text();
+    ctx.gestureRef.value[this.offset] = this.flux.finalVector2text();
   }
-
 
   /****************************** util to reduce duplicate lines of code  *************************/
-  protected activateMotion(agaçant:HTMLElement, ctx: ThisListCtx, msg:string, state:boolean ) :void {
+  protected activateMotion(agaçant: HTMLElement, ctx: ThisListCtx, msg: string, state: boolean): void {
     this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
-    LOG.addRaw(
-      `List ${ctx.listRef.value.nom}, ${msg} on item '${
-        ctx.listRef.value.éléments[this.offset]
-      }'`,
-      "debug"
-    );
+    LOG.addRaw(`List ${ctx.listRef.value.nom}, ${msg} on item '${ctx.listRef.value.éléments[this.offset]}'`, "debug");
     ctx.draggingRef.value[this.offset] = state;
   }
-
 }

@@ -1,6 +1,6 @@
 import { mergeConfig } from "vite";
 import type { StorybookConfig } from "@storybook/vue3-vite";
-import type { InlineConfig } from 'vite';
+import type { InlineConfig } from "vite";
 import fs from "fs";
 
 const path = await import("node:path");
@@ -19,14 +19,14 @@ const config: StorybookConfig = {
     "@storybook/addon-onboarding",
   ],
 
-  framework:{
-    name: '@storybook/vue3-vite',
-    options: {},   // how to set options...
+  framework: {
+    name: "@storybook/vue3-vite",
+    options: {}, // how to set options...
   },
-  async viteFinal(config:InlineConfig, { configType } ):Promise<InlineConfig> {
+  async viteFinal(config: InlineConfig, { configType }): Promise<InlineConfig> {
     return mergeConfig(config, {
-     build: {
-        chunkSizeWarningLimit: 4128
+      build: {
+        chunkSizeWarningLimit: 4128,
       },
       resolve: {
         alias: {
@@ -34,18 +34,16 @@ const config: StorybookConfig = {
         },
       },
       server: {
-// I prefer to get fresh source via <ctrl-F5>, as a change will often edit several files
+        // I prefer to get fresh source via <ctrl-F5>, as a change will often edit several files
         hmr: false,
         https: true,
         strictPort: true,
-// these seem to be to be set on the CLI.   #leSigh.
-// --ssl-cert ./src/assets/cert.pem --ssl-key ./src/assets/private.key
+        // these seem to be to be set on the CLI.   #leSigh.
+        // --ssl-cert ./src/assets/cert.pem --ssl-key ./src/assets/private.key
       },
     });
   },
-
 };
 
 export default config;
 // vim: nospell
-

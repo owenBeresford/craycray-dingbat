@@ -1,7 +1,15 @@
 import { Vector } from "vector2d/src/Vector";
 // its bad to import internal classes; but this package isn't compatible with modern bundlers/ classloaders
 import { isMobile, windowSize, rad2deg } from "../../../common/util";
-import { MOBILE_THRESHOLD, BIG_THRESHOLD, ANGLE_ACCURACY, CSS_SYMBOL_REMOVE, CSS_SYMBOL_ORDER, CSS_SYMBOL_UP, CSS_SYMBOL_DOWN } from "../Constants";
+import {
+  MOBILE_THRESHOLD,
+  BIG_THRESHOLD,
+  ANGLE_ACCURACY,
+  CSS_SYMBOL_REMOVE,
+  CSS_SYMBOL_ORDER,
+  CSS_SYMBOL_UP,
+  CSS_SYMBOL_DOWN,
+} from "../Constants";
 import type { CBTYPE, Motionable } from "../types/Motionable";
 import type { FakeThis } from "../types/Actionables";
 import { useLog } from "./LogStack";
@@ -86,16 +94,16 @@ export class MotionStream implements Motionable {
     while (offset < this.stack.length) {
       const cur: Vector = this.clone(0, offset);
       if (this.significant(cur)) {
-         let found = false;
+        let found = false;
         // need to change the angle() function for shapes more complex than a straight line swipe
         // ...splines...
         // it would be nice if the angle function was part of the Vector class
         const angle = rad2deg(this.angle(this.stack[0], this.stack[offset]));
- 
+
         // eslint-disable-next-line guard-for-in, no-restricted-syntax
         for (const [i, obj] of Object.entries(this.actions)) {
           const i2 = parseInt(i, 10);
-           if (angle + ANGLE_ACCURACY > i2 && angle - ANGLE_ACCURACY < i2) {
+          if (angle + ANGLE_ACCURACY > i2 && angle - ANGLE_ACCURACY < i2) {
             obj(e, ctx);
             // move these next 2 lines if you want to allow more than one CB per gesture
             found = true;
@@ -110,17 +118,25 @@ export class MotionStream implements Motionable {
     return false;
   }
 
-  public finalVector2text():string {
-    const angle = rad2deg(this.angle(this.stack[0], this.stack[ this.stack.length -1 ]));
+  public finalVector2text(): string {
+    const angle = rad2deg(this.angle(this.stack[0], this.stack[this.stack.length - 1]));
 
     //' IOIO these are hard coded in the wrong place.
     // but the function needs to live as it reads local state
-    if( angle > 155 && angle <205 ) { return CSS_SYMBOL_REMOVE; }
-    if( angle > 70 && angle < 110 ) { return CSS_SYMBOL_ORDER+" "+ CSS_SYMBOL_UP; }
-    if( angle > 250 && angle < 290 ) { return CSS_SYMBOL_ORDER+" "+ CSS_SYMBOL_DOWN; }
-    if( angle > -110 && angle < -70 ) { return CSS_SYMBOL_ORDER+" "+ CSS_SYMBOL_DOWN; }
-    return ""; 
-  } 
+    if (angle > 155 && angle < 205) {
+      return CSS_SYMBOL_REMOVE;
+    }
+    if (angle > 70 && angle < 110) {
+      return CSS_SYMBOL_ORDER + " " + CSS_SYMBOL_UP;
+    }
+    if (angle > 250 && angle < 290) {
+      return CSS_SYMBOL_ORDER + " " + CSS_SYMBOL_DOWN;
+    }
+    if (angle > -110 && angle < -70) {
+      return CSS_SYMBOL_ORDER + " " + CSS_SYMBOL_DOWN;
+    }
+    return "";
+  }
 
   /**
    * clone

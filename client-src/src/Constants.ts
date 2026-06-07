@@ -24,17 +24,17 @@ export const WORKER_NAME = "NUDGE";
 export const LOGO_PATH = "/asset/logo.png";
 
 // https://symbl.cc/en/unicode/blocks/domino-tiles/
-export const DRAG_HANDLE_SYMBOL='🁑';
+export const DRAG_HANDLE_SYMBOL = "🁻";
 
 // values for MotionStream
 export const MOBILE_THRESHOLD = 60;
 export const BIG_THRESHOLD = 15; // buttons are currently 13px tall
 export const ANGLE_ACCURACY = 20.0; // I might need to split miobile and desktop here
-export const CSS_SYMBOL_REMOVE="swipe";
-export const CSS_SYMBOL_ORDER="move";
-export const CSS_SYMBOL_RECEIPT="receipt"
-export const CSS_SYMBOL_UP ="upwards";
-export const CSS_SYMBOL_DOWN ="dwnwards";
+export const CSS_SYMBOL_REMOVE = "swipe";
+export const CSS_SYMBOL_ORDER = "move";
+export const CSS_SYMBOL_RECEIPT = "receipt";
+export const CSS_SYMBOL_UP = "upwards";
+export const CSS_SYMBOL_DOWN = "dwnwards";
 
 // localisation
 export const SUPPORTED_LANGUAGE = "en-GB";

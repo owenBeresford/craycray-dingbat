@@ -12,9 +12,7 @@
           <router-link class="button" :to="urls[1]">{{ menu.newName }}</router-link>
         </li>
         <li :title="menu.findTitle">
-          <span class="button" role="button" @click.prevent="onSearch"  @keypress="onSearch">{{
-            menu.findItem
-          }}</span>
+          <span class="button" role="button" @click.prevent="onSearch" @keypress="onSearch">{{ menu.findItem }}</span>
         </li>
 
         <li>
@@ -24,7 +22,6 @@
             :aria-pressed="ctx.menuStateRef.value"
             role="button"
             @click.prevent="onMenu"
-          
             @keypress="onMenu"
             :title="menu.actualMenuTitle"
           ></span>
@@ -36,7 +33,6 @@
                 :disabled="installEnabledBool || null"
                 :title="menu.installTitle"
                 :class="installEnabled"
- 
                 @click.prevent="onInstall"
                 @keypress.prevent="onInstall"
               >
@@ -49,7 +45,6 @@
                 class="button"
                 :title="menu.helpTitle"
                 aria-disabled="false"
-
                 @click.prevent="onInterstitial"
                 @keypress.prevent="onInterstitial"
                 >{{ menu.helpName }}</span
@@ -62,7 +57,6 @@
                 role="button"
                 :title="menu.renameTitle"
                 class="button"
-           
                 @click.prevent="onName"
                 @keypress="onName"
                 >{{ menu.renameName }}</span
@@ -75,7 +69,6 @@
                 :title="menu.dupeTitle"
                 class="button"
                 role="button"
-               
                 @click.prevent="onDuplicate"
                 @keypress.prevent="onDuplicate"
                 >{{ menu.dupeName }}</span
@@ -88,7 +81,6 @@
                 class="button"
                 role="button"
                 :title="menu.uniqTitle"
-               
                 @click.prevent="onUnique"
                 @keypress.prevent="onUnique"
                 >{{ menu.uniqName }}</span
@@ -101,7 +93,6 @@
                 :disabled="!hasData || null"
                 role="button"
                 class="button"
-                
                 @click.prevent="onSave"
                 @keypress.prevent="onSave"
                 >{{ menu.saveName }}</span
@@ -111,7 +102,6 @@
               <span
                 :aria-disabled="!hasData"
                 :disabled="!hasData || null"
-               
                 :title="menu.revertTitle"
                 role="button"
                 @click.prevent="onRevert"

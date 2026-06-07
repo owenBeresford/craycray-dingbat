@@ -3,29 +3,23 @@
 
 import { configDefaults, defineConfig, UserConfig } from "vitest/config";
 import typescript from "@rollup/plugin-typescript";
-import vue from '@vitejs/plugin-vue';
+import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
-  plugins: [ vue(), typescript() ],
+  plugins: [vue(), typescript()],
   test: {
     globals: true,
-    include: [
-      "src/test/vitest/*.vitest.ts",
-      "src/test/vitest/*.vitest.jsx",
-      "src/test/vitest/*.vitest.mjs",
-    ],
-    exclude:[
-      "src/test/**/*.stories.*",
-    ],
+    include: ["src/test/vitest/*.vitest.ts", "src/test/vitest/*.vitest.jsx", "src/test/vitest/*.vitest.mjs"],
+    exclude: ["src/test/**/*.stories.*"],
     typecheck: {
-      include: ["src/test/vitest/*.vitest.*", ],
-      exclude: [ "src/**/*.stories.*", ],
+      include: ["src/test/vitest/*.vitest.*"],
+      exclude: ["src/**/*.stories.*"],
     },
     environment: "jsdom",
     bail: 0,
     watch: false,
     coverage: {
-      provider: 'v8' // or 'istanbul'
+      provider: "v8", // or 'istanbul'
     },
 
     // https://github.com/vitest-dev/vitest/discussions/9246
@@ -37,19 +31,15 @@ export default defineConfig({
         },
       },
     ],
-   globalSetup: "./src/test/vitest.setup.ts",
-
+    globalSetup: "./src/test/vitest.setup.ts",
   },
-  optimizeDeps:{
-     exclude:[
-      "src/test/**/*.stories.*",
-    ],
+  optimizeDeps: {
+    exclude: ["src/test/**/*.stories.*"],
   },
-  css:true,
+  css: true,
   browser: { enabled: true, name: "/snap/bin/chromium" },
 });
 // can create own runner if needed
 // https://main.vitest.dev/guide/advanced/
 //
 // vim: syn=typescript nospell
-

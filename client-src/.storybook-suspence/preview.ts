@@ -5,7 +5,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import { Suspense } from "vue";
 import Vue3TouchEvents from "vue3-touch-events";
 import { vueRouter } from "storybook-vue3-router";
-import { uselog } from '../src/services/LogStack';
+import { uselog } from "../src/services/LogStack";
 
 //https://storybook.js.org/docs/api/csf/csf-next
 const preview = definePreview({
@@ -31,7 +31,7 @@ const preview = definePreview({
     },
   },
 });
-console.log("XXXX XXXX XXXX separator version with SUSPENSE , (just started storybook preview) XXXX XXXXX XXXXX" );
+console.log("XXXX XXXX XXXX separator version with SUSPENSE , (just started storybook preview) XXXX XXXXX XXXXX");
 
 /*
 export const decorators = [

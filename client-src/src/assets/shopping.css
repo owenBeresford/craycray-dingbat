@@ -149,7 +149,7 @@
 .tabBar.buttonRow ul > li span.menuTrigger {
   color: transparent;
   text-shadow: 0 0 0 var(--fg1);
-    padding: 0.5em 1em 0.5em 1em;
+  padding: 0.5em 1em 0.5em 1em;
 }
 .tabBar.buttonRow ul > li span.menuTrigger::before {
   content: "☰";
@@ -404,76 +404,77 @@ dialog.enterInput::backdrop {
   min-width: 12em;
   list-style-type: none;
 }
- 
+
 /* IOIO Make more sophisticated */
 .aList .button.info[aria-selected="true"] {
   border: 3px var(--colour-disabled) solid;
   z-index: 1;
 }
 /* IOIO mobile? */
-ul.aList > li { margin-right:1em; justify-content: space-evenly; }
+ul.aList > li {
+  margin-right: 1em;
+  justify-content: space-evenly;
+}
 
 ul.aList li span.button.info {
   min-width: 12em;
-  margin-bottom:0.1em;
-  border-bottom: var(--colour-maaxcontrast) .8em solid;
+  margin-bottom: 0.1em;
+  border-bottom: var(--colour-maaxcontrast) 0.8em solid;
   background-color: var(--bg1);
   color: var(--fg1);
   touch-action: none;
-  user-select:none;
+  user-select: none;
 }
 
-ul.aList li span.dragstr { 
+ul.aList li span.dragstr {
   font-size: 1.8em;
-  font-weight:700;
-  padding:0.3em 0.2em;
+  font-weight: 700;
+  padding: 0.3em 0.2em;
   padding-top: 0px;
-  margin-left:2em;
+  margin-left: 2em;
   display: inline-block;
 }
-ul.aList> li:has( .dragstr[aria-selected="true"] ) {
+ul.aList > li:has(.dragstr[aria-selected="true"]) {
   border: 3px var(--colour-standout) solid;
 }
 
-ul.aList> li:has( .dragstr[aria-selected="true"][data-gesture="swipe"] ) {
+ul.aList > li:has(.dragstr[aria-selected="true"][data-gesture="swipe"]) {
   background: var(--colour-destructive);
   border-color: var(--fg-destructive);
-} 
-ul.aList> li:has( .dragstr[aria-selected="true"][data-gesture="swipe"] ) span.button.info {
+}
+ul.aList
+  > li:has(.dragstr[aria-selected="true"][data-gesture="swipe"])
+  span.button.info {
   background: var(--colour-destructive);
 }
 
-   
-ul.aList > li:has( .dragstr[aria-selected="true"][data-gesture*="move"] ) {
+ul.aList > li:has(.dragstr[aria-selected="true"][data-gesture*="move"]) {
   background: var(--colour-sorting);
-  border-color:var(--fg-sorting);
-}  
-ul.aList > li:has( .dragstr[data-gesture*="receipt"] ) {
-  opacity:0.7;
+  border-color: var(--fg-sorting);
+}
+ul.aList > li:has(.dragstr[data-gesture*="receipt"]) {
+  opacity: 0.7;
 }
 
-ul.aList> li:has( .dragstr[data-gesture*="move"] ) span.button.info {
+ul.aList > li:has(.dragstr[data-gesture*="move"]) span.button.info {
   background: var(--colour-sorting);
-  border-bottom-color:var(--colour-sorting);   /* #leSigh */
+  border-bottom-color: var(--colour-sorting); /* #leSigh */
 }
-ul.aList > li:has( .dragstr[data-gesture*="move"] ) {
+ul.aList > li:has(.dragstr[data-gesture*="move"]) {
   background: var(--colour-sorting);
- } 
-
+}
 
 div.aList {
   max-height: calc(100% - 3.75em);
   overflow-y: scroll;
 }
-div.aList:has( [aria-selected="true"] ) {
+div.aList:has([aria-selected="true"]) {
   overflow-y: hidden;
 }
-
 
 .aList .buttonRow {
   margin-left: 0px;
   margin-bottom: 1em;
-
 }
 .aList .buttonRow li {
   display: inline-block;
@@ -487,12 +488,16 @@ div.aList:has( [aria-selected="true"] ) {
   line-height: 0.9;
   font-weight: 600;
   color: var(--fg1);
-
 }
 
 @media screen and (max-width: 480px) {
-  .aList.view .buttonRow li:has( img ) { width:fit-content; max-width:4em;  } 
-  .aList.view { width:100%; }
+  .aList.view .buttonRow li:has(img) {
+    width: fit-content;
+    max-width: 4em;
+  }
+  .aList.view {
+    width: 100%;
+  }
 }
 
 div.aList ul.buttonRow li span {
@@ -505,12 +510,11 @@ div.aList ul.buttonRow li span {
     margin-right: auto;
   }
 
-/* IOIO Make more sophisticated */
-.aList .button.info[aria-selected="true"] {
-  touch-action: none;
-  user-select:none;
-}
-
+  /* IOIO Make more sophisticated */
+  .aList .button.info[aria-selected="true"] {
+    touch-action: none;
+    user-select: none;
+  }
 }
 
 /* ********************************************************* */
@@ -518,23 +522,22 @@ div.aList ul.buttonRow li span {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: var( --fg1);
+  color: var(--fg1);
   min-width: 100%;
   height: 100%;
   touch-action: manipulation;
 
-  --colour-destructive: hsl(0, 69%, 66%); 
+  --colour-destructive: hsl(0, 69%, 66%);
   --fg-destructive: rgb(131, 0, 0);
   --colour-finalise: rgb(142, 218, 142);
-  --colour-sorting:rgb(141, 176, 236);
+  --colour-sorting: rgb(141, 176, 236);
   --fg-sorting: rgb(24, 24, 169);
   --colour-disabled: rgb(107, 107, 107);
-  --colour-standout:hsla(0, 0%, 87%, 0.757);
-  --colour-maaxcontrast:#fff;
-  --fg1:#1f1e1e;
-  --bg1:#f3ffcf;
+  --colour-standout: hsla(0, 0%, 87%, 0.757);
+  --colour-maaxcontrast: #fff;
+  --fg1: #1f1e1e;
+  --bg1: #f3ffcf;
 }
-
 
 .wholePage {
   height: 100%;

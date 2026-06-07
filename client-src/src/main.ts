@@ -18,11 +18,13 @@ TOOL.directive("longpress", {
     let pressTimer: number | null = null;
 
     const start = (e: MouseEvent): void => {
-      let delay=DELAY_LONGTAP;
-      if(isMobile()) { delay = MOBILE_LONGTAP; }
-      
+      let delay = DELAY_LONGTAP;
+      if (isMobile()) {
+        delay = MOBILE_LONGTAP;
+      }
+
       if (pressTimer === null) {
-        pressTimer = window.setTimeout(():void => {
+        pressTimer = window.setTimeout((): void => {
           binding.value(e);
         }, delay);
       }

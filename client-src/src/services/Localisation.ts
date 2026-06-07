@@ -260,4 +260,4 @@ function UITextFactory(lang: string): UItext {
   return hiddenReference;
 }
 
-export const HELP_TEXT_NAMES=[ "/list-all", "/list", "/located", "/menu", ];
+export const HELP_TEXT_NAMES = ["/list-all", "/list", "/located", "/menu"];

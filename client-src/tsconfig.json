@@ -3,56 +3,70 @@
     "target": "esnext",
     "module": "esnext",
     "strict": true,
-	"strictNullChecks":true,
+    "strictNullChecks": true,
     "jsx": "preserve",
     "experimentalDecorators": true,
-	"strictPropertyInitialization":false,
-	"emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
+    "emitDecoratorMetadata": true,
     "allowJs": true,
     "declaration": true,
     "declarationDir": "./src/types",
-	"isolatedModules": true,
+    "isolatedModules": true,
     "moduleResolution": "node",
-	"noResolve":false,
+    "noResolve": false,
     "esModuleInterop": true,
-	"extendedDiagnostics": false,
-	"downlevelIteration": true,
+    "extendedDiagnostics": false,
+    "downlevelIteration": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
     "sourceMap": false,
-	"skipLibCheck": true,
+    "skipLibCheck": true,
     "baseUrl": ".",
-	"outDir": "../dist/types/",
-    "types": [  "node", "vitest", "vite", "@vue/runtime-dom", "../common/types/env.d.ts", "./src/types/shims-vue.d.ts" ],
+    "outDir": "../dist/types/",
+    "types": [
+      "node",
+      "vitest",
+      "vite",
+      "@vue/runtime-dom",
+      "../common/types/env.d.ts",
+      "./src/types/shims-vue.d.ts"
+    ],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-	  "WebWorker",
-      "scripthost"
-    ]
+    "lib": ["esnext", "dom", "dom.iterable", "WebWorker", "scripthost"]
   },
-  "include": [  "src/**/*.ts", "src/components/*.vue", "src/*.vue", "src/*.ts", "../common/*ts", "../common/types/*.ts" ],
+  "include": [
+    "src/**/*.ts",
+    "src/components/*.vue",
+    "src/*.vue",
+    "src/*.ts",
+    "../common/*ts",
+    "../common/types/*.ts"
+  ],
   "exclude": [
-   "node_modules",
+    "node_modules",
     ".storybook",
     "**/*.stories.ts",
     "**/*.stories.tsx",
     "**/*.stories.mdx",
-	"**/*.mdx"
-  ], /* this blob is from a bot, I may strip it later.  The goal was eslint in Vue SFC, and it didn't deliver */
-	"vueCompilerOptions": {
-		"strictTemplates":true,
-		"experimentalDecorators":true,
-		"checkUnknownComponents":true,
-		"emitDecoratorMetadata":true,
-		"extensions":[".vue", ".tsx", ".ts" ],
-		"include": [ "src/types/vue-shim.d.ts", "../common/types/env.d.ts", "src/**/*.ts", "src/components/*.vue", "src/*.vue", "src/*.ts", "dom" ]
-	}
+    "**/*.mdx"
+  ] /* this blob is from a bot, I may strip it later.  The goal was eslint in Vue SFC, and it didn't deliver */,
+  "vueCompilerOptions": {
+    "strictTemplates": true,
+    "experimentalDecorators": true,
+    "checkUnknownComponents": true,
+    "emitDecoratorMetadata": true,
+    "extensions": [".vue", ".tsx", ".ts"],
+    "include": [
+      "src/types/vue-shim.d.ts",
+      "../common/types/env.d.ts",
+      "src/**/*.ts",
+      "src/components/*.vue",
+      "src/*.vue",
+      "src/*.ts",
+      "dom"
+    ]
+  }
 }
