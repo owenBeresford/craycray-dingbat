@@ -28,6 +28,7 @@ export abstract class BaseActions implements ExternalMethods {
 
    * @see [https://stackoverflow.com/a/39723622]
    * @param {MenuStateType } ctx
+   * @param {ExternalMethods} cls 
    * @public
    * @returns {MethodOptions}
    */
@@ -69,6 +70,7 @@ export abstract class BaseActions implements ExternalMethods {
    * wrapper
    * A function -makin- function that creates boilerplate
 
+   * @param { BaseActions} SELF
    * @param {UserAction} f1
    * @param {FakeThis} ctx
    * @public

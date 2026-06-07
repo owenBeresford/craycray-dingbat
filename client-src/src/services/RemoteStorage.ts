@@ -40,7 +40,7 @@ export class RemoteStorage implements Storable, DistantStorable {
  * @public
  * @returns Promise<boolean>
  */
-  public async poll(): Promise<boolean> {
+  public poll(): Promise<boolean> {
     let didTimeOut = false;
     const REQT: RequestInit = Object.assign(this.other, { method: "HEAD", body: null }) as RequestInit;
     const EEE = new Error("Request timed out");

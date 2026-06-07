@@ -81,6 +81,7 @@ export class MotionStream implements Motionable {
   // currently only single direction actions supported...
  
    * @param {MouseEvent} e
+   * @param {FakeThis} ctx - a very generic type, that can be applied to any Action module.  I make mapped types for more specific ones
    * @public
    * @returns {boolean}
    */
@@ -118,6 +119,17 @@ export class MotionStream implements Motionable {
     return false;
   }
 
+  /**
+   * finalVector2text
+   * A function to be called whilst a gesture is happening to allow useful feedback to the user.
+   * This returns the current best guess as a CSS class name
+   * Currently supported gestures are:
+   *  - swipe (to the left) to delete
+   *  - drag (up or down) to reorder list items
+   *
+   * @public
+   * @returns {string}
+   */
   public finalVector2text(): string {
     const angle = rad2deg(this.angle(this.stack[0], this.stack[this.stack.length - 1]));
 
@@ -161,6 +173,7 @@ export class MotionStream implements Motionable {
    * Start a gesture in the motion stream
  
    * @param {MouseEvent} e
+   * @param {FakeThis} ctx - a very generic type, that can be applied to any Action module.  I make mapped types for more specific ones
    * @public
    * @returns {boolean}
    */

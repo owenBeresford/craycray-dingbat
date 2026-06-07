@@ -4,7 +4,7 @@ import type { ShippingStruct, ActionEnum } from "../../../common/types/Messagabl
 /**
  * transform2text
  * As name says, create text from internal data structure
- 
+
  * @param {any} dat - yes any type.
  * @public
  * @returns {string}
@@ -26,14 +26,14 @@ export function transform2text(dat: any): string {
  * transform2list
  * As name says, create internal data structure from text
 // IOIO TODO possible magic to make types work...
- 
+
  * @throws {Error} - when the JSON isn't to expected format
  * @param {string} dat
  * @public
  * @returns {Array<SaveStruct>}
  */
 export function transform2list(dat: string): Array<SaveStruct> {
-  let thing: Object = [];
+  let thing: object = [];
   try {
     thing = JSON.parse(dat);
   } catch (e: unknown) {
@@ -50,7 +50,7 @@ export function transform2list(dat: string): Array<SaveStruct> {
 /**
  * packMsg
  * Pack data into a message blob
- 
+
  * @param {ActionEnum} act
  * @param {object} dat
  * @public

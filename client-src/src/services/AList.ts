@@ -56,6 +56,7 @@ export class BaseList<T> implements InstanceListable<T>, ListStruct {
    * @param { "new (): V" } this - TS magic to have correct type at runtime for any child class
    * @param {string} nouveau
    * @public
+   * @static 
    * @returns {StdList}
    */
   public static manual<V1, V extends BaseList<V1>>(this: { new (): V }, nom: string, id: number): V {
@@ -78,6 +79,7 @@ export class BaseList<T> implements InstanceListable<T>, ListStruct {
    * @param { "new (): V" } this - TS magic to have correct type at runtime for any child class
    * @param {TestDataSchema} origine
    * @public
+   * @static
    * @returns {U} - probably U=Stdlist, but this is reusable
    */
   public static importTest<T, U extends BaseList<T>>(this: { new (): U }, origine: TestDataSchema): U {
@@ -295,7 +297,8 @@ export class SearchList extends BaseList<MatchedItems> implements InstanceListab
  
  * @param {Array<MatchedItems>} dat
  * @public
- * @return {SearchList }
+ * @static 
+ * @returns {SearchList }
  */
   public static serps(dat: Array<MatchedItems>): SearchList {
     let liste = new SearchList();

@@ -10,7 +10,7 @@ import { CSS_SYMBOL_ORDER, CSS_SYMBOL_UP, CSS_SYMBOL_DOWN, CSS_SYMBOL_RECEIPT } 
 
 import type { FactoryArtefact } from "./DataFactory";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
-import type { ExternalMethods, FakeThis, CBType } from "../types/Actionables";
+import type { ExternalMethods, CBType } from "../types/Actionables";
 
 /**
  * useSearchActions
@@ -27,17 +27,19 @@ export function useThisListActions(c: typeof MotionStream, d: FactoryArtefact): 
 
 // this types here are NOT reusable.
 // it is to narrow the FakeThis to add safety *here*
-type ThisListCtx = {
-  [K in keyof ThisListContext]: Ref<ThisListContext[K]>;
-};
-
 interface ThisListContext {
   canSeeInputRef: boolean;
   getInputRef: string;
   CBRef: CBType;
   listRef: typeof StdList;
   draggingRef: Array<boolean>;
+  gestureRef: Array<string>;
 }
+
+type ThisListCtx = {
+  [K in keyof ThisListContext]: Ref<ThisListContext[K]>;
+};
+
 
 export { noop } from "./BaseActions";
 const LOG = useLog();

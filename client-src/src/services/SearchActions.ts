@@ -49,6 +49,7 @@ export class SearchActions extends BaseActions implements ExternalMethods {
  *
  * @param {SearchList} al
  * @param {MotionStream} ms
+ * @param { FactoryArtefact} ld
  * @public
  * @returns {ExternalMethods}
  */
