@@ -1,4 +1,4 @@
-import { reactive, readonly } from "vue";
+import { reactive, readonly, type UnwrapNestedRefs } from "vue";
 
 import type { Loggable } from "../types/Loggable";
 import { MAX_LOG_LENGTH, LOGGING_ENABLED } from "../Constants";
@@ -19,6 +19,10 @@ export function useLog(): Loggable {
 }
 let SELF: Loggable;
 
+interface LocalLogState {
+  log: Array<string>;
+}
+
 /**
  * LogService
  * A collection class for log events.
@@ -29,7 +33,7 @@ let SELF: Loggable;
  * @public
  */
 export class LogService implements Loggable {
-  protected log: Array<string>;
+  protected log: UnwrapNestedRefs<LocalLogState>;
 
   /**
      * constructor
@@ -39,8 +43,8 @@ export class LogService implements Loggable {
      * @returns {self}
      */
   public constructor() {
-    this.log = reactive({
-      log: [] as string[],
+    this.log = reactive<LocalLogState>({
+      log: [],
     });
   }
 
@@ -86,7 +90,7 @@ export class LogService implements Loggable {
      * @returns {Readonly<Array<string>>}
      */
   public readWhole(): Readonly<Array<string>> {
-    return readonly(this.log);
+    return readonly(this.log.log as Array<string>);
   }
 
   /**
@@ -99,6 +103,6 @@ export class LogService implements Loggable {
      * @returns {Array<string>}
      */
   public readHead(rows: number): Array<string> {
-    return this.log.slice(0, rows);
+    return this.log.log.slice(0, rows);
   }
 }
