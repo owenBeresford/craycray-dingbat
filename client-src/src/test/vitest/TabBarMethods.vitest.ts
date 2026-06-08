@@ -14,14 +14,14 @@ import { ListData } from "../../services/DataFactory";
 import { useCacheWrapper } from "../../workers/InstallWorker";
 import { useStore } from "../../services/Store";
 import type { COMPLETE_STORE } from "../../services/Store";
-import type { ExternalMethods, CBType } from "../../types/Actionables";
+import type { ExternalMethods, CBType, TabBarCtx } from "../../types/Actionables";
 
 describe("test on TabActions", () => {
   it("Can use useFunction", async () => {
     let txt: TabActions = (await useTabActions(useStore(), ListData, useCacheWrapper(), useRoute())) as TabActions;
     expect(typeof txt).toBe("object");
     assertType<TabActions>(txt);
-    expectTypeOf(txt).toExtend<BaseActions>();
+    expectTypeOf(txt).toExtend<BaseActions<TabBarCtx>>();
   });
 
   it("Can use mount (reviw on retuen type, as its soft/a runtime thing, not a class)", async () => {
@@ -44,7 +44,7 @@ describe("test on TabActions", () => {
       "onName",
     ];
 
-    let obj = txt.mount({ visibleRef, getInputRef, CBRef, storeRef, menuStateRef }, txt);
+    let obj = txt.mount({ visibleRef, getInputRef, CBRef, storeRef, menuStateRef } satisfies TabBarCtx, txt);
     expect(typeof obj).toBe("object");
 
     assertType<MethodOptions>(obj);

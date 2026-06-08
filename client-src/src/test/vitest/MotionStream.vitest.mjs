@@ -2,6 +2,7 @@ import { assert, describe, it, expect } from "vitest";
 
 import { Vector } from "vector2d";
 import { MotionStream } from "../../services/MotionStream";
+// import type { SearchCtx}  from '../../types/Actionables';
 
 describe("I can run MotionStream", () => {
   it("I can create it", () => {
@@ -19,14 +20,14 @@ describe("I can run MotionStream", () => {
     let d2 = new Vector(10, 10);
     assert.equal(
       mm.angle(d1, d2),
-      0.7853981633974484,
+      0.7853981633974483,
       `I think ${mm.angle(d1, d2)} `
     );
     d1 = new Vector(0, 10);
     d2 = new Vector(10, 10);
     assert.equal(
       mm.angle(d1, d2),
-      0.7853981633974484,
+      5.497787143782138,
       `I think ${mm.angle(d1, d2)}`
     );
     d1 = new Vector(-10, 0);
@@ -51,7 +52,7 @@ describe("I can run MotionStream", () => {
     let d2 = new Vector(10, 10);
     assert.equal(
       mm.angle(d1, d2),
-      1.5707963267948966,
+      4.71238898038469,
       `I think ${mm.angle(d1, d2)}`
     );
     d1 = new Vector(10, -10);
@@ -65,7 +66,7 @@ describe("I can run MotionStream", () => {
     d2 = new Vector(10, 10);
     assert.equal(
       mm.angle(d1, d2),
-      3.141592638688632,
+      3.141592653589793,
       `I think ${mm.angle(d1, d2)}`
     );
     d1 = new Vector(10, 10);

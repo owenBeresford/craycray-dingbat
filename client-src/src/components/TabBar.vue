@@ -142,12 +142,12 @@ import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
 import { useTabActions, noop, TabActions } from "../services/TabActions";
 import type { COMPLETE_STORE } from "../services/Store";
-import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Actionables";
+import type { ExternalMethods, UserAction, CBType, TabBarCtx } from "../types/Actionables";
 import type { Loggable } from "../types/Loggable";
 // import { StaticRoutes } from "./Routing";
 import EnterInput from "./EnterInput.vue";
 // import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
-import type { TabBarStaticData } from "../types/ComponentProps";
+import type { TabBarStaticData  } from '../types/ComponentProps';
 
 const TEXT = useUIText();
 
@@ -187,7 +187,7 @@ export default defineComponent({
     try {
       stack = useTabActions(useStore(), ListData, useCacheWrapper(), useRoute());
       return {
-        extraMethods: stack.mount({ visibleRef, getInputRef, CBRef, storeRef, menuStateRef }, stack),
+        extraMethods: stack.mount({ visibleRef, getInputRef, CBRef, storeRef, menuStateRef } satisfies TabBarCtx, stack),
         dataOnLoad,
         menuStateRef,
         visibleRef,
@@ -196,7 +196,7 @@ export default defineComponent({
         log,
         storeRef,
         route: useRoute(),
-        ctx: { visibleRef, getInputRef, CBRef, storeRef, menuStateRef } as FakeThis,
+        ctx: { visibleRef, getInputRef, CBRef, storeRef, menuStateRef } as TabBarCtx,
       };
     } catch (e: unknown) {
       log.addRaw("TabBar.setup():", (e as Error).message, (e as Error).stack.substring(0, 200), "error");

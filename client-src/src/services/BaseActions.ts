@@ -6,7 +6,7 @@ import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-test
 import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
 import type { COMPLETE_STORE } from "./Store";
 import type { FactoryArtefact } from "./DataFactory";
-import type { ExternalMethods, FakeThis, UserAction, CBType } from "../types/Actionables";
+import type { ExternalMethods, UserAction, CBType } from "../types/Actionables";
 import { useLog } from "./LogStack";
 
 const LOG = useLog();
@@ -18,7 +18,7 @@ const LOG = useLog();
 
  * @access public
  */
-export abstract class BaseActions implements ExternalMethods {
+export abstract class BaseActions<I> implements ExternalMethods<I> {
   protected data: FactoryArtefact;
 
   /**
@@ -27,12 +27,12 @@ export abstract class BaseActions implements ExternalMethods {
    * See HOC in a OO class
 
    * @see [https://stackoverflow.com/a/39723622]
-   * @param {MenuStateType } ctx
+   * @param {I } ctx
    * @param {ExternalMethods} cls 
    * @public
    * @returns {MethodOptions}
    */
-  public mount(ctx: FakeThis, cls: ExternalMethods): MethodOptions {
+  public mount(ctx: I, cls: ExternalMethods<I>): MethodOptions {
     let ret = {
       [Symbol.iterator]() {
         const ar = Object.values(this);
@@ -72,17 +72,17 @@ export abstract class BaseActions implements ExternalMethods {
 
    * @param { BaseActions} SELF
    * @param {UserAction} f1
-   * @param {FakeThis} ctx
+   * @param { I} ctx
    * @public
    * @returns {UserAction }
    */
-  wrapper(SELF: BaseActions, f1: UserAction, ctx: FakeThis): UserAction {
+  wrapper(SELF: BaseActions<I>, f1: UserAction<I>, ctx: I): UserAction<I> {
     return function (e: GuessEvent): boolean {
       if (e.type && e.type === "mouseup") {
         LOG.addRaw("event action in Base, mouse UP event", "debug");
         return false;
       }
-      if ("data" in (SELF as BaseActions) && !SELF.data.currentData) {
+      if ("data" in (SELF as BaseActions<I>) && !SELF.data.currentData) {
         LOG.addRaw("event action in Base, no data in currentData ", "debug");
 
         return false;

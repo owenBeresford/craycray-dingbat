@@ -12,8 +12,8 @@ import { useLog } from "./LogStack";
 import type { FactoryArtefact } from "./DataFactory";
 import type { COMPLETE_STORE } from "./Store";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
-import type { ExternalMethods, FakeThis } from "../types/Actionables";
-
+import type { ExternalMethods, CBType, TabBarCtx } from "../types/Actionables";
+ 
 /**
  * useTabActions
  * The standard access util
@@ -31,7 +31,7 @@ export function useTabActions(
   b: FactoryArtefact,
   c: CacheWrapper,
   d: RouteLocationNormalizedLoadedGeneric
-): ExternalMethods {
+): ExternalMethods<TabBarCtx> {
   let tmp = new TabActions(d, a, c, b);
   if (b.currentData) {
     tmp.loadedStateKey = hashState(b.currentData.list());
@@ -48,7 +48,7 @@ const LOG = useLog();
 
  * @access public
  */ // implements ExternalMethods
-export class TabActions extends BaseActions {
+export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethods<TabBarCtx> {
   protected store: COMPLETE_STORE;
   protected route: RouteLocationNormalizedLoadedGeneric;
   protected cache: CacheWrapper;
@@ -105,11 +105,11 @@ export class TabActions extends BaseActions {
    * Event handler to load Interstitials
 
    * @param {GuesEvent} ignored - maintained for API compat, this is ignored
-   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
+   * @param {TabBarCtx} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {void}
    */
-  public onInterstitial(ignored: GuessEvent, ctx: FakeThis): void {
+  public onInterstitial(ignored: GuessEvent, ctx: TabBarCtx): void {
     if (this.store.state.currentURL !== this.route.path) {
       console.warn("The state.currentURL hasn't updated!", this.store.state.currentURL, this.route.path);
       this.store.commit("setPath", this.route.path);
@@ -127,11 +127,11 @@ export class TabActions extends BaseActions {
    * Event handler to exec "install" to a phone
 
    * @param {GuesEvent} ignored - maintained for API compat, this is ignored
-   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
+   * @param {TabBarCtx} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {boolean}
    */
-  public onInstall(ignored: GuessEvent, ctx: FakeThis): void {
+  public onInstall(ignored: GuessEvent, ctx: TabBarCtx): void {
     if (location.protocol !== "https:") {
       LOG.addRaw("Install button is disabled, you need to use HTTPS.", "info");
       return;
@@ -152,23 +152,23 @@ export class TabActions extends BaseActions {
    * Event handler to exec the unique filter on this list
 
    * @param {GuesEvent} ignored - maintained for API compat, this is ignored
-   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
+   * @param {TabBarCtx} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {void}
    */
-  public onUnique(ignored: GuessEvent, ctx: FakeThis): void {
+  public onUnique(ignored: GuessEvent, ctx: TabBarCtx): void {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     if (!this.route.params) {
       LOG.addRaw("Cannot run unique(), not on a single list screen", "info");
       return;
     }
-    const liste = this.data.currentData.get(this.store.state.currentId);
+    const liste:StdList|undefined = this.data.currentData!.get(this.store.state.currentId) as StdList;
     if (liste) {
       liste.unique();
       LOG.addRaw("Ran Unique on " + liste.nom + " (" + this.store.state.currentId + ")", "info");
 
       // @ts-ignore  - there are no undef() at runtime after the con'tor.
-      this.data.currentData.put(this.store.state.currentId, liste);
+      this.data.currentData!.put(this.store.state.currentId, liste);
       ctx.menuStateRef.value = false;
     } else {
       LOG.addRaw("NO LIST FOUND for Unique (" + this.store.state.currentId + ")", "warn");
@@ -180,31 +180,31 @@ export class TabActions extends BaseActions {
    * Event handler to copy the current list
 
    * @param {GuesEvent} ignored - maintained for API compat, this is ignored
-   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
+   * @param {TabBarCtx} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {void}
    */
-  public onDuplicate(ignored: GuessEvent, ctx: FakeThis): void {
+  public onDuplicate(ignored: GuessEvent, ctx: TabBarCtx): void {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     if (!this.route.params) {
       LOG.addRaw("cannot run duplicate(), not on a single list screen", "info");
       return;
     }
-    const liste: Stdlist = this.data.currentData.get(this.store.state.currentId);
+    const liste: StdList | undefined = this.data.currentData!.get(this.store.state.currentId) as StdList;
 
     if (liste) {
       // @ts-ignore  - there are no undef() at runtime after the con'tor.
       const extra: StdList = Object.assign(
-        StdList.manual<string, StdList>(`DUP: ${liste.nom}`, this.data.currentData.count()) as StdList,
+        StdList.manual<string, StdList>(`DUP: ${liste.nom}`, this.data.currentData!.count()) as StdList,
         liste
       );
       extra.editName(`DUP: ${liste.nom}`);
       // @ts-ignore  - there are no undef() at runtime after the con'tor.
-      this.data.currentData.append(extra);
+      this.data.currentData!.append(extra);
       LOG.addRaw("Duplicated list " + this.store.state.currentId + " (see list DUP).", "info");
       ctx.menuStateRef.value = false;
     } else {
-      LOG.addRaw("Attempt duplicate list? BUT list not found " + this.store.state.currentId + ".", "warn");
+      LOG.addRaw("Attempt duplicate list? BUT list not found for " + this.store.state.currentId + ".", "warn");
     }
     StaticRoutes.push({ name: "list-everything" });
   }
@@ -214,22 +214,22 @@ export class TabActions extends BaseActions {
    * Event handler to push current state to the server
 
    * @param {GuesEvent} ignored - maintained for API compat, this is ignored
-   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
+   * @param {TabBarCtx} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {Promise<boolean>}
    */
-  public onSave(ignored: GuessEvent, ctx: FakeThis): void {
+  public onSave(ignored: GuessEvent, ctx: TabBarCtx): void {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    if (this.loadedStateKey === hashState(this.data.currentData.list())) {
+    if (this.loadedStateKey === hashState(this.data.currentData!.list())) {
       LOG.addRaw("Data is identical as last save. Nothing done", "info");
-      return false;
+      return;
     }
 
     LOG.addRaw("Saving all your current lists to a local cache.", "info");
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    this.loadedStateKey = hashState(this.data.currentData.list());
+    this.loadedStateKey = hashState(this.data.currentData!.list());
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    this.data.currentData.saveAllLists();
+    this.data.currentData!.saveAllLists();
     ctx.menuStateRef.value = false;
   }
 
@@ -238,19 +238,19 @@ export class TabActions extends BaseActions {
    * Event handler to revert local state to what is stored on the server
 
    * @param {GuesEvent} ignored - maintained for API compat, this is ignored
-   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
+   * @param {TabBarCtx} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {Promise<boolean>}
    */
-  protected onRevert(ignored: GuessEvent, ctx: FakeThis): void {
+  protected onRevert(ignored: GuessEvent, ctx: TabBarCtx): void {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    if (this.loadedStateKey === hashState(this.data.currentData.list())) {
+    if (this.loadedStateKey === hashState(this.data.currentData!.list())) {
       LOG.addRaw("Data is identical to initial state. Nothing done", "info");
       return;
     }
     LOG.addRaw("Rebuilding data from cache for all lists.", "info");
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    this.data.currentData.loadAllLists();
+    this.data.currentData!.loadAllLists();
     ctx.menuStateRef.value = false;
   }
 
@@ -259,11 +259,11 @@ export class TabActions extends BaseActions {
    * Event handler to toggle the menu
 
    * @param {GuesEvent} ignored - maintained for API compat, this is ignored
-   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
+   * @param {TabBarCtx} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {void}
    */
-  public onMenu(ignored: GuessEvent, ctx: FakeThis): void {
+  public onMenu(ignored: GuessEvent, ctx: TabBarCtx): void {
     ctx.menuStateRef.value = !ctx.menuStateRef.value;
   }
 
@@ -272,11 +272,11 @@ export class TabActions extends BaseActions {
    * Event handler to perform a search
 
    * @param {GuesEvent} ignored - maintained for API compat, this is ignored
-   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
+   * @param {TabBarCtx} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {boolean}
    */
-  public onSearch(ignored: GuessEvent, ctx: FakeThis): void {
+  public onSearch(ignored: GuessEvent, ctx: TabBarCtx): void {
     ctx.getInputRef.value = "";
     createSearchCallback(ctx);
     ctx.visibleRef.value = true;
@@ -289,13 +289,13 @@ export class TabActions extends BaseActions {
    * #TODO if Route is show-all, abort with dedicated warning
 
    * @param {GuesEvent} ignored - maintained for API compat, this is ignored
-   * @param {FakeThis} ctx - in modern JS, the real "this" is discouraged 
+   * @param {TabBarCtx} ctx - in modern JS, the real "this" is discouraged 
    * @public
    * @returns {boolean}
    */
-  public onName(ignored: GuessEvent, ctx: FakeThis): void {
+  public onName(ignored: GuessEvent, ctx: TabBarCtx): void {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    const liste: StdList = this.data.currentData.get(this.store.state.currentId) as StdList;
+    const liste: StdList| undefined = this.data.currentData!.get(this.store.state.currentId) as StdList;
     if (!liste) {
       LOG.addRaw("Cannot edit list name, only have a bad ID.", "warn");
       return;
@@ -316,12 +316,12 @@ export { noop } from "./BaseActions";
  * An isolated code section to create a EnterInput callback
  * very IMPURE
 
- * @param {FakeThis} ctx
+ * @param {TabBarCtx} ctx
  * @param { FactoryArtefact } data
  * @public
  * @returns {void}
  */
-function createNameCallback(ctx: FakeThis, data: FactoryArtefact): void {
+function createNameCallback(ctx: TabBarCtx, data: FactoryArtefact): void {
   ctx.CBRef.value = (d1: string | null): any => {
     if (d1 === null) {
       ctx.visibleRef.value = false;
@@ -329,7 +329,7 @@ function createNameCallback(ctx: FakeThis, data: FactoryArtefact): void {
     }
 
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    const liste = data.currentData.get(ctx.storeRef.value.state.currentId);
+    const liste:StdList|undefined = data.currentData.get(ctx.storeRef.value.state.currentId) as StdList;
     if (!liste) {
       throw new Error("THe currentId " + ctx.storeRef.value.state.currentId + "in the state/ session is invalid.");
     }
@@ -350,11 +350,11 @@ function createNameCallback(ctx: FakeThis, data: FactoryArtefact): void {
  * An isolated code section to create a EnterInput callback
  * very IMPURE
 
- * @param {FakeThis} ctx
+ * @param {TabBarCtx} ctx
  * @public
  * @returns {void}
  */
-function createSearchCallback(ctx: FakeThis): void {
+function createSearchCallback(ctx: TabBarCtx): void {
   ctx.CBRef.value = (d1: string | null): any => {
     if (d1 === null || d1 === "") {
       ctx.visibleRef.value = false;

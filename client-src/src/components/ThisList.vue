@@ -86,7 +86,7 @@ import { isMobile, clearSelection } from "../../../common/util";
 import { LOGO_PATH, DRAG_HANDLE_SYMBOL } from "../Constants";
 import { noop, ThisListActions, useThisListActions } from "../services/ThisListActions";
 
-import type { ExternalMethods, CBType, FakeThis } from "../types/Actionables";
+import type { ExternalMethods, CBType, ThisListCtx } from "../types/Actionables";  
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { ThisListStaticData, ThisListProps } from "../types/ComponentProps";
 
@@ -99,7 +99,9 @@ const NEW_LIST = -1;
 // This class is using a shared function pointer, as in vue2 the event bus is too slow.
 // If you do parent state updates via it; they take 100ms to propagate, and you see flickers.
 // It is possible that vue3 event bus is faster.
-//   v-touch-class="'touchActive'"    v-touch-options="{ swipeTolerance: 10, rollOverFrequency: 500, swipeConeSize: 0.6 }"  v-touch-options="{ dragTolerance: 200, rollOverFrequency: 400 }"  v-touch.prevent.once="onAdd"
+
+//   v-touch-class="'touchActive'"    v-touch-options="{ swipeTolerance: 10, rollOverFrequency: 500, swipeConeSize: 0.6 }"  
+// v-touch-options="{ dragTolerance: 200, rollOverFrequency: 400 }"  v-touch.prevent.once="onAdd"
 
 /**
    * Thislist
@@ -139,7 +141,7 @@ export default defineComponent({
 
     let stack: ExternalMethods;
     try {
-      const flux = new MotionStream();
+      const flux = new MotionStream<ThisListCtx>();
       const liste: StdList = Object.assign(Object.create(Object.getPrototypeOf(EMPTY_LIST)), EMPTY_LIST) as StdList;
       liste.importTest(setupCurrentList(itinéraire));
       const listRef: Ref<StdList> = ref<StdList>(liste);
@@ -153,13 +155,13 @@ export default defineComponent({
       stack = useThisListActions(flux, ListData);
       return {
         extraMethods: stack.mount(
-          { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef } as FakeThis,
+          { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef } satisfies ThisListCtx,
           stack
         ),
         helpText,
         canSeeHelp,
         ttl,
-        ctx: { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef } as FakeThis,
+        ctx: { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef } as ThisListCtx,
       };
     } catch (e: unknown) {
       console.warn("ThisList.setup():", (e as Error).message, (e as Error).stack.substring(0, 200));
@@ -184,7 +186,7 @@ export default defineComponent({
       console.assert(this.shopStore, "ThisList: At mounted() stage, do not have a state storage?!");
     }
   },
-  data(): ThisListStaticData {
+  data(): ThisListStaticData<ThisListCtx> {
     return {
       noop,
       id: NEW_LIST,
@@ -201,7 +203,7 @@ export default defineComponent({
       nextTestId: this.$props.testId + "Input1",
       aListId: this.$props.testId + "List1",
       viewId: this.$props.testId + "View1",
-    } satisfies ThisListStaticData;
+    } satisfies ThisListStaticData<ThisListCtx>;
   },
   computed: {
     helpId(): string {

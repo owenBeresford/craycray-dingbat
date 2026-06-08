@@ -6,40 +6,24 @@ import { StdList } from "./AList";
 import { MotionStream } from "./MotionStream";
 import { useLog } from "./LogStack";
 import { clearSelection } from "../../../common/util";
-import { CSS_SYMBOL_ORDER, CSS_SYMBOL_UP, CSS_SYMBOL_DOWN, CSS_SYMBOL_RECEIPT } from "../Constants";
+import { CSS_SYMBOL_ORDER, CSS_SYMBOL_UP, CSS_SYMBOL_DOWN, CSS_SYMBOL_RECEIPT, CSS_SYMBOL_LANDED } from "../Constants";
 
 import type { FactoryArtefact } from "./DataFactory";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
-import type { ExternalMethods, CBType } from "../types/Actionables";
+import type { ExternalMethods, CBType, ThisListCtx } from "../types/Actionables";
 
 /**
  * useSearchActions
  * A standard use* function.
 
- * @param {MotionStream} c 
+ * @param {MotionStream<ThisListCtx>} c 
  * @param {FactoryArtefact} d
  * @public
- * @returns {ExternalMethods } - actually a SearchActions instance
+ * @returns {ExternalMethods<ThisListCtx> } - actually a ThislistActions instance
  */
-export function useThisListActions(c: typeof MotionStream, d: FactoryArtefact): ExternalMethods {
+export function useThisListActions(c: MotionStream<ThisListCtx>, d: FactoryArtefact): ExternalMethods<ThisListCtx> {
   return new ThislistActions(c, d);
 }
-
-// this types here are NOT reusable.
-// it is to narrow the FakeThis to add safety *here*
-interface ThisListContext {
-  canSeeInputRef: boolean;
-  getInputRef: string;
-  CBRef: CBType;
-  listRef: typeof StdList;
-  draggingRef: Array<boolean>;
-  gestureRef: Array<string>;
-}
-
-type ThisListCtx = {
-  [K in keyof ThisListContext]: Ref<ThisListContext[K]>;
-};
-
 
 export { noop } from "./BaseActions";
 const LOG = useLog();
@@ -51,8 +35,8 @@ const LOG = useLog();
 
  * @access public
  */
-export class ThislistActions extends BaseActions implements ExternalMethods {
-  protected flux: MotionStream;
+export class ThislistActions extends BaseActions<ThisListCtx> implements ExternalMethods<ThisListCtx> {
+  protected flux: MotionStream<ThisListCtx>;
   protected data: FactoryArtefact;
 
   protected offset: number;
@@ -62,12 +46,12 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
    * This has params to make building unit-tests easier.
    * NOTE:  not injected: StaticRoutes
    *
-   * @param {MotionStream} ms
+   * @param {MotionStream<ThisListCtx>} ms
    * @param {FactoryArtefact} ld
    * @public
    * @returns {ExternalMethods}
    */
-  public constructor(ms: MotionStream, ld: FactoryArtefact) {
+  public constructor(ms: MotionStream<ThisListCtx>, ld: FactoryArtefact) {
     super();
     this.offset = 0;
     this.flux = ms;
@@ -101,12 +85,16 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
 
   // dont disable the draggingRef or gestureRef, here
   public onDragUPFinalise(e: unknown, ctx: ThisListCtx): void {
-    if (this.offset >= 1 && this.offset < ctx.listRef.value.énumérer) {
+    if (this.offset >= 0 && this.offset < ctx.listRef.value.énumérer) {
       let tt = ctx.listRef.value.export();
       let copy = tt[this.offset];
-      tt[this.offset] = tt[this.offset - 1];
-      tt[this.offset - 1] = copy;
+      let agaçant=this.offset+1;  // after 2s the user may have started another action
+      tt[this.offset] = tt[ agaçant];
+      tt[agaçant] = copy;
       ctx.listRef.value.import(tt, true);
+      ctx.gestureRef.value[ agaçant ]+=" "+CSS_SYMBOL_LANDED;
+
+      setTimeout(()=>{ ctx.gestureRef.value[ agaçant ]=""; }, 2000);
 
       LOG.addRaw(
         `List ${ctx.listRef.value.nom}, have a move UP request for offset ${this.offset} '${
@@ -121,12 +109,16 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
 
   // dont disable the draggingRef or gestureRef,  here
   public onDragDWNFinalise(e: unknown, ctx: ThisListCtx): void {
-    if (this.offset >= 0 && this.offset < ctx.listRef.value.énumérer - 1) {
+    if (this.offset >= 1 && this.offset < ctx.listRef.value.énumérer - 1) {
       let tt = ctx.listRef.value.export();
       let copy = tt[this.offset];
-      tt[this.offset] = tt[this.offset + 1];
-      tt[this.offset + 1] = copy;
+      let agaçant=this.offset-1;  // after 2s the user may have started another action
+      tt[this.offset] = tt[agaçant];
+      tt[ agaçant] = copy;
       ctx.listRef.value.import(tt, true);
+      ctx.gestureRef.value[agaçant]+=" "+CSS_SYMBOL_LANDED;
+
+      setTimeout(()=>{ ctx.gestureRef.value[agaçant]=""; }, 2000);
 
       LOG.addRaw(
         `List ${ctx.listRef.value.nom}, have a move DOWN request for offset ${this.offset} '${
@@ -142,7 +134,7 @@ export class ThislistActions extends BaseActions implements ExternalMethods {
   public onAdd(e: GuessEvent, ctx: ThisListCtx): boolean {
     ctx.getInputRef.value = "";
     ctx.CBRef.value = (d1: string | null): void => {
-      if (d1 === null) {
+      if (d1 === null || !d1) {
         ctx.canSeeInputRef.value = false;
         return;
       }

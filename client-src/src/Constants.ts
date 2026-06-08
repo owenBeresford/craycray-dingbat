@@ -35,6 +35,7 @@ export const CSS_SYMBOL_ORDER = "move";
 export const CSS_SYMBOL_RECEIPT = "receipt";
 export const CSS_SYMBOL_UP = "upwards";
 export const CSS_SYMBOL_DOWN = "dwnwards";
+export const CSS_SYMBOL_LANDED="itemLanded";
 
 // localisation
 export const SUPPORTED_LANGUAGE = "en-GB";

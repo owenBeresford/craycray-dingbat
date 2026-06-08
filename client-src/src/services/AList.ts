@@ -80,7 +80,7 @@ export class BaseList<T> implements InstanceListable<T>, ListStruct {
    * @param {TestDataSchema} origine
    * @public
    * @static
-   * @returns {U} - probably U=Stdlist, but this is reusable
+   * @returns {U} - probably U= StdList but this is reusable
    */
   public static importTest<T, U extends BaseList<T>>(this: { new (): U }, origine: TestDataSchema): U {
     const liste = new this();

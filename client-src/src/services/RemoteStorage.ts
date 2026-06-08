@@ -86,7 +86,7 @@ export class RemoteStorage implements Storable, DistantStorable {
    * @public
    * @returns {Promise<boolean>}
    */
-  public async saveState(goutte: Array<SaveStruct>): Promise<boolean> {
+  public saveState(goutte: Array<SaveStruct>): Promise<boolean> {
     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject): void => {
       const REQT: RequestInit = Object.assign(this.other, {
         method: "POST",

@@ -74,9 +74,9 @@ import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
 import { MotionStream } from "../services/MotionStream";
 import { LogService } from "../services/LogStack";
-import { useSearchActions, SearchActions } from "../services/SearchActions";
+import { useSearchActions, SearchActions,  } from "../services/SearchActions";
 
-import type { ExternalMethods, FakeThis } from "../types/Actionables";
+import type { ExternalMethods, SearchCtx } from "../types/Actionables";
 import type { COMPLETE_STORE } from "../services/Store";
 import type { SearchProps, SearchStaticData } from "../types/ComponentProps";
 
@@ -109,7 +109,7 @@ export default defineComponent({
 
     let stack: ExternalMethods;
     try {
-      const flux = new MotionStream();
+      const flux = new MotionStream<SearchCtx>();
       const list: SearchList = SearchList.serps(ListData.currentData.searchItems(props.term));
 
       stack = useSearchActions(list, flux, ListData);
@@ -121,7 +121,7 @@ export default defineComponent({
         ttl,
         list,
         log,
-        ctx: {} as FakeThis, // empty!!
+        ctx: {} as SearchCtx, // empty!!
       };
     } catch (e: unknown) {
       log.addRaw(

@@ -11,7 +11,6 @@ import {
   CSS_SYMBOL_DOWN,
 } from "../Constants";
 import type { CBTYPE, Motionable } from "../types/Motionable";
-import type { FakeThis } from "../types/Actionables";
 import { useLog } from "./LogStack";
 
 const LOG = useLog();
@@ -24,9 +23,9 @@ const LOG = useLog();
  
  * @public
  */
-export class MotionStream implements Motionable {
+export class MotionStream<T> implements Motionable<T> {
   protected stack: Array<Vector>;
-  protected actions: Record<string, CBTYPE>;
+  protected actions: Record<string, CBTYPE<T>>;
   protected active: boolean;
   protected mobile: boolean;
 
@@ -65,11 +64,11 @@ export class MotionStream implements Motionable {
 	CB is short for callback. 
 
    * @param {string} angle - Due to JS limitations on hashes, the value needs to be a string. I cast it to an number later
-   * @param {CBTYPE} CB
+   * @param {CBTYPE<T>} CB
    * @public
    * @returns {boolean}
    */
-  public register(angle: string, CB: CBTYPE): boolean {
+  public register(angle: string, CB: CBTYPE<T>): boolean {
     this.actions[angle] = CB;
     return true;
   }
@@ -81,11 +80,11 @@ export class MotionStream implements Motionable {
   // currently only single direction actions supported...
  
    * @param {MouseEvent} e
-   * @param {FakeThis} ctx - a very generic type, that can be applied to any Action module.  I make mapped types for more specific ones
+   * @param {T} ctx - a very generic type, that can be applied to any Action module.  I make mapped types for more specific ones
    * @public
    * @returns {boolean}
    */
-  public end(e: MouseEvent, ctx: FakeThis): boolean {
+  public end(e: MouseEvent, ctx: T): boolean {
     if (!this.active) {
       return false;
     }
@@ -132,8 +131,8 @@ export class MotionStream implements Motionable {
    */
   public finalVector2text(): string {
     const angle = rad2deg(this.angle(this.stack[0], this.stack[this.stack.length - 1]));
-
-    //' IOIO these are hard coded in the wrong place.
+    
+    // IOIO these are hard coded in the wrong place.
     // but the function needs to live as it reads local state
     if (angle > 155 && angle < 205) {
       return CSS_SYMBOL_REMOVE;
@@ -173,11 +172,11 @@ export class MotionStream implements Motionable {
    * Start a gesture in the motion stream
  
    * @param {MouseEvent} e
-   * @param {FakeThis} ctx - a very generic type, that can be applied to any Action module.  I make mapped types for more specific ones
+   * @param { T} ctx - a very generic type, that can be applied to any Action module.  I make mapped types for more specific ones
    * @public
    * @returns {boolean}
    */
-  public start(e: MouseEvent, ctx: FakeThis): boolean {
+  public start(e: MouseEvent, ctx: T): boolean {
     if (this.active) {
       // This case happens when you drag into a different button.
       this.end(e, ctx);
@@ -212,11 +211,11 @@ export class MotionStream implements Motionable {
    * output values isn't intuitive, but is consistent with other implementations
  
    * @see [https://taskvio.com/maths/coordinate-geometry-calculators/angle-between-two-vectors-calculator/index.php]
-   * [see  https://calculator.academy/coordinate-angle-calculator/]
+   * @see [https://calculator.academy/coordinate-angle-calculator/]
      A previous maths notation: 
-		 angle = arccos[(xa * xb + ya * yb) / (√(xa2 + ya2) * √(xb2 + yb2))]
+		      angle = arccos[(xa * xb + ya * yb) / (√(xa2 + ya2) * √(xb2 + yb2))]
      Current maths notation
-      anjgle=atan( y2-y1, x2-x1)
+          angle=atan( y2-y1, x2-x1)
    * @param {Vector} delta1
    * @param {Vector} delta2
    * @public
@@ -225,10 +224,10 @@ export class MotionStream implements Motionable {
   public angle = (delta1: Vector, delta2: Vector): number => {
     const [x1, y1] = delta1.toArray();
     const [x2, y2] = delta2.toArray();
-    let dy = y2 - y1;
-    let dx = x2 - x1;
-    return Math.atan2(dy, dx);
-  };
+    let angle = Math.atan2(y2, x2) - Math.atan2(y1, x1);
+    if (angle < 0) { angle += 2 * Math.PI; }
+    return angle;
+   };
 
   /**
    * significantAsPercentage

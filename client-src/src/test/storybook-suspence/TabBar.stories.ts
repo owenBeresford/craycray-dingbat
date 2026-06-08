@@ -5,6 +5,7 @@ import TabBar from "../../components/TabBar.vue";
 import { ListData, createDataFactory } from "../../services/DataFactory";
 import { CacheWrapper } from "../../workers/InstallWorker";
 import { useStore } from "../../services/Store";
+import { StdList} from '../../services/AList';
 import { fixture1, fixture2, fixture3, fixture4, fixture5 } from "../../../../common/fixture-lists";
 // this needs suspence
 
@@ -118,7 +119,7 @@ export const TrackTextRendered8: Story = {
       const STORE = useStore();
       STORE.commit("setId", 1);
 
-      const liste1 = NEWDATA.currentData.get(1);
+      const liste1:StdList | undefined = NEWDATA.currentData.get(1) as StdList;
       expect(liste1?.nom).toBe("list 1");
       await userEvent.click(canvas.getByText("Rename list"));
       expect(await canvas.findByTestId("test24input1")).toBeVisible();
