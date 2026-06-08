@@ -16,6 +16,9 @@ import tsParser from "@typescript-eslint/parser";
 // when version of Node is aligned add   "@eslint/css";
 // import prettierPlugin from 'eslint-plugin-prettier';  IOIO when stable add this
 
+import { getGlobals } from "common-es";
+const { __dirname, __filename } = getGlobals(import.meta.url);
+
 // this doesn't seem to work in this edition, so disabled.
 //const NoFloatingPromises = await import( "eslint-plugin-no-floating-promise");
 //NoFloatingPromises.default.config={};
@@ -117,8 +120,13 @@ export default [
         console: "readonly",
         fetch: "readonly",
       },
-      parser: tseslint.parser,
-      parserOptions: { programs: [tsParser.createProgram("./tsconfig.json")] },
+	  parser: tseslint.parser,
+//      parser: tsParser,
+      parserOptions: { 
+		  project: "./tsconfig.json",
+		  tsconfigRootDir: __dirname
+//		  programs: [tsParser.createProgram("./tsconfig.json")] 
+		},
     },
     ignores: [
       "dist/*",
