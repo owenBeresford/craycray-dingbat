@@ -139,7 +139,7 @@ export class ThislistActions extends BaseActions<ThisListCtx> implements Externa
         return;
       }
       ctx.listRef.value.add(d1);
-      LOG.addRaw(`For list ${ctx.listRef.value.nom}, added item #${ctx.listRef.value.length} '${d1}'`, "info");
+      LOG.addRaw(`For list ${ctx.listRef.value.nom}, added item #${ctx.listRef.value.énumérer} '${d1}'`, "info");
       ctx.canSeeInputRef.value = false;
     };
     ctx.canSeeInputRef.value = true;
