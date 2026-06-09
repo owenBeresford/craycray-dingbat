@@ -45,20 +45,23 @@ export async function runExecProcessOnUrl(url: string, extra: RequestInit | unde
   }
 
   return new Promise(async (good: PromiseSucceed<SimpleResponse>, bad: PromiseReject) => {
-    // stderr has headers
-    // stdout has response body
-    const CB = (error: Error, stdout: string, stderr: string): void => {
+
+    function handler(error: Error, stdout: string, stderr: string): void {
       if (error) {
         console.error("cURL failed:", error.message);
         return bad(error);
       }
 
+    // stderr has headers
+    // stdout has response body
       let annoying1: string = (stdout as any) instanceof Buffer ? stdout.toString() : stdout;
       let annoying2: string = (stderr as any) instanceof Buffer ? stderr.toString() : stderr;
       let headers = parseHeaders(annoying2);
       let h2 = new Headers();
       for (let i in headers.resp) {
-        h2.append(i, headers.resp[i]);
+        if(i && i.length>3) {
+          h2.append(i, headers.resp[i]);
+        }
       }
 
       let exit: SimpleResponse = {
@@ -68,9 +71,35 @@ export async function runExecProcessOnUrl(url: string, extra: RequestInit | unde
         status: parseInt(headers.resp["status"], 10),
       } as SimpleResponse;
       return good(exit);
-    };
+    }
 
-    /**
+    let args: Array<string> = [ "-k", "-v", "-m1", url];  
+    if (extra && "method" in extra && extra["method"]) {
+      if( extra["method"].toLowerCase()==="head" ) {
+        args.push("-I");      
+      } else {
+        args.push("-X" + extra["method"].toUpperCase());
+      }
+    }
+    if (extra && "body" in extra && extra["body"]) {
+      args.push("-d");
+      args.push(extra.body.toString());
+    }
+    if (extra && "headers" in extra && extra.headers) {
+      let tmp = new Headers(extra.headers);
+      for (let i of tmp) {
+        args.push("-H" + i[0] + ":" + i[1]);
+      }
+    }
+    const options: FileExecFlags = { windowsHide: true, shell: false };
+    execFile("/usr/bin/curl", args, options, handler);
+  });
+}
+
+
+
+
+ /**
    * parseHeaders
    * Translate flat plain-text of cURL output into a struct
  
@@ -80,7 +109,7 @@ export async function runExecProcessOnUrl(url: string, extra: RequestInit | unde
    */
     function parseHeaders(str: string): RunExecReturn {
       let bits: Array<string> = str.split("\n");
-      let out = { reqt: {}, resp: {} } as RunExecReturn;
+      let out:RunExecReturn = { reqt: {}, resp: {} } as RunExecReturn;
 
       for (let i = 0; i < bits.length; i++) {
         switch (bits[i][0]) {
@@ -103,9 +132,9 @@ export async function runExecProcessOnUrl(url: string, extra: RequestInit | unde
 
     /**
    * parseHeader2
-   * Tokenise a single heder into a more useful structure
+   * Tokenise a single header into a more useful structure
 
-   * Nopte two odfd cases, in HTTP2 look like this: 	 
+   * Nopte two odf cases, in HTTP2 look like this: 	 
   // > GET /api/shared-state HTTP/2
   // < HTTP/2 200
 
@@ -115,34 +144,19 @@ export async function runExecProcessOnUrl(url: string, extra: RequestInit | unde
    */
     function parseHeader2(str: string): Array<string> {
       str = str.trim();
-      str = str.substring(1, str.length);
-      str = str.trim();
-      if (str.indexOf(":") === -1) {
-        if (str.indexOf("HTTP/") === 0) {
-          return ["status", str.substring(str.indexOf(" ") + 1, str.length)];
+      let str2 = str.substring(1, str.length);
+      str2 = str2.trim();
+      if (str2.indexOf(":") === -1) {
+        if (str2.indexOf("HTTP/") === 0) {
+          return ["status", str2.substring(str2.indexOf(" ") + 1, str2.length).trim()];
+        } else if (str2.match(/^[A-Z]{3,} \//))   {
+          return ["method", str2.substring(0, str2.indexOf(" "))];
         } else {
-          return ["method", str.substring(0, str.indexOf(" "))];
+          return [str2];
         }
       } else {
-        return [str.substring(0, str.indexOf(":")).trim(), str.substring(str.indexOf(":") + 2, str.length).trim()];
+        return [str2.substring(0, str2.indexOf(":")).trim(), str2.substring(str2.indexOf(":") + 2, str2.length).trim()];
       }
     }
 
-    let args: Array<string> = ["-v", "-k", "-m1", url];
-    if (extra && "method" in extra && extra["method"]) {
-      args.push("-X" + extra["method"].toUpperCase());
-    }
-    if (extra && "body" in extra && extra["body"]) {
-      args.push("-d");
-      args.push(extra.body.toString());
-    }
-    if (extra && "headers" in extra && extra.headers) {
-      let tmp = new Headers(extra.headers);
-      for (let i of tmp) {
-        args.push("-H" + i[0] + ":" + i[1]);
-      }
-    }
-    const options: FileExecFlags = { windowsHide: true, shell: false };
-    execFile("/usr/bin/curl", args, options, CB);
-  });
-}
+export const TEST_ONLY  ={ parseHeader2, parseHeaders, runExecProcessOnUrl };

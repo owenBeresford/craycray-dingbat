@@ -15,6 +15,7 @@ export interface RemoteConfig {
   mode: string; // no-cors, *cors, same-origin
   method: string;
   credentials: string;
+  agent?:any;
 }
 
 export interface APIResponseType {
