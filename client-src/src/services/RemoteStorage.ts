@@ -18,6 +18,7 @@ type NullableTimeout = ReturnType<typeof globalThis.setTimeout> | undefined;
 export class RemoteStorage implements Storable, DistantStorable {
   private url: string;
   private other: RemoteConfig;
+  protected agent:any;
 
   /**
    * constructor
@@ -28,6 +29,7 @@ export class RemoteStorage implements Storable, DistantStorable {
    */
   public constructor(c: RemoteConfig) {
     this.url = c.url;
+    this.agent=c.agent ?? globalThis.fetch; 
     this.other = { ...c };
   }
 
@@ -43,7 +45,7 @@ export class RemoteStorage implements Storable, DistantStorable {
   public poll(): Promise<boolean> {
     let didTimeOut = false;
     const REQT: RequestInit = Object.assign(this.other, { method: "HEAD", body: null }) as RequestInit;
-    const EEE = new Error("Request timed out");
+    const EEE = new Error("Request timed out for "+ this.url );
     // EEE is named after the whine of over-used/ over-heated electrical equipment
     const SELF = this;
 
@@ -53,17 +55,16 @@ export class RemoteStorage implements Storable, DistantStorable {
         bad(EEE);
       }, FETCH_TIMEOUT);
 
-      globalThis
-        .fetch(SELF.url, REQT)
-        .then((resp: Response): boolean => {
+      this.agent(SELF.url, REQT)
+        .then((filet: Response): boolean => {
           clearTimeout(sortie);
           sortie = undefined;
           if (!didTimeOut) {
-            good(Math.round(resp.status / 100) === 2);
+             good(Math.round( filet.status / 100) === 2);
           } else {
             bad(EEE);
           }
-          return Math.round(resp.status / 100) === 2;
+          return Math.round( filet.status / 100) === 2;
         })
         .catch((err: Error): void => {
           if (!didTimeOut) {
@@ -93,32 +94,36 @@ export class RemoteStorage implements Storable, DistantStorable {
         body: transform2text(goutte),
       }) as RequestInit;
 
-      globalThis
-        .fetch(this.url, REQT)
+      this.agent(this.url, REQT)
         .catch((err: Error) => {
           bad(err);
         })
-        .then((goutte: Response | void): void => {
+        .then( async (goutte: Response | void): Promise<void> => {
           if (goutte) {
             if (!goutte.ok) {
               return bad(new Error("Server sent an error http status " + goutte.status));
             }
-
-            goutte
-              .text()
-              .then(function (txt: string): void {
-                const filet = JSON.parse(txt) as APIResponseType;
-                if ("statusCode" in filet && parseInt(filet.statusCode, 10) > 299) {
+            let ret="";
+            if(goutte.body) {
+              ret=goutte.body.toString();
+            } else {
+              ret=await goutte.text();
+            }
+            try {
+              const filet:APIResponseType = JSON.parse(ret) as APIResponseType;
+              if ("statusCode" in filet && parseInt(filet.statusCode, 10) > 299) {
                   // this branch here should not be used; as all the responses have a proper
                   // HTTP status code
                   return bad(new Error("Server sent an error http status " + filet.statusCode));
                 } else {
                   return good(true);
                 }
-              })
-              .catch((ee: Error) => {
-                return bad(new Error("Server sent an error http status " + ee.toString()));
-              });
+              
+              } catch(ee:unknown ) {
+                // I can leak the stack trace, this is just a local API.
+                return bad( ee as Error );
+              }
+
           } else {
             return bad(new Error("Valid HTTP, but null response"));
           }
@@ -141,23 +146,32 @@ export class RemoteStorage implements Storable, DistantStorable {
         method: "GET",
         body: null,
         mode: "no-cors",
+        credentials: "same-origin" , 
       }) as RequestInit;
-      globalThis
-        .fetch(this.url, REQT)
+
+      this.agent(this.url, REQT)
         .catch((err: unknown) => {
           console.warn("Failed to load state", (err as Error).message);
           return bad(new Error("No data was found"));
         })
-        .then((filet: Response | void): void => {
+        .then( async(filet: Response | void): Promise<void> => {
           if (!filet) {
             return bad(new Error("Valid HTTP, but got nothing back"));
           }
           if (!filet.ok) {
             return bad(new Error("Server sent an error http status " + filet.status));
           }
-          filet.text().then(function (text: string): void {
-            good(transform2list(text));
-          });
+          
+          let tmp="";
+          if(filet.body) {  
+            // this will happen in unit tests
+            tmp = filet.body.toString();
+          } else if( filet.text) { 
+            // this will happen in browser stack
+            tmp=await filet.text();
+          }
+          good(transform2list(tmp));
+ 
         });
     });
   }

@@ -1,11 +1,14 @@
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 
+
 import { RemoteStorage } from "../../services/RemoteStorage";
 import { createRemoteService } from "../../Constants";
 import { MockLocation, TestLocation } from "../MockLocation";
 
 import type { RemoteConfig } from "../../../../common/types/RemoteTypes";
 import type { PromiseSucceed, PromiseReject } from "../../../../common/types/promises";
+import { runExecProcessOnUrl } from "../../../../common/cURL";
+
 
 describe("test on RemoteStorage ", () => {
   it("Can create RemoteStorage ", () => {
@@ -33,6 +36,7 @@ describe("test on RemoteStorage ", () => {
       headers: { "Content-Type": "application/json" },
       mode: "no-cors",
       method: "GET",
+      agent:runExecProcessOnUrl,
       credentials: "same-origin",
     };
 
@@ -55,6 +59,7 @@ describe("test on RemoteStorage ", () => {
         headers: { "Content-Type": "application/json" },
         mode: "no-cors",
         method: "GET",
+        agent:runExecProcessOnUrl,
         credentials: "same-origin",
       };
 
@@ -71,6 +76,7 @@ describe("test on RemoteStorage ", () => {
 
   it("Can poll() 3", async (): Promise<void> => {
     // real domain, fake path
+    // I am annoying.  My code will mask out /api for latyer API points.   This is /v10/api, so it hits the wildcard.
     let LOC = new TestLocation("https://app.hiss:3001/v10/api/new-shiny-feature");
     let d3 = {
       url: LOC.href,
@@ -78,27 +84,53 @@ describe("test on RemoteStorage ", () => {
       headers: { "Content-Type": "application/json" },
       mode: "no-cors",
       method: "GET",
+      agent:runExecProcessOnUrl,
       credentials: "same-origin",
     };
 
     let OBJ = new RemoteStorage(d3);
     let d1 = new Date();
-    expect(await OBJ.poll()).toBe(false);
+    expect(await OBJ.poll()).toBe(true);  // hits wildcard
+    let d2 = new Date();
+    expect(d2.getTime() - d1.getTime()).toBeGreaterThan(10); // ms
+    expect(d2.getTime() - d1.getTime()).toBeLessThan(3_001); // ms    
+  });
+
+  it("Can poll() 4", async (): Promise<void> => {
+    // real domain, fake path
+     let LOC = new TestLocation("https://app.hiss:3001/api/new-shiny-feature");
+    let d3 = {
+      url: LOC.href,
+      timeout: 500,
+      headers: { "Content-Type": "application/json" },
+      mode: "no-cors",
+      method: "GET",
+      agent:runExecProcessOnUrl,
+      credentials: "same-origin",
+    };
+
+    let OBJ = new RemoteStorage(d3);
+    let d1 = new Date();
+    expect(await OBJ.poll()).toBe(false);  // hits wildcard
     let d2 = new Date();
     expect(d2.getTime() - d1.getTime()).toBeGreaterThan(10); // ms
     expect(d2.getTime() - d1.getTime()).toBeLessThan(3_001); // ms
+
   });
+
+
 
   it("I can GET data", async (): Promise<void> => {
     let conf = {
       url: "https://app.hiss:3001/api/shared-state",
-      timeout: 1000,
+      timeout: 1_000,
       mode: "no-cors", // no-cors, *cors, same-origin
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
+      agent:runExecProcessOnUrl,
       credentials: "",
     };
     let rr = new RemoteStorage(conf);
@@ -139,6 +171,7 @@ describe("test on RemoteStorage ", () => {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
+      agent:runExecProcessOnUrl,
       credentials: "",
     };
     let rr = new RemoteStorage(conf);
@@ -167,7 +200,7 @@ describe("test on RemoteStorage ", () => {
       .then((dat) => {
         assert.isOk(dat, "This should be true");
         assert.isTrue(
-          new Date().getTime() - d1.getTime() < 1100,
+          (new Date().getTime() - d1.getTime()) < 1100,
           "to download data from the local server must take less than 1 s"
         );
       })
@@ -186,6 +219,7 @@ describe("test on RemoteStorage ", () => {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
+      agent:runExecProcessOnUrl,
       credentials: "",
     };
     let rr = new RemoteStorage(conf);
@@ -224,7 +258,7 @@ describe("test on RemoteStorage ", () => {
           new Date().getTime() - d1.getTime() < 1100,
           "to download data from the local server must take less than 1 s"
         );
-        assert.fail((e as Error).message, null, "Test class returned error " + (e as Error).message, "===");
+        assert.fail((e as Error).message, "Server sent an error http status 404", "Test class returned error " + (e as Error).message, "===");
       })
       .finally(() => {
         console.log("finally for the bad URL ");
@@ -239,6 +273,7 @@ describe("test on RemoteStorage ", () => {
       method: "POST",
       headers: { "Content-Type": "CABBAGE", Accept: "application/json" },
       credentials: "",
+      agent:runExecProcessOnUrl,
     };
     let rr = new RemoteStorage(conf);
     let d1 = new Date();
@@ -264,8 +299,7 @@ describe("test on RemoteStorage ", () => {
     await rr
       .saveState(data)
       .then((dat) => {
-        console.log("Post bad data response", dat);
-        assert.isOk(dat, "This should be true");
+        assert.isNotOk(dat, "A error is sent");
         assert.isTrue(
           new Date().getTime() - d1.getTime() < 1100,
           "to download data from the local server must take less than 1 s"
