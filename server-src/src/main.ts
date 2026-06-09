@@ -159,9 +159,13 @@ function createstaticAssets(httpsOptions: SecureServerOptions): FastifyAdapter {
     root: path.join(__dirname, "public"),
     prefix: "/asset/",
   });
-  inst.get("*", (request: FastifyRequest, reply: FastifyReply) => {
-    console.log("WILD CARD route");
-    reply.status(218).type("text/html; charset=utf8").sendFile("index.html");
+  inst.get("*", (reqt: FastifyRequest, reply: FastifyReply) => {
+    if( ! reqt.url.match(/^\/api\//) ) {
+       console.log("WILD CARD route");
+       reply.status(218).type("text/html; charset=utf8").sendFile("index.html");
+    } else {
+      reply.status(404).send("This API doesnt '"+reqt.url+"' yet exist.");
+    }
   });
 
   inst.addHook("onRequest", (req: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction): void => {
