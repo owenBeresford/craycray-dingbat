@@ -1,12 +1,13 @@
 import { assert, describe, it, expect, assertType, beforeAll, afterAll } from "vitest";
 // https://scribe.rip/@azizzouaghia/setting-up-basic-api-testing-with-supertest-cucumber-jest-and-typescript-8c6a23c045a1
 
-import { delay, runFetch } from "../../../common/util";
+import { delay } from "../../../common/util";
 import { runExecProcessOnUrl } from "../../../common/cURL";
 import { ShoppingBE } from "../shopping/ShoppingBE";
 import { ShoppingService } from "../shopping/ShoppingService";
 import { SaveStruct } from "../../../common/types/SaveStruct";
 import { fixture1, fixture2, fixture3, transform2SaveStruct } from "../../../common/fixture-lists";
+import type { SimpleResponse } from "../../../common/util";
 
 describe("I can use API module", () => {
   const TARGET: string = "https://app.hiss:3001/api/shared-state";

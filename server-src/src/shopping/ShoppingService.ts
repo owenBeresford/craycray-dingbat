@@ -167,7 +167,7 @@ export class ShoppingService {
     for (let i = 0; i < newer.length; i++) {
       const ttt: SaveStruct = Object.assign(
         { name: "", created: 0, edited: 0, count: 0, id: i, list: [] },
-        newer[i]
+        newer[i],
       ) as SaveStruct;
       // all these items must have a value
       if (!(ttt.name && ttt.created && ttt.edited && ttt.count && ttt.id)) {

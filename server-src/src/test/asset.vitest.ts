@@ -2,7 +2,7 @@ import { assert, describe, it, expect, assertType, beforeAll, afterAll } from "v
 
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 import { runExecProcessOnUrl } from "../../../common/cURL";
-import { runFetch } from "../../../common/util";
+import type { SimpleResponse } from "../../../common/util";
 
 // import supertest from "supertest";
 // https://scribe.rip/@azizzouaghia/setting-up-basic-api-testing-with-supertest-cucumber-jest-and-typescript-8c6a23c045a1

@@ -160,17 +160,17 @@ function createstaticAssets(httpsOptions: SecureServerOptions): FastifyAdapter {
     prefix: "/asset/",
   });
   inst.get("*", (reqt: FastifyRequest, reply: FastifyReply) => {
-    if( ! reqt.url.match(/^\/api\//) ) {
-       console.log("WILD CARD route");
-       reply.status(218).type("text/html; charset=utf8").sendFile("index.html");
+    if (!reqt.url.match(/^\/api\//)) {
+      console.log("WILD CARD route");
+      reply.status(218).type("text/html; charset=utf8").sendFile("index.html");
     } else {
-      reply.status(404).send("This API doesnt '"+reqt.url+"' yet exist.");
+      reply.status(404).send("This API doesnt '" + reqt.url + "' yet exist.");
     }
   });
 
   inst.addHook("onRequest", (req: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction): void => {
     if (!VALID_ROUTES.includes(req.url)) {
-      console.warn("ALERT ALERT " + new Date().toISOString() + " UNKNOWN REQUEST URL ", req.host, req.url, req.headers );
+      console.warn("ALERT ALERT " + new Date().toISOString() + " UNKNOWN REQUEST URL ", req.host, req.url, req.headers);
       // this should fall though to the default route...
     }
     /* // when I looked more, it was the client setting this header,. so dont need this step.
@@ -206,7 +206,7 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
   const app: NestFastifyApplication = await NestFactory.create<NestFastifyApplication>(
     ShoppingModule,
     fast, // FastifyHttp2SecureOptions
-    { logger: new ConsoleLogger({ json: true, prefix: "shop", colors: false }) }
+    { logger: new ConsoleLogger({ json: true, prefix: "shop", colors: false }) },
   );
   app.enableCors({ credentials: true });
   app.useGlobalPipes(
@@ -214,7 +214,7 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
       whitelist: false,
       transform: true,
       transformOptions: { enableImplicitConversion: true },
-    })
+    }),
   );
 
   await app.init();

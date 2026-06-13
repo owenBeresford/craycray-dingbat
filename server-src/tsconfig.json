@@ -23,8 +23,10 @@
     "sourceMap": false,
     "skipLibCheck": true,
     "baseUrl": ".",
-
-    "types": ["vitest", "vite", "node"],
+    "outDir": "../dist/types/",
+	"diagnostics": true,
+    "types": ["vitest", "vite", "node", 
+      "../common/types/env.d.ts" ],
     "paths": {
       "@/*": ["src/*"]
     },
