@@ -1,4 +1,3 @@
-// import 'reflect-metadata';
 import { defineWebWorkers } from "@vitest/web-worker/pure";
 import {
   assert,

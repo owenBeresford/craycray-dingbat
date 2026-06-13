@@ -1,5 +1,3 @@
-// import 'reflect-metadata';
-// chatbot wanted this, its not actually needed, so I commented it :-)
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 import { JsonSerializer, throwError, JsonProperty, JsonObject } from "typescript-json-serializer";
 

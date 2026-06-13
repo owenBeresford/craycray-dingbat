@@ -1,4 +1,3 @@
-// import 'reflect-metadata';
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 import { ref } from "vue";
 import type { Ref } from "vue";

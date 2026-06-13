@@ -1,4 +1,3 @@
-// import 'reflect-metadata';
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 
 import { SharedStateWorker, useSSW } from "../../workers/SharedStateWorker";
