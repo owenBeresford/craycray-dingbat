@@ -7,6 +7,7 @@ import type { LocalCopy } from "./LocalCopy";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
 //import type { Listable, ListStruct } from "../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
+import { RemoteStorage } from "./RemoteStorage";
 
 /**
  * ListService
@@ -33,10 +34,26 @@ export class NetworkedListService extends ListService {
     this.local = proche;
     if (_LOGGING_) {
       console.log(
-        "ListService created & injected with: (remote) " + loin.constructor.name + " (local) " + proche.constructor.name
+        "NetworkListService created & injected with: (remote) " + loin.constructor.name + " (local) " + proche.constructor.name
       );
     }
     this.loadAllLists();
+  }
+
+  /**
+   * terminate
+   * An extra function to attempt to terminate faster, as the direct call can interupt any setTimeout or fetch()
+ 
+   * @public
+   * @returns {void}
+   */
+  public terminate():void {
+    if (_LOGGING_) {
+      console.log( "NetworkListService being destroyed" );
+    }
+    if ((this.remote && typeof this.remote === "object") ) {
+      (this.remote as RemoteStorage).terminateSoon();
+    }
   }
 
   /**
@@ -78,8 +95,8 @@ export class NetworkedListService extends ListService {
         list: [...this.catalog[i].éléments],
       } as SaveStruct);
     }
-    //  Promise.resolve( this.local.saveState(tmp) );
     await this.local.saveState(valeur);
+    await this.remote.saveState( valeur ); 
     return true;
   }
 

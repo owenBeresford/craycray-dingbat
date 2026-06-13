@@ -18,6 +18,7 @@ type NullableTimeout = ReturnType<typeof globalThis.setTimeout> | undefined;
 export class RemoteStorage implements Storable, DistantStorable {
   private url: string;
   private other: RemoteConfig;
+  private cease:boolean;
   protected agent:any;
 
   /**
@@ -29,8 +30,13 @@ export class RemoteStorage implements Storable, DistantStorable {
    */
   public constructor(c: RemoteConfig) {
     this.url = c.url;
+    this.cease=false;
     this.agent=c.agent ?? globalThis.fetch; 
     this.other = { ...c };
+  }
+
+  public terminateSoon():void {
+    this.cease=true;
   }
 
   /**
@@ -48,6 +54,7 @@ export class RemoteStorage implements Storable, DistantStorable {
     const EEE = new Error("Request timed out for "+ this.url );
     // EEE is named after the whine of over-used/ over-heated electrical equipment
     const SELF = this;
+    if(this.cease) { return Promise.resolve(false); }
 
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       let sortie: NullableTimeout = setTimeout(() => {
@@ -93,6 +100,7 @@ export class RemoteStorage implements Storable, DistantStorable {
         method: "POST",
         body: transform2text(goutte),
       }) as RequestInit;
+      if(this.cease) { return good(false); }
 
       this.agent(this.url, REQT)
         .catch((err: Error) => {
@@ -148,6 +156,7 @@ export class RemoteStorage implements Storable, DistantStorable {
         mode: "no-cors",
         credentials: "same-origin" , 
       }) as RequestInit;
+      if(this.cease) { return good([] as Array<SaveStruct> ); }
 
       this.agent(this.url, REQT)
         .catch((err: unknown) => {
