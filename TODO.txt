@@ -3,6 +3,7 @@ Don't call lists "list X", or all the labelling gets confused "list list X".
 DETAILS TO COMPLETE FOR RELEASE
 - ESLINT ON VUE FILES
 - increase tests
+- Apply rest of *Action types, and the newest architecture for the Actions 
 - StateSyncing test cover full state map - when threads work.
 - think about best name for ShopState
 - Make better favico
