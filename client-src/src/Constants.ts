@@ -57,6 +57,7 @@ if (typeof globalThis.fetch === "undefined" || !globalThis.fetch) {
   throw new Error("73453894563453 Fetch() not found.  BAILING OUT");
 }
 
+export const TEST_LOCATION_URL="https://google.com/";
 /**
  * createRemoteService
  * Create a remote HTTP client.  
@@ -81,6 +82,7 @@ export function createRemoteService(loc: Location | WorkerLocation): RemoteStora
   ) {
     throw new Error("9757353545757 Message passing is only possible inside a reasonable browser.");
   }
+  
   let d3: RemoteConfig = {
     url: loc.protocol + "//" + loc.hostname + ":" + loc.port + "/api/shared-state",
     timeout: API_RETRY,

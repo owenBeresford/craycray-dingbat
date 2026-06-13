@@ -111,7 +111,7 @@ export const TrackTextRendered8: Story = {
 
     await step("Rename list", async () => {
       expect(await canvas.findByText("Rename list")).toBeVisible();
-      const NEWDATA = createDataFactory(fixture2());
+      const NEWDATA = createDataFactory(fixture2(), location);
       if (!NEWDATA.currentData) {
         throw new Error("No data found after fixture loaded??");
       }
@@ -130,7 +130,7 @@ export const TrackTextRendered8: Story = {
 
     await step("Duplicate list", async () => {
       expect(await canvas.findByText("Duplicate list")).toBeVisible();
-      const NEWDATA = createDataFactory(fixture2());
+      const NEWDATA = createDataFactory(fixture2(), location);
       if (!NEWDATA.currentData) {
         throw new Error("No data found after fixture loaded??");
       }
@@ -142,7 +142,7 @@ export const TrackTextRendered8: Story = {
 
     await step("Make unique", async () => {
       expect(await canvas.findByText("Make unique")).toBeVisible();
-      const NEWDATA = createDataFactory(fixture5());
+      const NEWDATA = createDataFactory(fixture5(), location);
       const STORE = useStore();
       if (!NEWDATA.currentData) {
         throw new Error("No data found after fixture loaded??");

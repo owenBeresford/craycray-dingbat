@@ -11,6 +11,7 @@ import { useMsgDistrib } from "./MessageDistribution";
 import { createRemoteService, DELAY_FOR_API } from "../Constants";
 import { TestListService } from "./TestListService";
 import { NetworkedListService } from "./NetworkedListService";
+import { type MockLocation} from '../test/MockLocation';
 
 import type { InstanceListable, ModuleListable, ListCollection } from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
@@ -43,7 +44,7 @@ Note **: MesaggeDistribution class will ensure the data gets to the phone,
 export interface FactoryArtefact {
   currentData: ListCollection<string> | undefined;
   updateData: (a: ListCollection<string>) => void;
-  initData: () => void;
+  initData: (loc:Location|MockLocation) => void;
 }
 
 /** A module-wide collection of known variables
@@ -82,7 +83,7 @@ export function idOf(obj: object): number {
   @public
   @returns {FactoryArtefact} - see above tuple interface
  */
-export function createDataFactory(override: Array<TestDataSchema> | undefined): FactoryArtefact {
+export function createDataFactory(override: Array<TestDataSchema> | undefined, loc:Location|MockLocation): FactoryArtefact {
   let retour: FactoryArtefact = {} as FactoryArtefact;
   retour.currentData = undefined;
   retour.updateData = updateData;
@@ -90,7 +91,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
 
   if (Array.isArray(override)) {
     retour.currentData = new TestListService(override);
-    if (retour.currentData && _LOGGING_) {
+    if (retour.currentData && globalThis._LOGGING_) {
       console.log("KKK createDataFactory (with a mock) ListData.currentData id:", idOf(retour.currentData));
     }
     retour.initData = function (): void {};
@@ -105,7 +106,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
  * @public
  * @returns {Promise<void>}
  */
-  async function currentNetworkConfig(): Promise<void> {
+  async function currentNetworkConfig(loc:Location|MockLocation): Promise<void> {
     let d4: MessageDistribution;
     if (retour.currentData && (await retour.currentData.poll())) {
       return;
@@ -130,8 +131,8 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
    * @public
    * @returns {void}
    */
-  function initData(): void {
-    void currentNetworkConfig();
+  function initData(loc:Location|MockLocation): void {
+    void currentNetworkConfig( loc);
   }
 
   /**
@@ -145,7 +146,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
  * @returns {void}
  */
   function updateData(next: ListCollection<string>): void {
-    if (retour.currentData && _LOGGING_) {
+    if (retour.currentData && globalThis._LOGGING_) {
       console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
     }
     if (!retour.currentData) {
@@ -156,22 +157,22 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined): 
       retour.currentData.delete(i);
     }
     retour.currentData.merge(next);
-    if (retour.currentData && _LOGGING_) {
+    if (retour.currentData && globalThis._LOGGING_) {
       console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
     }
   }
 
-  if (retour.currentData && _LOGGING_) {
+  if (retour.currentData && globalThis._LOGGING_) {
     console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
   }
 
-  initData();
+  initData(loc);
   return retour;
 }
 
 // What external modules (aside from test) will gain from accessing.
 // If the module thinks the network situation has changed, it can run initData() again.
-export const ListData: FactoryArtefact = createDataFactory(undefined);
+export const ListData: FactoryArtefact = createDataFactory(undefined, location);
 
 /**
  * setupCurrentList
@@ -179,7 +180,7 @@ export const ListData: FactoryArtefact = createDataFactory(undefined);
  * Setup the current AList, rather than the known lists.
  * May add further ways to set the list id in later editions.
  
- * @param {undefined|RouteLocationNormalizedLoadedGeneric} itinéraire ~ huge great big type is from vue-router
+ * @param {undefined|RouteLocationNormalizedLoadedGeneric} itinéraire - huge great big type is from vue-router
  * @public
  * @returns {Promise<InstanceListable<string>>}
  */

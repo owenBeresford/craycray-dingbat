@@ -94,7 +94,7 @@ export const TrackTextRendered2: Story = {
   // https://storybook.js.org/docs/writing-stories/loaders
   loaders: [
     () => {
-      const { currentData, initData, updateData } = createDataFactory(fixture1());
+      const { currentData, initData, updateData } = createDataFactory(fixture1(), location);
       if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
@@ -174,7 +174,7 @@ export const TrackTextRendered2_5: Story = {
   // https://storybook.js.org/docs/writing-stories/loaders
   loaders: [
     () => {
-      const { currentData, initData, updateData } = createDataFactory(fixture1());
+      const { currentData, initData, updateData } = createDataFactory(fixture1(), location);
       if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
@@ -241,7 +241,7 @@ export const TrackTextRendered3: Story = {
   // https://storybook.js.org/docs/writing-stories/loaders
   loaders: [
     () => {
-      const { currentData, initData, updateData } = createDataFactory(fixture2());
+      const { currentData, initData, updateData } = createDataFactory(fixture2(), location);
       if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
@@ -313,7 +313,7 @@ export const TrackTextRendered4: Story = {
   // https://storybook.js.org/docs/writing-stories/loaders
   loaders: [
     () => {
-      const { currentData, initData, updateData } = createDataFactory(fixture3());
+      const { currentData, initData, updateData } = createDataFactory(fixture3(), location);
       if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
@@ -385,7 +385,7 @@ export const TrackTextRendered5: Story = {
   // https://storybook.js.org/docs/writing-stories/loaders
   loaders: [
     () => {
-      const { currentData, initData, updateData } = createDataFactory(fixture4());
+      const { currentData, initData, updateData } = createDataFactory(fixture4(), location);
       if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }

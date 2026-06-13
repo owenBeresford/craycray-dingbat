@@ -22,7 +22,7 @@ import MessageBar from "./components/MessageBar.vue";
 
 //IOIO
 // const ListData2=setupCurrentList();
-const tmp: FactoryArtefact = createDataFactory(fixture1());
+const tmp: FactoryArtefact = createDataFactory(fixture1(), location);
 
 // the fixture is alway present, no race condition possible
 ListData.updateData(tmp.currentData ?? ({} as ListCollection<string>));

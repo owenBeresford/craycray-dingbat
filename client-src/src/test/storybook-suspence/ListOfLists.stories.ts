@@ -103,7 +103,7 @@ export const TrackTextRendered6: Story = {
   // https://storybook.js.org/docs/writing-stories/loaders
   loaders: [
     () => {
-      const { currentData, initData, updateData } = createDataFactory(fixture1());
+      const { currentData, initData, updateData } = createDataFactory(fixture1(), location);
       if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
