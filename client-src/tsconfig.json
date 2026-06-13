@@ -24,7 +24,6 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "outDir": "../dist/types/",
-	"diagnostics": true,
     "types": [
       "node",
       "vitest",
