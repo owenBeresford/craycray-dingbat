@@ -10,7 +10,7 @@
     "emitDecoratorMetadata": true,
     "allowJs": true,
     "declaration": true,
-    "declarationDir": "./src/types",
+    "declarationDir": "../common/types",
     "isolatedModules": true,
     "moduleResolution": "node",
     "noResolve": false,
@@ -24,6 +24,7 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "outDir": "../dist/types/",
+	"diagnostics": true,
     "types": [
       "node",
       "vitest",
