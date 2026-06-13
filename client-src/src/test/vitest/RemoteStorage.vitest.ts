@@ -2,12 +2,28 @@ import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vite
 
 
 import { RemoteStorage } from "../../services/RemoteStorage";
-import { createRemoteService } from "../../Constants";
+import { API_RETRY } from "../../Constants";
 import { MockLocation, TestLocation } from "../MockLocation";
+import { runExecProcessOnUrl } from "../../../../common/cURL";
 
 import type { RemoteConfig } from "../../../../common/types/RemoteTypes";
 import type { PromiseSucceed, PromiseReject } from "../../../../common/types/promises";
-import { runExecProcessOnUrl } from "../../../../common/cURL";
+
+
+function testRS() {
+
+   let d3: RemoteConfig = {
+    url: "https://192.168.1.218:3001/api/shared-state",
+    timeout: API_RETRY,
+    headers: { "Content-Type": "application/json" },
+    mode: "same-origin",
+    method: "GET",
+    credentials: "same-origin",
+    agent:runExecProcessOnUrl
+  };
+
+  return new RemoteStorage(d3);
+}
 
 
 describe("test on RemoteStorage ", () => {
@@ -21,6 +37,7 @@ describe("test on RemoteStorage ", () => {
       mode: "no-cors",
       method: "GET",
       credentials: "same-origin",
+      agent:runExecProcessOnUrl,
     };
 
     const OBJ = new RemoteStorage(d3);

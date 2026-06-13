@@ -2,11 +2,17 @@ import { assert, describe, it, expect, expectTypeOf, assertType } from "vitest";
 // import { LocalStorage } from "node-localstorage";
 
 import { ListService } from "../../services/ListService";
-// import { AList } from "../../services/AList";
 import { createDataFactory } from "../../services/DataFactory";
+import { TEST_LOCATION_URL } from '../../Constants';
+import { TestLocation } from '../MockLocation';
+
 import type { FactoryArtefact } from "../../services/DataFactory";
 import type { ListStruct, InstanceListable, ListCollection } from "../../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../../../../common/types/promises";
+
+// turn API on first
+// Run unit from Storybook
+const TEST:TestLocation=new TestLocation(TEST_LOCATION_URL);
 
 describe("I can use NetworkedListService", () => {
   // this ought to be run multiple times in different network settings
@@ -14,7 +20,7 @@ describe("I can use NetworkedListService", () => {
   it("I can create it", (): Promise<boolean> => {
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       expect(typeof ListService).toBe("function");
-      let tt: FactoryArtefact = await createDataFactory(undefined);
+      let tt: FactoryArtefact = await createDataFactory(undefined, TEST);
       expect(typeof tt).toBe("object");
       assertType<FactoryArtefact>(tt);
       if (!tt.currentData) return;
@@ -26,7 +32,7 @@ describe("I can use NetworkedListService", () => {
 
   it("I can saveAllLists", (): Promise<boolean> => {
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const ls: FactoryArtefact = await createDataFactory(undefined);
+      const ls: FactoryArtefact = await createDataFactory(undefined, TEST);
       if (!ls.currentData) {
         return;
       }
@@ -45,7 +51,7 @@ describe("I can use NetworkedListService", () => {
 
   it("I can loadAllLists", (): Promise<boolean> => {
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const ls: FactoryArtefact = await createDataFactory(undefined);
+      const ls: FactoryArtefact = await createDataFactory(undefined, TEST);
       if (!ls.currentData) {
         return;
       }
@@ -65,7 +71,7 @@ describe("I can use NetworkedListService", () => {
 
   it("I can poll", (): Promise<boolean> => {
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const ls: FactoryArtefact = await createDataFactory(undefined);
+      const ls: FactoryArtefact = await createDataFactory(undefined, TEST);
       if (!ls.currentData) {
         return;
       }
