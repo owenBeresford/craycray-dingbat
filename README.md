@@ -25,7 +25,8 @@ smaller goals:
 - Small installation footprint, negligible CPU usage when backgrounded, quite low when active
 - No marketing or 3rd party platforms involved, as unneeded in narrow scope.   
 - Types allow extendable data and features.   This concept is abit over-engineered, as though I was thinking in languages with better type systems. . . . I am.  
-- Like Google todo list app, there is no id/ account /login / auth steps in the app.  You are an anon local user.  I never know that you exist.  Note: NPM might know the person that installed the app exists.  
+- Like Google todo list app, there is no id/ account /login / auth steps in the app.  You are an anon local user.  I never know that you exist.  
+   - Note: NPM might know the person that installed the app exists.  
 
 
 ### Data caching
@@ -35,9 +36,11 @@ smaller goals:
 - There is a fairly standard API accessible via /api/*, using JSON. #blah
 - There is a network wrapper in a Worker thread that attempts to ensure user sync requests are performed to this API.  This class doesn't hold data.   Data may be transitorily held in buffers between the threads.
 - There is an optional LocalStorage cache, that can hold data between app restarts if there is network isolation
+   - The API assumes multiple people who have write permission, so does a merge, sorting on time.  The local cache just overwrites whatever is already present, as your current self should be more correct than your older self.
 - The text items are stored in a localisation cache (that could be a config file).
+   - Updating this is a new release.
 - There is a memory cache called DataCache that holds the most current data from the above data items.
-- For testing, I can load fixtures into the data cache as a different run mode
+- For testing, I can load fixtures into the data cache as a different run mode.
 - There are references to the data cache in all the components.  I believe this last line is in sync with the data cache.
 
 
