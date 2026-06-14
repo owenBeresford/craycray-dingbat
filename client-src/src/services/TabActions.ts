@@ -242,7 +242,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
    * @public
    * @returns {Promise<boolean>}
    */
-  protected onRevert(ignored: GuessEvent, ctx: TabBarCtx): void {
+  public onRevert(ignored: GuessEvent, ctx: TabBarCtx): void {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     if (this.loadedStateKey === hashState(this.data.currentData!.list())) {
       LOG.addRaw("Data is identical to initial state. Nothing done", "info");

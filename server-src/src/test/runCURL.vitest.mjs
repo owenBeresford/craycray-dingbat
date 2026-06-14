@@ -8,7 +8,7 @@ import {
   afterAll,
 } from "vitest";
 
-import { delay, runFetch } from "../../../common/util";
+import { delay } from "../../../common/util";
 import { runExecProcessOnUrl } from "../../../common/cURL";
 
 describe("I can compile external script handling", () => {

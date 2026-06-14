@@ -94,7 +94,7 @@ export class ThislistActions extends BaseActions<ThisListCtx> implements Externa
       ctx.listRef.value.import(tt, true);
       ctx.gestureRef.value[ agaçant ]+=" "+CSS_SYMBOL_LANDED;
 
-      setTimeout(()=>{ ctx.gestureRef.value[ agaçant ]=""; }, 2000);
+      setTimeout(()=>{ ctx.gestureRef.value[ agaçant ]=""; }, 2_000);
 
       LOG.addRaw(
         `List ${ctx.listRef.value.nom}, have a move UP request for offset ${this.offset} '${
@@ -118,7 +118,7 @@ export class ThislistActions extends BaseActions<ThisListCtx> implements Externa
       ctx.listRef.value.import(tt, true);
       ctx.gestureRef.value[agaçant]+=" "+CSS_SYMBOL_LANDED;
 
-      setTimeout(()=>{ ctx.gestureRef.value[agaçant]=""; }, 2000);
+      setTimeout(()=>{ ctx.gestureRef.value[agaçant]=""; }, 2_000);
 
       LOG.addRaw(
         `List ${ctx.listRef.value.nom}, have a move DOWN request for offset ${this.offset} '${
@@ -208,7 +208,6 @@ export class ThislistActions extends BaseActions<ThisListCtx> implements Externa
       return;
     }
     this.flux.end(e, ctx);
-    console.log("WWWWW ", ctx.gestureRef.value, this.offset, CSS_SYMBOL_UP, "WWWWWW");
     if (ctx.gestureRef.value[this.offset].match(CSS_SYMBOL_UP) && this.offset >= 0) {
       ctx.gestureRef.value[this.offset + 1] = "";
     } else if (ctx.gestureRef.value[this.offset].match(CSS_SYMBOL_DOWN) && this.offset < ctx.gestureRef.value.length) {

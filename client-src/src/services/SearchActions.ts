@@ -19,7 +19,7 @@ import type { ExternalMethods, UserAction, CBType, SearchCtx } from "../types/Ac
  * A standard use* function. 
  
  * @param {SearchList} a
- * @param {MotionStrea<SearchCtx>>} b
+ * @param {MotionStrea<SearchCtx>} b
  * @param {FactoryArtefact} c
  * @public
  * @returns {ExternalMethods } - actually a SearchActions instance
@@ -35,6 +35,7 @@ export function useSearchActions(a: SearchList, b: MotionStream<SearchCtx>, c: F
  * @class SearchActions
  * This class is basically an adaptor for MotionStream
  * A class to make the SearchResults simpler.   This also improves testability.
+ * IOIO Maybe should add the drag item events to here
 
  * @access public
  */

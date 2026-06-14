@@ -57,7 +57,7 @@ if (typeof globalThis.fetch === "undefined" || !globalThis.fetch) {
   throw new Error("73453894563453 Fetch() not found.  BAILING OUT");
 }
 
-export const TEST_LOCATION_URL="https://google.com/";
+export const TEST_LOCATION_URL="https://app.hiss:3001";
 /**
  * createRemoteService
  * Create a remote HTTP client.  

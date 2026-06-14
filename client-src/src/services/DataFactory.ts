@@ -106,7 +106,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined, l
  * @public
  * @returns {Promise<void>}
  */
-  async function currentNetworkConfig(loc:Location|MockLocation): Promise<void> {
+  async function currentNetworkConfig(locb:Location|MockLocation): Promise<void> {
     let d4: MessageDistribution;
     if (retour.currentData && (await retour.currentData.poll())) {
       return;
@@ -114,7 +114,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined, l
 
     // Local has no state, so no extra loading data
     const d3 = useLocal();
-    const d2 = createRemoteService(globalThis.location);
+    const d2 = createRemoteService(locb);
     if (await d2.poll()) {
       retour.currentData = new NetworkedListService(d2, d3);
     } else {
@@ -131,8 +131,8 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined, l
    * @public
    * @returns {void}
    */
-  function initData(loc:Location|MockLocation): void {
-    void currentNetworkConfig( loc);
+  function initData(locc:Location|MockLocation): void {
+    void currentNetworkConfig( locc);
   }
 
   /**
