@@ -8,7 +8,8 @@ import {
   expectTypeOf,
   assertType,
 } from "vitest";
-import { ShippingStruct, ActionEnum } from "../../types/Messagable";
+
+import { ShippingStruct, ActionEnum } from "../../../../common/types/Messagable";
 import { transform2list, packMsg } from "../../services/Storable";
 
 import * as StateSync from "../../workers/StateSyncing";
@@ -29,7 +30,7 @@ describe("test on StateSync ", () => {
 */
   it("Can run StateSync", async () => {
     const w = await new Worker(
-      new URL("../workers/StateSyncing", import.meta.url),
+      new URL("../../workers/StateSyncing", import.meta.url),
       { type: "module" }
     );
     console.log("TEST made thread " + process.pid);
@@ -43,7 +44,7 @@ describe("test on StateSync ", () => {
         NEXT_ACTION = "err"; // IOIO XXX expand test to check other states
         good(1);
       };
-      //			w.postMessage(packMsg("status-request" as ActionEnum, {} as ShippingStruct ));
+      //	w.postMessage(packMsg("status-request" as ActionEnum, {} as ShippingStruct ));
       w.postMessage(packMsg("status-request", {}), undefined);
       console.log("TEST send message");
 

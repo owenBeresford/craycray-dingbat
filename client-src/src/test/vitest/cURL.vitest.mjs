@@ -59,7 +59,6 @@ describe("test on cURL wrapper", () => {
     let tmp=parseHeader2( SECT[0] );
     expect( tmp[1]).toBe( '200' );
     expect( tmp[0]).toBe( 'status');
-
   });
 
   it("Can parse headers2 request", () => {

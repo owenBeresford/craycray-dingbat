@@ -16,11 +16,11 @@ declare global {
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 export async function setup(): Promise<void> {
 
-  console.warn("Vitest setup file is executed. ");
   Object.defineProperty(globalThis, "_LOGGING_", {
     value: process.env.NODE_ENV !== "production",
     writable: true,
   });
+  console.warn("Vitest setup file is executed. "+ globalThis._LOGGING_ );
 }
 console.warn("Vitest setup file is loaded ");
 export async function teardown(): Promise<void> {}
