@@ -27,14 +27,14 @@ describe("I can run MotionStream", () => {
     d2 = new Vector(10, 10);
     assert.equal(
       mm.angle(d1, d2),
-      5.497787143782138,
+      -0.7853981633974483,
       `I think ${mm.angle(d1, d2)}`
     );
     d1 = new Vector(-10, 0);
     d2 = new Vector(10, 10);
     assert.equal(
       mm.angle(d1, d2),
-      2.356194490192345,
+      -2.356194490192345,
       `I think ${mm.angle(d1, d2)}`
     );
     d1 = new Vector(0, -10);
@@ -52,7 +52,7 @@ describe("I can run MotionStream", () => {
     let d2 = new Vector(10, 10);
     assert.equal(
       mm.angle(d1, d2),
-      4.71238898038469,
+      -1.5707963267948966,
       `I think ${mm.angle(d1, d2)}`
     );
     d1 = new Vector(10, -10);
@@ -73,7 +73,7 @@ describe("I can run MotionStream", () => {
     d2 = new Vector(10, 10);
     assert.equal(
       mm.angle(d1, d2),
-      1.4901161193847656e-8,
+      0,
       `I think ${mm.angle(d1, d2)}`
     );
   });
@@ -82,45 +82,104 @@ describe("I can run MotionStream", () => {
     const mm = new MotionStream();
     let d1 = new Vector(100, 100);
     assert.equal(
-      mm.significant(d1),
-      false,
+      mm.significant(d1, false),
+      true,
       "with Fake screen size; 10% is not important"
     );
+    assert.equal(
+      mm.significant(d1, true),
+      true,
+      "with Fake screen size; 10% is not important"
+    );
+
     d1 = new Vector(200, 200);
     assert.equal(
-      mm.significant(d1),
+      mm.significant(d1, false),
       true,
       "with Fake screen size; 20% is important"
     );
     d1 = new Vector(145, 145);
     assert.equal(
-      mm.significant(d1),
-      false,
+      mm.significant(d1, false),
+      true,
       "with Fake screen size; 14.5% is not important"
     );
     d1 = new Vector(155, 155);
     assert.equal(
-      mm.significant(d1),
+      mm.significant(d1, false),
       true,
       "with Fake screen size; 15.5% is important"
     );
     d1 = new Vector(300, 300);
     assert.equal(
-      mm.significant(d1),
+      mm.significant(d1, false),
       true,
       "with Fake screen size; 30% is important"
     );
     d1 = new Vector(0, 140);
     assert.equal(
-      mm.significant(d1),
-      false,
+      mm.significant(d1, false),
+      true,
       "with Fake screen size; 14% is not important"
     );
     d1 = new Vector(0, 155);
     assert.equal(
-      mm.significant(d1),
+      mm.significant(d1, false),
       true,
       "with Fake screen size; 15.5% is important"
     );
   });
+
+  it(" significant() seems to work II", () => {
+    const mm = new MotionStream();
+    let d1 = new Vector(10, 10);
+    assert.equal(
+      mm.significant(d1, false),
+      false,
+      "with Fake screen size; 10% is not important"
+    );
+    assert.equal(
+      mm.significant(d1, true),
+      false,
+      "with Fake screen size; 10% is not important"
+    );
+
+    d1 = new Vector(20, 20);
+    assert.equal(
+      mm.significant(d1, false),
+      true,
+      "with Fake screen size; 20% is important"
+    );
+    d1 = new Vector(14.5, 14.5);
+    assert.equal(
+      mm.significant(d1, false),
+      false,
+      "with Fake screen size; 14.5% is not important"
+    );
+    d1 = new Vector(15.5, 15.5);
+    assert.equal(
+      mm.significant(d1, false),
+      true,
+      "with Fake screen size; 15.5% is important"
+    );
+    d1 = new Vector(30.0, 30.0);
+    assert.equal(
+      mm.significant(d1, false),
+      true,
+      "with Fake screen size; 30% is important"
+    );
+    d1 = new Vector(0, 14.0);
+    assert.equal(
+      mm.significant(d1, false),
+      false,
+      "with Fake screen size; 14% is not important"
+    );
+    d1 = new Vector(0, 15.5);
+    assert.equal(
+      mm.significant(d1, false),
+      true,
+      "with Fake screen size; 15.5% is important"
+    );
+  });
+
 });

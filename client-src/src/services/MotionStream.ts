@@ -93,7 +93,7 @@ export class MotionStream<T> implements Motionable<T> {
     let offset = 1;
     while (offset < this.stack.length) {
       const cur: Vector = this.clone(0, offset);
-      if (this.significant(cur)) {
+      if (this.significant(cur, this.mobile)) {
         let found = false;
         // need to change the angle() function for shapes more complex than a straight line swipe
         // ...splines...
@@ -197,13 +197,13 @@ export class MotionStream<T> implements Motionable<T> {
    * @public
    * @returns {boolean}
    */
-  public significant = (delta: Vector): boolean => {
+  public significant= (delta: Vector, mob:boolean): boolean => {
     const [x, y] = delta.toArray();
-    if (this.mobile) {
+    if (mob) {
       return x > MOBILE_THRESHOLD || x * -1 > MOBILE_THRESHOLD || y > MOBILE_THRESHOLD || y * -1 > MOBILE_THRESHOLD;
     }
     return x > BIG_THRESHOLD || x * -1 > BIG_THRESHOLD || y > BIG_THRESHOLD || y * -1 > BIG_THRESHOLD;
-  };
+  }
 
   /**
    * angle
@@ -225,7 +225,9 @@ export class MotionStream<T> implements Motionable<T> {
     const [x1, y1] = delta1.toArray();
     const [x2, y2] = delta2.toArray();
     let angle = Math.atan2(y2, x2) - Math.atan2(y1, x1);
-    if (angle < 0) { angle += 2 * Math.PI; }
+    if (angle > Math.PI) { angle -= 2 * Math.PI; }
+    if (angle < -1 * Math.PI) { angle += 2 * Math.PI; }
+    
     return angle;
    };
 
