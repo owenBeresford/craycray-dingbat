@@ -147,10 +147,10 @@ export async function runExecProcessOnUrl(url: string, extra: RequestInit | unde
       let str2 = str.substring(1, str.length);
       str2 = str2.trim();
       if (str2.indexOf(":") === -1) {
-        if (str2.indexOf("HTTP/") === 0) {
+        if (str.indexOf("HTTP/") === 0) {
           return ["status", str2.substring(str2.indexOf(" ") + 1, str2.length).trim()];
-        } else if (str2.match(/^[A-Z]{3,} \//))   {
-          return ["method", str2.substring(0, str2.indexOf(" "))];
+        } else if (str.match(/^[A-Z]{3,} \//))   {
+          return ["method", str.substring(0, str.indexOf(" "))];
         } else {
           return [str2];
         }
