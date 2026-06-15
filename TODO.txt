@@ -3,19 +3,18 @@ Don't call lists "list X", or all the labelling gets confused "list list X".
 DETAILS TO COMPLETE FOR RELEASE
 - ESLINT ON VUE FILES
 - increase tests
-- Apply rest of *Action types, and the newest architecture for the Actions 
 - StateSyncing test cover full state map - when threads work.
 - think about best name for ShopState
 - Make better favico
 - consider badges, and css backdrop not working
 - May be need to re-add STORE.getters
-- Engineer thing to that actual network code is masked in Story tests... another connection type
 - Replace self-signed-certs with real-ones via lets-encrypt
 - Storybook "run tests" on page load
 - Workout if should cache list data in browser cache?
 - list sorting? a-z
 
 LOW IMPACT, nioce to haves
+- When I have stopped iterating, think about adding support for platforms that lack Bash, like win32.
 - Maybe functions can have runtime behaviour from function name, supported by https://github.com/Guichaguri/cross-caller/blob/main/src/index.ts
 - Look at eslint-plugin-unicorn, might reduce problems on eslint + TS
 - Maybe lineup state-keys to show net status in later builds
