@@ -34,7 +34,10 @@ export class NetworkedListService extends ListService {
     this.local = proche;
     if (_LOGGING_) {
       console.log(
-        "NetworkListService created & injected with: (remote) " + loin.constructor.name + " (local) " + proche.constructor.name
+        "NetworkListService created & injected with: (remote) " +
+          loin.constructor.name +
+          " (local) " +
+          proche.constructor.name
       );
     }
     this.loadAllLists();
@@ -47,11 +50,11 @@ export class NetworkedListService extends ListService {
    * @public
    * @returns {void}
    */
-  public terminate():void {
+  public terminate(): void {
     if (_LOGGING_) {
-      console.log( "NetworkListService being destroyed" );
+      console.log("NetworkListService being destroyed");
     }
-    if ((this.remote && typeof this.remote === "object") ) {
+    if (this.remote && typeof this.remote === "object") {
       (this.remote as RemoteStorage).terminateSoon();
     }
   }
@@ -96,7 +99,7 @@ export class NetworkedListService extends ListService {
       } as SaveStruct);
     }
     await this.local.saveState(valeur);
-    await this.remote.saveState( valeur ); 
+    await this.remote.saveState(valeur);
     return true;
   }
 

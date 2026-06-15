@@ -13,7 +13,7 @@ import type { FactoryArtefact } from "./DataFactory";
 import type { COMPLETE_STORE } from "./Store";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { ExternalMethods, CBType, TabBarCtx } from "../types/Actionables";
- 
+
 /**
  * useTabActions
  * The standard access util
@@ -162,7 +162,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
       LOG.addRaw("Cannot run unique(), not on a single list screen", "info");
       return;
     }
-    const liste:StdList|undefined = this.data.currentData!.get(this.store.state.currentId) as StdList;
+    const liste: StdList | undefined = this.data.currentData!.get(this.store.state.currentId) as StdList;
     if (liste) {
       liste.unique();
       LOG.addRaw("Ran Unique on " + liste.nom + " (" + this.store.state.currentId + ")", "info");
@@ -295,7 +295,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
    */
   public onName(ignored: GuessEvent, ctx: TabBarCtx): void {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    const liste: StdList| undefined = this.data.currentData!.get(this.store.state.currentId) as StdList;
+    const liste: StdList | undefined = this.data.currentData!.get(this.store.state.currentId) as StdList;
     if (!liste) {
       LOG.addRaw("Cannot edit list name, only have a bad ID.", "warn");
       return;
@@ -329,7 +329,7 @@ function createNameCallback(ctx: TabBarCtx, data: FactoryArtefact): void {
     }
 
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    const liste:StdList|undefined = data.currentData.get(ctx.storeRef.value.state.currentId) as StdList;
+    const liste: StdList | undefined = data.currentData.get(ctx.storeRef.value.state.currentId) as StdList;
     if (!liste) {
       throw new Error("THe currentId " + ctx.storeRef.value.state.currentId + "in the state/ session is invalid.");
     }

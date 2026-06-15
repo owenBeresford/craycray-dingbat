@@ -4,17 +4,16 @@ import { LocalStorage } from "node-localstorage";
 import { ListService } from "../../services/ListService";
 import { StdList } from "../../services/AList";
 import { createDataFactory } from "../../services/DataFactory";
-import { TEST_LOCATION_URL } from '../../Constants';
+import { TEST_LOCATION_URL } from "../../Constants";
 import type { FactoryArtefact } from "../../services/DataFactory";
-import { TestLocation } from '../MockLocation';
-
+import { TestLocation } from "../MockLocation";
 
 import type { ListStruct, InstanceListable, ListCollection } from "../../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../../../../common/types/promises";
 import { fixture1, fixture2, fixture3, fixture4 } from "../../../../common/fixture-lists";
 
 globalThis.localStorage = new LocalStorage("./public/scratch");
-const TEST:TestLocation=new TestLocation(TEST_LOCATION_URL);
+const TEST: TestLocation = new TestLocation(TEST_LOCATION_URL);
 
 // the createDataFactory with args is tested via storybook tests, which is why it exists.
 describe("I can use ListService", () => {

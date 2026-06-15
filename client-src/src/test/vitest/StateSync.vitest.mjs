@@ -9,7 +9,10 @@ import {
   assertType,
 } from "vitest";
 
-import { ShippingStruct, ActionEnum } from "../../../../common/types/Messagable";
+import {
+  ShippingStruct,
+  ActionEnum,
+} from "../../../../common/types/Messagable";
 import { transform2list, packMsg } from "../../services/Storable";
 
 import * as StateSync from "../../workers/StateSyncing";

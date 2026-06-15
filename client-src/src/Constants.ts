@@ -35,7 +35,7 @@ export const CSS_SYMBOL_ORDER = "move";
 export const CSS_SYMBOL_RECEIPT = "receipt";
 export const CSS_SYMBOL_UP = "upwards";
 export const CSS_SYMBOL_DOWN = "dwnwards";
-export const CSS_SYMBOL_LANDED="itemLanded";
+export const CSS_SYMBOL_LANDED = "itemLanded";
 
 // localisation
 export const SUPPORTED_LANGUAGE = "en-GB";
@@ -57,7 +57,7 @@ if (typeof globalThis.fetch === "undefined" || !globalThis.fetch) {
   throw new Error("73453894563453 Fetch() not found.  BAILING OUT");
 }
 
-export const TEST_LOCATION_URL="https://app.hiss:3001";
+export const TEST_LOCATION_URL = "https://app.hiss:3001";
 
 /**
  * createRemoteService
@@ -83,7 +83,7 @@ export function createRemoteService(loc: Location | WorkerLocation): RemoteStora
   ) {
     throw new Error("9757353545757 Message passing is only possible inside a reasonable browser.");
   }
-  
+
   let d3: RemoteConfig = {
     url: loc.protocol + "//" + loc.hostname + ":" + loc.port + "/api/shared-state",
     timeout: API_RETRY,

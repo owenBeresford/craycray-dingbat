@@ -131,7 +131,7 @@ export class MotionStream<T> implements Motionable<T> {
    */
   public finalVector2text(): string {
     const angle = rad2deg(this.angle(this.stack[0], this.stack[this.stack.length - 1]));
-    
+
     // IOIO these are hard coded in the wrong place.
     // but the function needs to live as it reads local state
     if (angle > 155 && angle < 205) {
@@ -197,13 +197,13 @@ export class MotionStream<T> implements Motionable<T> {
    * @public
    * @returns {boolean}
    */
-  public significant= (delta: Vector, mob:boolean): boolean => {
+  public significant = (delta: Vector, mob: boolean): boolean => {
     const [x, y] = delta.toArray();
     if (mob) {
       return x > MOBILE_THRESHOLD || x * -1 > MOBILE_THRESHOLD || y > MOBILE_THRESHOLD || y * -1 > MOBILE_THRESHOLD;
     }
     return x > BIG_THRESHOLD || x * -1 > BIG_THRESHOLD || y > BIG_THRESHOLD || y * -1 > BIG_THRESHOLD;
-  }
+  };
 
   /**
    * angle
@@ -225,11 +225,15 @@ export class MotionStream<T> implements Motionable<T> {
     const [x1, y1] = delta1.toArray();
     const [x2, y2] = delta2.toArray();
     let angle = Math.atan2(y2, x2) - Math.atan2(y1, x1);
-    if (angle > Math.PI) { angle -= 2 * Math.PI; }
-    if (angle < -1 * Math.PI) { angle += 2 * Math.PI; }
-    
+    if (angle > Math.PI) {
+      angle -= 2 * Math.PI;
+    }
+    if (angle < -1 * Math.PI) {
+      angle += 2 * Math.PI;
+    }
+
     return angle;
-   };
+  };
 
   /**
    * significantAsPercentage

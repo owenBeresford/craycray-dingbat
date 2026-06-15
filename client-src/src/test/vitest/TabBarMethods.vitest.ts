@@ -15,29 +15,28 @@ import { useStore } from "../../services/Store";
 import type { COMPLETE_STORE } from "../../services/Store";
 import type { ExternalMethods, CBType, TabBarCtx } from "../../types/Actionables";
 import { fixture1, fixture2, fixture3, fixture4 } from "../../../../common/fixture-lists";
-import { TEST_LOCATION_URL } from '../../Constants';
-import { TestLocation } from '../MockLocation';
+import { TEST_LOCATION_URL } from "../../Constants";
+import { TestLocation } from "../MockLocation";
 
-globalThis._LOGGING_ =process.env.NODE_ENV==="development";
+globalThis._LOGGING_ = process.env.NODE_ENV === "development";
 
 // https://stackoverflow.com/questions/74209044/vue-router-mock-with-vue-test-utils-vitest
 vi.hoisted(() => {
-  vi.resetModules()
+  vi.resetModules();
 });
 
-vi.mock('vue-router', async (importOriginal) => {
-    const actual = await importOriginal<typeof import('vue-router')>();
-    return {
-      ...actual,
-      useRoute: vi.fn(),
-     };
+vi.mock("vue-router", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("vue-router")>();
+  return {
+    ...actual,
+    useRoute: vi.fn(),
+  };
 });
 
-//https://github.com/vitest-dev/vitest/issues/1918 
-
+//https://github.com/vitest-dev/vitest/issues/1918
 
 describe("test on TabActions", () => {
-  const DATA  = createDataFactory(fixture1(), new TestLocation( TEST_LOCATION_URL));
+  const DATA = createDataFactory(fixture1(), new TestLocation(TEST_LOCATION_URL));
 
   it("Can use useFunction", async () => {
     let txt: TabActions = (await useTabActions(useStore(), DATA, useCacheWrapper(), useRoute())) as TabActions;
@@ -47,7 +46,6 @@ describe("test on TabActions", () => {
   });
 
   it("Can use mount (reviw on retuen type, as its soft/a runtime thing, not a class)", async () => {
- 
     let txt = await useTabActions(useStore(), DATA, useCacheWrapper(), useRoute());
     expect(typeof txt).toBe("object");
     const visibleRef = ref<boolean>(false);

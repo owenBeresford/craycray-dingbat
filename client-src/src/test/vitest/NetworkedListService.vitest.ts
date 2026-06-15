@@ -3,8 +3,8 @@ import { assert, describe, it, expect, expectTypeOf, assertType } from "vitest";
 
 import { ListService } from "../../services/ListService";
 import { createDataFactory } from "../../services/DataFactory";
-import { TEST_LOCATION_URL } from '../../Constants';
-import { TestLocation } from '../MockLocation';
+import { TEST_LOCATION_URL } from "../../Constants";
+import { TestLocation } from "../MockLocation";
 
 import type { FactoryArtefact } from "../../services/DataFactory";
 import type { ListStruct, InstanceListable, ListCollection } from "../../types/ListCollection";
@@ -12,7 +12,7 @@ import type { PromiseSucceed, PromiseReject } from "../../../../common/types/pro
 
 // turn API on first
 // Run unit from Storybook
-const TEST:TestLocation=new TestLocation(TEST_LOCATION_URL);
+const TEST: TestLocation = new TestLocation(TEST_LOCATION_URL);
 
 describe("I can use NetworkedListService", () => {
   // this ought to be run multiple times in different network settings

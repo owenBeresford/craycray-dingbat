@@ -9,7 +9,7 @@ import type { LocalCopy } from "../services/LocalCopy";
 import type { ShopState } from "../types/ShopState";
 import type { Store } from "vuex";
 import type { COMPLETE_STORE } from "../services/Store";
-import type {CBType} from './Actionables';
+import type { CBType } from "./Actionables";
 
 export interface ListOfListsProps {
   instanceId: string;
@@ -124,25 +124,22 @@ export interface InterstitialProps {
 }
 
 export interface TabBarContext {
-  visibleRef:boolean;
-  getInputRef:string;
-  CBRef:CBType;
-  storeRef:COMPLETE_STORE;
-  menuStateRef:boolean;
+  visibleRef: boolean;
+  getInputRef: string;
+  CBRef: CBType;
+  storeRef: COMPLETE_STORE;
+  menuStateRef: boolean;
 }
 
 export interface ThisListContext {
-  getInputRef:string;
-  CBRef:CBType;
-  draggingRef:Array<boolean>;
-  canSeeInputRef:boolean;
-  listRef:StdList;
-  gestureRef:Array<string>;
+  getInputRef: string;
+  CBRef: CBType;
+  draggingRef: Array<boolean>;
+  canSeeInputRef: boolean;
+  listRef: StdList;
+  gestureRef: Array<string>;
 }
 
-
 export interface SearchContext {}
-
-
 
 export type StrictArray = Array<string>;

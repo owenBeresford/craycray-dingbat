@@ -146,7 +146,7 @@ import type { Loggable } from "../types/Loggable";
 // import { StaticRoutes } from "./Routing";
 import EnterInput from "./EnterInput.vue";
 // import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
-import type { TabBarStaticData  } from '../types/ComponentProps';
+import type { TabBarStaticData } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 
@@ -186,7 +186,10 @@ export default defineComponent({
     try {
       stack = useTabActions(useStore(), ListData, useCacheWrapper(), useRoute());
       return {
-        extraMethods: stack.mount({ visibleRef, getInputRef, CBRef, storeRef, menuStateRef } satisfies TabBarCtx, stack),
+        extraMethods: stack.mount(
+          { visibleRef, getInputRef, CBRef, storeRef, menuStateRef } satisfies TabBarCtx,
+          stack
+        ),
         dataOnLoad,
         menuStateRef,
         visibleRef,

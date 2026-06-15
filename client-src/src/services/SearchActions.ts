@@ -24,12 +24,13 @@ import type { ExternalMethods, UserAction, CBType, SearchCtx } from "../types/Ac
  * @public
  * @returns {ExternalMethods } - actually a SearchActions instance
  */
-export function useSearchActions(a: SearchList, b: MotionStream<SearchCtx>, c: FactoryArtefact): ExternalMethods<SearchCtx> {
+export function useSearchActions(
+  a: SearchList,
+  b: MotionStream<SearchCtx>,
+  c: FactoryArtefact
+): ExternalMethods<SearchCtx> {
   return new SearchActions(a, b, c);
 }
-
- 
-
 
 /**
  * @class SearchActions
@@ -127,7 +128,7 @@ export class SearchActions extends BaseActions<SearchCtx> implements ExternalMet
   }
 
   public onSave(e: GuessEvent, ctx: SearchCtx): void {
-        let buff: StdList = StdList.manual("Search results", this.data.currentData!.count());
+    let buff: StdList = StdList.manual("Search results", this.data.currentData!.count());
     let tmp = this.list.export();
     for (let i in tmp) {
       buff.add(tmp[i].item);

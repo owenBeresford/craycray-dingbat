@@ -11,7 +11,7 @@ import { useMsgDistrib } from "./MessageDistribution";
 import { createRemoteService, DELAY_FOR_API } from "../Constants";
 import { TestListService } from "./TestListService";
 import { NetworkedListService } from "./NetworkedListService";
-import { type MockLocation} from '../test/MockLocation';
+import { type MockLocation } from "../test/MockLocation";
 
 import type { InstanceListable, ModuleListable, ListCollection } from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
@@ -44,7 +44,7 @@ Note **: MesaggeDistribution class will ensure the data gets to the phone,
 export interface FactoryArtefact {
   currentData: ListCollection<string> | undefined;
   updateData: (a: ListCollection<string>) => void;
-  initData: (loc:Location|MockLocation) => void;
+  initData: (loc: Location | MockLocation) => void;
 }
 
 /** A module-wide collection of known variables
@@ -83,7 +83,10 @@ export function idOf(obj: object): number {
   @public
   @returns {FactoryArtefact} - see above tuple interface
  */
-export function createDataFactory(override: Array<TestDataSchema> | undefined, loc:Location|MockLocation): FactoryArtefact {
+export function createDataFactory(
+  override: Array<TestDataSchema> | undefined,
+  loc: Location | MockLocation
+): FactoryArtefact {
   let retour: FactoryArtefact = {} as FactoryArtefact;
   retour.currentData = undefined;
   retour.updateData = updateData;
@@ -106,7 +109,7 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined, l
  * @public
  * @returns {Promise<void>}
  */
-  async function currentNetworkConfig(locb:Location|MockLocation): Promise<void> {
+  async function currentNetworkConfig(locb: Location | MockLocation): Promise<void> {
     let d4: MessageDistribution;
     if (retour.currentData && (await retour.currentData.poll())) {
       return;
@@ -131,8 +134,8 @@ export function createDataFactory(override: Array<TestDataSchema> | undefined, l
    * @public
    * @returns {void}
    */
-  function initData(locc:Location|MockLocation): void {
-    void currentNetworkConfig( locc);
+  function initData(locc: Location | MockLocation): void {
+    void currentNetworkConfig(locc);
   }
 
   /**

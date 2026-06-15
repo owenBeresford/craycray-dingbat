@@ -74,7 +74,7 @@ import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
 import { MotionStream } from "../services/MotionStream";
 import { LogService } from "../services/LogStack";
-import { useSearchActions, SearchActions,  } from "../services/SearchActions";
+import { useSearchActions, SearchActions } from "../services/SearchActions";
 
 import type { ExternalMethods, SearchCtx } from "../types/Actionables";
 import type { COMPLETE_STORE } from "../services/Store";

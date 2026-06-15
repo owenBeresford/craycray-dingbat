@@ -71,11 +71,7 @@ describe("I can run MotionStream", () => {
     );
     d1 = new Vector(10, 10);
     d2 = new Vector(10, 10);
-    assert.equal(
-      mm.angle(d1, d2),
-      0,
-      `I think ${mm.angle(d1, d2)}`
-    );
+    assert.equal(mm.angle(d1, d2), 0, `I think ${mm.angle(d1, d2)}`);
   });
 
   it(" significant() seems to work", () => {
@@ -181,5 +177,4 @@ describe("I can run MotionStream", () => {
       "with Fake screen size; 15.5% is important"
     );
   });
-
 });

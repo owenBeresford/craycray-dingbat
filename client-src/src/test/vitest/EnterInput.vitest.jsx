@@ -5,7 +5,7 @@ import Vue3TouchEvents from "vue3-touch-events";
 
 import EnterInput from "../../components/EnterInput.vue";
 import { UI_EN_GB, useUIText } from "../../services/Localisation";
-import { useLog } from '../../services/LogStack';
+import { useLog } from "../../services/LogStack";
 
 // IOIO docs say need to swap find() -> findComponent()
 // https://v1.test-utils.vuejs.org/api/wrapper/getComponent.html
@@ -39,9 +39,8 @@ describe("Simple component test 1", () => {
         UI_EN_GB,
         useUIText,
         provide: {
-          log:useLog(),
-         },
-       
+          log: useLog(),
+        },
       },
     });
     //  screen.debug() says this isn't mounted to a DOM, but this is Node so that doesnt mean much..
@@ -81,8 +80,8 @@ describe("Simple component test 1", () => {
         UI_EN_GB,
         useUIText,
         provide: {
-          log:useLog(),
-         },
+          log: useLog(),
+        },
       },
     });
 

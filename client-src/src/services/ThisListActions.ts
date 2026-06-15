@@ -88,13 +88,15 @@ export class ThislistActions extends BaseActions<ThisListCtx> implements Externa
     if (this.offset >= 0 && this.offset < ctx.listRef.value.énumérer) {
       let tt = ctx.listRef.value.export();
       let copy = tt[this.offset];
-      let agaçant=this.offset+1;  // after 2s the user may have started another action
-      tt[this.offset] = tt[ agaçant];
+      let agaçant = this.offset + 1; // after 2s the user may have started another action
+      tt[this.offset] = tt[agaçant];
       tt[agaçant] = copy;
       ctx.listRef.value.import(tt, true);
-      ctx.gestureRef.value[ agaçant ]+=" "+CSS_SYMBOL_LANDED;
+      ctx.gestureRef.value[agaçant] += " " + CSS_SYMBOL_LANDED;
 
-      setTimeout(()=>{ ctx.gestureRef.value[ agaçant ]=""; }, 2_000);
+      setTimeout(() => {
+        ctx.gestureRef.value[agaçant] = "";
+      }, 2_000);
 
       LOG.addRaw(
         `List ${ctx.listRef.value.nom}, have a move UP request for offset ${this.offset} '${
@@ -112,13 +114,15 @@ export class ThislistActions extends BaseActions<ThisListCtx> implements Externa
     if (this.offset >= 1 && this.offset < ctx.listRef.value.énumérer - 1) {
       let tt = ctx.listRef.value.export();
       let copy = tt[this.offset];
-      let agaçant=this.offset-1;  // after 2s the user may have started another action
+      let agaçant = this.offset - 1; // after 2s the user may have started another action
       tt[this.offset] = tt[agaçant];
-      tt[ agaçant] = copy;
+      tt[agaçant] = copy;
       ctx.listRef.value.import(tt, true);
-      ctx.gestureRef.value[agaçant]+=" "+CSS_SYMBOL_LANDED;
+      ctx.gestureRef.value[agaçant] += " " + CSS_SYMBOL_LANDED;
 
-      setTimeout(()=>{ ctx.gestureRef.value[agaçant]=""; }, 2_000);
+      setTimeout(() => {
+        ctx.gestureRef.value[agaçant] = "";
+      }, 2_000);
 
       LOG.addRaw(
         `List ${ctx.listRef.value.nom}, have a move DOWN request for offset ${this.offset} '${

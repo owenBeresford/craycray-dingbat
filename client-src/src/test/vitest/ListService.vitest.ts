@@ -4,8 +4,8 @@ import { LocalStorage } from "node-localstorage";
 import { ListService } from "../../services/ListService";
 import { StdList } from "../../services/AList";
 import { createDataFactory } from "../../services/DataFactory";
-import { TEST_LOCATION_URL } from '../../Constants';
-import { TestLocation } from '../MockLocation';
+import { TEST_LOCATION_URL } from "../../Constants";
+import { TestLocation } from "../MockLocation";
 
 import type { FactoryArtefact } from "../../services/DataFactory";
 import type { ListStruct, InstanceListable, ListCollection } from "../../types/ListCollection";
@@ -14,7 +14,7 @@ import { fixture1, fixture2, fixture3, fixture4 } from "../../../../common/fixtu
 
 globalThis.localStorage = new LocalStorage("./public/scratch");
 
-const TEST:TestLocation=new TestLocation(TEST_LOCATION_URL);
+const TEST: TestLocation = new TestLocation(TEST_LOCATION_URL);
 // the createDataFactory with args is tested via storybook tests, which is why it exists.
 describe("I can use ListService", () => {
   // this ought to be run multiple times in different network settings

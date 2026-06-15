@@ -18,8 +18,8 @@ type NullableTimeout = ReturnType<typeof globalThis.setTimeout> | undefined;
 export class RemoteStorage implements Storable, DistantStorable {
   private url: string;
   private other: RemoteConfig;
-  private cease:boolean;
-  protected agent:any;
+  private cease: boolean;
+  protected agent: any;
 
   /**
    * constructor
@@ -30,13 +30,13 @@ export class RemoteStorage implements Storable, DistantStorable {
    */
   public constructor(c: RemoteConfig) {
     this.url = c.url;
-    this.cease=false;
-    this.agent=c.agent ?? globalThis.fetch; 
+    this.cease = false;
+    this.agent = c.agent ?? globalThis.fetch;
     this.other = { ...c };
   }
 
-  public terminateSoon():void {
-    this.cease=true;
+  public terminateSoon(): void {
+    this.cease = true;
   }
 
   /**
@@ -51,10 +51,12 @@ export class RemoteStorage implements Storable, DistantStorable {
   public poll(): Promise<boolean> {
     let didTimeOut = false;
     const REQT: RequestInit = Object.assign(this.other, { method: "HEAD", body: null }) as RequestInit;
-    const EEE = new Error("Request timed out for "+ this.url );
+    const EEE = new Error("Request timed out for " + this.url);
     // EEE is named after the whine of over-used/ over-heated electrical equipment
     const SELF = this;
-    if(this.cease) { return Promise.resolve(false); }
+    if (this.cease) {
+      return Promise.resolve(false);
+    }
 
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       let sortie: NullableTimeout = setTimeout(() => {
@@ -67,11 +69,11 @@ export class RemoteStorage implements Storable, DistantStorable {
           clearTimeout(sortie);
           sortie = undefined;
           if (!didTimeOut) {
-             good(Math.round( filet.status / 100) === 2);
+            good(Math.round(filet.status / 100) === 2);
           } else {
             bad(EEE);
           }
-          return Math.round( filet.status / 100) === 2;
+          return Math.round(filet.status / 100) === 2;
         })
         .catch((err: Error): void => {
           if (!didTimeOut) {
@@ -100,38 +102,38 @@ export class RemoteStorage implements Storable, DistantStorable {
         method: "POST",
         body: transform2text(goutte),
       }) as RequestInit;
-      if(this.cease) { return good(false); }
+      if (this.cease) {
+        return good(false);
+      }
 
       this.agent(this.url, REQT)
         .catch((err: Error) => {
           bad(err);
         })
-        .then( async (goutte: Response | void): Promise<void> => {
+        .then(async (goutte: Response | void): Promise<void> => {
           if (goutte) {
             if (!goutte.ok) {
               return bad(new Error("Server sent an error http status " + goutte.status));
             }
-            let ret="";
-            if(goutte.body) {
-              ret=goutte.body.toString();
+            let ret = "";
+            if (goutte.body) {
+              ret = goutte.body.toString();
             } else {
-              ret=await goutte.text();
+              ret = await goutte.text();
             }
             try {
-              const filet:APIResponseType = JSON.parse(ret) as APIResponseType;
+              const filet: APIResponseType = JSON.parse(ret) as APIResponseType;
               if ("statusCode" in filet && parseInt(filet.statusCode, 10) > 299) {
-                  // this branch here should not be used; as all the responses have a proper
-                  // HTTP status code
-                  return bad(new Error("Server sent an error http status " + filet.statusCode));
-                } else {
-                  return good(true);
-                }
-              
-              } catch(ee:unknown ) {
-                // I can leak the stack trace, this is just a local API.
-                return bad( ee as Error );
+                // this branch here should not be used; as all the responses have a proper
+                // HTTP status code
+                return bad(new Error("Server sent an error http status " + filet.statusCode));
+              } else {
+                return good(true);
               }
-
+            } catch (ee: unknown) {
+              // I can leak the stack trace, this is just a local API.
+              return bad(ee as Error);
+            }
           } else {
             return bad(new Error("Valid HTTP, but null response"));
           }
@@ -154,33 +156,34 @@ export class RemoteStorage implements Storable, DistantStorable {
         method: "GET",
         body: null,
         mode: "no-cors",
-        credentials: "same-origin" , 
+        credentials: "same-origin",
       }) as RequestInit;
-      if(this.cease) { return good([] as Array<SaveStruct> ); }
+      if (this.cease) {
+        return good([] as Array<SaveStruct>);
+      }
 
       this.agent(this.url, REQT)
         .catch((err: unknown) => {
           console.warn("Failed to load state", (err as Error).message);
           return bad(new Error("No data was found"));
         })
-        .then( async(filet: Response | void): Promise<void> => {
+        .then(async (filet: Response | void): Promise<void> => {
           if (!filet) {
             return bad(new Error("Valid HTTP, but got nothing back"));
           }
           if (!filet.ok) {
             return bad(new Error("Server sent an error http status " + filet.status));
           }
-          
-          let tmp="";
-          if(filet.body) {  
+
+          let tmp = "";
+          if (filet.body) {
             // this will happen in unit tests
             tmp = filet.body.toString();
-          } else if( filet.text) { 
+          } else if (filet.text) {
             // this will happen in browser stack
-            tmp=await filet.text();
+            tmp = await filet.text();
           }
           good(transform2list(tmp));
- 
         });
     });
   }
