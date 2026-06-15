@@ -91,7 +91,7 @@ import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-test
 import type { ThisListStaticData, ThisListProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
-if (_LOGGING_) {
+if (globalThis._LOGGING_) {
   console.debug("KKK ThisList global scope ListData id:", idOf(ListData));
 }
 
@@ -170,7 +170,7 @@ export default defineComponent({
   },
 
   created() {
-    if (_LOGGING_) {
+    if (globalThis._LOGGING_) {
       console.debug("KKK ThisList global scope ListData id:", idOf(ListData));
     }
     this.initGeneratedMethods();

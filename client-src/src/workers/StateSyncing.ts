@@ -20,7 +20,7 @@ const STATE: DataPipeline = useSSW(self.location);
 // this module is a Worker object, and runs as a second thread in the browser.
 // The UI thread drives MessageDistribution
 const goodSource: Readonly<string> = self.location.protocol + "//" + self.location.hostname + ":" + self.location.port;
-if (_LOGGING_) {
+if (globalThis._LOGGING_) {
   // test only logging
   console.log("CODE under TEST started " + process.pid, goodSource);
 }
@@ -64,7 +64,7 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
     isDone = true;
   }
   if (("status-request" as ActionEnum) === payload.action) {
-    if (_LOGGING_) {
+    if (globalThis._LOGGING_) {
       console.log("CODE under TEST got message ", JSON.stringify(payload));
     }
     self.postMessage(transform2text([{ status: "running" as ActionEnum }]), undefined);
@@ -90,7 +90,7 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
 self.onmessageerror = (e: unknown): void => {
   console.warn("WORKER: got bad message ", e as Error);
 };
-if (_LOGGING_) {
+if (globalThis._LOGGING_) {
   console.log("CODE under TEST end module ", typeof self);
 }
 /* taken from snap/chromium/common/chromium/WasmTtsEngine/20260305.1/bindings_main.js

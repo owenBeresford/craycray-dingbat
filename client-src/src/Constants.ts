@@ -40,7 +40,7 @@ export const CSS_SYMBOL_LANDED="itemLanded";
 // localisation
 export const SUPPORTED_LANGUAGE = "en-GB";
 export const KNOWN_PHONE = "shopping-known"; // may get localised
-export const TTL_FOR_HELP = 5000; // ms
+export const TTL_FOR_HELP = 5_000; // ms
 export const DEFAULT_HELP_SHOW = false;
 
 export const FETCH_TIMEOUT = 500; // ms
@@ -58,6 +58,7 @@ if (typeof globalThis.fetch === "undefined" || !globalThis.fetch) {
 }
 
 export const TEST_LOCATION_URL="https://app.hiss:3001";
+
 /**
  * createRemoteService
  * Create a remote HTTP client.  
