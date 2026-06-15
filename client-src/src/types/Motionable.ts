@@ -10,6 +10,6 @@ export interface Motionable<I> {
   end(e: MouseEvent, ctx: I): boolean;
   start(e: MouseEvent, ctx: I): boolean;
   angle(delta1: Vector, delta2: Vector): number;
-  significant(delta: Vector): boolean;
+  significant(delta: Vector, mobile:boolean): boolean;
   significantAsPercentage(delta: Vector): boolean;
 }
