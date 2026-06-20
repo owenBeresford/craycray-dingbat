@@ -21,6 +21,11 @@ export default defineConfig({
     coverage: {
       provider: "v8", // or 'istanbul'
     },
+    environmentOptions: {
+      jsdom: { // IOIO XX FIXME change later if IP changes
+        url: "https://app.hiss:3001/"
+      }
+    },
 
     // https://github.com/vitest-dev/vitest/discussions/9246
     reporters: [
