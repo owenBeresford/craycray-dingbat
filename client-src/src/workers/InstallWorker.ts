@@ -15,7 +15,7 @@ import type { LocalCopy } from "../services/LocalCopy";
 export function useCacheWrapper(): CacheWrapper {
   if (
     !("__STORYBOOK_MODULE_TEST__" in globalThis && globalThis.__STORYBOOK_MODULE_TEST__) &&
-    !(globalThis.process.env && Object.keys(process.env)) &&
+    !( process.env && Object.keys(process.env)) &&
     !(globalThis.caches instanceof CacheStorage)
   ) {
     throw new Error("234798674564 Cache storage isn't working, the install button cannot work,");
