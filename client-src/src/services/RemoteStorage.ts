@@ -31,8 +31,9 @@ export class RemoteStorage implements Storable, DistantStorable {
   public constructor(c: RemoteConfig) {
     this.url = c.url;
     this.cease = false;
-    this.agent = c.agent ?? globalThis.fetch;
+    this.agent = c.agent ?? globalThis.fetch.bind(globalThis);
     this.other = { ...c };
+    delete this.other.url; 
   }
 
   public terminateSoon(): void {
@@ -51,9 +52,9 @@ export class RemoteStorage implements Storable, DistantStorable {
   public poll(): Promise<boolean> {
     let didTimeOut = false;
     const REQT: RequestInit = Object.assign(this.other, { method: "HEAD", body: null }) as RequestInit;
-    const EEE = new Error("Request timed out for " + this.url);
+    const EEE = new Error("572357653453653 Request timed out for " + this.url);
     // EEE is named after the whine of over-used/ over-heated electrical equipment
-    const SELF = this;
+   // const SELF = this;
     if (this.cease) {
       return Promise.resolve(false);
     }
@@ -64,7 +65,7 @@ export class RemoteStorage implements Storable, DistantStorable {
         bad(EEE);
       }, FETCH_TIMEOUT);
 
-      this.agent(SELF.url, REQT)
+      this.agent(this.url, REQT)
         .then((filet: Response): boolean => {
           clearTimeout(sortie);
           sortie = undefined;
@@ -113,7 +114,7 @@ export class RemoteStorage implements Storable, DistantStorable {
         .then(async (goutte: Response | void): Promise<void> => {
           if (goutte) {
             if (!goutte.ok) {
-              return bad(new Error("Server sent an error http status " + goutte.status));
+              return bad(new Error("8456423234242 Server sent an error http status " + goutte.status));
             }
             let ret = "";
             if (goutte.body) {
@@ -126,7 +127,7 @@ export class RemoteStorage implements Storable, DistantStorable {
               if ("statusCode" in filet && parseInt(filet.statusCode, 10) > 299) {
                 // this branch here should not be used; as all the responses have a proper
                 // HTTP status code
-                return bad(new Error("Server sent an error http status " + filet.statusCode));
+                return bad(new Error("56678324536456 Server sent an error http status " + filet.statusCode));
               } else {
                 return good(true);
               }
@@ -135,7 +136,7 @@ export class RemoteStorage implements Storable, DistantStorable {
               return bad(ee as Error);
             }
           } else {
-            return bad(new Error("Valid HTTP, but null response"));
+            return bad(new Error("223423423233434 Valid HTTP, but null response"));
           }
           // return "value for eslint.";
         });
@@ -165,26 +166,33 @@ export class RemoteStorage implements Storable, DistantStorable {
       this.agent(this.url, REQT)
         .catch((err: unknown) => {
           console.warn("Failed to load state", (err as Error).message);
-          return bad(new Error("No data was found"));
+          return bad(new Error("8356456234352 No data was found"));
         })
         .then(async (filet: Response | void): Promise<void> => {
           if (!filet) {
-            return bad(new Error("Valid HTTP, but got nothing back"));
+            return bad(new Error("73456834535634 Valid HTTP, but got nothing back"));
           }
           if (!filet.ok) {
-            return bad(new Error("Server sent an error http status " + filet.status));
+            return bad(new Error("776834534563522 Server sent an error http status " + filet.status));
           }
 
           let tmp = "";
           if (filet.body) {
             // this will happen in unit tests
             tmp = filet.body.toString();
+          } else if (filet.json && (filet.headers.get("Content-Type" ) as string).startsWith("application/json") ) {
+            tmp= await filet.json().then(function (text: string): void {
+  console.log("88888888888888888 leSigh, ", text);        
+-            good(transform2list(text));
+            });
           } else if (filet.text) {
             // this will happen in browser stack
-            tmp = await filet.text();
+            tmp = await filet.text().then(function (text: string): void {
+-            good(transform2list(text))
+            });
           }
-          good(transform2list(tmp));
-        });
+       
+         });
     });
   }
 
@@ -200,3 +208,4 @@ export class RemoteStorage implements Storable, DistantStorable {
     return "no impl";
   }
 }
+
