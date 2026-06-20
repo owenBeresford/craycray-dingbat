@@ -69,7 +69,7 @@ export default defineComponent({
       // API should never take more than 500ms, as its not doing much, as its on LAN
       setTimeout(() => {
         if (!ListData.currentData) {
-          throw new Error("Check server is running");
+          throw new Error("123753457894564 Check server is running");
         }
 
         if (this.$data.shoppingLists) {

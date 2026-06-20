@@ -53,7 +53,7 @@ export class LocalCopy implements Storable {
     try {
       localStorage.setItem(nom, dat);
     } catch (e) {
-      console.warn("Error on local storage", e);
+      console.warn("783453623487 Error on local storage", e);
       return false;
     }
     return true;
@@ -72,7 +72,7 @@ export class LocalCopy implements Storable {
     try {
       str = localStorage.getItem(nom) ?? "";
     } catch (e) {
-      console.warn("Error on local storage", e);
+      console.warn("854213454142 Error on local storage", e);
       return "";
     }
     return str;
@@ -111,7 +111,7 @@ export class LocalCopy implements Storable {
       if (présent) {
         good(transform2list(présent));
       } else {
-        console.warn("WARNING: cache is empty; adding placeholder");
+        console.warn("WARNING [32456784564746456]: cache is empty; adding placeholder");
         this.saveProperty(APP_NAME, "[]");
         good([] as Array<SaveStruct>);
       }

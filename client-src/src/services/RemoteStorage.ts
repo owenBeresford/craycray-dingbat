@@ -182,13 +182,12 @@ export class RemoteStorage implements Storable, DistantStorable {
             tmp = filet.body.toString();
           } else if (filet.json && (filet.headers.get("Content-Type" ) as string).startsWith("application/json") ) {
             tmp= await filet.json().then(function (text: string): void {
-  console.log("88888888888888888 leSigh, ", text);        
--            good(transform2list(text));
+              good(transform2list(text));
             });
           } else if (filet.text) {
             // this will happen in browser stack
             tmp = await filet.text().then(function (text: string): void {
--            good(transform2list(text))
+              good(transform2list(text));
             });
           }
        

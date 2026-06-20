@@ -52,7 +52,7 @@ export class UI_EN_GB implements UItext {
    */
   public add(clé: string, valeur: string): void {
     if (this.dat.has(clé)) {
-      throw new TypeError(`Key ${clé} already exists!`);
+      throw new TypeError(`785623453634234 Key ${clé} already exists!`);
     } else {
       this.dat.set(clé, valeur);
     }
@@ -69,7 +69,7 @@ export class UI_EN_GB implements UItext {
    */
   public addArray(clé: string, valeur: Array<string>): void {
     if (this.datA.has(clé)) {
-      throw new TypeError(`Key ${clé} already exists!`);
+      throw new TypeError(`2347345764143445523 Key ${clé} already exists!`);
     } else {
       this.datA.set(clé, valeur);
     }

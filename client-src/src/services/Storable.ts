@@ -37,11 +37,11 @@ export function transform2list(dat: string): Array<SaveStruct> {
   try {
     thing = JSON.parse(dat);
   } catch (e: unknown) {
-    console.warn("JSON parsing broke " + (e as Error).message);
+    console.warn("52382354357457 JSON parsing broke " + (e as Error).message);
   }
 
   if (!Array.isArray(thing)) {
-    throw new Error("This should be an Array");
+    throw new Error("345723456455 This should be an Array");
   }
   // Push into AList, then export to SaveStruct
   return thing as Array<SaveStruct>;

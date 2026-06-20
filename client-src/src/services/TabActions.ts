@@ -81,16 +81,16 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
     this.data = ld;
 
     if (!this.store) {
-      throw new Error("The Store of ShopState isn't present");
+      throw new Error("23465345685687 The Store of ShopState isn't present");
     }
     if (!this.cache) {
-      throw new Error("The CacheWrapper isn't present");
+      throw new Error("94565234352 The CacheWrapper isn't present");
     }
     if (!this.data || !this.data.currentData) {
-      throw new Error("The Data Factory isn't present");
+      throw new Error("752342632342342 The Data Factory isn't present");
     }
     if (!this.route) {
-      throw new Error("The vue Route isn't present");
+      throw new Error("2434363586786 The vue Route isn't present");
     }
     if (this.store.state.currentURL !== this.route.path) {
       this.store.commit("setPath", this.route.path);
@@ -111,7 +111,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
    */
   public onInterstitial(ignored: GuessEvent, ctx: TabBarCtx): void {
     if (this.store.state.currentURL !== this.route.path) {
-      console.warn("The state.currentURL hasn't updated!", this.store.state.currentURL, this.route.path);
+      console.warn("345723852345568 The state.currentURL hasn't updated!", this.store.state.currentURL, this.route.path);
       this.store.commit("setPath", this.route.path);
     }
 
@@ -204,7 +204,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
       LOG.addRaw("Duplicated list " + this.store.state.currentId + " (see list DUP).", "info");
       ctx.menuStateRef.value = false;
     } else {
-      LOG.addRaw("Attempt duplicate list? BUT list not found for " + this.store.state.currentId + ".", "warn");
+      LOG.addRaw("Attempt duplicate list? BUT list not found for '" + this.store.state.currentId + "'.", "warn");
     }
     StaticRoutes.push({ name: "list-everything" });
   }
@@ -331,7 +331,7 @@ function createNameCallback(ctx: TabBarCtx, data: FactoryArtefact): void {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     const liste: StdList | undefined = data.currentData.get(ctx.storeRef.value.state.currentId) as StdList;
     if (!liste) {
-      throw new Error("THe currentId " + ctx.storeRef.value.state.currentId + "in the state/ session is invalid.");
+      throw new Error("2347667834536 The currentId " + ctx.storeRef.value.state.currentId + " in the state/ session is invalid.");
     }
     LOG.addRaw(
       "Editing name on list " + ctx.storeRef.value.state.currentId + " was " + liste.nom + " becomes " + d1,

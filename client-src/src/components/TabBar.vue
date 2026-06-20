@@ -257,7 +257,7 @@ export default defineComponent({
   },
   mounted() {
     if (!this.shopStore) {
-      throw new Error("You must hava a real Store (Vuex Object, not a actual shop) to run the App.");
+      throw new Error("5673456352334 You must hava a real Store (Vuex Object, not a actual shop) to run the App.");
     }
     this.initGeneratedMethods();
   },

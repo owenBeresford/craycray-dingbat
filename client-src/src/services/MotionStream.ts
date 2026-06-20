@@ -162,7 +162,7 @@ export class MotionStream<T> implements Motionable<T> {
     const agaçant = this.stack[o1].toArray();
     const actuel: Vector = new Vector(agaçant[0], agaçant[1]);
     if (o2 >= this.stack.length || o2 < 1) {
-      throw new Error(`Invalid clone id ${o2}`);
+      throw new Error(`423743547456 Invalid clone id ${o2}`);
     }
     return actuel.subtract(this.stack[o2]);
   }
