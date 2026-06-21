@@ -178,6 +178,14 @@
   margin-right: auto;
   margin-top: 1em;
 }
+
+.ListOfList.view {
+  align-self: center;
+  justify-self: start;
+  flex-basis: calc(100% - 6em);
+
+}
+
 @media screen and (max-width: 400px) {
   .ListOfList ul {
     width: 100%;
@@ -272,13 +280,29 @@
   width: 20em;
   z-index: 2;
   top: calc(50vh - 3em);
-  background-color: var(--colour-maaxcontrast);
+  background-color: var(--colour-maxcontrast);
   border: 1em var(--colour-standout) solid;
 }
-/* doesnt seem active */
-dialog.enterInput::backdrop {
-  background-color: var(--fg1);
-  pointer-events: none;
+
+/* IOIO XXX update to better visual effect */
+/* the lowest item doesn't have interactive elements */
+.wholePage:has( dialog[open] ) {  background-color: var(--colour-disabled); opacity:0.8; }
+
+/* the children do */
+.wholePage:has( dialog[open] ) :not(dialog, dialog *) {
+ opacity:0.8;
+ pointer-events: none;
+ background-color: var(--colour-disabled);
+}
+
+.wholePage:has( dialog[open] ) div.aList { 
+  overflow-y: hidden;
+}
+
+/* dialog should be unaffected */
+dialog[open], dialog[open] * {
+  pointer-events: auto; 
+  opacity:1;
 }
 
 .enterInput p {
@@ -337,7 +361,7 @@ dialog.enterInput::backdrop {
   margin-right: 1em;
   opacity: 1;
   width: 4em;
-  background-color: var(--colour-maaxcontrast);
+  background-color: var(--colour-maxcontrast);
   margin-top: 0.5em;
   filter: opacity(100%);
 }
@@ -376,6 +400,11 @@ dialog.enterInput::backdrop {
 
 /* ********************************************************* */
 /* this is for SERPS  */
+
+.serps.view { align-self: center;
+ justify-self: start;
+ flex-basis: calc(100% - 6em);
+}
 
 .serps .buttonRow {
   display: block;
@@ -419,7 +448,7 @@ ul.aList > li {
 ul.aList li span.button.info {
   min-width: 12em;
   margin-bottom: 0.1em;
-  border-bottom: var(--colour-maaxcontrast) 0.8em solid;
+  border-bottom: var(--colour-maxcontrast) 0.8em solid;
   background-color: var(--bg1);
   color: var(--fg1);
   touch-action: none;
@@ -480,6 +509,9 @@ ul.aList > li:has(.dragstr[data-gesture*="move"]) {
 div.aList {
   max-height: calc(100% - 3.75em);
   overflow-y: scroll;
+  align-self: center;
+  justify-self: start;
+  flex-basis: calc(100% - 6em);
 }
 div.aList:has([aria-selected="true"]) {
   overflow-y: hidden;
@@ -547,9 +579,15 @@ div.aList ul.buttonRow li span {
   --fg-sorting: rgb(24, 24, 169);
   --colour-disabled: rgb(107, 107, 107);
   --colour-standout: hsla(0, 0%, 87%, 0.757);
-  --colour-maaxcontrast: #fff;
+  --colour-maxcontrast: #fff;
   --fg1: #1f1e1e;
   --bg1: #f3ffcf;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .wholePage {
@@ -561,13 +599,13 @@ div.aList ul.buttonRow li span {
   -webkit-text-size-adjust: 100%;
 
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
   flex-direction: column;
 }
 @media screen and (max-width: 400px) {
   #app {
-    /* room for browser fixed furniture, leSigh */
+    /* room for browser fixed furniture, #leSigh */
     height: calc(100% - 2em);
   }
 }
