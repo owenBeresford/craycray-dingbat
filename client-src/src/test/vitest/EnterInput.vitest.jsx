@@ -1,7 +1,7 @@
 import { directive, defineComponent, ref } from "vue";
 import { assert, describe, expect, it } from "vitest";
 import { mount } from "@vue/test-utils";
-import Vue3TouchEvents from "vue3-touch-events";
+// import Vue3TouchEvents from "vue3-touch-events";
 
 import EnterInput from "../../components/EnterInput.vue";
 import { UI_EN_GB, useUIText } from "../../services/Localisation";
@@ -35,7 +35,7 @@ describe("Simple component test 1", () => {
       },
       sync: true,
       global: {
-        stubs: ["vue3-touch-events"],
+      //   stubs: ["vue3-touch-events"],
         UI_EN_GB,
         useUIText,
         provide: {
@@ -76,7 +76,7 @@ describe("Simple component test 1", () => {
         testId: "nextTestId2",
       },
       global: {
-        stubs: ["vue3-touch-events"],
+      //  stubs: ["vue3-touch-events"],
         UI_EN_GB,
         useUIText,
         provide: {
