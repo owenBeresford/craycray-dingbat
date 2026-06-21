@@ -1,5 +1,11 @@
 
 
+## Goals:
+
+
+A simple and facile app for shopping lists, or lists in general.  To run on phones.
+
+
 ## "business english" changelog
 
 
@@ -14,6 +20,7 @@ smaller goals:
 - Port data between phone and desktop/ laptop easily
 - Be able to copy lists (absent from Google freeware)
 - Write some code that people can see, its not ground breaking.
+- NOTE, the commit log doesn't show in github as I am not making branches per feature, as I am just iteratively patching.   I think that's why.   This project is >300 commits in 2026, and doesn't show. 
 
 
 ### Technical deliveries
@@ -93,7 +100,7 @@ smaller goals:
 			- assorted "main" here
 	- random config and notes
 
-As a data architecture, my components should have:
+As a data architecture, my Vue components should have:
 - a stateKey that is an easy summary of current state, so Vue can see if the state has changed cheaply
 - a testId for every HTML element that may need to be directly accessed (mostly used in tests).  This mean multiple testId per component.
 
