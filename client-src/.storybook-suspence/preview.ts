@@ -3,7 +3,7 @@ import "../src/assets/foundation.min.css";
 import { setup, definePreview } from "@storybook/vue3-vite";
 import { createRouter, createWebHistory } from "vue-router";
 import { Suspense } from "vue";
-import Vue3TouchEvents from "vue3-touch-events";
+// import Vue3TouchEvents from "vue3-touch-events";
 import { vueRouter } from "storybook-vue3-router";
 import { uselog } from "../src/services/LogStack";
 
@@ -53,7 +53,7 @@ const router = createRouter({
 setup((app) => {
   try {
     app.use(router);
-    app.use(Vue3TouchEvents);
+//    app.use(Vue3TouchEvents);
     app.provide("helpText", "menu");
     app.provide("canSeeHelp", false);
     app.provide("ttl", 5000);

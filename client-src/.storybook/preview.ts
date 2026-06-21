@@ -2,7 +2,7 @@ import "../src/assets/shopping.css";
 import "../src/assets/foundation.min.css";
 import { setup, definePreview } from "@storybook/vue3-vite";
 import { createRouter, createWebHistory } from "vue-router";
-import Vue3TouchEvents from "vue3-touch-events";
+// import Vue3TouchEvents from "vue3-touch-events";
 import { useLog } from "../src/services/LogStack";
 import { useStore } from "../src/services/Store";
 
@@ -40,7 +40,7 @@ const router = createRouter({
 setup((app) => {
   try {
     app.use(router);
-    app.use(Vue3TouchEvents);
+  //  app.use(Vue3TouchEvents);
     app.use(useStore());
 
     app.provide("helpText", "menu");
