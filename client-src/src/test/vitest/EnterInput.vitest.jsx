@@ -35,7 +35,7 @@ describe("Simple component test 1", () => {
       },
       sync: true,
       global: {
-      //   stubs: ["vue3-touch-events"],
+        //   stubs: ["vue3-touch-events"],
         UI_EN_GB,
         useUIText,
         provide: {
@@ -76,7 +76,7 @@ describe("Simple component test 1", () => {
         testId: "nextTestId2",
       },
       global: {
-      //  stubs: ["vue3-touch-events"],
+        //  stubs: ["vue3-touch-events"],
         UI_EN_GB,
         useUIText,
         provide: {
