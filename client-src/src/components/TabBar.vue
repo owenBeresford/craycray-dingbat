@@ -19,13 +19,13 @@
           <span
             class="menuTrigger"
             aria-haspopup="menu"
-            :aria-pressed="ctx.menuStateRef.value"
+            :aria-pressed="menuStateRef.value"
             role="button"
             @click.prevent="onMenu"
             @keypress="onMenu"
             :title="menu.actualMenuTitle"
           ></span>
-          <menu class="menuTrigger" role="navigation" :data-testId="menuId" :aria-hidden="!ctx.menuStateRef.value">
+          <menu class="menuTrigger" role="navigation" :data-testId="menuId" :aria-hidden="!menuStateRef.value">
             <li>
               <span
                 role="button"
@@ -135,7 +135,6 @@ import { defineComponent, inject, ref, toRaw } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import { useStore } from "../services/Store";
-import { ListData, setupCurrentList } from "../services/DataFactory";
 import { useCacheWrapper, CacheWrapper } from "../workers/InstallWorker";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
@@ -143,10 +142,11 @@ import { useTabActions, noop, TabActions } from "../services/TabActions";
 import type { COMPLETE_STORE } from "../services/Store";
 import type { ExternalMethods, UserAction, CBType, TabBarCtx } from "../types/Actionables";
 import type { Loggable } from "../types/Loggable";
+import type { FactoryArtefact } from '../services/DataFactory';
+import type { TabBarStaticData } from "../types/ComponentProps";
 // import { StaticRoutes } from "./Routing";
 import EnterInput from "./EnterInput.vue";
-// import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
-import type { TabBarStaticData } from "../types/ComponentProps";
+ 
 
 const TEXT = useUIText();
 
@@ -175,6 +175,7 @@ export default defineComponent({
   },
   setup() {
     const dataOnLoad: boolean = inject<boolean>("dataOnLoad");
+    const listData:FactoryArtefact= inject<FactoryArtefact>("listData");  
     const visibleRef = ref<boolean>(false);
     const getInputRef = ref<string>("");
     const CBRef = ref<CBType>(noop);
@@ -184,7 +185,9 @@ export default defineComponent({
 
     let stack: ExternalMethods;
     try {
-      stack = useTabActions(useStore(), ListData, useCacheWrapper(), useRoute());
+  console.log("WERWER setup() ", menuStateRef, listData  );
+      stack = useTabActions(useStore(), listData, useCacheWrapper(), useRoute());
+  console.log("WERWER setup() ", menuStateRef  );
       return {
         extraMethods: stack.mount(
           { visibleRef, getInputRef, CBRef, storeRef, menuStateRef } satisfies TabBarCtx,
@@ -201,7 +204,8 @@ export default defineComponent({
         ctx: { visibleRef, getInputRef, CBRef, storeRef, menuStateRef } as TabBarCtx,
       };
     } catch (e: unknown) {
-      log.addRaw("TabBar.setup():", (e as Error).message, (e as Error).stack.substring(0, 200), "error");
+      log.addRaw("TabBar.setup():" + (e as Error).message + "  " , "error");
+
     }
   },
   data(): TabBarStaticData {
@@ -212,6 +216,7 @@ export default defineComponent({
     } else if (CACHE.check()) {
       état += " disabled";
     }
+console.log("WERWER data() ", this.menuStateRef, this.ctx );
 
     return {
       installEnabled: état,
@@ -252,6 +257,7 @@ export default defineComponent({
   },
   computed: {
     hasDataAndList(): boolean {
+console.log("WERWER computed() ", this.menuStateRef, this.ctx  );      
       return !(this.dataOnLoad && Object.keys(this.route.params).length > 0);
     },
   },

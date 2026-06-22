@@ -69,13 +69,14 @@ import { LOGO_PATH } from "../Constants";
 import { isMobile } from "../../../common/util";
 import { useStore } from "../services/Store";
 import { StdList, SearchList, BaseList } from "../services/AList";
-import { ListData, setupCurrentList } from "../services/DataFactory";
+
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
 import { MotionStream } from "../services/MotionStream";
 import { LogService } from "../services/LogStack";
 import { useSearchActions, SearchActions } from "../services/SearchActions";
 
+import type { FactoryArtefact } from "../services/DataFactory";
 import type { ExternalMethods, SearchCtx } from "../types/Actionables";
 import type { COMPLETE_STORE } from "../services/Store";
 import type { SearchProps, SearchStaticData } from "../types/ComponentProps";
@@ -106,13 +107,14 @@ export default defineComponent({
     const canSeeHelp: boolean = inject<boolean>("canSeeHelp");
     const ttl: string = inject<number>("ttl");
     const log: LogService = inject<LogService>("log");
+    const listData:FactoryArtefact = inject<FactoryArtefact >("listData");  
 
     let stack: ExternalMethods;
     try {
       const flux = new MotionStream<SearchCtx>();
-      const list: SearchList = SearchList.serps(ListData.currentData.searchItems(props.term));
+      const list: SearchList = SearchList.serps(listData.currentData.searchItems(props.term));
 
-      stack = useSearchActions(list, flux, ListData);
+      stack = useSearchActions(list, flux, listData);
       log.addRaw("User query: " + props.term, "info");
       return {
         extraMethods: stack.mount({}, stack),
@@ -121,6 +123,7 @@ export default defineComponent({
         ttl,
         list,
         log,
+        listData,
         ctx: {} as SearchCtx, // empty!!
       };
     } catch (e: unknown) {
@@ -131,11 +134,6 @@ export default defineComponent({
     }
   },
   data(): SearchStaticData {
-    let nom: Array<string> = [];
-    for (let i = 0; i < ListData.currentData.count(); i++) {
-      nom[i] = ListData.currentData.get(i).nom;
-    }
-
     return {
       aListId: this.$props.testId + "Results1",
       viewId: this.$props.testId + "View1",
@@ -144,7 +142,7 @@ export default defineComponent({
       logoPath: LOGO_PATH,
       mapURL,
       bisMobile: isMobile(),
-      listTitles: nom,
+      listTitles: this.listData.listNames(),
 
       text: {
         imgAlt: TEXT.get("serps.imgAlt"),

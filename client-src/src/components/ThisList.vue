@@ -69,17 +69,18 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, inject, toRaw, shallowRef } from "vue";
-import { useRoute } from "vue-router";
-import type { Ref, ShallowRef } from "vue";
+import { defineComponent, ref, inject } from "vue";
+import { useRoute, type RouteLocationNormalizedLoadedGeneric } from "vue-router";
+import type { Ref } from "vue";
+
 
 import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
 
-import { useStore } from "../services/Store";
+import { useStore, type COMPLETE_STORE } from "../services/Store";
 import { useUIText } from "../services/Localisation";
 import { extractId } from "../services/util";
-import { ListData, setupCurrentList, idOf } from "../services/DataFactory";
+import { setupCurrentList, idOf, type FactoryArtefact } from "../services/DataFactory";
 import { StdList, EMPTY_LIST } from "../services/AList";
 import { MotionStream } from "../services/MotionStream";
 import { isMobile, clearSelection } from "../../../common/util";
@@ -87,14 +88,11 @@ import { LOGO_PATH, DRAG_HANDLE_SYMBOL } from "../Constants";
 import { noop, ThisListActions, useThisListActions } from "../services/ThisListActions";
 
 import type { ExternalMethods, CBType, ThisListCtx } from "../types/Actionables";
-import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
+// import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { ThisListStaticData, ThisListProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
-if (globalThis._LOGGING_) {
-  console.debug("KKK ThisList global scope ListData id:", idOf(ListData));
-}
-
+ 
 const NEW_LIST = -1;
 // This class is using a shared function pointer, as in vue2 the event bus is too slow.
 // If you do parent state updates via it; they take 100ms to propagate, and you see flickers.
@@ -122,28 +120,31 @@ export default defineComponent({
     testId: { type: String, default: "test0" },
     shopStore: {
       type: Object,
-      default: () => {
+      default: ():COMPLETE_STORE  => {
         return useStore();
       },
-    }, // TS: "Store<ShopState>"
+    },
   } satisfies ThisListProps,
 
-  setup(props: ThisListProps) {
-    const itinéraire = useRoute();
+ //  setup(props: ThisListProps) {
+  setup( ) {
+    const itinéraire:RouteLocationNormalizedLoadedGeneric = useRoute();
 
     const helpText: string = inject<string>("helpText");
     const canSeeHelp: boolean = inject<boolean>("canSeeHelp");
+    const listData:FactoryArtefact =inject<FactoryArtefact>("listData");
     const ttl: string = inject<number>("ttl");
-    const canSeeInputRef: Ref<boolean> = ref<boolean>(false);
     const log: Loggable = inject<Loggable>("log");
+
+    const canSeeInputRef: Ref<boolean> = ref<boolean>(false);
     const getInputRef: Ref<string> = ref<string>("");
     const CBRef: Ref<CBType> = ref<CBType>(noop);
 
     let stack: ExternalMethods;
     try {
       const flux = new MotionStream<ThisListCtx>();
-      const liste: StdList = Object.assign(Object.create(Object.getPrototypeOf(EMPTY_LIST)), EMPTY_LIST) as StdList;
-      liste.importTest(setupCurrentList(itinéraire));
+      const liste: StdList = listData.currentData.get(  extractId(itinéraire.params.index));
+
       const listRef: Ref<StdList> = ref<StdList>(liste);
       let dragging: Array<boolean> = Array(liste.énumérer);
       dragging.fill(false);
@@ -152,7 +153,7 @@ export default defineComponent({
       gesture.fill("");
       const gestureRef: Ref<Array<string>> = ref<Array<string>>(gesture);
 
-      stack = useThisListActions(flux, ListData);
+      stack = useThisListActions(flux, listData);
       return {
         extraMethods: stack.mount(
           { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef } satisfies ThisListCtx,
@@ -160,6 +161,7 @@ export default defineComponent({
         ),
         helpText,
         canSeeHelp,
+        listRef,
         ttl,
         ctx: { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef } as ThisListCtx,
       };
@@ -171,7 +173,7 @@ export default defineComponent({
 
   created() {
     if (globalThis._LOGGING_) {
-      console.debug("KKK ThisList global scope ListData id:", idOf(ListData));
+      console.debug("KKK ThisList global scope ListData id:", idOf(this.listData));
     }
     this.initGeneratedMethods();
   },
@@ -210,8 +212,8 @@ export default defineComponent({
       return this.$props.currentStateKey + "view";
     },
     actualList(): Array<string> {
-      if (this.ctx.listRef.value) {
-        return this.ctx.listRef.value.export<string>();
+      if (this.listRef.value) {
+        return this.listRef.value.export<string>();
       }
       return [] as Array<string>;
     },
