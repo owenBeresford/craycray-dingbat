@@ -34,7 +34,7 @@ import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
 
 import { DELAY_FOR_API, LOGO_PATH } from "../Constants";
-import { useStore } from "../services/Store";
+import { useStore, type COMPLETE_STORE } from "../services/Store";
  import { mapURL } from "../services/URLs";
 import InterstitialView from "./InterstitialView.vue";
 import type { ListStruct } from "../types/ListCollection";
@@ -53,6 +53,7 @@ import type { ListOfListsProps } from "../types/ComponentProps";
 export default defineComponent({
   name: "ListOfLists",
   components: { InterstitialView },
+  
   mounted() {
     const itinéraire = useRoute();
     this.$props.fixPath(itinéraire);
@@ -69,7 +70,7 @@ export default defineComponent({
     testId: { type: String, default: "test0" },
     shopStore: {
       type: Object,
-      default: () => {
+      default: ():COMPLETE_STORE => {
         return useStore();
       },
     },

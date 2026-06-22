@@ -79,7 +79,7 @@ import { useSearchActions, SearchActions } from "../services/SearchActions";
 import type { FactoryArtefact } from "../services/DataFactory";
 import type { ExternalMethods, SearchCtx } from "../types/Actionables";
 import type { COMPLETE_STORE } from "../services/Store";
-import type { SearchProps, SearchStaticData } from "../types/ComponentProps";
+import type { SearchProps, SearchStaticData, SearchSetupState } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 export default defineComponent({
@@ -91,18 +91,18 @@ export default defineComponent({
     term: { type: String, default: "" },
     shopStore: {
       type: Object,
-      default: () => {
+      default: ():COMPLETE_STORE => {
         return useStore();
       },
     },
     route: {
       type: Object,
-      default: () => {
+      default: (): RouteLocationNormalizedLoadedGeneric => {
         return useRoute();
       },
     },
-  },
-  setup(props: SearchProps) {
+  } satisfies SearchProps ,
+  setup(props: SearchProps):SearchSetupState  {
     const helpText: string = inject<string>("helpText");
     const canSeeHelp: boolean = inject<boolean>("canSeeHelp");
     const ttl: string = inject<number>("ttl");
@@ -125,7 +125,7 @@ export default defineComponent({
         log,
         listData,
         ctx: {} as SearchCtx, // empty!!
-      };
+      } satisfies SearchSetupState;
     } catch (e: unknown) {
       log.addRaw(
         "SearchResults.setup(): " + (e as Error).message + "  " + (e as Error).stack.substring(0, 200),

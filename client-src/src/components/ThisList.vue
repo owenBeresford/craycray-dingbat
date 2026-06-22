@@ -87,9 +87,10 @@ import { isMobile, clearSelection } from "../../../common/util";
 import { LOGO_PATH, DRAG_HANDLE_SYMBOL } from "../Constants";
 import { noop, ThisListActions, useThisListActions } from "../services/ThisListActions";
 
+import type { Loggable } from "../types/Loggable";
 import type { ExternalMethods, CBType, ThisListCtx } from "../types/Actionables";
 // import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
-import type { ThisListStaticData, ThisListProps } from "../types/ComponentProps";
+import type { ThisListStaticData, ThisListProps, ThisListSetupValues } from "../types/ComponentProps";
 
 const TEXT = useUIText();
  
@@ -127,13 +128,13 @@ export default defineComponent({
   } satisfies ThisListProps,
 
  //  setup(props: ThisListProps) {
-  setup( ) {
+  setup( ):ThisListSetupValues {
     const itinéraire:RouteLocationNormalizedLoadedGeneric = useRoute();
 
     const helpText: string = inject<string>("helpText");
     const canSeeHelp: boolean = inject<boolean>("canSeeHelp");
     const listData:FactoryArtefact =inject<FactoryArtefact>("listData");
-    const ttl: string = inject<number>("ttl");
+    const ttl: number = inject<number>("ttl");
     const log: Loggable = inject<Loggable>("log");
 
     const canSeeInputRef: Ref<boolean> = ref<boolean>(false);
@@ -163,8 +164,10 @@ export default defineComponent({
         canSeeHelp,
         listRef,
         ttl,
+        draggingRef,
+        gestureRef,
         ctx: { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef } as ThisListCtx,
-      };
+      } satisfies ThisListSetupValues;
     } catch (e: unknown) {
       console.warn("ThisList.setup():", (e as Error).message, (e as Error).stack.substring(0, 200));
       log.addRaw("ThisList.setup():" + (e as Error).message + "  " + (e as Error).stack.substring(0, 200), "error");

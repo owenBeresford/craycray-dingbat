@@ -62,7 +62,7 @@ import { defineComponent, ref } from "vue";
 import { isMobile } from "../../../common/util";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import { useUIText } from "../services/Localisation";
-import type { EnterInputStaticData } from "../types/ComponentProps";
+import type { EnterInputStaticDat, EnterInputProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 /**
@@ -89,7 +89,8 @@ export default defineComponent({
     visible: { type: Boolean, default: false },
     currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
-  },
+  } satisfies EnterInputProps ,
+
   data(): EnterInputStaticData {
     let id = this.$props.testId;
     return {
@@ -129,7 +130,7 @@ export default defineComponent({
     },
   },
   methods: {
-    mapValue(e: Event): void {
+    mapValue(e: GuessEvent): void {
       const élément: HTMLInputElement = e.currentTarget as HTMLInputElement;
       this.oVal = élément.value;
     },

@@ -13,31 +13,32 @@
 // https://github.com/josueggh/a11y-cheatsheet
 import { defineComponent, inject, ref } from "vue";
 
-import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import { useLog } from "../services/LogStack";
 import { useUIText } from "../services/Localisation";
+import type { MsgBarStaticData, MsgBarProps } from '../types/ComponentProps';
+import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
+import type { Loggable } from "../types/Loggable";
 
 const TEXT = useUIText();
 
 export default defineComponent({
   name: "MessageBar",
-  components: {},
   props: {
     currentStateKey: { type: String, default: "logging1" },
     testId: { type: String, required: true },
     enabled: { type: Boolean, default: false },
     msgs: {
       type: Object,
-      default: () => {
+      default: ():Loggable => {
         return useLog();
       },
     },
-  },
-  data() {
+  } satisfies MsgBarProps,
+  data():MsgBarStaticData {
     return {
       msgBodyId: this.$props.testId + "Msgs1",
       refreshId: this.$props.testId + "Refresh1",
-    };
+    } satisfies MsgBarStaticData;
   },
   methods: {
     refresh: function (e: GuessEvent): void {

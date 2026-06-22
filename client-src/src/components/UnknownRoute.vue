@@ -16,7 +16,7 @@ import { defineComponent } from "vue";
 import { useStore } from "../services/Store";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
-import type { UnknownRouteStaticData } from "../types/ComponentProps";
+import type { UnknownRouteStaticData, UnknownRouteProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
 /**
@@ -37,7 +37,7 @@ export default defineComponent({
     errpath: { type: String, default: "**UNKNOWN**" },
     currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
-  },
+  } as UnknownRouteProps,
   data(): UnknownRouteStaticData {
     let id = this.$props.testId;
     return {

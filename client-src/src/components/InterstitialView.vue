@@ -45,7 +45,6 @@ const TEXT = useUIText();
    */
 export default defineComponent({
   name: "InterstitialView",
-  components: {},
   props: {
     ttl: { type: Number, default: 0 },
     display: { type: String, required: true },
@@ -54,6 +53,7 @@ export default defineComponent({
     testId: { type: String, default: "test0" },
   } satisfies InterstitialProps,
   inject: ["log"],
+
   data(): InterstitialStaticData {
     let id = this.$props.testId;
     let chaine = this.$props.currentStateKey;
@@ -83,6 +83,7 @@ export default defineComponent({
       currentStateKey2: chaine,
     } satisfies InterstitialStaticData;
   },
+  
   mounted() {
     // this.local = useLocal();
     // these two are currently hidden, and have no local state
@@ -121,6 +122,7 @@ export default defineComponent({
       }
     }
   },
+
   watch: {
     display(val, oldVal): void {
       // allow infinite displays as ttl=0, just like networking
@@ -155,6 +157,7 @@ export default defineComponent({
       this.iterateText();
     },
   },
+
   methods: {
     applyBody(): void {
       const nom = mapForHelp(this.store, "/");

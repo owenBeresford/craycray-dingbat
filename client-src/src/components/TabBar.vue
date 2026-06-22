@@ -143,7 +143,7 @@ import type { COMPLETE_STORE } from "../services/Store";
 import type { ExternalMethods, UserAction, CBType, TabBarCtx } from "../types/Actionables";
 import type { Loggable } from "../types/Loggable";
 import type { FactoryArtefact } from '../services/DataFactory';
-import type { TabBarStaticData } from "../types/ComponentProps";
+import type { TabBarStaticData, TabBarSetupValues, TabBarProps } from "../types/ComponentProps";
 // import { StaticRoutes } from "./Routing";
 import EnterInput from "./EnterInput.vue";
  
@@ -168,12 +168,12 @@ export default defineComponent({
     testId: { type: String, default: "test0" },
     shopStore: {
       type: Object,
-      default: () => {
+      default: ():COMPLETE_STORE => {
         return useStore();
       },
     },
-  },
-  setup() {
+  } satisfies TabBarProps,
+  setup():TabBarSetupValues  {
     const dataOnLoad: boolean = inject<boolean>("dataOnLoad");
     const listData:FactoryArtefact= inject<FactoryArtefact>("listData");  
     const visibleRef = ref<boolean>(false);
@@ -202,7 +202,7 @@ export default defineComponent({
         storeRef,
         route: useRoute(),
         ctx: { visibleRef, getInputRef, CBRef, storeRef, menuStateRef } as TabBarCtx,
-      };
+      } satisfies TabBarSetupValues;
     } catch (e: unknown) {
       log.addRaw("TabBar.setup():" + (e as Error).message + "  " , "error");
 
