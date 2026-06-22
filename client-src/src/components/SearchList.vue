@@ -14,7 +14,6 @@
           role="button"
           :title="text.saveTitle"
           v-html="text.saveLabel"
-          v-touch.prevent="onSave"
           @click.prevent="onSave"
           @keypress.prevent="onSave"
         ></span>
@@ -35,9 +34,7 @@
           class="button info"
           :title="text.itemMBTitle"
           :data-offset="j"
-          v-touch:swipe.left="onSwipe"
-          v-touch-options="{ swipeTolerance: 80, rollOverFrequency: 500 }"
-        >
+         >
           {{ i.item }}
         </span>
         <span
@@ -45,11 +42,7 @@
           class="button info"
           :title="text.itemDTTitle"
           :data-offset="j"
-          v-on:mouseleave="onDragStop"
-          v-touch-options="{ dragTolerance: 200, longTapTimeInterval: 1000, rollOverFrequency: 400 }"
-          v-on:mousedown="onDragStart"
-          @blur="onDragExit"
-        >
+         >
           {{ i.item }}
         </span>
       </li>

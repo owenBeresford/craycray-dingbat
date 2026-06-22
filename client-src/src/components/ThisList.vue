@@ -99,9 +99,6 @@ const NEW_LIST = -1;
 // If you do parent state updates via it; they take 100ms to propagate, and you see flickers.
 // It is possible that vue3 event bus is faster.
 
-//   v-touch-class="'touchActive'"    v-touch-options="{ swipeTolerance: 10, rollOverFrequency: 500, swipeConeSize: 0.6 }"
-// v-touch-options="{ dragTolerance: 200, rollOverFrequency: 400 }"  v-touch.prevent.once="onAdd"
-
 /**
    * Thislist
    * A component to render the currently edited list.
