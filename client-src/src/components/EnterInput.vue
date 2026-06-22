@@ -89,7 +89,7 @@ export default defineComponent({
     visible: { type: Boolean, default: false },
     currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
-  } satisfies EnterInputProps ,
+  } satisfies EnterInputProps,
 
   data(): EnterInputStaticData {
     let id = this.$props.testId;

@@ -14,7 +14,7 @@ import ThisList from "./ThisList.vue";
 import SearchList from "./SearchList.vue";
 import UnknownRoute from "./UnknownRoute.vue";
 import { useStore } from "../services/Store";
- 
+
 /**
    * StaticRoutes
    * library-standard file, holding the mspping of URN to Componment/ screen

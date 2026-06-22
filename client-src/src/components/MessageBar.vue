@@ -15,7 +15,7 @@ import { defineComponent, inject, ref } from "vue";
 
 import { useLog } from "../services/LogStack";
 import { useUIText } from "../services/Localisation";
-import type { MsgBarStaticData, MsgBarProps } from '../types/ComponentProps';
+import type { MsgBarStaticData, MsgBarProps } from "../types/ComponentProps";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { Loggable } from "../types/Loggable";
 
@@ -29,12 +29,12 @@ export default defineComponent({
     enabled: { type: Boolean, default: false },
     msgs: {
       type: Object,
-      default: ():Loggable => {
+      default: (): Loggable => {
         return useLog();
       },
     },
   } satisfies MsgBarProps,
-  data():MsgBarStaticData {
+  data(): MsgBarStaticData {
     return {
       msgBodyId: this.$props.testId + "Msgs1",
       refreshId: this.$props.testId + "Refresh1",

@@ -83,7 +83,7 @@ export default defineComponent({
       currentStateKey2: chaine,
     } satisfies InterstitialStaticData;
   },
-  
+
   mounted() {
     // this.local = useLocal();
     // these two are currently hidden, and have no local state

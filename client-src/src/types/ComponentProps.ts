@@ -1,6 +1,5 @@
 import type { RouteRecordNormalized, RouteLocationNormalizedLoadedGeneric } from "vue-router";
 
-
 import { StdList, SearchList } from "../services/AList";
 import { CacheWrapper } from "../workers/InstallWorker";
 
@@ -12,8 +11,8 @@ import type { ShopState } from "../types/ShopState";
 import type { Store } from "vuex";
 import type { COMPLETE_STORE } from "../services/Store";
 import type { CBType } from "./Actionables";
-import type {FactoryArtefact } from '../services/DataFactory';
-import type {TabBarCtx} from "../types/Actionables";
+import type { FactoryArtefact } from "../services/DataFactory";
+import type { TabBarCtx } from "../types/Actionables";
 
 export interface ListOfListsProps {
   instanceId: string;
@@ -38,11 +37,11 @@ export interface EnterInputStaticData {
 }
 
 export interface EnterInputProps {
-    val: string;
-    cb:CBType ;
-    visible: boolean;
-    currentStateKey: string;
-    testId: string;
+  val: string;
+  cb: CBType;
+  visible: boolean;
+  currentStateKey: string;
+  testId: string;
 }
 
 export interface ThisListStaticData<I> {
@@ -108,9 +107,9 @@ export interface UnknownRouteStaticData {
 }
 
 export interface UnknownRouteProps {
-    errpath:string;
-    currentStateKey: string;
-    testId: string;
+  errpath: string;
+  currentStateKey: string;
+  testId: string;
 }
 
 export interface InterstitialStaticData {
@@ -152,7 +151,7 @@ export interface TabBarProps {
   currentStateKey: string;
   testId: string;
   shopStore: COMPLETE_STORE;
-} 
+}
 
 export interface TabBarSetupValues {
   extraMethods: MethodOptions;
@@ -161,8 +160,8 @@ export interface TabBarSetupValues {
   visibleRef: Ref<boolean>;
   getInputRef: Ref<string>;
   CBRef: Ref<CBType>;
-  storeRef: Ref<COMPLETE_STORE> ;
-  log:Loggable;
+  storeRef: Ref<COMPLETE_STORE>;
+  log: Loggable;
   route: RouteLocationNormalizedLoadedGeneric;
   ctx: TabBarCtx;
 }
@@ -178,8 +177,8 @@ export interface ThisListContext {
 
 export interface ThisListSetupValues {
   extraMethods: MethodOptions;
-  ctx:ThisListCtx;
-  helpText:string;
+  ctx: ThisListCtx;
+  helpText: string;
   canSeeHelp: boolean;
   ttl: number;
   listRef: Ref<StdList<string>>;
@@ -188,40 +187,40 @@ export interface ThisListSetupValues {
 }
 
 export interface MainAppStaticData {
-    tabId: string;
-    msgId: string;
-    msgState: string;
-    loggingEnabled: boolean;
+  tabId: string;
+  msgId: string;
+  msgState: string;
+  loggingEnabled: boolean;
 }
 
 export interface MainAppSetup {
-  data:FactoryArtefact; 
+  data: FactoryArtefact;
   log: Loggable;
 }
 
 export interface MsgBarStaticData {
-  msgBodyId:string;
+  msgBodyId: string;
   refreshId: string;
 }
 
 export interface MsgBarProps {
   currentStateKey: string;
   testId: string;
-  enabled:boolean;
+  enabled: boolean;
   msgs: Loggable;
 }
 
 export interface SearchContext {}
 
 export interface SearchSetupState {
-  extraMethods:  MethodOptions;
+  extraMethods: MethodOptions;
   helpText: string;
   canSeeHelp: string;
   ttl: string;
-  list: SearchList; 
+  list: SearchList;
   log: Loggable;
   listData: FactoryArtefact;
-  ctx: SearchCtx,
+  ctx: SearchCtx;
 }
 
 export type StrictArray = Array<string>;

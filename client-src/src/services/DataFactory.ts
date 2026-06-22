@@ -67,7 +67,7 @@ export function idOf(obj: object): number {
   return debugId.get(obj) ?? -1;
 }
 
-  /**
+/**
  * currentNetworkConfig
  * A "use function" to create ListCollections, which has different composition depending on network settings
  * @TODO add simplification when Storybook or Vitest is running
@@ -75,23 +75,26 @@ export function idOf(obj: object): number {
  * @public
  * @returns {Promise<void >}
  */
-  export async function currentNetworkConfig(locb: Location | MockLocation, retour:FactoryArtefact|undefined): Promise< void > {
-    let d4: MessageDistribution;
-    if (retour.currentData && (await retour.currentData.poll())) {
-      return; 
-    }
-
-    // Local has no state, so no extra loading data
-    const d3 = useLocal();
-    const d2 = createRemoteService(locb);
-    if (await d2.poll()) {
-       retour.currentData=  new NetworkedListService(d2, d3);
-    } else {
-      d4 = useMsgDistrib() as MessageDistribution;
-      d4.forkThread();
-      retour.currentData= new NetworkedListService(d4 as DistantStorable, d3);
-    }
+export async function currentNetworkConfig(
+  locb: Location | MockLocation,
+  retour: FactoryArtefact | undefined
+): Promise<void> {
+  let d4: MessageDistribution;
+  if (retour.currentData && (await retour.currentData.poll())) {
+    return;
   }
+
+  // Local has no state, so no extra loading data
+  const d3 = useLocal();
+  const d2 = createRemoteService(locb);
+  if (await d2.poll()) {
+    retour.currentData = new NetworkedListService(d2, d3);
+  } else {
+    d4 = useMsgDistrib() as MessageDistribution;
+    d4.forkThread();
+    retour.currentData = new NetworkedListService(d4 as DistantStorable, d3);
+  }
+}
 
 /**
  * createDataFactory
@@ -114,7 +117,7 @@ export function createDataFactory(
   loc: Location | MockLocation
 ): FactoryArtefact {
   let retour: FactoryArtefact = createEmptyFactory();
- 
+
   if (Array.isArray(override)) {
     retour.currentData = new TestListService(override);
     if (retour.currentData && globalThis._LOGGING_) {
@@ -128,13 +131,12 @@ export function createDataFactory(
   return retour satisfies FactoryArtefact;
 }
 
-export function createEmptyFactory( ):FactoryArtefact {
+export function createEmptyFactory(): FactoryArtefact {
   let retour: FactoryArtefact = {} as FactoryArtefact;
   retour.currentData = undefined;
   retour.updateData = updateData;
   retour.initData = initData;
 
- 
   /**
    * initData
    * Consumer access function, that includes "async washing".
@@ -177,11 +179,8 @@ export function createEmptyFactory( ):FactoryArtefact {
     console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
   }
 
- 
   return retour satisfies FactoryArtefact;
 }
-
-
 
 // What external modules (aside from test) will gain from accessing.
 // If the module thinks the network situation has changed, it can run initData() again.

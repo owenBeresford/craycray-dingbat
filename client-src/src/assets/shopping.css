@@ -183,7 +183,6 @@
   align-self: center;
   justify-self: start;
   flex-basis: calc(100% - 6em);
-
 }
 
 @media screen and (max-width: 400px) {
@@ -286,23 +285,27 @@
 
 /* IOIO XXX update to better visual effect */
 /* the lowest item doesn't have interactive elements */
-.wholePage:has( dialog[open] ) {  background-color: var(--colour-disabled); opacity:0.8; }
-
-/* the children do */
-.wholePage:has( dialog[open] ) :not(dialog, dialog *) {
- opacity:0.8;
- pointer-events: none;
- background-color: var(--colour-disabled);
+.wholePage:has(dialog[open]) {
+  background-color: var(--colour-disabled);
+  opacity: 0.8;
 }
 
-.wholePage:has( dialog[open] ) div.aList { 
+/* the children do */
+.wholePage:has(dialog[open]) :not(dialog, dialog *) {
+  opacity: 0.8;
+  pointer-events: none;
+  background-color: var(--colour-disabled);
+}
+
+.wholePage:has(dialog[open]) div.aList {
   overflow-y: hidden;
 }
 
 /* dialog should be unaffected */
-dialog[open], dialog[open] * {
-  pointer-events: auto; 
-  opacity:1;
+dialog[open],
+dialog[open] * {
+  pointer-events: auto;
+  opacity: 1;
 }
 
 .enterInput p {
@@ -401,9 +404,10 @@ dialog[open], dialog[open] * {
 /* ********************************************************* */
 /* this is for SERPS  */
 
-.serps.view { align-self: center;
- justify-self: start;
- flex-basis: calc(100% - 6em);
+.serps.view {
+  align-self: center;
+  justify-self: start;
+  flex-basis: calc(100% - 6em);
 }
 
 .serps .buttonRow {
@@ -584,7 +588,8 @@ div.aList ul.buttonRow li span {
   --bg1: #f3ffcf;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;

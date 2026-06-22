@@ -111,7 +111,11 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
    */
   public onInterstitial(ignored: GuessEvent, ctx: TabBarCtx): void {
     if (this.store.state.currentURL !== this.route.path) {
-      console.warn("345723852345568 The state.currentURL hasn't updated!", this.store.state.currentURL, this.route.path);
+      console.warn(
+        "345723852345568 The state.currentURL hasn't updated!",
+        this.store.state.currentURL,
+        this.route.path
+      );
       this.store.commit("setPath", this.route.path);
     }
 
@@ -331,7 +335,9 @@ function createNameCallback(ctx: TabBarCtx, data: FactoryArtefact): void {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     const liste: StdList | undefined = data.currentData.get(ctx.storeRef.value.state.currentId) as StdList;
     if (!liste) {
-      throw new Error("2347667834536 The currentId " + ctx.storeRef.value.state.currentId + " in the state/ session is invalid.");
+      throw new Error(
+        "2347667834536 The currentId " + ctx.storeRef.value.state.currentId + " in the state/ session is invalid."
+      );
     }
     LOG.addRaw(
       "Editing name on list " + ctx.storeRef.value.state.currentId + " was " + liste.nom + " becomes " + d1,

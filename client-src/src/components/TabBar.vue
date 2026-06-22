@@ -142,11 +142,10 @@ import { useTabActions, noop, TabActions } from "../services/TabActions";
 import type { COMPLETE_STORE } from "../services/Store";
 import type { ExternalMethods, UserAction, CBType, TabBarCtx } from "../types/Actionables";
 import type { Loggable } from "../types/Loggable";
-import type { FactoryArtefact } from '../services/DataFactory';
+import type { FactoryArtefact } from "../services/DataFactory";
 import type { TabBarStaticData, TabBarSetupValues, TabBarProps } from "../types/ComponentProps";
 // import { StaticRoutes } from "./Routing";
 import EnterInput from "./EnterInput.vue";
- 
 
 const TEXT = useUIText();
 
@@ -168,14 +167,14 @@ export default defineComponent({
     testId: { type: String, default: "test0" },
     shopStore: {
       type: Object,
-      default: ():COMPLETE_STORE => {
+      default: (): COMPLETE_STORE => {
         return useStore();
       },
     },
   } satisfies TabBarProps,
-  setup():TabBarSetupValues  {
+  setup(): TabBarSetupValues {
     const dataOnLoad: boolean = inject<boolean>("dataOnLoad");
-    const listData:FactoryArtefact= inject<FactoryArtefact>("listData");  
+    const listData: FactoryArtefact = inject<FactoryArtefact>("listData");
     const visibleRef = ref<boolean>(false);
     const getInputRef = ref<string>("");
     const CBRef = ref<CBType>(noop);
@@ -185,9 +184,9 @@ export default defineComponent({
 
     let stack: ExternalMethods;
     try {
-  console.log("WERWER setup() ", menuStateRef, listData  );
+      console.log("WERWER setup() ", menuStateRef, listData);
       stack = useTabActions(useStore(), listData, useCacheWrapper(), useRoute());
-  console.log("WERWER setup() ", menuStateRef  );
+      console.log("WERWER setup() ", menuStateRef);
       return {
         extraMethods: stack.mount(
           { visibleRef, getInputRef, CBRef, storeRef, menuStateRef } satisfies TabBarCtx,
@@ -204,8 +203,7 @@ export default defineComponent({
         ctx: { visibleRef, getInputRef, CBRef, storeRef, menuStateRef } as TabBarCtx,
       } satisfies TabBarSetupValues;
     } catch (e: unknown) {
-      log.addRaw("TabBar.setup():" + (e as Error).message + "  " , "error");
-
+      log.addRaw("TabBar.setup():" + (e as Error).message + "  ", "error");
     }
   },
   data(): TabBarStaticData {
@@ -216,7 +214,7 @@ export default defineComponent({
     } else if (CACHE.check()) {
       état += " disabled";
     }
-console.log("WERWER data() ", this.menuStateRef, this.ctx );
+    console.log("WERWER data() ", this.menuStateRef, this.ctx);
 
     return {
       installEnabled: état,
@@ -257,7 +255,7 @@ console.log("WERWER data() ", this.menuStateRef, this.ctx );
   },
   computed: {
     hasDataAndList(): boolean {
-console.log("WERWER computed() ", this.menuStateRef, this.ctx  );      
+      console.log("WERWER computed() ", this.menuStateRef, this.ctx);
       return !(this.dataOnLoad && Object.keys(this.route.params).length > 0);
     },
   },

@@ -208,7 +208,7 @@ export class ListService implements ListCollection<string> {
     return ret;
   }
 
-  public listNames():Array<string> {
+  public listNames(): Array<string> {
     let nom: Array<string> = [];
     for (let i = 0; i < this.catalog.length; i++) {
       nom[i] = this.catalog[i].nom;

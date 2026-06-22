@@ -33,7 +33,7 @@ export class RemoteStorage implements Storable, DistantStorable {
     this.cease = false;
     this.agent = c.agent ?? globalThis.fetch.bind(globalThis);
     this.other = { ...c };
-    delete this.other.url; 
+    delete this.other.url;
   }
 
   public terminateSoon(): void {
@@ -54,7 +54,7 @@ export class RemoteStorage implements Storable, DistantStorable {
     const REQT: RequestInit = Object.assign(this.other, { method: "HEAD", body: null }) as RequestInit;
     const EEE = new Error("572357653453653 Request timed out for " + this.url);
     // EEE is named after the whine of over-used/ over-heated electrical equipment
-   // const SELF = this;
+    // const SELF = this;
     if (this.cease) {
       return Promise.resolve(false);
     }
@@ -180,8 +180,8 @@ export class RemoteStorage implements Storable, DistantStorable {
           if (filet.body) {
             // this will happen in unit tests
             tmp = filet.body.toString();
-          } else if (filet.json && (filet.headers.get("Content-Type" ) as string).startsWith("application/json") ) {
-            tmp= await filet.json().then(function (text: string): void {
+          } else if (filet.json && (filet.headers.get("Content-Type") as string).startsWith("application/json")) {
+            tmp = await filet.json().then(function (text: string): void {
               good(transform2list(text));
             });
           } else if (filet.text) {
@@ -190,8 +190,7 @@ export class RemoteStorage implements Storable, DistantStorable {
               good(transform2list(text));
             });
           }
-       
-         });
+        });
     });
   }
 
@@ -207,4 +206,3 @@ export class RemoteStorage implements Storable, DistantStorable {
     return "no impl";
   }
 }
-

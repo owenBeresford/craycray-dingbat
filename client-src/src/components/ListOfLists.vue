@@ -35,7 +35,7 @@ import { useRoute } from "vue-router";
 
 import { DELAY_FOR_API, LOGO_PATH } from "../Constants";
 import { useStore, type COMPLETE_STORE } from "../services/Store";
- import { mapURL } from "../services/URLs";
+import { mapURL } from "../services/URLs";
 import InterstitialView from "./InterstitialView.vue";
 import type { ListStruct } from "../types/ListCollection";
 import type { ListOfListsProps } from "../types/ComponentProps";
@@ -53,7 +53,7 @@ import type { ListOfListsProps } from "../types/ComponentProps";
 export default defineComponent({
   name: "ListOfLists",
   components: { InterstitialView },
-  
+
   mounted() {
     const itinéraire = useRoute();
     this.$props.fixPath(itinéraire);
@@ -62,7 +62,6 @@ export default defineComponent({
     } else if (this.shopStore) {
       this.shopStore.commit("setPath", itinéraire.path);
     }
-
   },
   inject: ["helpText", "canSeeHelp", "ttl", "listData"],
   props: {
@@ -70,14 +69,13 @@ export default defineComponent({
     testId: { type: String, default: "test0" },
     shopStore: {
       type: Object,
-      default: ():COMPLETE_STORE => {
+      default: (): COMPLETE_STORE => {
         return useStore();
       },
     },
     fixPath: { type: Function, required: true },
   },
   data(): ListOfListsProps {
-
     return {
       instanceId: this.$props.testId,
       viewId: this.$props.testId + "View1",
@@ -87,14 +85,14 @@ export default defineComponent({
       mapURL,
     } satisfies ListOfListsProps;
   },
-  computed:{
+  computed: {
     shoppingLists: function (): Array<ListStruct> {
       let chose: Array<ListStruct> = [];
       if (this.listData.currentData) {
         chose = this.listData.currentData.list();
       }
       return chose;
-    } 
+    },
   },
 });
 </script>

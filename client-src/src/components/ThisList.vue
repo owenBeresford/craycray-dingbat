@@ -73,7 +73,6 @@ import { defineComponent, ref, inject } from "vue";
 import { useRoute, type RouteLocationNormalizedLoadedGeneric } from "vue-router";
 import type { Ref } from "vue";
 
-
 import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
 
@@ -93,7 +92,7 @@ import type { ExternalMethods, CBType, ThisListCtx } from "../types/Actionables"
 import type { ThisListStaticData, ThisListProps, ThisListSetupValues } from "../types/ComponentProps";
 
 const TEXT = useUIText();
- 
+
 const NEW_LIST = -1;
 // This class is using a shared function pointer, as in vue2 the event bus is too slow.
 // If you do parent state updates via it; they take 100ms to propagate, and you see flickers.
@@ -118,19 +117,19 @@ export default defineComponent({
     testId: { type: String, default: "test0" },
     shopStore: {
       type: Object,
-      default: ():COMPLETE_STORE  => {
+      default: (): COMPLETE_STORE => {
         return useStore();
       },
     },
   } satisfies ThisListProps,
 
- //  setup(props: ThisListProps) {
-  setup( ):ThisListSetupValues {
-    const itinéraire:RouteLocationNormalizedLoadedGeneric = useRoute();
+  //  setup(props: ThisListProps) {
+  setup(): ThisListSetupValues {
+    const itinéraire: RouteLocationNormalizedLoadedGeneric = useRoute();
 
     const helpText: string = inject<string>("helpText");
     const canSeeHelp: boolean = inject<boolean>("canSeeHelp");
-    const listData:FactoryArtefact =inject<FactoryArtefact>("listData");
+    const listData: FactoryArtefact = inject<FactoryArtefact>("listData");
     const ttl: number = inject<number>("ttl");
     const log: Loggable = inject<Loggable>("log");
 
@@ -141,7 +140,7 @@ export default defineComponent({
     let stack: ExternalMethods;
     try {
       const flux = new MotionStream<ThisListCtx>();
-      const liste: StdList = listData.currentData.get(  extractId(itinéraire.params.index));
+      const liste: StdList = listData.currentData.get(extractId(itinéraire.params.index));
 
       const listRef: Ref<StdList> = ref<StdList>(liste);
       let dragging: Array<boolean> = Array(liste.énumérer);

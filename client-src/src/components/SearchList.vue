@@ -29,20 +29,10 @@
             >{{ listTitles[i.list] }} (List#{{ i.list }})
           </router-link>
         </span>
-        <span
-          v-if="bisMobile"
-          class="button info"
-          :title="text.itemMBTitle"
-          :data-offset="j"
-         >
+        <span v-if="bisMobile" class="button info" :title="text.itemMBTitle" :data-offset="j">
           {{ i.item }}
         </span>
-        <span
-          v-else
-          class="button info"
-          :title="text.itemDTTitle"
-          :data-offset="j"
-         >
+        <span v-else class="button info" :title="text.itemDTTitle" :data-offset="j">
           {{ i.item }}
         </span>
       </li>
@@ -84,7 +74,7 @@ export default defineComponent({
     term: { type: String, default: "" },
     shopStore: {
       type: Object,
-      default: ():COMPLETE_STORE => {
+      default: (): COMPLETE_STORE => {
         return useStore();
       },
     },
@@ -94,13 +84,13 @@ export default defineComponent({
         return useRoute();
       },
     },
-  } satisfies SearchProps ,
-  setup(props: SearchProps):SearchSetupState  {
+  } satisfies SearchProps,
+  setup(props: SearchProps): SearchSetupState {
     const helpText: string = inject<string>("helpText");
     const canSeeHelp: boolean = inject<boolean>("canSeeHelp");
     const ttl: string = inject<number>("ttl");
     const log: LogService = inject<LogService>("log");
-    const listData:FactoryArtefact = inject<FactoryArtefact >("listData");  
+    const listData: FactoryArtefact = inject<FactoryArtefact>("listData");
 
     let stack: ExternalMethods;
     try {
