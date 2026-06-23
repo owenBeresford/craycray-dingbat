@@ -1,4 +1,5 @@
 import type { RouteRecordNormalized, RouteLocationNormalizedLoadedGeneric } from "vue-router";
+import type { Component } from "vue";
 
 import { StdList, SearchList } from "../services/AList";
 import { CacheWrapper } from "../workers/InstallWorker";
@@ -191,6 +192,7 @@ export interface MainAppStaticData {
   msgId: string;
   msgState: string;
   loggingEnabled: boolean;
+  fallBack:Component;
 }
 
 export interface MainAppSetup {
