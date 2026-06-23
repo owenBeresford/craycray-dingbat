@@ -16,6 +16,8 @@ const log: Loggable = useLog();
  */
 export class ListService implements ListCollection<string> {
   protected catalog: Array<StdList>;
+  public static debugSymbol = "ListService"; 
+
 
   /**
    * constructor

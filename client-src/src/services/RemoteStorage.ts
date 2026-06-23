@@ -20,6 +20,7 @@ export class RemoteStorage implements Storable, DistantStorable {
   private other: RemoteConfig;
   private cease: boolean;
   protected agent: any;
+  public static debugSymbol = "RemoteStorage"; 
 
   /**
    * constructor

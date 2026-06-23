@@ -184,9 +184,7 @@ export default defineComponent({
 
     let stack: ExternalMethods;
     try {
-      console.log("WERWER setup() ", menuStateRef, listData);
       stack = useTabActions(useStore(), listData, useCacheWrapper(), useRoute());
-      console.log("WERWER setup() ", menuStateRef);
       return {
         extraMethods: stack.mount(
           { visibleRef, getInputRef, CBRef, storeRef, menuStateRef } satisfies TabBarCtx,
@@ -214,8 +212,7 @@ export default defineComponent({
     } else if (CACHE.check()) {
       état += " disabled";
     }
-    console.log("WERWER data() ", this.menuStateRef, this.ctx);
-
+ 
     return {
       installEnabled: état,
       installEnabledBool: (état.match(/disabled/g) || []).length === 0,
@@ -255,8 +252,7 @@ export default defineComponent({
   },
   computed: {
     hasDataAndList(): boolean {
-      console.log("WERWER computed() ", this.menuStateRef, this.ctx);
-      return !(this.dataOnLoad && Object.keys(this.route.params).length > 0);
+       return !(this.dataOnLoad && Object.keys(this.route.params).length > 0);
     },
   },
   mounted() {

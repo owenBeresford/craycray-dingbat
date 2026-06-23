@@ -184,7 +184,7 @@ export function createEmptyFactory(): FactoryArtefact {
 
 // What external modules (aside from test) will gain from accessing.
 // If the module thinks the network situation has changed, it can run initData() again.
-export const ListData: FactoryArtefact = createDataFactory(undefined, location);
+// export const ListData: FactoryArtefact = createDataFactory(undefined, location);
 
 /**
  * setupCurrentList
