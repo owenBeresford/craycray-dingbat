@@ -1,5 +1,5 @@
 <template>
-  <ErrorBoundary>
+  <VErrorBoundary :fall-back="fallBack" :params="{id:1, testid:'eb-failOver1', currentStateKey:currentStateKey }" stop-propagation> 
     <Suspense :key="currentStateKey">
       <template #default>
         <div class="wholePage" :data-testid="instanceId" :key="currentStateKey">
@@ -10,28 +10,39 @@
       </template>
 
       <template #fallback>
-        <h3>Data still is loading. Pls hold.</h3>
+        <h3 data-testId="suspense-fallback1">Data still is loading. Pls hold.</h3>
       </template>
     </Suspense>
-  </ErrorBoundary>
+  </VErrorBoundary>
 </template>
 
 <script lang="ts">
-import { defineComponent, ErrorBoundary, Suspense, provide } from "vue";
+import { defineComponent, Suspense, provide } from "vue";
 import { useRoute } from "vue-router";
+import VErrorBoundary from 'vue-error-boundary';
 
 import { TTL_FOR_HELP, DEFAULT_HELP_SHOW, LOGGING_ENABLED } from "./Constants";
 import { useLog } from "./services/LogStack";
-import type { FactoryArtefact } from "./services/DataFactory";
 import type { MainAppProps, MainAppStaticData, MainAppSetup } from "./types/ComponentProps";
-import { currentNetworkConfig, createEmptyFactory } from "./services/DataFactory";
 
 import TabBar from "./components/TabBar.vue";
 import MessageBar from "./components/MessageBar.vue";
+import Failover from "./components/Failover.vue";
 
+/**
+   * ShoppingApp
+   * A component to render the vue features
+
+	- the params listed are props to the component.
+	- the functions below are described in the Vue docs, and they are predictable.
+   * @param {string} instanceId
+   * @param {string} currentStateKey
+   * @public
+   * @returns {string} - after rendering :-)
+   */
 export default defineComponent({
   name: "ShoppingApp",
-  components: { TabBar, MessageBar, ErrorBoundary, Suspense },
+  components: { TabBar, MessageBar, VErrorBoundary, Suspense },
   props: {
     currentStateKey: { type: String, default: "root1" },
     instanceId: { type: String, required: true },
@@ -40,6 +51,9 @@ export default defineComponent({
   data(): MainAppStaticData {
     // IOIO XXX maybe lineup state-keys to show net status in later builds
     return {
+      fallBack:Failover,
+      log: useLog(),
+
       tabId: this.$props.instanceId + "TabBar1",
       msgId: this.$props.instanceId + "Msg1",
       msgState: this.$props.currentStateKey + "Msg1",
@@ -47,20 +61,5 @@ export default defineComponent({
     } satisfies MainAppStaticData;
   },
 
-  async setup(): Promise<MainAppSetup> {
-    // need a further patch, as now double creating the networky things
-    const data: FactoryArtefact = createEmptyFactory();
-    await currentNetworkConfig(location, data);
-    provide("helpText", "menu");
-    provide("canSeeHelp", DEFAULT_HELP_SHOW);
-    provide("ttl", TTL_FOR_HELP);
-    provide("dataOnLoad", data.currentData.count() > 0);
-    provide("listData", data);
-
-    return {
-      data: data,
-      log: useLog(),
-    } satisfies MainAppSetup;
-  },
 });
 </script>
