@@ -3,7 +3,15 @@ import { createApp } from "vue";
 import type { Plugin, DirectiveBinding } from "vue";
 // import Vue3TouchEvents from "vue3-touch-events";
 import { STORE } from "./services/Store";
-import { APP_NAME, ROOT_NODE, MOBILE_LONGTAP, DELAY_LONGTAP, TTL_FOR_HELP, DEFAULT_HELP_SHOW, LOGGING_ENABLED } from "./Constants";
+import {
+  APP_NAME,
+  ROOT_NODE,
+  MOBILE_LONGTAP,
+  DELAY_LONGTAP,
+  TTL_FOR_HELP,
+  DEFAULT_HELP_SHOW,
+  LOGGING_ENABLED,
+} from "./Constants";
 
 import { isMobile } from "../../common/util";
 import { StaticRoutes } from "./components/Routing";
@@ -12,7 +20,7 @@ import { useLog } from "./services/LogStack";
 import type { FactoryArtefact } from "./services/DataFactory";
 import { currentNetworkConfig, createEmptyFactory } from "./services/DataFactory";
 
-console.time('boot-app');
+console.time("boot-app");
 const TOOL = createApp(ShoppingApp, { currentStateKey: "scr1", instanceId: "v1.1" });
 TOOL.use(StaticRoutes);
 // TOOL.use(Vue3TouchEvents as Plugin, { disableClick: false, passive: false });
@@ -47,9 +55,10 @@ TOOL.directive("longpress", {
     el.addEventListener("pointerleave", cancel);
   },
 });
-
+console.timeLog("boot-app");
 const data: FactoryArtefact = createEmptyFactory();
 await currentNetworkConfig(location, data);
+console.timeLog("boot-app");
 TOOL.provide("helpText", "menu");
 TOOL.provide("canSeeHelp", DEFAULT_HELP_SHOW);
 TOOL.provide("ttl", TTL_FOR_HELP);
@@ -59,4 +68,4 @@ TOOL.provide("log", useLog());
 
 STORE.install(TOOL, APP_NAME);
 TOOL.mount(ROOT_NODE);
-console.timeEnd('boot-app'); 
+console.timeEnd("boot-app");

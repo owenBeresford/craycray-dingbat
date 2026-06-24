@@ -212,7 +212,7 @@ export default defineComponent({
     } else if (CACHE.check()) {
       état += " disabled";
     }
- 
+
     return {
       installEnabled: état,
       installEnabledBool: (état.match(/disabled/g) || []).length === 0,
@@ -252,7 +252,7 @@ export default defineComponent({
   },
   computed: {
     hasDataAndList(): boolean {
-       return !(this.dataOnLoad && Object.keys(this.route.params).length > 0);
+      return !(this.dataOnLoad && Object.keys(this.route.params).length > 0);
     },
   },
   mounted() {

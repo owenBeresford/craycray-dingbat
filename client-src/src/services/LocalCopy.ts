@@ -39,7 +39,7 @@ export class LocalCopy implements Storable {
     // noop
   }
 
-  public static debugSymbol = "LocalCopy"; 
+  public static debugSymbol = "LocalCopy";
 
   /**
    * saveProperty

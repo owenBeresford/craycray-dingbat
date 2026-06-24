@@ -1,5 +1,9 @@
 <template>
-  <VErrorBoundary :fall-back="fallBack" :params="{id:1, testid:'eb-failOver1', currentStateKey:currentStateKey }" stop-propagation> 
+  <VErrorBoundary
+    :fall-back="fallBack"
+    :params="{ id: 1, testid: 'eb-failOver1', currentStateKey: currentStateKey }"
+    stop-propagation
+  >
     <Suspense :key="currentStateKey">
       <template #default>
         <div class="wholePage" :data-testid="instanceId" :key="currentStateKey">
@@ -19,7 +23,7 @@
 <script lang="ts">
 import { defineComponent, Suspense, provide } from "vue";
 import { useRoute } from "vue-router";
-import VErrorBoundary from 'vue-error-boundary';
+import VErrorBoundary from "vue-error-boundary";
 
 import { TTL_FOR_HELP, DEFAULT_HELP_SHOW, LOGGING_ENABLED } from "./Constants";
 import { useLog } from "./services/LogStack";
@@ -51,7 +55,7 @@ export default defineComponent({
   data(): MainAppStaticData {
     // IOIO XXX maybe lineup state-keys to show net status in later builds
     return {
-      fallBack:Failover,
+      fallBack: Failover,
       log: useLog(),
 
       tabId: this.$props.instanceId + "TabBar1",
@@ -60,6 +64,5 @@ export default defineComponent({
       loggingEnabled: LOGGING_ENABLED,
     } satisfies MainAppStaticData;
   },
-
 });
 </script>

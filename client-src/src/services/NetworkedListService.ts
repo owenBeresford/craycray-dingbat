@@ -18,8 +18,7 @@ import { RemoteStorage } from "./RemoteStorage";
 export class NetworkedListService extends ListService {
   protected remote: DistantStorable;
   protected local: LocalCopy;
-  public static debugSymbol = "NetworkedListService"; 
-
+  public static debugSymbol = "NetworkedListService";
 
   /**
    * constructor
@@ -37,7 +36,7 @@ export class NetworkedListService extends ListService {
     if (_LOGGING_) {
       console.log(
         "NetworkListService created & injected with: (remote) " +
-          loin.constructor.debugSymbol  +
+          loin.constructor.debugSymbol +
           " (local) " +
           proche.constructor.debugSymbol
       );

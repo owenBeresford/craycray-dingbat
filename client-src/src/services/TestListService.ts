@@ -12,7 +12,7 @@ import type { PromiseSucceed, PromiseReject } from "../../../common/types/promis
  * @public
  */
 export class TestListService extends ListService implements ListCollection<string> {
-  public static debugSymbol = "NetworkedListService"; 
+  public static debugSymbol = "NetworkedListService";
 
   /**
    * constructor

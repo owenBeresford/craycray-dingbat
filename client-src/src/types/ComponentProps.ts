@@ -192,7 +192,7 @@ export interface MainAppStaticData {
   msgId: string;
   msgState: string;
   loggingEnabled: boolean;
-  fallBack:Component;
+  fallBack: Component;
 }
 
 export interface MainAppSetup {
