@@ -7,7 +7,7 @@ import { useRoute } from "vue-router";
 import ThisList from "../../components/ThisList.vue";
 import UnknownRoute from "../../components/UnknownRoute.vue";
 import { STORE } from "../../services/Store";
-import { createDataFactory, ListData, idOf } from "../../services/DataFactory";
+import { createDataFactory, idOf } from "../../services/DataFactory";
 import { fixture1, fixture2, fixture3, fixture4 } from "../../../../common/fixture-lists";
 // this needs suspence
 
@@ -76,14 +76,6 @@ export const TrackTextRendered2: Story = {
     return {
       components: { ThisList },
       setup() {
-        const { currentData, initData, updateData } = ListData;
-
-        if (currentData && _LOGGING_) {
-          console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
-        }
-        if (ListData.currentData && _LOGGING_) {
-          console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
-        }
 
         return { args, currentStateKey: "test17", testId: "test17", shopStore: STORE };
       },
@@ -98,14 +90,11 @@ export const TrackTextRendered2: Story = {
       if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
-      if (ListData.currentData && _LOGGING_) {
-        console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
-      }
+ 
       if (!currentData) {
         throw new Error();
       }
-      ListData.updateData(currentData);
-
+ 
       return {
         currentData,
         shopStore: STORE,
@@ -114,14 +103,7 @@ export const TrackTextRendered2: Story = {
   ],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const { currentData, initData, updateData } = ListData;
-    if (ListData.currentData && _LOGGING_) {
-      console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
-    }
-    if (currentData && _LOGGING_) {
-      console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
-    }
-
+ 
     const list = await canvas.findByTestId("test17List1");
     expect(list).toBeVisible();
     expect(list.childNodes.length).toBe(3 + 2); // it correctly loads 1st list in fixture
@@ -156,16 +138,7 @@ export const TrackTextRendered2_5: Story = {
     return {
       components: { ThisList },
       setup() {
-        const { currentData, initData, updateData } = ListData;
-
-        if (currentData && _LOGGING_) {
-          console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
-        }
-        if (ListData.currentData && _LOGGING_) {
-          console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
-        }
-
-        return { args, currentStateKey: "test175", testId: "test175", shopStore: STORE };
+           return { args, currentStateKey: "test175", testId: "test175", shopStore: STORE };
       },
       // inject Suspense, I guess here?
       template: `<ThisList currentStateKey="test175" testId="test175" :shopStore="shopStore" ></ThisList>`,
@@ -178,14 +151,10 @@ export const TrackTextRendered2_5: Story = {
       if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
-      if (ListData.currentData && _LOGGING_) {
-        console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
-      }
-      if (!currentData) {
+        if (!currentData) {
         throw new Error();
       }
-      ListData.updateData(currentData);
-
+ 
       return {
         currentData,
         shopStore: STORE,
@@ -194,14 +163,7 @@ export const TrackTextRendered2_5: Story = {
   ],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const { currentData, initData, updateData } = ListData;
-    if (ListData.currentData && _LOGGING_) {
-      console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
-    }
-    if (currentData && _LOGGING_) {
-      console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
-    }
-
+ 
     const list = await canvas.findByTestId("test175List1");
     expect(list).toBeVisible();
     expect(list.childNodes.length).toBe(5 + 2); // it correctly loads 1st list in fixture
@@ -223,15 +185,6 @@ export const TrackTextRendered3: Story = {
     return {
       components: { ThisList },
       setup() {
-        const { currentData, initData, updateData } = ListData;
-
-        if (currentData && _LOGGING_) {
-          console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
-        }
-        if (ListData.currentData && _LOGGING_) {
-          console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
-        }
-
         return { args, currentStateKey: "test18", testId: "test18", shopStore: STORE };
       },
       // inject Suspense, I guess here?
@@ -245,14 +198,7 @@ export const TrackTextRendered3: Story = {
       if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
-      if (ListData.currentData && _LOGGING_) {
-        console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
-      }
-      if (!currentData) {
-        throw new Error();
-      }
-      ListData.updateData(currentData);
-
+  
       return {
         currentData,
         shopStore: STORE,
@@ -261,14 +207,7 @@ export const TrackTextRendered3: Story = {
   ],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const { currentData, initData, updateData } = ListData;
-    if (ListData.currentData && _LOGGING_) {
-      console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
-    }
-    if (currentData && _LOGGING_) {
-      console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
-    }
-
+  
     const list = await canvas.findByTestId("test18List1");
     expect(list).toBeVisible();
     expect(list.childNodes.length).toBe(9 + 2); // it correctly loads 1st list in fixture
@@ -295,15 +234,7 @@ export const TrackTextRendered4: Story = {
     return {
       components: { ThisList },
       setup() {
-        const { currentData, initData, updateData } = ListData;
-
-        if (currentData && _LOGGING_) {
-          console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
-        }
-        if (ListData.currentData && _LOGGING_) {
-          console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
-        }
-
+     
         return { args, currentStateKey: "test19", testId: "test19", shopStore: STORE };
       },
       // inject Suspense, I guess here?
@@ -317,14 +248,11 @@ export const TrackTextRendered4: Story = {
       if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
-      if (ListData.currentData && _LOGGING_) {
-        console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
-      }
+  
       if (!currentData) {
         throw new Error();
       }
-      ListData.updateData(currentData);
-
+    
       return {
         currentData,
         shopStore: STORE,
@@ -333,14 +261,7 @@ export const TrackTextRendered4: Story = {
   ],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const { currentData, initData, updateData } = ListData;
-    if (ListData.currentData && _LOGGING_) {
-      console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
-    }
-    if (currentData && _LOGGING_) {
-      console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
-    }
-
+  
     const list = await canvas.findByTestId("test19List1");
     expect(list).toBeVisible();
     expect(list.childNodes.length).toBe(60 + 2); // it correctly loads 1st list in fixture
@@ -367,15 +288,7 @@ export const TrackTextRendered5: Story = {
     return {
       components: { ThisList },
       setup() {
-        const { currentData, initData, updateData } = ListData;
-
-        if (currentData && _LOGGING_) {
-          console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
-        }
-        if (ListData.currentData && _LOGGING_) {
-          console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
-        }
-
+   
         return { args, currentStateKey: "test20", testId: "test20", shopStore: STORE };
       },
       // inject Suspense, I guess here?
@@ -389,14 +302,11 @@ export const TrackTextRendered5: Story = {
       if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
-      if (ListData.currentData && _LOGGING_) {
-        console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
-      }
+ 
       if (!currentData) {
         throw new Error();
       }
-      ListData.updateData(currentData);
-
+ 
       return {
         currentData,
         shopStore: STORE,
@@ -405,14 +315,7 @@ export const TrackTextRendered5: Story = {
   ],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const { currentData, initData, updateData } = ListData;
-    if (ListData.currentData && _LOGGING_) {
-      console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
-    }
-    if (currentData && _LOGGING_) {
-      console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
-    }
-
+ 
     const list = await canvas.findByTestId("test20List1");
     expect(list).toBeVisible();
     expect(list.childNodes.length).toBe(5 + 2); // it correctly loads 1st list in fixture

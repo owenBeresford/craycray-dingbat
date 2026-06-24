@@ -7,7 +7,7 @@ import type { NavigationGuard, RouteRecordRaw, RouteLocationNormalizedLoadedGene
 import ListOfLists from "../../components/ListOfLists.vue";
 import UnknownRoute from "../../components/UnknownRoute.vue";
 import { STORE } from "../../services/Store";
-import { createDataFactory, ListData, idOf } from "../../services/DataFactory";
+import { createDataFactory, idOf } from "../../services/DataFactory";
 import { fixture1, fixture2, fixture3, fixture4 } from "../../../../common/fixture-lists";
 // this needs suspence
 
@@ -80,15 +80,6 @@ export const TrackTextRendered6: Story = {
     return {
       components: { ListOfLists },
       setup() {
-        const { currentData, initData, updateData } = ListData;
-
-        if (currentData && _LOGGING_) {
-          console.log("KKK Story.render decomposed currentData id:", idOf(currentData));
-        }
-        if (ListData.currentData && _LOGGING_) {
-          console.log("KKK Story.render ListData.currentData id:", idOf(ListData.currentData));
-        }
-
         return {
           args,
           currentStateKey: "test23",
@@ -107,13 +98,10 @@ export const TrackTextRendered6: Story = {
       if (currentData && _LOGGING_) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
-      if (ListData.currentData && _LOGGING_) {
-        console.log("KKK Story.loaders[]:: imported currentData id:", idOf(ListData.currentData));
-      }
+  
       if (!currentData) {
         throw new Error();
       }
-      ListData.updateData(currentData);
 
       return {
         currentData,
@@ -123,10 +111,7 @@ export const TrackTextRendered6: Story = {
   ],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const { currentData, initData, updateData } = ListData;
-    if (ListData.currentData && _LOGGING_) {
-      console.log("KKK Story.play:: imported currentData id:", idOf(ListData.currentData));
-    }
+    const { currentData, initData, updateData } = createDataFactory(fixture1(), location);;
     if (currentData && _LOGGING_) {
       console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
     }

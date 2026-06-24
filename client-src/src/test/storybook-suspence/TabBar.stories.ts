@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { expect, fn, within, userEvent } from "storybook/test";
 
 import TabBar from "../../components/TabBar.vue";
-import { ListData, createDataFactory } from "../../services/DataFactory";
+import { createDataFactory } from "../../services/DataFactory";
 import { CacheWrapper } from "../../workers/InstallWorker";
 import { useStore } from "../../services/Store";
-import { StdList} from '../../services/AList';
+import { StdList } from "../../services/AList";
 import { fixture1, fixture2, fixture3, fixture4, fixture5 } from "../../../../common/fixture-lists";
 // this needs suspence
 
@@ -115,11 +115,10 @@ export const TrackTextRendered8: Story = {
       if (!NEWDATA.currentData) {
         throw new Error("No data found after fixture loaded??");
       }
-      ListData.updateData(NEWDATA.currentData);
-      const STORE = useStore();
+       const STORE = useStore();
       STORE.commit("setId", 1);
 
-      const liste1:StdList | undefined = NEWDATA.currentData.get(1) as StdList;
+      const liste1: StdList | undefined = NEWDATA.currentData.get(1) as StdList;
       expect(liste1?.nom).toBe("list 1");
       await userEvent.click(canvas.getByText("Rename list"));
       expect(await canvas.findByTestId("test24input1")).toBeVisible();
