@@ -8,8 +8,8 @@
 
     <p>Returning to the <router-link class="button" :to="linkAll"> catalogue screen</router-link> may have data.</p>
     <p v-if="id">
-      Alternatively you where previolusly on
-      <router-link class="button" :to="singleListURL"> catalogue screen</router-link>
+      Alternatively you where previously on
+      <router-link class="button" :to="singleListURL"> a list edit screen</router-link>
     </p>
   </div>
 </template>
@@ -19,23 +19,29 @@ import { defineComponent, ref, inject } from "vue";
 import { useRoute, type RouteLocationNormalizedLoadedGeneric } from "vue-router";
 import type { Ref } from "vue";
 
+import {mapURL } from '../services/URLs';
+import { extractId } from "../services/util";
+
 export default defineComponent({
   name: "Failover",
   props: {
     currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
-    id: { type: String, default: "" },
+    id: { type: Number, default: 0 },  // Default is flag value.  0 is not a valid id.
   },
   data() {
+    const itinéraire: RouteLocationNormalizedLoadedGeneric = useRoute();
+    let id=0;
+    if(this.$props.id) { 
+        id=this.$props.id; 
+    } else if(itinéraire.name === "a-list") {
+        id=extractId(itinéraire.params.index);
+    }
     return {
-      linkAll: "/list-all",
+      linkAll: mapURL("allList", null),
+      singleListURL: mapURL('aList', id),
     };
   },
 
-  computed: {
-    singleListURL(): string {
-      return "/list-" + this.$props.id;
-    },
-  },
 });
 </script>

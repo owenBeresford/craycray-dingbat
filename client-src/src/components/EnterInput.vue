@@ -119,7 +119,7 @@ export default defineComponent({
     },
     visible(nouveau: string, vieux: string): void {
       this.bShow = !!nouveau;
-      console.debug(`EnterInput: Running watch on input '${vieux}' => '${nouveau}' ${this.bShow}.`);
+      console.debug(`EnterInput: Running watch on input '${vieux}' => '${nouveau}' is visible? = ${this.bShow}.`);
 
       if (this.bShow) {
         setTimeout(() => {

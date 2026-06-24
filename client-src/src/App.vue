@@ -1,7 +1,7 @@
 <template>
   <VErrorBoundary
-    :fall-back="fallBack"
-    :params="{ id: 1, testid: 'eb-failOver1', currentStateKey: currentStateKey }"
+    :fall-back="safeFailover"
+    :params="{ testid: 'eb-failOver1', currentStateKey: currentStateKey }"
     stop-propagation
   >
     <Suspense :key="currentStateKey">
@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Suspense, provide } from "vue";
+import { defineComponent, Suspense, shallowRef} from "vue";
 import { useRoute } from "vue-router";
 import VErrorBoundary from "vue-error-boundary";
 
@@ -32,6 +32,8 @@ import type { MainAppProps, MainAppStaticData, MainAppSetup } from "./types/Comp
 import TabBar from "./components/TabBar.vue";
 import MessageBar from "./components/MessageBar.vue";
 import Failover from "./components/Failover.vue";
+
+const safeFailover = shallowRef(Failover);
 
 /**
    * ShoppingApp
@@ -55,7 +57,7 @@ export default defineComponent({
   data(): MainAppStaticData {
     // IOIO XXX maybe lineup state-keys to show net status in later builds
     return {
-      fallBack: Failover,
+    //  fallBack: Failover,
       log: useLog(),
 
       tabId: this.$props.instanceId + "TabBar1",
@@ -64,5 +66,10 @@ export default defineComponent({
       loggingEnabled: LOGGING_ENABLED,
     } satisfies MainAppStaticData;
   },
+  setup() {
+    const safeFailover = shallowRef(Failover);
+
+    return { safeFailover };
+  }
 });
 </script>
