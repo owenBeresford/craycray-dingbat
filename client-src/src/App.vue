@@ -22,18 +22,15 @@
 
 <script lang="ts">
 import { defineComponent, Suspense, shallowRef} from "vue";
-import { useRoute } from "vue-router";
 import VErrorBoundary from "vue-error-boundary";
 
 import { TTL_FOR_HELP, DEFAULT_HELP_SHOW, LOGGING_ENABLED } from "./Constants";
 import { useLog } from "./services/LogStack";
-import type { MainAppProps, MainAppStaticData, MainAppSetup } from "./types/ComponentProps";
+import type { MainAppProps, MainAppStaticData } from "./types/ComponentProps";
 
 import TabBar from "./components/TabBar.vue";
 import MessageBar from "./components/MessageBar.vue";
 import Failover from "./components/Failover.vue";
-
-const safeFailover = shallowRef(Failover);
 
 /**
    * ShoppingApp
@@ -48,7 +45,7 @@ const safeFailover = shallowRef(Failover);
    */
 export default defineComponent({
   name: "ShoppingApp",
-  components: { TabBar, MessageBar, VErrorBoundary, Suspense },
+  components: { TabBar, MessageBar, VErrorBoundary, Suspense, Failover },
   props: {
     currentStateKey: { type: String, default: "root1" },
     instanceId: { type: String, required: true },
