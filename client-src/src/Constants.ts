@@ -53,6 +53,8 @@ export const MOBILE_LONGTAP = 1100; // ms
 export const MAX_LOG_LENGTH = 150;
 export const LOGGING_ENABLED = true;
 
+export const EMPTY_LIST_ID = 0;
+
 if (typeof globalThis.fetch === "undefined" || !globalThis.fetch) {
   throw new Error("73453894563453 Fetch() not found.  BAILING OUT");
 }

@@ -35,8 +35,11 @@ export default defineComponent({
     if(this.$props.id) { 
         id=this.$props.id; 
     } else if(itinéraire.name === "a-list") {
+      if(itinéraire.params.index>=1) {
         id=extractId(itinéraire.params.index);
+      }
     }
+
     return {
       linkAll: mapURL("allList", null),
       singleListURL: mapURL('aList', id),
