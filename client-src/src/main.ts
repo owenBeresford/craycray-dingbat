@@ -1,5 +1,5 @@
 // import "reflect-metadata";
-import { createApp } from "vue";
+import { createApp, ref } from "vue";
 import type { Plugin, DirectiveBinding } from "vue";
 // import Vue3TouchEvents from "vue3-touch-events";
 import { STORE } from "./services/Store";
@@ -55,14 +55,20 @@ TOOL.directive("longpress", {
     el.addEventListener("pointerleave", cancel);
   },
 });
-console.timeLog("boot-app");
+console.time("boot-data-connection");
 const data: FactoryArtefact = createEmptyFactory();
-await currentNetworkConfig(location, data);
-console.timeLog("boot-app");
+const listCountRef=ref<number>(0);
+function updateListCount(nu:number):void {
+  listCountRef.value=nu;
+}
+await currentNetworkConfig(location, updateListCount,  data);
+// listCountRef.value SHOULD be updated inside DataFactory.currentNetworkConfig
+console.timeEnd("boot-data-connection");
 TOOL.provide("helpText", "menu");
 TOOL.provide("canSeeHelp", DEFAULT_HELP_SHOW);
 TOOL.provide("ttl", TTL_FOR_HELP);
-TOOL.provide("dataOnLoad", data.currentData.count() > 0);
+ 
+TOOL.provide("dataOnLoad", { listCountRef, updateListCount });
 TOOL.provide("listData", data);
 TOOL.provide("log", useLog());
 

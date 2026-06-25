@@ -3,6 +3,7 @@ import { ListService } from "./ListService";
 import type { ListCollection } from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
+import type {NotifyType} from '../types/Actionables'; 
 
 /**
  * TestListService 
@@ -12,7 +13,7 @@ import type { PromiseSucceed, PromiseReject } from "../../../common/types/promis
  * @public
  */
 export class TestListService extends ListService implements ListCollection<string> {
-  public static debugSymbol = "NetworkedListService";
+  public static debugSymbol = "TestListService";
 
   /**
    * constructor
@@ -22,8 +23,8 @@ export class TestListService extends ListService implements ListCollection<strin
    * @public
    * @returns {ListService}
    */
-  public constructor(src: Array<TestDataSchema>) {
-    super();
+  public constructor(src: Array<TestDataSchema>, n:NotifyType) {
+    super(n);
     for (let i = 0; i < src.length; i++) {
       // Id0 is not a valid list-id, it is reserved for error spotting.
       this.put(i + 1, StdList.importTest(src[i]));

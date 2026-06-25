@@ -1,5 +1,6 @@
 import { StdList } from "./AList";
 import { ListService } from "./ListService";
+import { RemoteStorage } from "./RemoteStorage";
 
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { LocalCopy } from "./LocalCopy";
@@ -7,7 +8,9 @@ import type { LocalCopy } from "./LocalCopy";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
 //import type { Listable, ListStruct } from "../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
-import { RemoteStorage } from "./RemoteStorage";
+import type {NotifyType} from '../types/Actionables'; 
+
+
 
 /**
  * ListService
@@ -20,6 +23,7 @@ export class NetworkedListService extends ListService {
   protected local: LocalCopy;
   public static debugSymbol = "NetworkedListService";
 
+
   /**
    * constructor
    * Normal Con'tor
@@ -29,11 +33,11 @@ export class NetworkedListService extends ListService {
    * @public
    * @returns {ListService}
    */
-  public constructor(loin: DistantStorable, proche: LocalCopy) {
-    super();
+  public constructor(loin: DistantStorable, proche: LocalCopy, notify:NotifyType) {
+    super( notify);
     this.remote = loin;
     this.local = proche;
-    if (_LOGGING_) {
+     if (_LOGGING_) {
       console.log(
         "NetworkListService created & injected with: (remote) " +
           loin.constructor.debugSymbol +
@@ -141,13 +145,14 @@ export class NetworkedListService extends ListService {
   public loadAllLists(): boolean {
     let répondeur = true;
     this.local.loadState().then((dat: Array<SaveStruct>): void => {
+
       if (!dat) {
         répondeur = false;
         return;
       }
 
-      this.catalog = this.catalog.splice(0, this.catalog.length);
-      console.log("From local state, pulled " + dat.length + " items.");
+      this.catalog = this.catalog.splice(0, Infinity);
+      console.debug("From local state, pulled " + dat.length + " items.");
       this.mapper(dat);
       return;
     });
@@ -158,9 +163,10 @@ export class NetworkedListService extends ListService {
         return;
       }
 
-      this.catalog = this.catalog.splice(0, this.catalog.length);
-      console.log("From remote state, replacing " + dat.length + " items.");
+      this.catalog = this.catalog.splice(0, Infinity);
       this.mapper(dat);
+      this.notify( this.catalog.length );
+      console.debug("From remote state, replacing " + dat.length + " items (only has valid 'safed'/saved data).");
       return;
     });
 
