@@ -13,6 +13,7 @@ import type { PromiseSucceed, PromiseReject } from "../../../../common/types/pro
 import { fixture1, fixture2, fixture3, fixture4 } from "../../../../common/fixture-lists";
 
 globalThis.localStorage = new LocalStorage("./public/scratch");
+const PASSBACK= (a:number):void=>{};
 
 const TEST: TestLocation = new TestLocation(TEST_LOCATION_URL);
 // the createDataFactory with args is tested via storybook tests, which is why it exists.
@@ -22,7 +23,7 @@ describe("I can use ListService", () => {
   it("I can create it", (): Promise<boolean> => {
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       expect(typeof ListService).toBe("function");
-      let tt: FactoryArtefact = await createDataFactory(fixture1(), TEST);
+      let tt: FactoryArtefact = await createDataFactory(fixture1(), TEST, PASSBACK);
       expect(typeof tt).toBe("object");
       if (!tt.currentData) {
         bad(new Error("#toFix Fixture returned null?"));
@@ -37,7 +38,7 @@ describe("I can use ListService", () => {
 
   it("I can create items", (): Promise<boolean> => {
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const FACT: FactoryArtefact = await createDataFactory(fixture1(), TEST);
+      const FACT: FactoryArtefact = await createDataFactory(fixture1(), TEST, PASSBACK);
       if (!FACT.currentData) {
         bad(new Error("#toFix Fixture returned null?"));
         return;
@@ -48,7 +49,7 @@ describe("I can use ListService", () => {
       expect(ls.create("item2")).toBe(2);
       expect(ls.count()).toBe(2);
 
-      const FACT2: FactoryArtefact = await createDataFactory(fixture3(), TEST);
+      const FACT2: FactoryArtefact = await createDataFactory(fixture3(), TEST, PASSBACK);
       if (!FACT2.currentData) {
         bad(new Error("#toFix Fixture returned null?"));
         return;
@@ -66,7 +67,7 @@ describe("I can use ListService", () => {
 
   it("I can poll", (): Promise<boolean> => {
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const FACT: FactoryArtefact = await createDataFactory(fixture1(), TEST);
+      const FACT: FactoryArtefact = await createDataFactory(fixture1(), TEST, PASSBACK);
       if (!FACT.currentData) {
         bad(new Error("#toFix Fixture returned null?"));
         return;
@@ -80,7 +81,7 @@ describe("I can use ListService", () => {
 
   it("I can delete", (): Promise<boolean> => {
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const FACT: FactoryArtefact = await createDataFactory(fixture1(), TEST);
+      const FACT: FactoryArtefact = await createDataFactory(fixture1(), TEST, PASSBACK);
       if (!FACT.currentData) {
         bad(new Error("#toFix Fixture returned null?"));
         return;
@@ -106,7 +107,7 @@ describe("I can use ListService", () => {
 
   it("I can get", (): Promise<boolean> => {
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const FACT = await createDataFactory(fixture2(), TEST);
+      const FACT = await createDataFactory(fixture2(), TEST, PASSBACK);
       if (!FACT.currentData) {
         bad(new Error("#toFix Fixture returned null?"));
         return;
@@ -130,7 +131,7 @@ describe("I can use ListService", () => {
 
   it("I can put", (): Promise<boolean> => {
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const FACT = await createDataFactory(fixture1(), TEST);
+      const FACT = await createDataFactory(fixture1(), TEST, PASSBACK);
       if (!FACT.currentData) {
         bad(new Error("#toFix Fixture returned null?"));
         return;
@@ -150,7 +151,7 @@ describe("I can use ListService", () => {
 
   it("I can list", (): Promise<boolean> => {
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const FACT = await createDataFactory(fixture1(), TEST);
+      const FACT = await createDataFactory(fixture1(), TEST, PASSBACK);
       if (!FACT.currentData) {
         bad(new Error("#toFix Fixture returned null?"));
         return;
@@ -169,7 +170,7 @@ describe("I can use ListService", () => {
 
   it("I can store ", (): Promise<boolean> => {
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const FACT = await createDataFactory(fixture1(), TEST);
+      const FACT = await createDataFactory(fixture1(), TEST, PASSBACK);
       if (!FACT.currentData) {
         bad(new Error("#toFix Fixture returned null?"));
         return;

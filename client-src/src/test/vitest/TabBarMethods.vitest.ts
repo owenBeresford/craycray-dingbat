@@ -9,7 +9,7 @@ import { useRoute } from "vue-router";
 import type { CBTYPE, Motionable } from "../../types/Motionable";
 import { useTabActions, TabActions, noop } from "../../services/TabActions";
 import { BaseActions } from "../../services/BaseActions";
-import { ListData, createDataFactory } from "../../services/DataFactory";
+import { createDataFactory } from "../../services/DataFactory";
 import { useCacheWrapper } from "../../workers/InstallWorker";
 import { useStore } from "../../services/Store";
 import type { COMPLETE_STORE } from "../../services/Store";
