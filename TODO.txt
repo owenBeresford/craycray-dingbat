@@ -5,13 +5,15 @@ DETAILS TO COMPLETE FOR RELEASE
 - increase tests
 - StateSyncing test cover full state map - when threads work.
 - think about best name for ShopState
-- Make better favico
-- consider badges, and css backdrop not working
+- Make better favico, consider badges, 
 - May be need to re-add STORE.getters
 - Replace self-signed-certs with real-ones via lets-encrypt
 - Storybook "run tests" on page load
 - Workout if should cache list data in browser cache?
 - list sorting? a-z
+- Simplify initGeneratedMethods
+- maybe lineup state-keys to show net status in later builds
+
 
 LOW IMPACT, nioce to haves
 - When I have stopped iterating, think about adding support for platforms that lack Bash, like win32.
