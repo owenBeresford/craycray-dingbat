@@ -30,6 +30,7 @@
     "typescript-json-serializer": "^6.0.1",
     "vector2d": "^3.0.0",
     "vue": "^3.2.33",
+    "vue-error-boundary": "^2.0.3",
     "vue-router": "^4.0.15",
     "vue3-touch-events": "^5.0.15",
     "vuex": "^4.0.2"
@@ -90,6 +91,7 @@
     "vite": "^7.3.1",
     "vite-plugin-ts": "^1.3.2-1",
     "vitest": "^4.0.18",
+    "vitest-create-mock": "^0.0.10",
     "vue-eslint-parser": "^10.4.0",
     "vue-router-mock": "^1.0.0",
     "vue-tsc": "^0.35.2"
