@@ -17,6 +17,7 @@ import type { InstanceListable, ModuleListable, ListCollection } from "../types/
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
 import type { MessageDistribution } from "./MessageDistribution";
+import type {NotifyType} from '../types/Actionables'; 
 
 /*                     TRUTH TABLE
 ----------------------------------------------------------
@@ -77,10 +78,11 @@ export function idOf(obj: object): number {
  */
 export async function currentNetworkConfig(
   locb: Location | MockLocation,
+  cb:NotifyType,
   retour: FactoryArtefact | undefined
 ): Promise<void> {
   let d4: MessageDistribution;
-  if (retour.currentData && (await retour.currentData.poll())) {
+  if (retour && retour.currentData && (await retour.currentData.poll())) {
     return;
   }
 
@@ -88,11 +90,11 @@ export async function currentNetworkConfig(
   const d3 = useLocal();
   const d2 = createRemoteService(locb);
   if (await d2.poll()) {
-    retour.currentData = new NetworkedListService(d2, d3);
+    retour.currentData = new NetworkedListService(d2, d3, cb);
   } else {
     d4 = useMsgDistrib() as MessageDistribution;
     d4.forkThread();
-    retour.currentData = new NetworkedListService(d4 as DistantStorable, d3);
+    retour.currentData = new NetworkedListService(d4 as DistantStorable, d3, cb);
   }
 }
 
@@ -114,7 +116,8 @@ export async function currentNetworkConfig(
  */
 export function createDataFactory(
   override: Array<TestDataSchema> | undefined,
-  loc: Location | MockLocation
+  loc: Location | MockLocation,
+  cb:NotifyType
 ): FactoryArtefact {
   let retour: FactoryArtefact = createEmptyFactory();
 
@@ -127,7 +130,7 @@ export function createDataFactory(
     return retour as Readonly<FactoryArtefact>;
   }
 
-  retour.initData(loc);
+  retour.initData(loc, cb);
   return retour satisfies FactoryArtefact;
 }
 
@@ -144,8 +147,8 @@ export function createEmptyFactory(): FactoryArtefact {
    * @public
    * @returns {void}
    */
-  function initData(locc: Location | MockLocation): void {
-    void currentNetworkConfig(locc, retour);
+  function initData(locc: Location | MockLocation, cb:NotifyType): void {
+    void currentNetworkConfig(locc, cb, retour);
   }
 
   /**
@@ -170,6 +173,7 @@ export function createEmptyFactory(): FactoryArtefact {
       retour.currentData.delete(i);
     }
     retour.currentData.merge(next);
+
     if (retour.currentData && globalThis._LOGGING_) {
       console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
     }
