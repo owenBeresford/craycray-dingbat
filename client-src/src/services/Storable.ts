@@ -28,14 +28,18 @@ export function transform2text(dat: any): string {
 // IOIO TODO possible magic to make types work...
 
  * @throws {Error} - when the JSON isn't to expected format
- * @param {string} dat
+ * @param {string|object} dat
  * @public
  * @returns {Array<SaveStruct>}
  */
-export function transform2list(dat: string): Array<SaveStruct> {
+export function transform2list(dat: string|object): Array<SaveStruct> {
   let thing: object = [];
   try {
-    thing = JSON.parse(dat);
+    if(typeof dat==="string" ) {
+      thing = JSON.parse(dat);
+    } else {
+      thing=dat;
+    }
   } catch (e: unknown) {
     console.warn("52382354357457 JSON parsing broke " + (e as Error).message);
   }
