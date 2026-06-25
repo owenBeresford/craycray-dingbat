@@ -75,6 +75,7 @@ import type { Ref } from "vue";
 
 import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
+import { EMPTY_LIST_ID } from '../Constants';
 
 import { useStore, type COMPLETE_STORE } from "../services/Store";
 import { useUIText } from "../services/Localisation";
@@ -83,7 +84,7 @@ import { setupCurrentList, idOf, type FactoryArtefact } from "../services/DataFa
 import { StdList, EMPTY_LIST } from "../services/AList";
 import { MotionStream } from "../services/MotionStream";
 import { isMobile, clearSelection } from "../../../common/util";
-import { LOGO_PATH, DRAG_HANDLE_SYMBOL } from "../Constants";
+import { LOGO_PATH, DRAG_HANDLE_SYMBOL, EMPTY_LIST_ID } from "../Constants";
 import { noop, ThisListActions, useThisListActions } from "../services/ThisListActions";
 
 import type { Loggable } from "../types/Loggable";
@@ -93,7 +94,6 @@ import type { ThisListStaticData, ThisListProps, ThisListSetupValues } from "../
 
 const TEXT = useUIText();
 
-const NEW_LIST = -1;
 // This class is using a shared function pointer, as in vue2 the event bus is too slow.
 // If you do parent state updates via it; they take 100ms to propagate, and you see flickers.
 // It is possible that vue3 event bus is faster.
@@ -140,7 +140,7 @@ export default defineComponent({
     let stack: ExternalMethods;
     try {
       const flux = new MotionStream<ThisListCtx>();
-      const liste: StdList = listData.currentData.get(extractId(itinéraire.params.index));
+      const liste: StdList = listData.currentData.get(extractId(itinéraire.params.index ?? EMPTY_LIST_ID));
 
       const listRef: Ref<StdList> = ref<StdList>(liste);
       let dragging: Array<boolean> = Array(liste.énumérer);
@@ -180,9 +180,9 @@ export default defineComponent({
     if (this.shopStore) {
       const itinéraire = useRoute();
       this.shopStore.commit("setPath", itinéraire.path);
-      this.id = extractId(itinéraire.params.index) ?? NEW_LIST;
+      this.id = extractId(itinéraire.params.index) ?? EMPTY_LIST_ID;
 
-      this.shopStore.commit("setId", extractId(itinéraire.params.index) ?? NEW_LIST);
+      this.shopStore.commit("setId", extractId(itinéraire.params.index) ?? EMPTY_LIST_ID);
     } else {
       console.assert(this.shopStore, "ThisList: At mounted() stage, do not have a state storage?!");
     }
@@ -190,7 +190,7 @@ export default defineComponent({
   data(): ThisListStaticData<ThisListCtx> {
     return {
       noop,
-      id: NEW_LIST,
+      id: EMPTY_LIST_ID,
       bisMobile: isMobile(),
       logoPath: LOGO_PATH,
       dragSymbol: DRAG_HANDLE_SYMBOL,

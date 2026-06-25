@@ -16,6 +16,7 @@ import { defineComponent } from "vue";
 import { useStore } from "../services/Store";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
+import { EMPTY_LIST_ID } from '../Constants';
 import type { UnknownRouteStaticData, UnknownRouteProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();
@@ -55,7 +56,7 @@ export default defineComponent({
   },
   mounted() {
     //  createRouter();
-    this.store.commit("setId", -1);
+    this.store.commit("setId", EMPTY_LIST_ID);
   },
 });
 </script>

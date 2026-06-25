@@ -111,7 +111,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
    */
   protected receipt(ev: MessageEvent): void {
     const expédition: ShippingStruct = ev.data as ShippingStruct;
-    console.log(
+    console.debug(
       "BROWSER recieved MSG sent to " + WORKER_NAME,
       expédition.action,
       expédition.data,
@@ -153,7 +153,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
     }
 
     if (expédition.action === ("status-payload" as ActionEnum)) {
-      console.log("TEST **Add more code here**\n[ STATUS REPORT ]=", expédition.data);
+      console.warn("TEST **Add more code here**\n[ STATUS REPORT ]=", expédition.data);
       used = true;
     }
     if (!used) {
@@ -231,7 +231,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const SELF = this;
     let tentatives = 0;
-    this.worker.postMessage(expédition, undefined);
+     this.worker.postMessage(expédition, undefined);
     let poignée: Timer | null = null;
     const ATTEMPT = async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject): Promise<void> => {
       if (SELF.state.length) {
@@ -239,7 +239,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
           clearTimeout(poignée);
           poignée = null;
         }
-        good(SELF.state);
+         good(SELF.state);
       } else {
         tentatives++;
         if (tentatives > PMQUE_ATTEMPTS) {

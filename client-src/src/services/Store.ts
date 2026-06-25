@@ -1,7 +1,7 @@
 import { createStore, useStore as originalUseStore } from "vuex";
 // import type { Store } from "vuex";
 
-import { APP_NAME } from "../Constants";
+import { APP_NAME, EMPTY_LIST_ID } from "../Constants";
 import type { ShopState } from "../types/ShopState";
 import type { ModuleListable, InstanceListable, MatchedItems } from "../types/ListCollection";
 
@@ -44,7 +44,7 @@ export const STORE: COMPLETE_STORE = createStore({
     return {
       currentURL: "",
       showHelp: false,
-      currentId: -1,
+      currentId: EMPTY_LIST_ID,
       //  serps: null,
     } satisfies ShopState;
   },

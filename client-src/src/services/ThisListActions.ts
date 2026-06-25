@@ -6,7 +6,7 @@ import { StdList } from "./AList";
 import { MotionStream } from "./MotionStream";
 import { useLog } from "./LogStack";
 import { clearSelection } from "../../../common/util";
-import { CSS_SYMBOL_ORDER, CSS_SYMBOL_UP, CSS_SYMBOL_DOWN, CSS_SYMBOL_RECEIPT, CSS_SYMBOL_LANDED } from "../Constants";
+import { CSS_SYMBOL_ORDER, CSS_SYMBOL_UP, CSS_SYMBOL_DOWN, CSS_SYMBOL_RECEIPT, CSS_SYMBOL_LANDED, EMPTY_LIST_ID } from "../Constants";
 
 import type { FactoryArtefact } from "./DataFactory";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
@@ -166,7 +166,7 @@ export class ThislistActions extends BaseActions<ThisListCtx> implements Externa
         return;
       }
 
-      const indice = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
+      const indice = parseInt(agaçant!.getAttribute("data-offset") ?? ""+EMPTY_LIST_ID, 10);
       if (indice >= 0 && indice < ctx.listRef.value.énumérer) {
         ctx.listRef.value.edit(indice, d1);
         LOG.addRaw(
@@ -278,7 +278,7 @@ export class ThislistActions extends BaseActions<ThisListCtx> implements Externa
 
   /****************************** util to reduce duplicate lines of code  *************************/
   protected activateMotion(agaçant: HTMLElement, ctx: ThisListCtx, msg: string, state: boolean): void {
-    this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
+    this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "0", 10);
     LOG.addRaw(`List ${ctx.listRef.value.nom}, ${msg} on item '${ctx.listRef.value.éléments[this.offset]}'`, "debug");
     ctx.draggingRef.value[this.offset] = state;
   }
