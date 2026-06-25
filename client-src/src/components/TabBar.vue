@@ -130,7 +130,7 @@
 
 <script lang="ts">
 // https://github.com/josueggh/a11y-cheatsheet
-import { defineComponent, inject, ref, toRaw } from "vue";
+import { defineComponent, inject, ref, toRaw, type Ref } from "vue";
 // import type { MethodOptions } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
@@ -139,6 +139,7 @@ import { useCacheWrapper, CacheWrapper } from "../workers/InstallWorker";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
 import { useTabActions, noop, TabActions } from "../services/TabActions";
+import { EMPTY_LIST_ID } from '../Constants';
 import type { COMPLETE_STORE } from "../services/Store";
 import type { ExternalMethods, UserAction, CBType, TabBarCtx } from "../types/Actionables";
 import type { Loggable } from "../types/Loggable";
@@ -173,7 +174,7 @@ export default defineComponent({
     },
   } satisfies TabBarProps,
   setup(): TabBarSetupValues {
-    const dataOnLoad: boolean = inject<boolean>("dataOnLoad");
+    const dataOnLoad:Ref<number> = inject<Ref<number>>("dataOnLoad").listCountRef;
     const listData: FactoryArtefact = inject<FactoryArtefact>("listData");
     const visibleRef = ref<boolean>(false);
     const getInputRef = ref<string>("");
@@ -219,9 +220,8 @@ export default defineComponent({
       EIK: this.$props.currentStateKey + "false",
       inputId: this.testId + "input1",
       menuId: this.testId + "Menu1",
-      hasData: this.dataOnLoad,
-      // hasDataAndList: (this.dataOnLoad && (Object.keys(this.route.params).length > 0)),
-      urls: [mapURL("allList", null), mapURL("aList", -1)],
+      hasData: this.dataOnLoad.value>0,
+      urls: [mapURL("allList", null), mapURL("aList", EMPTY_LIST_ID)],
       menu: {
         header: TEXT.get("menu.header1"),
         symbol: TEXT.get("menu.symbol"),
@@ -252,7 +252,7 @@ export default defineComponent({
   },
   computed: {
     hasDataAndList(): boolean {
-      return !(this.dataOnLoad && Object.keys(this.route.params).length > 0);
+      return !(this.dataOnLoad.value && Object.keys(this.route.params).length > 0);
     },
   },
   mounted() {
