@@ -14,7 +14,7 @@ import { fixture1, fixture2, fixture3, fixture4 } from "../../../../common/fixtu
 
 globalThis.localStorage = new LocalStorage("./public/scratch");
 const TEST: TestLocation = new TestLocation(TEST_LOCATION_URL);
-const PASSBACK= (a:number):void=>{};
+const PASSBACK = (a: number): void => {};
 
 // the createDataFactory with args is tested via storybook tests, which is why it exists.
 describe("I can use ListService", () => {

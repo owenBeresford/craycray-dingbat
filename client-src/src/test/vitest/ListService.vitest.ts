@@ -13,7 +13,7 @@ import type { PromiseSucceed, PromiseReject } from "../../../../common/types/pro
 import { fixture1, fixture2, fixture3, fixture4 } from "../../../../common/fixture-lists";
 
 globalThis.localStorage = new LocalStorage("./public/scratch");
-const PASSBACK= (a:number):void=>{};
+const PASSBACK = (a: number): void => {};
 
 const TEST: TestLocation = new TestLocation(TEST_LOCATION_URL);
 // the createDataFactory with args is tested via storybook tests, which is why it exists.

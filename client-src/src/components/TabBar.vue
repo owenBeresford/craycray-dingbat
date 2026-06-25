@@ -139,7 +139,7 @@ import { useCacheWrapper, CacheWrapper } from "../workers/InstallWorker";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
 import { useTabActions, noop, TabActions } from "../services/TabActions";
-import { EMPTY_LIST_ID } from '../Constants';
+import { EMPTY_LIST_ID } from "../Constants";
 import type { COMPLETE_STORE } from "../services/Store";
 import type { ExternalMethods, UserAction, CBType, TabBarCtx } from "../types/Actionables";
 import type { Loggable } from "../types/Loggable";
@@ -174,7 +174,7 @@ export default defineComponent({
     },
   } satisfies TabBarProps,
   setup(): TabBarSetupValues {
-    const dataOnLoad:Ref<number> = inject<Ref<number>>("dataOnLoad").listCountRef;
+    const dataOnLoad: Ref<number> = inject<Ref<number>>("dataOnLoad").listCountRef;
     const listData: FactoryArtefact = inject<FactoryArtefact>("listData");
     const visibleRef = ref<boolean>(false);
     const getInputRef = ref<string>("");
@@ -220,7 +220,7 @@ export default defineComponent({
       EIK: this.$props.currentStateKey + "false",
       inputId: this.testId + "input1",
       menuId: this.testId + "Menu1",
-      hasData: this.dataOnLoad.value>0,
+      hasData: this.dataOnLoad.value > 0,
       urls: [mapURL("allList", null), mapURL("aList", EMPTY_LIST_ID)],
       menu: {
         header: TEXT.get("menu.header1"),

@@ -8,9 +8,7 @@ import type { LocalCopy } from "./LocalCopy";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
 //import type { Listable, ListStruct } from "../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
-import type {NotifyType} from '../types/Actionables'; 
-
-
+import type { NotifyType } from "../types/Actionables";
 
 /**
  * ListService
@@ -23,7 +21,6 @@ export class NetworkedListService extends ListService {
   protected local: LocalCopy;
   public static debugSymbol = "NetworkedListService";
 
-
   /**
    * constructor
    * Normal Con'tor
@@ -33,11 +30,11 @@ export class NetworkedListService extends ListService {
    * @public
    * @returns {ListService}
    */
-  public constructor(loin: DistantStorable, proche: LocalCopy, notify:NotifyType) {
-    super( notify);
+  public constructor(loin: DistantStorable, proche: LocalCopy, notify: NotifyType) {
+    super(notify);
     this.remote = loin;
     this.local = proche;
-     if (_LOGGING_) {
+    if (_LOGGING_) {
       console.log(
         "NetworkListService created & injected with: (remote) " +
           loin.constructor.debugSymbol +
@@ -145,7 +142,6 @@ export class NetworkedListService extends ListService {
   public loadAllLists(): boolean {
     let répondeur = true;
     this.local.loadState().then((dat: Array<SaveStruct>): void => {
-
       if (!dat) {
         répondeur = false;
         return;
@@ -165,7 +161,7 @@ export class NetworkedListService extends ListService {
 
       this.catalog = this.catalog.splice(0, Infinity);
       this.mapper(dat);
-      this.notify( this.catalog.length );
+      this.notify(this.catalog.length);
       console.debug("From remote state, replacing " + dat.length + " items (only has valid 'safed'/saved data).");
       return;
     });

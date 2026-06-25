@@ -3,7 +3,7 @@ import { ListService } from "./ListService";
 import type { ListCollection } from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
-import type {NotifyType} from '../types/Actionables'; 
+import type { NotifyType } from "../types/Actionables";
 
 /**
  * TestListService 
@@ -23,7 +23,7 @@ export class TestListService extends ListService implements ListCollection<strin
    * @public
    * @returns {ListService}
    */
-  public constructor(src: Array<TestDataSchema>, n:NotifyType) {
+  public constructor(src: Array<TestDataSchema>, n: NotifyType) {
     super(n);
     for (let i = 0; i < src.length; i++) {
       // Id0 is not a valid list-id, it is reserved for error spotting.

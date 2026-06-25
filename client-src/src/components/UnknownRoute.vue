@@ -16,7 +16,7 @@ import { defineComponent } from "vue";
 import { useStore } from "../services/Store";
 import { mapURL } from "../services/URLs";
 import { useUIText } from "../services/Localisation";
-import { EMPTY_LIST_ID } from '../Constants';
+import { EMPTY_LIST_ID } from "../Constants";
 import type { UnknownRouteStaticData, UnknownRouteProps } from "../types/ComponentProps";
 
 const TEXT = useUIText();

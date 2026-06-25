@@ -13,7 +13,7 @@ import type { PromiseSucceed, PromiseReject } from "../../../../common/types/pro
 // turn API on first
 // Run unit from Storybook
 const TEST: TestLocation = new TestLocation(TEST_LOCATION_URL);
-const PASSBACK= (a:number):void=>{};
+const PASSBACK = (a: number): void => {};
 
 describe("I can use NetworkedListService", () => {
   // this ought to be run multiple times in different network settings
@@ -24,7 +24,9 @@ describe("I can use NetworkedListService", () => {
       let tt: FactoryArtefact = await createDataFactory(undefined, TEST, PASSBACK);
       expect(typeof tt).toBe("object");
       assertType<FactoryArtefact>(tt);
-      if (!tt.currentData) { return; }
+      if (!tt.currentData) {
+        return;
+      }
       assertType<ListCollection<string>>(tt.currentData);
 
       good(true);

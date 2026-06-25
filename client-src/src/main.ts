@@ -57,17 +57,17 @@ TOOL.directive("longpress", {
 });
 console.time("boot-data-connection");
 const data: FactoryArtefact = createEmptyFactory();
-const listCountRef=ref<number>(0);
-function updateListCount(nu:number):void {
-  listCountRef.value=nu;
+const listCountRef = ref<number>(0);
+function updateListCount(nu: number): void {
+  listCountRef.value = nu;
 }
-await currentNetworkConfig(location, updateListCount,  data);
+await currentNetworkConfig(location, updateListCount, data);
 // listCountRef.value SHOULD be updated inside DataFactory.currentNetworkConfig
 console.timeEnd("boot-data-connection");
 TOOL.provide("helpText", "menu");
 TOOL.provide("canSeeHelp", DEFAULT_HELP_SHOW);
 TOOL.provide("ttl", TTL_FOR_HELP);
- 
+
 TOOL.provide("dataOnLoad", { listCountRef, updateListCount });
 TOOL.provide("listData", data);
 TOOL.provide("log", useLog());

@@ -17,7 +17,7 @@ import type { InstanceListable, ModuleListable, ListCollection } from "../types/
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
 import type { MessageDistribution } from "./MessageDistribution";
-import type {NotifyType} from '../types/Actionables'; 
+import type { NotifyType } from "../types/Actionables";
 
 /*                     TRUTH TABLE
 ----------------------------------------------------------
@@ -78,7 +78,7 @@ export function idOf(obj: object): number {
  */
 export async function currentNetworkConfig(
   locb: Location | MockLocation,
-  cb:NotifyType,
+  cb: NotifyType,
   retour: FactoryArtefact | undefined
 ): Promise<void> {
   let d4: MessageDistribution;
@@ -117,7 +117,7 @@ export async function currentNetworkConfig(
 export function createDataFactory(
   override: Array<TestDataSchema> | undefined,
   loc: Location | MockLocation,
-  cb:NotifyType
+  cb: NotifyType
 ): FactoryArtefact {
   let retour: FactoryArtefact = createEmptyFactory();
 
@@ -147,7 +147,7 @@ export function createEmptyFactory(): FactoryArtefact {
    * @public
    * @returns {void}
    */
-  function initData(locc: Location | MockLocation, cb:NotifyType): void {
+  function initData(locc: Location | MockLocation, cb: NotifyType): void {
     void currentNetworkConfig(locc, cb, retour);
   }
 

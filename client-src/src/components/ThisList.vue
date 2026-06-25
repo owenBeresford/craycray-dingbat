@@ -75,7 +75,7 @@ import type { Ref } from "vue";
 
 import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
-import { EMPTY_LIST_ID } from '../Constants';
+import { EMPTY_LIST_ID } from "../Constants";
 
 import { useStore, type COMPLETE_STORE } from "../services/Store";
 import { useUIText } from "../services/Localisation";

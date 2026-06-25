@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Suspense, shallowRef} from "vue";
+import { defineComponent, Suspense, shallowRef } from "vue";
 import VErrorBoundary from "vue-error-boundary";
 
 import { TTL_FOR_HELP, DEFAULT_HELP_SHOW, LOGGING_ENABLED } from "./Constants";
@@ -54,7 +54,7 @@ export default defineComponent({
   data(): MainAppStaticData {
     // IOIO XXX maybe lineup state-keys to show net status in later builds
     return {
-    //  fallBack: Failover,
+      //  fallBack: Failover,
       log: useLog(),
 
       tabId: this.$props.instanceId + "TabBar1",
@@ -67,6 +67,6 @@ export default defineComponent({
     const safeFailover = shallowRef(Failover);
 
     return { safeFailover };
-  }
+  },
 });
 </script>

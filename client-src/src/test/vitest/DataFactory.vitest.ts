@@ -11,7 +11,7 @@ import type { ListCollection } from "../../types/ListCollection";
 import { TestLocation } from "../MockLocation";
 
 describe("test on DataFactory ", () => {
-  const PASSBACK= (a:number):void=>{};
+  const PASSBACK = (a: number): void => {};
 
   it("Can use DataFactory", async () => {
     assertType<Function>(createDataFactory);

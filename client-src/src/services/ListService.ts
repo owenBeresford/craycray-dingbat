@@ -6,8 +6,7 @@ import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { Loggable } from "../types/Loggable";
 import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
-import type {NotifyType} from '../types/Actionables'; 
-
+import type { NotifyType } from "../types/Actionables";
 
 const log: Loggable = useLog();
 /**
@@ -18,7 +17,7 @@ const log: Loggable = useLog();
  */
 export class ListService implements ListCollection<string> {
   protected catalog: Array<StdList>;
-  protected notify:NotifyType;
+  protected notify: NotifyType;
   public static debugSymbol = "ListService";
 
   /**
@@ -28,7 +27,7 @@ export class ListService implements ListCollection<string> {
    * @public
    * @returns {ListService}
    */
-  public constructor(n:NotifyType) {
+  public constructor(n: NotifyType) {
     this.catalog = [EMPTY_LIST];
     this.notify = n;
   }
@@ -102,7 +101,7 @@ export class ListService implements ListCollection<string> {
     }
     id--;
     this.catalog.splice(id, 1);
-    this.notify( this.catalog.length);
+    this.notify(this.catalog.length);
     return true;
   }
 
@@ -121,7 +120,7 @@ export class ListService implements ListCollection<string> {
         this.append(agaçant);
       }
     }
-    this.notify( this.catalog.length);
+    this.notify(this.catalog.length);
     return true;
   }
 
@@ -177,7 +176,7 @@ export class ListService implements ListCollection<string> {
       return false;
     }
     this.catalog[id] = ret;
-    this.notify( this.catalog.length);
+    this.notify(this.catalog.length);
     return true;
   }
 
@@ -191,7 +190,7 @@ export class ListService implements ListCollection<string> {
    */
   public append(ret: StdList): boolean {
     this.catalog.push(ret);
-    this.notify( this.catalog.length);
+    this.notify(this.catalog.length);
     return true;
   }
 

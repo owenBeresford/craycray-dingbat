@@ -64,7 +64,7 @@ export default defineComponent({
       this.shopStore.commit("setPath", itinéraire.path);
     }
   },
-  inject: ["helpText", "canSeeHelp", "ttl", "listData", "dataOnLoad" ],
+  inject: ["helpText", "canSeeHelp", "ttl", "listData", "dataOnLoad"],
   props: {
     currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
@@ -77,7 +77,7 @@ export default defineComponent({
     fixPath: { type: Function, required: true },
   },
   data(): ListOfListsProps {
-//console.debug("ListOfLists->data", this.dataOnLoad   );
+    //console.debug("ListOfLists->data", this.dataOnLoad   );
     return {
       instanceId: this.$props.testId,
       viewId: this.$props.testId + "View1",
@@ -88,15 +88,17 @@ export default defineComponent({
     } satisfies ListOfListsProps;
   },
   computed: {
-    smartKey:function():string {
-      return this.$props.currentStateKey+"_"+this.dataOnLoad.listCountRef.value+"_"+ this.listData.currentData.count();
+    smartKey: function (): string {
+      return (
+        this.$props.currentStateKey + "_" + this.dataOnLoad.listCountRef.value + "_" + this.listData.currentData.count()
+      );
     },
 
     shoppingLists: function (): Array<ListStruct> {
-  // console.debug("ListOfLists->shoppingLists", this.dataOnLoad.listCountRef.value);      
+      // console.debug("ListOfLists->shoppingLists", this.dataOnLoad.listCountRef.value);
       // this is a NECESSARY magic side-effect.  As the value is read, this gets recomnputed
       // DO NOT DELETE, unless making the this.listData.currentData reactive and inside the Vue engine
-      let _ =this.dataOnLoad.listCountRef.value
+      let _ = this.dataOnLoad.listCountRef.value;
       let chose: Array<ListStruct> = [];
       if (this.listData.currentData) {
         chose = this.listData.currentData.list();

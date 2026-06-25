@@ -19,7 +19,7 @@ import { defineComponent, ref, inject } from "vue";
 import { useRoute, type RouteLocationNormalizedLoadedGeneric } from "vue-router";
 import type { Ref } from "vue";
 
-import {mapURL } from '../services/URLs';
+import { mapURL } from "../services/URLs";
 import { extractId } from "../services/util";
 
 export default defineComponent({
@@ -27,24 +27,23 @@ export default defineComponent({
   props: {
     currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
-    id: { type: Number, default: 0 },  // Default is flag value.  0 is not a valid id.
+    id: { type: Number, default: 0 }, // Default is flag value.  0 is not a valid id.
   },
   data() {
     const itinéraire: RouteLocationNormalizedLoadedGeneric = useRoute();
-    let id=0;
-    if(this.$props.id) { 
-        id=this.$props.id; 
-    } else if(itinéraire.name === "a-list") {
-      if(itinéraire.params.index>=1) {
-        id=extractId(itinéraire.params.index);
+    let id = 0;
+    if (this.$props.id) {
+      id = this.$props.id;
+    } else if (itinéraire.name === "a-list") {
+      if (itinéraire.params.index >= 1) {
+        id = extractId(itinéraire.params.index);
       }
     }
 
     return {
       linkAll: mapURL("allList", null),
-      singleListURL: mapURL('aList', id),
+      singleListURL: mapURL("aList", id),
     };
   },
-
 });
 </script>

@@ -110,10 +110,7 @@ export default defineComponent({
         ctx: {} as SearchCtx, // empty!!
       } satisfies SearchSetupState;
     } catch (e: unknown) {
-      log.addRaw(
-        "SearchResults.setup(): " + (e as Error).message + "  " + (e as Error).stack.substring(0, 200),
-        "error"
-      );
+      log.addRaw("SearchResults.setup(): " + (e as Error).message, "error");
     }
   },
   data(): SearchStaticData {

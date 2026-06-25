@@ -32,13 +32,13 @@ export function transform2text(dat: any): string {
  * @public
  * @returns {Array<SaveStruct>}
  */
-export function transform2list(dat: string|object): Array<SaveStruct> {
+export function transform2list(dat: string | object): Array<SaveStruct> {
   let thing: object = [];
   try {
-    if(typeof dat==="string" ) {
+    if (typeof dat === "string") {
       thing = JSON.parse(dat);
     } else {
-      thing=dat;
+      thing = dat;
     }
   } catch (e: unknown) {
     console.warn("52382354357457 JSON parsing broke " + (e as Error).message);
