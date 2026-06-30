@@ -1,4 +1,5 @@
-These user journey sketches are not focussing on motivation strongly, as this is a OSS shopping list tool.  There are no lieden or grand epics involved.  No wigs or swooning and falling of balconies. 
+These user journey sketches are not focussing on motivation strongly, as this is a OSS shopping list tool.  
+There are no _Lieder_ or _grandes épopées_ involved.  No wigs or swooning and falling of balconies. 
 
 ### User journeys
 
@@ -28,7 +29,7 @@ These user journey sketches are not focussing on motivation strongly, as this is
 
 -----
 - user1 returns to the App, and builds a Christmas shopping list.
-- Then enters a /sensible/ name and saves it.
+- Then enters a _sensible_ name and saves it.
 
 ----
 - user1 knows they entered an item, but has lost it. 
