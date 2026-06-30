@@ -20,7 +20,7 @@ const STATE: DataPipeline = useSSW(self.location);
 // this module is a Worker object, and runs as a second thread in the browser.
 // The UI thread drives MessageDistribution
 const goodSource: Readonly<string> = self.location.protocol + "//" + self.location.hostname + ":" + self.location.port;
-if (globalThis._LOGGING_) {
+if (import.meta.env.VITEST) {
   // test only logging
   console.log("CODE under TEST started " + process.pid, goodSource);
 }
@@ -28,14 +28,14 @@ if (globalThis._LOGGING_) {
 /**
  * self.onmessage
  * An event handler
- 
+
  * @param {MessageEvent} ev
  * @protected
  * @returns {void}
  */
 self.onmessage = async function (ev: MessageEvent): Promise<void> {
   console.log(
-    "WORKER THREAD received MSG sent to " + ev.srcElement.id,
+    "WORKER THREAD received MSG sent to " + ev.origin,
     (ev.data as ShippingStruct).action,
     (ev.data as ShippingStruct).data,
     "isolated",
@@ -43,7 +43,7 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
     crossOriginIsolated
   );
 
-  if (ev.srcElement!.name !== WORKER_NAME) {
+  if (ev.origin !== WORKER_NAME) {
     console.warn("Recv msg from un-authorised source " + ev.origin);
     return;
   }
@@ -64,7 +64,7 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
     isDone = true;
   }
   if (("status-request" as ActionEnum) === payload.action) {
-    if (globalThis._LOGGING_) {
+    if (import.meta.env.VITEST) {
       console.log("CODE under TEST got message ", JSON.stringify(payload));
     }
     self.postMessage(transform2text([{ status: "running" as ActionEnum }]), undefined);
@@ -80,17 +80,17 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
 };
 
 /**
- * self.onmessageerror 
+ * self.onmessageerror
  * An event handler
- 
- * @param {unknown} e - normal Error object, but TS states it must be unknoewn, guess compat with VB3 or something #leSigh. 
+
+ * @param {unknown} e - normal Error object, but TS states it must be unknoewn, guess compat with VB3 or something #leSigh.
  * @protected
  * @returns {void}
  */
 self.onmessageerror = (e: unknown): void => {
   console.warn("WORKER: got bad message ", e as Error);
 };
-if (globalThis._LOGGING_) {
+if (import.meta.env.VITEST) {
   console.log("CODE under TEST end module ", typeof self);
 }
 /* taken from snap/chromium/common/chromium/WasmTtsEngine/20260305.1/bindings_main.js

@@ -17,7 +17,7 @@ import { createRemoteService } from "../Constants";
 /**
  * useSSW
  * A util to create this service
- 
+
  * @param {Location} loc
  * @public
  * @returns {DataPipeline}
@@ -40,7 +40,7 @@ export class SharedStateWorker implements DataPipeline {
   /**
    * constructor
    * Plain con'tor, nothing noteworthy
- 
+
    * @param {RemoteStorage} rs
    * @param {DelayCallbackType} delay
    * @public
@@ -57,7 +57,7 @@ export class SharedStateWorker implements DataPipeline {
   /**
    * pushWhenAble
    * initiate uploading data (async, phone maybe offnet)
- 
+
    * @param {Array<SaveStruct>} json
    * @public
    * @returns {Promise<boolean>}
@@ -72,7 +72,7 @@ export class SharedStateWorker implements DataPipeline {
           SELF.conn
             .saveState(json)
             .then((dat: boolean): boolean => {
-              if (_LOGGING_) {
+              if (import.meta.env.VITEST) {
                 console.log("Save said " + dat);
               }
               good(true);
@@ -98,7 +98,7 @@ export class SharedStateWorker implements DataPipeline {
   /**
    * pullWhenAble
    * initaite downloading data (async, phone maybe offnet)
- 
+
    * @public
    * @returns {Promise<Array<SaveStruct>>}
    */
@@ -135,7 +135,7 @@ export class SharedStateWorker implements DataPipeline {
  * A separated function to compute the delay duration, which is used for networking retries.
  * I have currently made them separate in-case I need to expand to 10 implementations.
  * This would be a good place to be a C++ "friend function".
- 
+
  * @param {DataPipeline} state
  * @public
  * @returns {number}
@@ -149,7 +149,7 @@ export function linearDelay(state: DataPipeline): number {
  * A separated function to compute the delay duration, which is used for networking retries
  * I have currently made them separate in-case I need to expand to 10 implementations.
  * This would be a good place to be a C++ "friend function".
- 
+
  * @param {DataPipeline} state
  * @public
  * @returns {number}
