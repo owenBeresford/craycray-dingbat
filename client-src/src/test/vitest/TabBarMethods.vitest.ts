@@ -18,8 +18,6 @@ import { fixture1, fixture2, fixture3, fixture4 } from "../../../../common/fixtu
 import { TEST_LOCATION_URL } from "../../Constants";
 import { TestLocation } from "../MockLocation";
 
-globalThis._LOGGING_ = process.env.NODE_ENV === "development";
-
 // https://stackoverflow.com/questions/74209044/vue-router-mock-with-vue-test-utils-vitest
 vi.hoisted(() => {
   vi.resetModules();
@@ -32,11 +30,12 @@ vi.mock("vue-router", async (importOriginal) => {
     useRoute: vi.fn(),
   };
 });
+const PASSBACK = (a: number): void => {};
 
 //https://github.com/vitest-dev/vitest/issues/1918
 
 describe("test on TabActions", () => {
-  const DATA = createDataFactory(fixture1(), new TestLocation(TEST_LOCATION_URL));
+  const DATA = createDataFactory(fixture1(), new TestLocation(TEST_LOCATION_URL), PASSBACK);
 
   it("Can use useFunction", async () => {
     let txt: TabActions = (await useTabActions(useStore(), DATA, useCacheWrapper(), useRoute())) as TabActions;

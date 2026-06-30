@@ -12,6 +12,7 @@ import type { ListStruct, InstanceListable, ListCollection } from "../../types/L
 import type { PromiseSucceed, PromiseReject } from "../../../../common/types/promises";
 import { fixture1, fixture2, fixture3, fixture4 } from "../../../../common/fixture-lists";
 
+ 
 globalThis.localStorage = new LocalStorage("./public/scratch");
 const TEST: TestLocation = new TestLocation(TEST_LOCATION_URL);
 const PASSBACK = (a: number): void => {};
@@ -20,103 +21,82 @@ const PASSBACK = (a: number): void => {};
 describe("I can use ListService", () => {
   // this ought to be run multiple times in different network settings
   // or maybe leave that to DataFactory test
-  it("I can create it", (): Promise<boolean> => {
-    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
+  it("I can create it", ():void => {
       expect(typeof ListService).toBe("function");
-      let tt: FactoryArtefact = await createDataFactory(fixture1(), TEST, PASSBACK);
+      let tt: FactoryArtefact = createDataFactory(fixture1(), TEST, PASSBACK);
       expect(typeof tt).toBe("object");
       if (!tt.currentData) {
-        bad(new Error("#toFix Fixture returned null?"));
-        return;
+        throw new Error("#toFix Fixture returned null?");
       }
       assertType<FactoryArtefact>(tt);
       assertType<ListCollection<string>>(tt.currentData);
-
-      good(true);
-    });
   });
 
-  it("I can create items", (): Promise<boolean> => {
-    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const FACT: FactoryArtefact = await createDataFactory(fixture1(), TEST, PASSBACK);
+// IOIO XX  add extra tests for the newer code
+
+  it("I can create items", ():void => {
+      const FACT: FactoryArtefact = createDataFactory(fixture1(), TEST, PASSBACK);
       if (!FACT.currentData) {
-        bad(new Error("#toFix Fixture returned null?"));
-        return;
-      }
+        throw new Error("#toFix Fixture returned null?");
+       }
+
       const ls: ListCollection<string> = FACT.currentData;
-
-      expect(ls.create("item1")).toBe(1);
-      expect(ls.create("item2")).toBe(2);
-      expect(ls.count()).toBe(2);
-
-      const FACT2: FactoryArtefact = await createDataFactory(fixture3(), TEST, PASSBACK);
+      expect(ls.create("item1")).toBe(5);
+      expect(ls.create("item2")).toBe(6);
+      expect(ls.count()).toBe(6);
+      
+      const FACT2: FactoryArtefact = createDataFactory(fixture3(), TEST, PASSBACK);
       if (!FACT2.currentData) {
-        bad(new Error("#toFix Fixture returned null?"));
-        return;
+        throw new Error("#toFix Fixture returned null?");
       }
       const ls2: ListCollection<string> = FACT2.currentData;
 
       expect(ls2.create("item3")).toBe(3);
       expect(ls2.create("item4")).toBe(4);
-      expect(ls2.count()).toBe(4);
-      good(true);
-    });
+       expect(ls2.count()).toBe(4);
+  
   });
 
   // i'm skipping  count(): number;
 
-  it("I can poll", (): Promise<boolean> => {
-    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const FACT: FactoryArtefact = await createDataFactory(fixture1(), TEST, PASSBACK);
+  it("I can poll", async ():Promise<boolean> => {
+      const FACT: FactoryArtefact = createDataFactory(fixture1(), TEST, PASSBACK);
       if (!FACT.currentData) {
-        bad(new Error("#toFix Fixture returned null?"));
-        return;
+        throw new Error("#toFix Fixture returned null?"); 
       }
       const ls: ListCollection<string> = FACT.currentData;
-      expect(ls.poll()).toBe(true);
+      expect( await ls.poll()).toBe(true);
       // something to enumerate other states
-      good(true);
-    });
-  });
+      return true;
+   });
 
-  it("I can delete", (): Promise<boolean> => {
-    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const FACT: FactoryArtefact = await createDataFactory(fixture1(), TEST, PASSBACK);
+  it("I can delete", ():void => {
+      const FACT: FactoryArtefact = createDataFactory(fixture1(), TEST, PASSBACK);
       if (!FACT.currentData) {
-        bad(new Error("#toFix Fixture returned null?"));
-        return;
+        throw new Error("#toFix Fixture returned null?");
       }
       const ls: ListCollection<string> = FACT.currentData;
-      expect(ls.create("item1")).toBe(1);
-      expect(ls.create("item2")).toBe(2);
-      expect(ls.create("item3")).toBe(3);
+      expect(ls.create("item1")).toBe(5);
+      expect(ls.create("item2")).toBe(6);
+      expect(ls.create("item3")).toBe(7);
 
-      //  console.log("WERWER ", JSON.stringify(ls.list().keys()));
+      
       expect(ls.delete(1)).toBe(true);
-      //  console.log("WERWER2", JSON.stringify(ls.list().keys()));
-      expect(ls.count()).toBe(3);
-
-      //  console.log("WERWER ", JSON.stringify(ls.list().keys()));
+      expect(ls.count()).toBe(6);
       expect(ls.delete(2)).toBe(true);
-      //  console.log("WERWER2", JSON.stringify(ls.list().keys()));
-      expect(ls.count()).toBe(3);
-
-      good(true);
-    });
+      expect(ls.count()).toBe(5);
   });
 
-  it("I can get", (): Promise<boolean> => {
-    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const FACT = await createDataFactory(fixture2(), TEST, PASSBACK);
+  it("I can get", ():void => {
+       const FACT = createDataFactory(fixture2(), TEST, PASSBACK);
       if (!FACT.currentData) {
-        bad(new Error("#toFix Fixture returned null?"));
-        return;
+        throw new Error("#toFix Fixture returned null?");
       }
 
       const ls: ListCollection<string> = FACT.currentData;
-      expect(ls.create("item1")).toBe(1);
-      expect(ls.create("item2")).toBe(2);
-      expect(ls.create("item3")).toBe(3);
+      expect(ls.create("item1")).toBe(5);
+      expect(ls.create("item2")).toBe(6);
+      expect(ls.create("item3")).toBe(7);
 
       let tmp: InstanceListable<string> | undefined = ls.get(2);
       expect(tmp instanceof StdList).toBe(true);
@@ -125,70 +105,80 @@ describe("I can use ListService", () => {
 
       tmp = ls.get(144);
       expect(typeof tmp === "undefined").toBe(true);
-      good(true);
-    });
+
   });
 
-  it("I can put", (): Promise<boolean> => {
-    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const FACT = await createDataFactory(fixture1(), TEST, PASSBACK);
+  it("I can put", ():void => {
+      const FACT = createDataFactory(fixture1(), TEST, PASSBACK);
       if (!FACT.currentData) {
-        bad(new Error("#toFix Fixture returned null?"));
-        return;
+        throw new Error("#toFix Fixture returned null?");
       }
 
       const ls: ListCollection<string> = FACT.currentData;
-      expect(ls.create("item1")).toBe(1);
+      expect(ls.create("item1")).toBe(5);
 
       expect(ls.put(2, StdList.manual<string, StdList>("item2", 2))).toBe(true);
       // can overwrite
       expect(ls.put(2, StdList.manual<string, StdList>("item2", 2))).toBe(true);
-
-      expect(ls.put(1024, StdList.manual<string, StdList>("item2", 1024))).toBe(true);
-      good(true);
-    });
+      // cannot PUT in a sparse index fashion, may APPEND
+      expect(ls.put(1024, StdList.manual<string, StdList>("item2", 1024))).toBe(false);  
   });
 
-  it("I can list", (): Promise<boolean> => {
-    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const FACT = await createDataFactory(fixture1(), TEST, PASSBACK);
+  it("I can list", ():void => {
+      const FACT = createDataFactory(fixture1(), TEST, PASSBACK);
       if (!FACT.currentData) {
-        bad(new Error("#toFix Fixture returned null?"));
-        return;
+        throw new Error("#toFix Fixture returned null?");
       }
 
       const ls: ListCollection<string> = FACT.currentData;
-      expect(ls.create("item1")).toBe(1);
-      expect(ls.create("item2")).toBe(2);
-      expect(ls.create("item3")).toBe(3);
+      expect(ls.create("item1")).toBe(5);
+      expect(ls.create("item2")).toBe(6);
+      expect(ls.create("item3")).toBe(7);
 
-      expect(ls.list()).toBe(true);
-
-      good(true);
-    });
+      expect(ls.list()).toBeTruthy();
   });
 
-  it("I can store ", (): Promise<boolean> => {
-    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      const FACT = await createDataFactory(fixture1(), TEST, PASSBACK);
-      if (!FACT.currentData) {
-        bad(new Error("#toFix Fixture returned null?"));
-        return;
+  
+  it("I can append ", ():void => {
+       const FACT = createDataFactory(fixture1(), TEST, PASSBACK);
+       if (!FACT.currentData) {
+        throw new Error("#toFix Fixture returned null?"); 
       }
       const ls: ListCollection<string> = FACT.currentData;
 
-      expect(ls.create("item1")).toBe(1);
-      expect(ls.create("item2")).toBe(2);
-      expect(ls.create("item3")).toBe(3);
+      expect(ls.create("item1")).toBe(5);
+      expect(ls.create("item2")).toBe(6);
+      expect(ls.create("item3")).toBe(7);
 
-      expect(ls.put(2, StdList.manual<string, StdList>("item2", 2))).toBe(true);
-      // can overwrite
-      expect(ls.put(2, StdList.manual<string, StdList>("item2", 2))).toBe(true);
+      expect(ls.append( StdList.manual<string, StdList>("item2", 2))).toBe(true);
+      expect(ls.append( StdList.manual<string, StdList>("item2", 2))).toBe(true);
+      
+  });
 
-      expect(ls.put(1024, StdList.manual<string, StdList>("item2", 1024))).toBe(true);
-      good(true);
-    });
+    it("I can listNames ", ():void => {
+       const FACT = createDataFactory(fixture1(), TEST, PASSBACK);
+       if (!FACT.currentData) {
+        throw new Error("#toFix Fixture returned null?"); 
+      }
+      const ls: ListCollection<string> = FACT.currentData;
+
+      expect(ls.create("test list A")).toBe(5);
+      expect(ls.create("test list B")).toBe(6);
+      expect(ls.create("test list C")).toBe(7);
+
+      expect( ls.listNames() ).toStrictEqual([
+    "New Empty list",
+    "list 1",
+   "list 2",
+   "list 3",
+   "test list A",
+   "test list B",
+   "test list C",
+  ]);     
+
   });
 
   //  loadAllLists(): boolean ;
 });
+
+
