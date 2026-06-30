@@ -22,7 +22,6 @@ LOW IMPACT, nioce to haves
 - Maybe lineup state-keys to show net status in later builds
 - Scroll to top marker, if the list is longer than the page
 - pour les mot variable privé, traduire en francias 
-- consider if porting to PointerEvents would be more readable https://www.redblobgames.com/x/2217-vue-pointerevents/ 
 - ShoppingService test, add fixtures to extend load() testing
 - find my list local IP code 
 - Localisation getting placeholders/ formatstr, then map ListOfList
@@ -40,7 +39,7 @@ LOW IMPACT, nioce to haves
 - For higher levels of SPA arch than needed here, add CustomElements https://www.npmjs.com/package/@vitejs/plugin-vue 
 - look at closure generators to hold my "module variable" static vars safe after compilation/ bundling
   - OR drop them... deprecating...
-
+- Think about scan barcode on older packet https://www.actowizsolutions.com/uk-grocery-api-real-time-data-tesco-aldi-asda-sainsburys.php
 
 set NODE_ENV="TEST" for tests
 Yes, the storybook test use storybook/test module that currently I can't install.   Storybook seems to include it even though its doesn't exist in the correct version ~ mono-repo.   #WorksForMe, I hope it works-for-you.
