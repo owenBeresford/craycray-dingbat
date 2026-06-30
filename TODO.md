@@ -35,7 +35,7 @@ LOW IMPACT, nioce to haves
 - Implement document.addEventListener('visibilitychange'  to use network most wisely
 - Add the better validation on transform2list
    - This has low value, as data will be been validated before
-- A larger project may gain from Mutex'  https://github.com/orimay/async-ts
+- A larger project may gain from [Mutex](https://github.com/orimay/async-ts)
 - For higher levels of SPA arch than needed here, [Adding CustomElements](https://www.npmjs.com/package/@vitejs/plugin-vue) 
 - look at closure generators to hold my "module variable" static vars safe after compilation/ bundling
   - OR drop them... deprecating...
