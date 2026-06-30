@@ -68,8 +68,8 @@ smaller goals:
 - Nag me for JSON import from XYZ other platform capacity
 
 - Advanced use: read TODO list
-- Think about creating a 'home page link' if the tools is useful see [https://support.google.com/chrome/answer/9658361?hl=en&co=GENIE.Platform%3DAndroid] [https://support.google.com/chrome/answer/15085120?hl=en&co=GENIE.Platform%3DAndroid].  This is 2 taps, and not automatable from normal JS for security reasons. 
-- To be able to delete the installed version please scan [https://support.google.com/chrome/answer/2392709?hl=en&co=GENIE.Platform%3DAndroid&sjid=5819306311445701255-EU#zippy=%2Cdata-that-doesnt-get-deleted%2Cdata-that-can-be-deleted].  I think purge/ delete capacity should be outside the app, so you don't run an app you just removed. 
+- Think about creating a 'home page link' if the tools is useful see [Android chrome guide](https://support.google.com/chrome/answer/9658361?hl=en&co=GENIE.Platform%3DAndroid) [Or a second guide](https://support.google.com/chrome/answer/15085120?hl=en&co=GENIE.Platform%3DAndroid).  This is 2 taps, and not automatable from normal JS for security reasons. 
+- To be able to delete the installed version please scan [Deleting cached files in Chrome](https://support.google.com/chrome/answer/2392709?hl=en&co=GENIE.Platform%3DAndroid&sjid=5819306311445701255-EU#zippy=%2Cdata-that-doesnt-get-deleted%2Cdata-that-can-be-deleted).  I think purge/ delete capacity should be outside the app, so you don't run an app you just removed. 
 - WARN: DO NOT edit code-base without an IDE. (I'm  using glyths that are not found on a EN-US keyboard, so you need auto-complete).   Config/ Constant files are in ASCII 127 to be be more broadly compatible.   
 
 
