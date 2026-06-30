@@ -8,6 +8,7 @@ import type { LocalCopy } from "./LocalCopy";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
 //import type { Listable, ListStruct } from "../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
+import type {AbstractSelfNameClass} from '../../../common/AbstractSelfNameClass';
 import type { NotifyType } from "../types/Actionables";
 
 /**
@@ -17,9 +18,10 @@ import type { NotifyType } from "../types/Actionables";
  * @public
  */
 export class NetworkedListService extends ListService {
+  // has implied AbstractSelfNameClass from ListService
   protected remote: DistantStorable;
   protected local: LocalCopy;
-  public static debugSymbol = "NetworkedListService";
+  protected static _debugSymbol = Symbol("NetworkedListService");
 
   /**
    * constructor
@@ -30,16 +32,16 @@ export class NetworkedListService extends ListService {
    * @public
    * @returns {ListService}
    */
-  public constructor(loin: DistantStorable, proche: LocalCopy, notify: NotifyType) {
+  public constructor(loin: DistantStorable, proche: LocalCopy, notify: NotifyType, loggingSymbols:Array<Symbol> )  {
     super(notify);
     this.remote = loin;
     this.local = proche;
-    if (_LOGGING_) {
+    if (import.meta.env.VITEST ) {
       console.log(
         "NetworkListService created & injected with: (remote) " +
-          loin.constructor.debugSymbol +
+          loggingSymbols[0] +
           " (local) " +
-          proche.constructor.debugSymbol
+          loggingSymbols[1]
       );
     }
     this.loadAllLists();
@@ -48,12 +50,12 @@ export class NetworkedListService extends ListService {
   /**
    * terminate
    * An extra function to attempt to terminate faster, as the direct call can interupt any setTimeout or fetch()
- 
+
    * @public
    * @returns {void}
    */
   public terminate(): void {
-    if (_LOGGING_) {
+    if (import.meta.env.VITEST) {
       console.log("NetworkListService being destroyed");
     }
     if (this.remote && typeof this.remote === "object") {

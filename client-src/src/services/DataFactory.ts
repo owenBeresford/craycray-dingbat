@@ -6,17 +6,18 @@ import { extractId } from "./util";
 import { StdList, EMPTY_LIST } from "./AList";
 
 // import { ListService } from "./ListService";
-import { useLocal } from "./LocalCopy";
-import { useMsgDistrib } from "./MessageDistribution";
+import { useLocal, LocalCopy } from "./LocalCopy";
+import { useMsgDistrib, MessageDistribution } from "./MessageDistribution";
 import { createRemoteService, DELAY_FOR_API } from "../Constants";
 import { TestListService } from "./TestListService";
 import { NetworkedListService } from "./NetworkedListService";
+import { RemoteStorage} from './RemoteStorage';
 import { type MockLocation } from "../test/MockLocation";
 
-import type { InstanceListable, ModuleListable, ListCollection } from "../types/ListCollection";
+import type { InstanceListable, ListCollection } from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
-import type { MessageDistribution } from "./MessageDistribution";
+import type { MessageDistribution as MessageDistributionType } from "./MessageDistribution";
 import type { NotifyType } from "../types/Actionables";
 
 /*                     TRUTH TABLE
@@ -45,7 +46,7 @@ Note **: MesaggeDistribution class will ensure the data gets to the phone,
 export interface FactoryArtefact {
   currentData: ListCollection<string> | undefined;
   updateData: (a: ListCollection<string>) => void;
-  initData: (loc: Location | MockLocation) => void;
+  initData: (loc: Location | MockLocation, n:NotifyType) => void;
 }
 
 /** A module-wide collection of known variables
@@ -58,7 +59,7 @@ let _idCounter = 1;
  * A hashing function to convert <Structures> to unique-ids
  * Due to small scale here, returns number, not a UUID
  * DO NOT USE IN PRODUCTION BUILDS, OR FOR FEATURES
- 
+
  * @param {object} obj
  * @public
  * @returns {number}
@@ -79,9 +80,9 @@ export function idOf(obj: object): number {
 export async function currentNetworkConfig(
   locb: Location | MockLocation,
   cb: NotifyType,
-  retour: FactoryArtefact | undefined
+  retour: FactoryArtefact 
 ): Promise<void> {
-  let d4: MessageDistribution;
+  let d4: MessageDistributionType;
   if (retour && retour.currentData && (await retour.currentData.poll())) {
     return;
   }
@@ -89,12 +90,12 @@ export async function currentNetworkConfig(
   // Local has no state, so no extra loading data
   const d3 = useLocal();
   const d2 = createRemoteService(locb);
-  if (await d2.poll()) {
-    retour.currentData = new NetworkedListService(d2, d3, cb);
+  if (await d2.poll() ) {
+    retour.currentData = new NetworkedListService(d2 as unknown as DistantStorable, d3, cb, [ RemoteStorage.debugSymbol, LocalCopy.debugSymbol, ]);
   } else {
-    d4 = useMsgDistrib() as MessageDistribution;
+    d4 = useMsgDistrib() as MessageDistributionType;
     d4.forkThread();
-    retour.currentData = new NetworkedListService(d4 as DistantStorable, d3, cb);
+    retour.currentData = new NetworkedListService((d4 as unknown) as DistantStorable, d3, cb, [ MessageDistribution.debugSymbol, LocalCopy.debugSymbol, ]);
   }
 }
 
@@ -122,11 +123,11 @@ export function createDataFactory(
   let retour: FactoryArtefact = createEmptyFactory();
 
   if (Array.isArray(override)) {
-    retour.currentData = new TestListService(override);
-    if (retour.currentData && globalThis._LOGGING_) {
+    retour.currentData = new TestListService(override, cb);
+    if (retour.currentData && import.meta.env.VITEST) {
       console.log("KKK createDataFactory (with a mock) ListData.currentData id:", idOf(retour.currentData));
     }
-    retour.initData = function (): void {};
+    retour.initData = function (a:any, b:any): void {};
     return retour as Readonly<FactoryArtefact>;
   }
 
@@ -162,7 +163,7 @@ export function createEmptyFactory(): FactoryArtefact {
  * @returns {void}
  */
   function updateData(next: ListCollection<string>): void {
-    if (retour.currentData && globalThis._LOGGING_) {
+    if (retour.currentData &&  import.meta.env.VITEST ) {
       console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
     }
     if (!retour.currentData) {
@@ -174,28 +175,30 @@ export function createEmptyFactory(): FactoryArtefact {
     }
     retour.currentData.merge(next);
 
-    if (retour.currentData && globalThis._LOGGING_) {
+    if (retour.currentData &&  import.meta.env.VITEST) {
       console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
     }
   }
 
-  if (retour.currentData && globalThis._LOGGING_) {
+  if (retour.currentData && import.meta.env.VITEST ) {
     console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
   }
 
   return retour satisfies FactoryArtefact;
 }
 
+const PASSBACK = (a: number): void => {};
 // What external modules (aside from test) will gain from accessing.
 // If the module thinks the network situation has changed, it can run initData() again.
-// export const ListData: FactoryArtefact = createDataFactory(undefined, location);
+// const ListData: FactoryArtefact = createDataFactory(undefined, location, PASSBACK);
 
 /**
  * setupCurrentList
  * THIS VERSION DOESNT WAIT FOR ANYTHING
  * Setup the current AList, rather than the known lists.
  * May add further ways to set the list id in later editions.
- 
+ * @DEPRECATED - hard to use with the passback mechanism
+
  * @param {undefined|RouteLocationNormalizedLoadedGeneric} itinéraire - huge great big type is from vue-router
  * @public
  * @returns {Promise<InstanceListable<string>>}
@@ -213,11 +216,12 @@ export function setupCurrentList(
     }
 
     id = extractId(itinéraire.params.index);
-    currentData = ListData.currentData;
+    currentData= {};
+    // currentData = ListData.currentData; // IOIO
     if (currentData) {
       liste = (currentData.get(id) as StdList) ?? EMPTY_LIST;
     }
-    if (currentData && _LOGGING_) {
+    if (currentData && import.meta.env.VITEST) {
       console.log("KKK setupCurrentList currentData id:", idOf(currentData), " AND ", id);
     }
   } catch (e) {
@@ -231,7 +235,7 @@ export function setupCurrentList(
       liste = (currentData.get(backupId) as StdList) ?? EMPTY_LIST;
     }
     id = backupId;
-    if (currentData && _LOGGING_) {
+    if (currentData && import.meta.env.VITEST) {
       console.log("KKK setupCurrentList ERROR clause currentData id:", idOf(currentData));
     }
   }

@@ -1,5 +1,6 @@
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import { PMQUE_TIMER, PMQUE_ATTEMPTS, MSG_THREAD, WORKER_NAME } from "../Constants";
+import { AbstractSelfNameClass } from '../../../common/AbstractSelfNameClass';
 // import { WorkerHandle } from '../types/Workable';
 import type { ShippingStruct, ActionEnum } from "../../../common/types/Messagable";
 import type { BasicThreadable } from "../types/BasicThreadable";
@@ -12,7 +13,7 @@ type Timer = number;
 /**
  * useMsgDistrib
  * a util to create this service
- 
+
  * @public
  * @returns { DistantStorable}
  */
@@ -21,29 +22,31 @@ export function useMsgDistrib(): DistantStorable {
 }
 
 /**
- * MessageDistribution 
- * Class to marshal state between the net-worker thread, and this UI thread 
+ * MessageDistribution
+ * Class to marshal state between the net-worker thread, and this UI thread
 // Sends/recvs messages to the other worker thread that talks to the server
  * This class is chatty, as it is highly likely to slow the UI in a fashion I cannot prohibit.
 
  * @public
  */
-export class MessageDistribution implements DistantStorable, BasicThreadable {
+export class MessageDistribution  extends AbstractSelfNameClass implements DistantStorable, BasicThreadable {
   private state: Array<SaveStruct>;
   //	private worker:WorkerHandle;
   private worker: Worker | null;
   private errMsgs: Array<string>;
   private running: boolean;
   protected goodSource: Readonly<string>;
+  protected static _debugSymbol = Symbol("MessageDistribution");
 
   /**
    * constructor
    * Con'tor, mostly setting default values
- 
+
    * @public
    * @returns {MessageDistribution}
    */
   public constructor() {
+    super();
     this.running = true;
     this.errMsgs = [];
     this.worker = null;
@@ -82,7 +85,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
   /**
    * reapThread
    * Cautiously terminates any threads
- 
+
    * @public
    * @returns {boolean}
    */
@@ -103,7 +106,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
   /**
    * receipt
    * A typical JS on* event handler, for MSG from the other thread/ worker
- 
+
    * WARN: is chatty.
    * @param {MessageEvent} ev
    * @public
@@ -119,7 +122,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
       typeof crossOriginIsolated,
       crossOriginIsolated
     );
-    if (ev.srcElement!.name !== WORKER_NAME) {
+    if (ev.origin !== WORKER_NAME) {
       // if (ev.origin !== this.goodSource) {
       console.warn("Recv msg from un-authorised source " + ev.origin);
       return;
@@ -163,9 +166,9 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
 
   /**
    * poll
-   * Replies if connected to a running server. 
+   * Replies if connected to a running server.
    * has good odds of being positive
- 
+
    * @public
    * @returns {Promise<boolean>}
    */
@@ -178,7 +181,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
   /**
    * getErrors
    * Return a copy of any errors
- 
+
    * @public
    * @returns {Array<string> }
    */
@@ -189,13 +192,13 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
   /**
    * saveState
    * Push current state to thead so can be uploaded to server at a point.
- 
+
    * @param {Array<SaveStruct>} dat
    * @public
    * @returns {Promise<boolean>}
    */
   public saveState(dat: Array<SaveStruct>): Promise<boolean> {
-    if (globalThis._LOGGING_) {
+    if (import.meta.env.VITEST) {
       console.log("TEST sending MSG from the UI to the worker");
     }
     if (!this.worker) {
@@ -215,7 +218,7 @@ export class MessageDistribution implements DistantStorable, BasicThreadable {
   /**
  * loadState
  * Request state from server via thread.
- 
+
  * @public
  * @returns {Promise<Array<SaveStruct>> }
  */

@@ -1,9 +1,11 @@
 import { transform2text, transform2list } from "./Storable";
+import { AbstractSelfNameClass } from '../../../common/AbstractSelfNameClass';
+import { FETCH_TIMEOUT } from "../Constants";
+
 import type { Storable } from "../types/Saveable";
 import type { SaveStruct } from "../../../common/types/SaveStruct";
-import type { DistantStorable, RemoteConfig, APIResponseType } from "../../../common/types/RemoteTypes";
+import type { DistantStorable, RemoteConfig, APIResponseType, RSRemoteConfig } from "../../../common/types/RemoteTypes";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
-import { FETCH_TIMEOUT } from "../Constants";
 
 type NullableTimeout = ReturnType<typeof globalThis.setTimeout> | undefined;
 
@@ -15,12 +17,12 @@ type NullableTimeout = ReturnType<typeof globalThis.setTimeout> | undefined;
 
  * @public
  */
-export class RemoteStorage implements Storable, DistantStorable {
+export class RemoteStorage  extends AbstractSelfNameClass implements Storable, DistantStorable {
   private url: string;
-  private other: RemoteConfig;
+  private other: RSRemoteConfig;
   private cease: boolean;
   protected agent: any;
-  public static debugSymbol = "RemoteStorage";
+  protected static _debugSymbol = Symbol("RemoteStorage");
 
   /**
    * constructor
@@ -30,11 +32,12 @@ export class RemoteStorage implements Storable, DistantStorable {
    * @returns {RemoteStorage}
    */
   public constructor(c: RemoteConfig) {
-    this.url = c.url;
+    super();
+    this.url = c.url+"";
     this.cease = false;
     this.agent = c.agent ?? globalThis.fetch.bind(globalThis);
-    this.other = { ...c };
-    delete this.other.url;
+    const { url, ...rest } = c;  // url local var will be deleted
+    this.other = rest;
   }
 
   public terminateSoon(): void {
@@ -177,20 +180,19 @@ export class RemoteStorage implements Storable, DistantStorable {
             return bad(new Error("776834534563522 Server sent an error http status " + filet.status));
           }
 
-          let tmp = "";
           if (filet.json && (filet.headers.get("Content-Type") as string).startsWith("application/json")) {
             // this will happen in browser stack
-            tmp = await filet.json().then(function (text: string): void {
+            await filet.json().then(function (text: string): void {
               good(transform2list(text));
             });
           } else if (filet.text) {
             // this will happen in browser stack
-            tmp = await filet.text().then(function (text: string): void {
+            await filet.text().then(function (text: string): void {
               good(transform2list(text));
             });
           } else if (filet.body) {
             // this will happen in unit tests
-            tmp = filet.body.toString();
+            let tmp = filet.body.toString();
             good(transform2list(tmp));
           }
         });

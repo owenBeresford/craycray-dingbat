@@ -2,6 +2,7 @@ import { transform2text, transform2list } from "./Storable";
 import type { Storable } from "../types/Saveable";
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import { APP_NAME } from "../Constants";
+import { AbstractSelfNameClass } from '../../../common/AbstractSelfNameClass';
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 
 let LOCAL: LocalCopy;
@@ -27,7 +28,7 @@ export function useLocal(): LocalCopy {
  
  * @public
  */
-export class LocalCopy implements Storable {
+export class LocalCopy extends AbstractSelfNameClass implements Storable {
   /**
    * constructor
    * a noop.
@@ -36,10 +37,12 @@ export class LocalCopy implements Storable {
    * @returns {LocalCopy}
    */
   public constructor() {
+    super();
     // noop
   }
 
-  public static debugSymbol = "LocalCopy";
+
+  protected static _debugSymbol = Symbol("LocalCopy");
 
   /**
    * saveProperty

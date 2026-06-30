@@ -3,7 +3,7 @@ import { createStore, useStore as originalUseStore } from "vuex";
 
 import { APP_NAME, EMPTY_LIST_ID } from "../Constants";
 import type { ShopState } from "../types/ShopState";
-import type { ModuleListable, InstanceListable, MatchedItems } from "../types/ListCollection";
+import type { InstanceListable, MatchedItems } from "../types/ListCollection";
 
 /**
  * mapForHelp

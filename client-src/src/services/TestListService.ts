@@ -4,21 +4,21 @@ import type { ListCollection } from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 import type { NotifyType } from "../types/Actionables";
-
+ 
 /**
- * TestListService 
+ * TestListService
  * TestListService, the class to mediate List storage
  * NEEd: Not include/ import this for production builds.
- 
+
  * @public
  */
 export class TestListService extends ListService implements ListCollection<string> {
-  public static debugSymbol = "TestListService";
+  protected static _debugSymbol = Symbol("TestListService");
 
   /**
    * constructor
    * Normal Con'tor
- 
+
    * @param {Array<TestDataSchema>} src
    * @public
    * @returns {ListService}
@@ -36,7 +36,7 @@ export class TestListService extends ListService implements ListCollection<strin
    * poll
    * Check the remote data-sources are active (Wifi, and API running)
    * NULL IMPLEMEMENTATION
- 
+
    * @public
    * @returns {Promise<boolean>}
    */
@@ -63,9 +63,9 @@ export class TestListService extends ListService implements ListCollection<strin
    * loadAllLists
    * Request data from both remote sources, cache response in local states
    * NULL IMPLEMEMENTATION
- 
+
    * @public
-   * @returns {boolean} 
+   * @returns {boolean}
    */
   public loadAllLists(): boolean {
     let out = true;

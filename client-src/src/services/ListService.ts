@@ -1,6 +1,7 @@
 import { StdList, EMPTY_LIST } from "./AList";
 import { EMPTY_LIST_NAME } from "../Constants";
 import { useLog } from "./LogStack";
+import { AbstractSelfNameClass } from '../../../common/AbstractSelfNameClass';
 
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { Loggable } from "../types/Loggable";
@@ -15,10 +16,10 @@ const log: Loggable = useLog();
  
  * @public
  */
-export class ListService implements ListCollection<string> {
+export class ListService extends AbstractSelfNameClass implements ListCollection<string> {
   protected catalog: Array<StdList>;
   protected notify: NotifyType;
-  public static debugSymbol = "ListService";
+  protected static _debugSymbol = Symbol("ListService");
 
   /**
    * constructor
@@ -28,6 +29,7 @@ export class ListService implements ListCollection<string> {
    * @returns {ListService}
    */
   public constructor(n: NotifyType) {
+    super();
     this.catalog = [EMPTY_LIST];
     this.notify = n;
   }
