@@ -52,7 +52,7 @@ There are no _Lieder_ or _grandes épopées_ involved.  No wigs or swooning and 
 
 -----
 - User4 has strong long sight, and cannot focus on close things at all.  They use a tablet as an outsize phone, or a big screen device.  
-- Assuming the service is deployed locally for them, the app should work as normal on a tablet.  Or f they need a volume of data entry, a big-screen device is also an option.
+- Assuming the service is deployed locally for them, the app should work as normal on a tablet.  Or if they need a volume of data entry, a big-screen device is also an option.
 - Note this solution is outside of this app capacities, but quite likely to happen.   
 
 ---- 
@@ -70,7 +70,7 @@ I haven't made "proper" wirefames or interaction maps, as the process is "follow
 - The things that look like buttons should behave like buttons.   They should support touch, mouse or keyboard inputs.  They should support all the HCI guideline items in normal fashion.   
 - The things that look like a menu should behave like menus (without auto-close as that doesn't help mobile).   On mobile they should scale relevantly, so are readable.
 - As a mobile app (for most usage) this app supports swipe, and this should behave as normal.  It should follow normal HCI guidance for this.   
-- Interactions can be reverted by using the "revert all" menu option.   This will return to your lat persisted state on the server.  This is expected to be when you are are at home, on Wifi, and no deleting things.  Note, technically this is ignorant about other users actions during the time since your last persist.    
+- Interactions can be reverted by using the "revert all" menu option.   This will return to your last persisted state on the server.  This is expected to be when you are are at home, on Wifi, and no deleting things.  Note, technically this is ignorant about other users actions during the time since your last persist.    
 - There is an "install" feature.  This should copy the static code to your local phone cache.   The App runs inside your normal browser (many apps do this vis Electron, but this approach has less *theatre involved).
-- The wording in the UI is likely to evolve, and I think is important for user interactions.   
+- _The wording in the UI is likely to evolve, and I think is important for user interactions._   
 
