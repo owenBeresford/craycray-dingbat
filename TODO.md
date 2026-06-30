@@ -1,5 +1,5 @@
-> [!NOTE] warning:
->  Don't call lists "list X", or all the labelling gets confused "list list X".
+> [!NOTE] 
+> warning: Don't call lists "list X", or all the labelling gets confused "list list X".
 
 
 ### DETAILS TO COMPLETE FOR RELEASE
