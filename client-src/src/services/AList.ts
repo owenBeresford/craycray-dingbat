@@ -3,7 +3,6 @@ import { JsonSerializer, throwError, JsonProperty, JsonObject } from "typescript
 import { EMPTY_LIST_NAME } from "../Constants";
 import type {
   InstanceListable,
-  ModuleListable,
   ListStruct,
   MatchedItems,
   ExtendedListable,

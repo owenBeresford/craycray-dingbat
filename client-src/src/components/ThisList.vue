@@ -75,12 +75,11 @@ import type { Ref } from "vue";
 
 import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
-import { EMPTY_LIST_ID } from "../Constants";
-
+ 
 import { useStore, type COMPLETE_STORE } from "../services/Store";
 import { useUIText } from "../services/Localisation";
 import { extractId } from "../services/util";
-import { setupCurrentList, idOf, type FactoryArtefact } from "../services/DataFactory";
+import { idOf, type FactoryArtefact } from "../services/DataFactory";
 import { StdList, EMPTY_LIST } from "../services/AList";
 import { MotionStream } from "../services/MotionStream";
 import { isMobile, clearSelection } from "../../../common/util";
@@ -171,7 +170,7 @@ export default defineComponent({
   },
 
   created() {
-    if (globalThis._LOGGING_) {
+    if ( import.meta.env.VITEST ) {
       console.debug("KKK ThisList global scope ListData id:", idOf(this.listData));
     }
     this.initGeneratedMethods();

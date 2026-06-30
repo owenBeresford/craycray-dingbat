@@ -81,7 +81,7 @@ export function createRemoteService(loc: Location | WorkerLocation): RemoteStora
   if (
     "process" in globalThis &&
     process.env.NODE_ENV !== "development" &&
-    (!globalThis || (!globalThis.Worker && !("worker_threads" in globalThis)))
+    (!globalThis || (!("Worker" in globalThis) && !("worker_threads" in globalThis)))
   ) {
     throw new Error("9757353545757 Message passing is only possible inside a reasonable browser.");
   }
