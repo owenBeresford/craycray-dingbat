@@ -59,7 +59,7 @@ There are no _Lieder_ or _grandes épopées_ involved.  No wigs or swooning and 
 - User5 has poor motor-control due to lead poisoning and hates small fiddly screens or inputs.   As a side effect do not have great handwriting, and prefer a full keyboard for data management.
 - Assuming the app is deployed, they can use the features via a big-screen device.
    - TODO test keyboard approach abit more thoroughly.   
-> [!WARN]
+> [!WARNING]
 > Note: I cannot properly automate keyboard inputs in JS for security reasons.
 
 -----
