@@ -24,6 +24,7 @@ export const EntirelyPassive: Story = {
   },
 };
 
+const PASSBACK = (a: number): void => {};
 export const TrackTextRendered: Story = {
   args: {
     currentStateKey: "test15",
@@ -111,11 +112,11 @@ export const TrackTextRendered8: Story = {
 
     await step("Rename list", async () => {
       expect(await canvas.findByText("Rename list")).toBeVisible();
-      const NEWDATA = createDataFactory(fixture2(), location);
+      const NEWDATA = createDataFactory(fixture2(), location, PASSBACK);
       if (!NEWDATA.currentData) {
         throw new Error("No data found after fixture loaded??");
       }
-       const STORE = useStore();
+      const STORE = useStore();
       STORE.commit("setId", 1);
 
       const liste1: StdList | undefined = NEWDATA.currentData.get(1) as StdList;
@@ -129,7 +130,7 @@ export const TrackTextRendered8: Story = {
 
     await step("Duplicate list", async () => {
       expect(await canvas.findByText("Duplicate list")).toBeVisible();
-      const NEWDATA = createDataFactory(fixture2(), location);
+      const NEWDATA = createDataFactory(fixture2(), location, PASSBACK);
       if (!NEWDATA.currentData) {
         throw new Error("No data found after fixture loaded??");
       }
@@ -141,7 +142,7 @@ export const TrackTextRendered8: Story = {
 
     await step("Make unique", async () => {
       expect(await canvas.findByText("Make unique")).toBeVisible();
-      const NEWDATA = createDataFactory(fixture5(), location);
+      const NEWDATA = createDataFactory(fixture5(), location, PASSBACK);
       const STORE = useStore();
       if (!NEWDATA.currentData) {
         throw new Error("No data found after fixture loaded??");

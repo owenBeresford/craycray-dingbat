@@ -6,12 +6,13 @@ import type { NavigationGuard, RouteRecordRaw, RouteLocationNormalizedLoadedGene
 
 import SearchList from "../../components/SearchList.vue";
 import UnknownRoute from "../../components/UnknownRoute.vue";
-import { ListData, createDataFactory } from "../../services/DataFactory";
-import { CacheWrapper } from "../../workers/InstallWorker";
+import { createDataFactory } from "../../services/DataFactory";
+// import { CacheWrapper } from "../../workers/InstallWorker";
 import { useStore, STORE } from "../../services/Store";
 import { fixture1, fixture2, fixture3, fixture4, fixture5 } from "../../../../common/fixture-lists";
 // this needs suspence
 
+const PASSBACK = (a: number): void => {};
 const customRoutes: Array<RouteRecordRaw> = [
   {
     path: "/located/:term",
@@ -95,8 +96,6 @@ export const TrackTextRendered3: Story = {
     return {
       components: { SearchList },
       setup() {
-        const { currentData, initData, updateData } = ListData;
-
         return {
           args,
           currentStateKey: "test33",
@@ -112,11 +111,10 @@ export const TrackTextRendered3: Story = {
   // https://storybook.js.org/docs/writing-stories/loaders
   loaders: [
     () => {
-      const { currentData, initData, updateData } = createDataFactory(fixture1(), location);
+      const { currentData, initData, updateData } = createDataFactory(fixture1(), location, PASSBACK);
       if (!currentData) {
         throw new Error();
       }
-      ListData.updateData(currentData);
 
       return {
         currentData,
@@ -126,7 +124,6 @@ export const TrackTextRendered3: Story = {
   ],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const { currentData, initData, updateData } = ListData;
 
     expect(canvas.queryByTestId("test33Results1")).toBeVisible();
     expect(canvas.queryByTestId("test33Results1").children.length).toBeGreaterThan(5);
