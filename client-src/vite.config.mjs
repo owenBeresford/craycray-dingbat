@@ -29,9 +29,6 @@ export default defineConfig({
   server: {
     hmr: false,
   },
-  define: {
-    _LOGGING_: process.env.NODE_ENV !== "production",
-  },
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/main.ts"),
