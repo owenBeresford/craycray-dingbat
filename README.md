@@ -29,9 +29,9 @@ smaller goals:
 
 - A full TS product, aside from some tests made without types for dev speed.  #blah
 - A HTTP2/HTTPS API artefact, despite that fact that Node HTTP2 integration isn't mature/ complete yet. 
-- Service designed for intermittent networking.  This is a local net tool, unless you //want// to send your shopping list to the internet, hosting on a Droplet or AWS tiny adds no user journeys (if that is true, Amazon wish lists already exist).  
+- Service designed for intermittent networking.  This is a local net tool, unless you _want_ to send your shopping list to the internet, hosting on a Droplet or AWS tiny adds no user journeys (if that is true, Amazon wish lists already exist).  
 - Small installation footprint, negligible CPU usage when backgrounded, quite low when active.
-- Similar ideas to a BASE DB, an eventually present data collections.   With not much await delays, but this arch is fiddly to author.   Late devs should use the public facade class to //just// and easily access data.
+- Similar ideas to a BASE DB, an eventually present data collections.   With not much await delays, but this arch is fiddly to author.   Late devs should use the public facade class to _just_ and easily access data.
 - No marketing or 3rd party platforms involved, as unneeded in narrow scope.   
 - Types allow extendable data and features.   This concept is abit over-engineered, as though I was thinking in languages with better type systems. . . . I am.  
 - Classes that can name themselves, aside from a toString().  This is useful for logging and is trivial in Python or PHP, but harder in TS.   An attempt at logging RAM used, available in tests.
