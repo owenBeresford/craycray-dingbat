@@ -72,7 +72,9 @@ I haven't made "proper" wirefames or interaction maps, as the process is "follow
 - The things that look like buttons should behave like buttons.   They should support touch, mouse or keyboard inputs.  They should support all the HCI guideline items in normal fashion.   
 - The things that look like a menu should behave like menus (without auto-close as that doesn't help mobile).   On mobile they should scale relevantly, so are readable.
 - As a mobile app (for most usage) this app supports swipe, and this should behave as normal.  It should follow normal HCI guidance for this.   
-- Interactions can be reverted by using the "revert all" menu option.   This will return to your last persisted state on the server.  This is expected to be when you are are at home, on Wifi, and no deleting things.  Note, technically this is ignorant about other users actions during the time since your last persist.    
+- Interactions can be reverted by using the "revert all" menu option.   This will return to your last persisted state on the server.  This is expected to be when you are are at home, on Wifi, and not deleting things.  
+  - I am using this 1/2 way version of full user timelines, as it makes more sense for shopping lists.   For a shopping list, users are not expecting the same level of detail as Figma offers, and needs to have.
+  - Note, technically "revert all" is ignorant about other users actions during the time since your last persist.  Save frequently to share or maintain your effort.  
 - There is an "install" feature.  This should copy the static code to your local phone cache.   The App runs inside your normal browser (many apps do this vis Electron, but this approach has less *theatre involved).
 - _The wording in the UI is likely to evolve, and I think is important for user interactions._   
 
