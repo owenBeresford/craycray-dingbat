@@ -3,7 +3,7 @@
 ## Goals:
 
 
-A simple and facile app for shopping lists, or lists in general.  To run on our phones.  This is not a product engineer project, I am adding strong process
+A simple and facile app for shopping lists, or lists in general.  To run on our phones.  This is not a product engineer project, I am adding strong process.
 
 
 ## "business english" goals
@@ -20,7 +20,7 @@ smaller goals:
 - Port data between phone and desktop/ laptop easily
 - Be able to copy lists (absent from Google freeware)
 - Write some code that people can see, its not ground breaking.
-- NOTE, the commit log doesn't show in github as I am not making branches per feature, as I am just iteratively patching.   I think that's why.   This project is >300 commits in 2026.  In a work env, I would have less exploration and time-structures.
+- NOTE, the commit log doesn't show in github as I am not making branches per feature, as I am just iteratively patching.   I think that's why.   This project is >300 commits in 2026.  In a work env, I would have less exploration and more time-structures.
 
 
 
@@ -127,11 +127,11 @@ As a data architecture, my Vue components should have:
 
 
 If this was paid work, I would be using a more graphical and less indexable file, from one of:
-* [Figma: The most fancy interaction design tool, running in browser or a native app](https://figma.com "Figma")
-* [Mockplus: Another tool I haven't used, no review](https://www.mockplus.com/blog/post/user-journey-map "Mockplus")
-* [Balsamiq: The old tool that I find much faster to deliver a basic sketch with](https://balsamiq.com/wireframes/cloud/ "Balsamiq")
-* others
+- [Figma: The most fancy interaction design tool, running in browser or a native app](https://figma.com "Figma")
+- [Mockplus: Another tool I haven't used, no review](https://www.mockplus.com/blog/post/user-journey-map "Mockplus")
+- [Balsamiq: The old tool that I find much faster to deliver a basic sketch with](https://balsamiq.com/wireframes/cloud/ "Balsamiq")
+- others
 
-I have moved these to a separate file ./USER-INTERACTIONS.md 
+I have moved these to a [separate file](./USER-INTERACTIONS.md) 
 
 
