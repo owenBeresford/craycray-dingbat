@@ -1,6 +1,9 @@
-Don't call lists "list X", or all the labelling gets confused "list list X".
+| :WARN: Don't call lists "list X", or all the labelling gets confused "list list X".
 
-DETAILS TO COMPLETE FOR RELEASE
+
+### DETAILS TO COMPLETE FOR RELEASE
+
+
 - ESLINT ON VUE FILES
 - increase tests
 - StateSyncing test cover full state map - when threads work.
@@ -15,7 +18,10 @@ DETAILS TO COMPLETE FOR RELEASE
 - maybe lineup state-keys to show net status in later builds
 
 
-LOW IMPACT, nioce to haves
+
+### LOW IMPACT, nioce to haves
+
+
 - When I have stopped iterating, think about adding support for platforms that lack Bash, like win32.
 - Maybe functions can have runtime behaviour from function name, supported by [3rd party Sample code](https://github.com/Guichaguri/cross-caller/blob/main/src/index.ts)
 - Look at eslint-plugin-unicorn, might reduce problems on eslint + TS
@@ -41,9 +47,12 @@ LOW IMPACT, nioce to haves
   - OR drop them... deprecating...
 - Think about [scan barcode on older packet](https://www.actowizsolutions.com/uk-grocery-api-real-time-data-tesco-aldi-asda-sainsburys.php)
 
-Yes, the storybook test use storybook/test module that currently I can't install.   Storybook seems to include it even though its doesn't exist in the correct version ~ mono-repo.   #WorksForMe, I hope it works-for-you.
+Yes, the storybook tests use storybook/test module that currently I can't install.   Storybook seems to include it even though its doesn't exist in the correct version ~ its a mono-repo product.   #WorksForMe, I hope it works-for-you.
+
 
 ### Storybook behaviours
+
+
 I believe this steps are in the Storybook tests
 
 On / or /list-all
