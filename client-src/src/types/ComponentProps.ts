@@ -1,10 +1,11 @@
 import type { RouteRecordNormalized, RouteLocationNormalizedLoadedGeneric } from "vue-router";
 import type { Component } from "vue";
+import type { MethodOptions, Ref } from "vue";
 
 import { StdList, SearchList } from "../services/AList";
 import { CacheWrapper } from "../workers/InstallWorker";
 
-import type { InstanceListable, ModuleListable, ListStruct, ListCollection } from "./ListCollection";
+import type { InstanceListable, ListStruct, ListCollection } from "./ListCollection";
 import type { Loggable } from "./Loggable";
 import type { Motionable } from "./Motionable";
 import type { LocalCopy } from "../services/LocalCopy";
@@ -14,6 +15,11 @@ import type { COMPLETE_STORE } from "../services/Store";
 import type { CBType } from "./Actionables";
 import type { FactoryArtefact } from "../services/DataFactory";
 import type { TabBarCtx } from "../types/Actionables";
+import type { ThisListCtx , SearchCtx} from "../types/Actionables";
+
+/* Interfaces for the data that is expected to be components.
+This should make error spotting faster.  */
+
 
 export interface ListOfListsProps {
   instanceId: string;
@@ -182,7 +188,7 @@ export interface ThisListSetupValues {
   helpText: string;
   canSeeHelp: boolean;
   ttl: number;
-  listRef: Ref<StdList<string>>;
+  listRef: Ref<StdList>;
   draggingRef: Ref<Array<boolean>>;
   gestureRef: Ref<Array<string>>;
 }
