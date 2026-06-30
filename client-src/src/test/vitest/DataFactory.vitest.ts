@@ -22,7 +22,7 @@ describe("test on DataFactory ", () => {
     expectTypeOf(OBJ).toExtend<FactoryArtefact>();
 
     assertType<(a: ListCollection<string>) => void>(OBJ.updateData);
-    assertType<(loc: Location | MockLocation, n:NotifyType) => void>(OBJ.initData);
+    assertType<(loc: Location | MockLocation, n: NotifyType) => void>(OBJ.initData);
 
     // async function DataFactory(): Promise<ListCollection<string>>
     console.log(
@@ -47,6 +47,6 @@ describe("test on DataFactory ", () => {
     OBJ.updateData(REPLACE1);
     expect(OBJ.currentData).not.toBe(undefined);
     expect(OBJ.currentData?.get(1)).not.toBe(undefined);
-    expect((OBJ.currentData?.get(1) as WholeClass<string> ).nom).toBe("list 2");
+    expect((OBJ.currentData?.get(1) as WholeClass<string>).nom).toBe("list 2");
   });
 });

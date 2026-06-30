@@ -1,6 +1,6 @@
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import { PMQUE_TIMER, PMQUE_ATTEMPTS, MSG_THREAD, WORKER_NAME } from "../Constants";
-import { AbstractSelfNameClass } from '../../../common/AbstractSelfNameClass';
+import { AbstractSelfNameClass } from "../../../common/AbstractSelfNameClass";
 // import { WorkerHandle } from '../types/Workable';
 import type { ShippingStruct, ActionEnum } from "../../../common/types/Messagable";
 import type { BasicThreadable } from "../types/BasicThreadable";
@@ -29,7 +29,7 @@ export function useMsgDistrib(): DistantStorable {
 
  * @public
  */
-export class MessageDistribution  extends AbstractSelfNameClass implements DistantStorable, BasicThreadable {
+export class MessageDistribution extends AbstractSelfNameClass implements DistantStorable, BasicThreadable {
   private state: Array<SaveStruct>;
   //	private worker:WorkerHandle;
   private worker: Worker | null;

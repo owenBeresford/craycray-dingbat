@@ -1,5 +1,5 @@
 import { transform2text, transform2list } from "./Storable";
-import { AbstractSelfNameClass } from '../../../common/AbstractSelfNameClass';
+import { AbstractSelfNameClass } from "../../../common/AbstractSelfNameClass";
 import { FETCH_TIMEOUT } from "../Constants";
 
 import type { Storable } from "../types/Saveable";
@@ -17,7 +17,7 @@ type NullableTimeout = ReturnType<typeof globalThis.setTimeout> | undefined;
 
  * @public
  */
-export class RemoteStorage  extends AbstractSelfNameClass implements Storable, DistantStorable {
+export class RemoteStorage extends AbstractSelfNameClass implements Storable, DistantStorable {
   private url: string;
   private other: RSRemoteConfig;
   private cease: boolean;
@@ -33,10 +33,10 @@ export class RemoteStorage  extends AbstractSelfNameClass implements Storable, D
    */
   public constructor(c: RemoteConfig) {
     super();
-    this.url = c.url+"";
+    this.url = c.url + "";
     this.cease = false;
     this.agent = c.agent ?? globalThis.fetch.bind(globalThis);
-    const { url, ...rest } = c;  // url local var will be deleted
+    const { url, ...rest } = c; // url local var will be deleted
     this.other = rest;
   }
 

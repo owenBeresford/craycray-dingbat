@@ -3,7 +3,7 @@ import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vite
 import { CacheWrapper, useCacheWrapper } from "../../workers/InstallWorker";
 import { APP_NAME, APP_VERSION, REMOTE_HOST, INSTALLED } from "../../Constants";
 
-// WARN: this test is destructive !!
+ // WARN: this test is destructive !!
 console.log(" WARN: this test is destructive !!");
 
 describe("test on InstallWorker ", () => {

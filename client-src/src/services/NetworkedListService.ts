@@ -8,7 +8,7 @@ import type { LocalCopy } from "./LocalCopy";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
 //import type { Listable, ListStruct } from "../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
-import type {AbstractSelfNameClass} from '../../../common/AbstractSelfNameClass';
+import type { AbstractSelfNameClass } from "../../../common/AbstractSelfNameClass";
 import type { NotifyType } from "../types/Actionables";
 
 /**
@@ -32,16 +32,13 @@ export class NetworkedListService extends ListService {
    * @public
    * @returns {ListService}
    */
-  public constructor(loin: DistantStorable, proche: LocalCopy, notify: NotifyType, loggingSymbols:Array<Symbol> )  {
+  public constructor(loin: DistantStorable, proche: LocalCopy, notify: NotifyType, loggingSymbols: Array<Symbol>) {
     super(notify);
     this.remote = loin;
     this.local = proche;
-    if (import.meta.env.VITEST ) {
+    if (import.meta.env.VITEST) {
       console.log(
-        "NetworkListService created & injected with: (remote) " +
-          loggingSymbols[0] +
-          " (local) " +
-          loggingSymbols[1]
+        "NetworkListService created & injected with: (remote) " + loggingSymbols[0] + " (local) " + loggingSymbols[1]
       );
     }
     this.loadAllLists();

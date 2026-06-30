@@ -1,7 +1,7 @@
 import { StdList, EMPTY_LIST } from "./AList";
 import { EMPTY_LIST_NAME } from "../Constants";
 import { useLog } from "./LogStack";
-import { AbstractSelfNameClass } from '../../../common/AbstractSelfNameClass';
+import { AbstractSelfNameClass } from "../../../common/AbstractSelfNameClass";
 
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { Loggable } from "../types/Loggable";

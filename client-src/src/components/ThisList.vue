@@ -75,7 +75,7 @@ import type { Ref } from "vue";
 
 import EnterInput from "./EnterInput.vue";
 import InterstitialView from "./InterstitialView.vue";
- 
+
 import { useStore, type COMPLETE_STORE } from "../services/Store";
 import { useUIText } from "../services/Localisation";
 import { extractId } from "../services/util";
@@ -170,7 +170,7 @@ export default defineComponent({
   },
 
   created() {
-    if ( import.meta.env.VITEST ) {
+    if (import.meta.env.VITEST) {
       console.debug("KKK ThisList global scope ListData id:", idOf(this.listData));
     }
     this.initGeneratedMethods();

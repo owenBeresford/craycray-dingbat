@@ -15,11 +15,10 @@ import type { COMPLETE_STORE } from "../services/Store";
 import type { CBType } from "./Actionables";
 import type { FactoryArtefact } from "../services/DataFactory";
 import type { TabBarCtx } from "../types/Actionables";
-import type { ThisListCtx , SearchCtx} from "../types/Actionables";
+import type { ThisListCtx, SearchCtx } from "../types/Actionables";
 
 /* Interfaces for the data that is expected to be components.
 This should make error spotting faster.  */
-
 
 export interface ListOfListsProps {
   instanceId: string;

@@ -1,12 +1,7 @@
 import { JsonSerializer, throwError, JsonProperty, JsonObject } from "typescript-json-serializer";
 
 import { EMPTY_LIST_NAME } from "../Constants";
-import type {
-  InstanceListable,
-  ListStruct,
-  MatchedItems,
-  ExtendedListable,
-} from "../types/ListCollection";
+import type { InstanceListable, ListStruct, MatchedItems, ExtendedListable } from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 
 /**

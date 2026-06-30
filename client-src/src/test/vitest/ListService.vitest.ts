@@ -73,7 +73,7 @@ describe("I can use ListService", () => {
         return;
       }
       const ls: ListCollection<string> = FACT.currentData;
-      expect( await ls.poll()).toBe(true);
+      expect(await ls.poll()).toBe(true);
       // something to enumerate other states
       good(true);
     });

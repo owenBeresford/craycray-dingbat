@@ -105,7 +105,7 @@ describe("Simple component test 1", () => {
       cb: cb,
       currentStateKey: "test1",
     };
- 
+
     const BLOB = mount(EnterInput, {
       props: FakeProps,
       global: {
@@ -134,9 +134,9 @@ describe("Simple component test 1", () => {
     await delay(1000);
     expect(BLOB.find(SEARCH).exists()).toBe(true);
     console.log("after", BLOB.html() );
-  
-    expect(BLOB.find(SEARCH).exists()).toBe(true); 
-    expect(BLOB.find("#txt").text()).toBe("hello world"); 
+
+    expect(BLOB.find(SEARCH).exists()).toBe(true);
+    expect(BLOB.find("#txt").text()).toBe("hello world");
   });
 
   it("test visibility works", async (done) => {
@@ -183,7 +183,7 @@ describe("Simple component test 1", () => {
         expect(BLOB.find(SEARCH).exists()).toBe(true);
         console.log("after", (new Date()).getTime(), BLOB.html());
 
-        expect(BLOB.find(SEARCH).exists()).toBe(true);  
+        expect(BLOB.find(SEARCH).exists()).toBe(true);
         expect(getComputedStyle(BLOB.find(SEARCH).element).getPropertyValue("display")).toBe("block");
         done2();
     });

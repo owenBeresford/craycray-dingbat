@@ -4,7 +4,7 @@ import type { ListCollection } from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 import type { NotifyType } from "../types/Actionables";
- 
+
 /**
  * TestListService
  * TestListService, the class to mediate List storage

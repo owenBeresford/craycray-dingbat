@@ -11,7 +11,7 @@ import { useMsgDistrib, MessageDistribution } from "./MessageDistribution";
 import { createRemoteService, DELAY_FOR_API } from "../Constants";
 import { TestListService } from "./TestListService";
 import { NetworkedListService } from "./NetworkedListService";
-import { RemoteStorage} from './RemoteStorage';
+import { RemoteStorage } from "./RemoteStorage";
 import { type MockLocation } from "../test/MockLocation";
 
 import type { InstanceListable, ListCollection } from "../types/ListCollection";
@@ -46,7 +46,7 @@ Note **: MesaggeDistribution class will ensure the data gets to the phone,
 export interface FactoryArtefact {
   currentData: ListCollection<string> | undefined;
   updateData: (a: ListCollection<string>) => void;
-  initData: (loc: Location | MockLocation, n:NotifyType) => void;
+  initData: (loc: Location | MockLocation, n: NotifyType) => void;
 }
 
 /** A module-wide collection of known variables
@@ -80,7 +80,7 @@ export function idOf(obj: object): number {
 export async function currentNetworkConfig(
   locb: Location | MockLocation,
   cb: NotifyType,
-  retour: FactoryArtefact 
+  retour: FactoryArtefact
 ): Promise<void> {
   let d4: MessageDistributionType;
   if (retour && retour.currentData && (await retour.currentData.poll())) {
@@ -90,12 +90,18 @@ export async function currentNetworkConfig(
   // Local has no state, so no extra loading data
   const d3 = useLocal();
   const d2 = createRemoteService(locb);
-  if (await d2.poll() ) {
-    retour.currentData = new NetworkedListService(d2 as unknown as DistantStorable, d3, cb, [ RemoteStorage.debugSymbol, LocalCopy.debugSymbol, ]);
+  if (await d2.poll()) {
+    retour.currentData = new NetworkedListService(d2 as unknown as DistantStorable, d3, cb, [
+      RemoteStorage.debugSymbol,
+      LocalCopy.debugSymbol,
+    ]);
   } else {
     d4 = useMsgDistrib() as MessageDistributionType;
     d4.forkThread();
-    retour.currentData = new NetworkedListService((d4 as unknown) as DistantStorable, d3, cb, [ MessageDistribution.debugSymbol, LocalCopy.debugSymbol, ]);
+    retour.currentData = new NetworkedListService(d4 as unknown as DistantStorable, d3, cb, [
+      MessageDistribution.debugSymbol,
+      LocalCopy.debugSymbol,
+    ]);
   }
 }
 
@@ -127,7 +133,7 @@ export function createDataFactory(
     if (retour.currentData && import.meta.env.VITEST) {
       console.log("KKK createDataFactory (with a mock) ListData.currentData id:", idOf(retour.currentData));
     }
-    retour.initData = function (a:any, b:any): void {};
+    retour.initData = function (a: any, b: any): void {};
     return retour as Readonly<FactoryArtefact>;
   }
 
@@ -163,7 +169,7 @@ export function createEmptyFactory(): FactoryArtefact {
  * @returns {void}
  */
   function updateData(next: ListCollection<string>): void {
-    if (retour.currentData &&  import.meta.env.VITEST ) {
+    if (retour.currentData && import.meta.env.VITEST) {
       console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
     }
     if (!retour.currentData) {
@@ -175,12 +181,12 @@ export function createEmptyFactory(): FactoryArtefact {
     }
     retour.currentData.merge(next);
 
-    if (retour.currentData &&  import.meta.env.VITEST) {
+    if (retour.currentData && import.meta.env.VITEST) {
       console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
     }
   }
 
-  if (retour.currentData && import.meta.env.VITEST ) {
+  if (retour.currentData && import.meta.env.VITEST) {
     console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
   }
 
@@ -216,7 +222,7 @@ export function setupCurrentList(
     }
 
     id = extractId(itinéraire.params.index);
-    currentData= {};
+    currentData = {};
     // currentData = ListData.currentData; // IOIO
     if (currentData) {
       liste = (currentData.get(id) as StdList) ?? EMPTY_LIST;
