@@ -17,7 +17,7 @@ DETAILS TO COMPLETE FOR RELEASE
 
 LOW IMPACT, nioce to haves
 - When I have stopped iterating, think about adding support for platforms that lack Bash, like win32.
-- Maybe functions can have runtime behaviour from function name, supported by https://github.com/Guichaguri/cross-caller/blob/main/src/index.ts
+- Maybe functions can have runtime behaviour from function name, supported by [3rd party Sample code](https://github.com/Guichaguri/cross-caller/blob/main/src/index.ts)
 - Look at eslint-plugin-unicorn, might reduce problems on eslint + TS
 - Maybe lineup state-keys to show net status in later builds
 - Scroll to top marker, if the list is longer than the page
@@ -26,7 +26,7 @@ LOW IMPACT, nioce to haves
 - find my list local IP code 
 - Localisation getting placeholders/ formatstr, then map ListOfList
 - this might be child components being ready before parent.  [Vue warn]: injection "shopping" not found.
-- Work out if I can afford to strip my "disable TS when its limitations are loud and annoying" https://dev.to/softwarejutsu/understanding-typescripts-comments-ts-ignore-ts-expect-error-and-friends-38p9
+- Work out if I can afford to strip my ["disable TS when its current limitations are loud and annoying"](https://dev.to/softwarejutsu/understanding-typescripts-comments-ts-ignore-ts-expect-error-and-friends-38p9)
 - implement my DOCS file (JSON validation)
 - look at atomic IO in Node.  #leSigh.  A write isn't likely to collide with a read, but if it did the reader gets a mess.
 - Maybe lineup state-keys to show net status in later builds
@@ -36,12 +36,11 @@ LOW IMPACT, nioce to haves
 - Add the better validation on transform2list
    - This has low value, as data will be been validated before
 - A larger project may gain from Mutex'  https://github.com/orimay/async-ts
-- For higher levels of SPA arch than needed here, add CustomElements https://www.npmjs.com/package/@vitejs/plugin-vue 
+- For higher levels of SPA arch than needed here, [Adding CustomElements](https://www.npmjs.com/package/@vitejs/plugin-vue) 
 - look at closure generators to hold my "module variable" static vars safe after compilation/ bundling
   - OR drop them... deprecating...
-- Think about scan barcode on older packet https://www.actowizsolutions.com/uk-grocery-api-real-time-data-tesco-aldi-asda-sainsburys.php
+- Think about [scan barcode on older packet](https://www.actowizsolutions.com/uk-grocery-api-real-time-data-tesco-aldi-asda-sainsburys.php)
 
-set NODE_ENV="TEST" for tests
 Yes, the storybook test use storybook/test module that currently I can't install.   Storybook seems to include it even though its doesn't exist in the correct version ~ mono-repo.   #WorksForMe, I hope it works-for-you.
 
 ### Storybook behaviours
