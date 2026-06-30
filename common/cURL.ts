@@ -59,7 +59,7 @@ export async function runExecProcessOnUrl(url: string, extra: RequestInit | unde
       let headers = parseHeaders(annoying2);
       let h2 = new Headers();
       for (let i in headers.resp) {
-        if(i && i.length>3) {
+        if(i && i.length>3 && i.indexOf('HTTP/2') ===-1) {
           h2.append(i, headers.resp[i]);
         }
       }
