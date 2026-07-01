@@ -270,7 +270,7 @@ describe("test on RemoteStorage ", () => {
         );
         assert.fail(
           (e as Error).message,
-          "Server sent an error http status 404",
+          "8456423234242 Server sent an error http status 404",
           "Test class returned error " + (e as Error).message,
           "==="
         );
@@ -321,7 +321,7 @@ describe("test on RemoteStorage ", () => {
         );
       })
       .catch((e: unknown) => {
-        console.log("ERR API ERR HANDLER");
+        console.log("EXPECTED ERROR ERR API ERR HANDLER");
         assert.isTrue(
           new Date().getTime() - d1.getTime() < 1100,
           "to download data from the local server must take less than 1 s"

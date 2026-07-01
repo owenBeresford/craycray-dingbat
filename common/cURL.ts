@@ -57,18 +57,22 @@ export async function runExecProcessOnUrl(url: string, extra: RequestInit | unde
       let annoying1: string = (stdout as any) instanceof Buffer ? stdout.toString() : stdout;
       let annoying2: string = (stderr as any) instanceof Buffer ? stderr.toString() : stderr;
       let headers = parseHeaders(annoying2);
-      let h2 = new Headers();
+       let h2 = new Headers();
       for (let i in headers.resp) {
-        if(i && i.length>3 && i.indexOf('HTTP/2') ===-1) {
-          h2.append(i, headers.resp[i]);
+        if(i && i.length>3 ) {
+          if( i.indexOf('HTTP/2') ===0 ) {
+            // the parseInt is to cleanly strip whitespace
+            h2.append("status", ""+parseInt(i.substring( i.indexOf(' '), 10) ));
+          } else {
+            h2.append(i, headers.resp[i]);
+          }
         }
       }
-
-      let exit: SimpleResponse = {
+       let exit: SimpleResponse = {
         body: annoying1.trim(),
         headers: h2,
-        ok: Math.floor(parseInt(headers.resp["status"], 10) / 100) === 2,
-        status: parseInt(headers.resp["status"], 10),
+        ok: Math.floor(parseInt(h2.get('status') ??"", 10) / 100) === 2,
+        status: parseInt(h2.get('status') ?? "", 10),
       } as SimpleResponse;
       return good(exit);
     }
