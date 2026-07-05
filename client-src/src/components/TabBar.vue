@@ -19,13 +19,13 @@
           <span
             class="menuTrigger"
             aria-haspopup="menu"
-            :aria-pressed="menuStateRef.value"
+            :aria-pressed="ctx.menuStateRef.value"
             role="button"
             @click.prevent="onMenu"
             @keypress="onMenu"
             :title="menu.actualMenuTitle"
           ></span>
-          <menu class="menuTrigger" role="navigation" :data-testId="menuId" :aria-hidden="!menuStateRef.value">
+          <menu class="menuTrigger" role="navigation" :data-testId="menuId" :aria-hidden="!ctx.menuStateRef.value">
             <li>
               <span
                 role="button"
@@ -213,10 +213,10 @@ export default defineComponent({
     } else if (CACHE.check()) {
       état += " disabled";
     }
-
+ 
     return {
       installEnabled: état,
-      installEnabledBool: (état.match(/disabled/g) || []).length === 0,
+      installEnabledBool: location.protocol === "https:" && CACHE.check(),
       EIK: this.$props.currentStateKey + "false",
       inputId: this.testId + "input1",
       menuId: this.testId + "Menu1",
@@ -252,7 +252,12 @@ export default defineComponent({
   },
   computed: {
     hasDataAndList(): boolean {
-      return !(this.dataOnLoad.value && Object.keys(this.route.params).length > 0);
+      if( this.route.name === "a-list" ) {
+        return !(this.dataOnLoad && Object.keys(this.route.params).length > 0);
+      }
+      // if(this.route.name === "list-everything") 
+      // if(this.route.name === "serps") {
+      return !this.dataOnLoad;
     },
   },
   mounted() {

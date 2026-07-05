@@ -102,4 +102,4 @@ export abstract class BaseActions<I> implements ExternalMethods<I> {
  * @public
  * @returns {void}
  */
-export function noop(str: string | null): void {}
+export function noop(str: string | null): void {};
