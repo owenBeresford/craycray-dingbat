@@ -46,12 +46,14 @@ export class BaseList<T> implements InstanceListable<T>, ListStruct {
   /**
    * manual
    * like a con'tor, named as the super class needs the con'tor slot.
+   * Read te whole function for complete types, JSDoc doent work with generiucs completely.
 
    * @param { "new (): V" } this - TS magic to have correct type at runtime for any child class
-   * @param {string} nouveau
+   * @param {string} nom
+   * @param {number} id
    * @public
    * @static 
-   * @returns {StdList}
+   * @returns {V}
    */
   public static manual<V1, V extends BaseList<V1>>(this: { new (): V }, nom: string, id: number): V {
     let liste = new this();
@@ -68,6 +70,7 @@ export class BaseList<T> implements InstanceListable<T>, ListStruct {
    * importTest
    * a util func to get Fixtures into the local StdList[]
    * Hope the type magic holds in tests etc.  This *should* genericly choose the correct type.
+   * Read te whole function for complete types, JSDoc doent work with generiucs completely.
    * THIS IS STATIC, and makes a new object.   There is also StdList->importTest which mutates that object.
  
    * @param { "new (): V" } this - TS magic to have correct type at runtime for any child class

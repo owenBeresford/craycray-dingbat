@@ -45,8 +45,8 @@ Note **: MesaggeDistribution class will ensure the data gets to the phone,
 // This interface should be kept here, as I think it will mutate
 export interface FactoryArtefact {
   currentData: ListCollection<string> | undefined;
-  updateData: (a: ListCollection<string>) => void;
-  initData: (loc: Location | MockLocation, n: NotifyType) => void;
+  updateData (a: ListCollection<string>) :void;
+  initData (loc: Location | MockLocation, n: NotifyType): void;
 }
 
 /** A module-wide collection of known variables
@@ -72,8 +72,11 @@ export function idOf(obj: object): number {
 /**
  * currentNetworkConfig
  * A "use function" to create ListCollections, which has different composition depending on network settings
- * @TODO add simplification when Storybook or Vitest is running
-
+ * @todo add simplification when Storybook or Vitest is running
+ *
+ * @param {Location | MockLocation} locb 
+ * @param {NotifyType} cb 
+ * @param {FactoryArtefact} retour 
  * @public
  * @returns {Promise<void >}
  */
@@ -118,6 +121,8 @@ export async function currentNetworkConfig(
      Run an E2E test instead, maybe accessing/ modifying firewall rules.
 
   @param {Array<TestDataSchema>|undefined} override ~ supported to initialise Fixtures
+  @param {Location | MockLocation} loc
+  @param {NotifyType} cb 
   @public
   @returns {FactoryArtefact} - see above tuple interface
  */
@@ -141,6 +146,13 @@ export function createDataFactory(
   return retour satisfies FactoryArtefact;
 }
 
+/**
+ * createEmptyFactory
+ * The synchronous aspect to make a FactoryArtefact
+ 
+ * @public
+ * @returns {createEmptyFactory}
+ */
 export function createEmptyFactory(): FactoryArtefact {
   let retour: FactoryArtefact = {} as FactoryArtefact;
   retour.currentData = undefined;
@@ -193,7 +205,10 @@ export function createEmptyFactory(): FactoryArtefact {
   return retour satisfies FactoryArtefact;
 }
 
-const PASSBACK = (a: number): void => {};
+// A fixture empty callbacxk for tests, 
+//  to be used in NotifyType slots  
+export const PASSBACK = (a: number): void => {};
+
 // What external modules (aside from test) will gain from accessing.
 // If the module thinks the network situation has changed, it can run initData() again.
 // const ListData: FactoryArtefact = createDataFactory(undefined, location, PASSBACK);
@@ -203,13 +218,13 @@ const PASSBACK = (a: number): void => {};
  * THIS VERSION DOESNT WAIT FOR ANYTHING
  * Setup the current AList, rather than the known lists.
  * May add further ways to set the list id in later editions.
- * @DEPRECATED - hard to use with the passback mechanism
+ * @deprecated - hard to use with the passback mechanism
 
  * @param {undefined|RouteLocationNormalizedLoadedGeneric} itinéraire - huge great big type is from vue-router
  * @public
  * @returns {Promise<InstanceListable<string>>}
  */
-export function setupCurrentList(
+function setupCurrentList(
   itinéraire: undefined | RouteLocationNormalizedLoadedGeneric
 ): InstanceListable<string> {
   let id: number = 0;

@@ -194,6 +194,7 @@ export class MotionStream<T> implements Motionable<T> {
    * See {MOBILE_THRESHOLD} and {BIG_THRESHOLD} 
  
    * @param {Vector} delta
+   * @param {boolean} mob   - trigger the mobile ratios rather than desktop
    * @public
    * @returns {boolean}
    */

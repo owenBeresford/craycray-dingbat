@@ -21,6 +21,7 @@ export class NetworkedListService extends ListService {
   // has implied AbstractSelfNameClass from ListService
   protected remote: DistantStorable;
   protected local: LocalCopy;
+  /* An accessible variable to classes know their name after minification */
   protected static _debugSymbol = Symbol("NetworkedListService");
 
   /**
@@ -29,6 +30,8 @@ export class NetworkedListService extends ListService {
 
    * @param {DistantStorable} loin
    * @param {LocalCopy} proche
+   * @param {NotifyType } notify
+   * @param {Array<Symbol>} loggingSymbols
    * @public
    * @returns {ListService}
    */
@@ -41,6 +44,7 @@ export class NetworkedListService extends ListService {
         "NetworkListService created & injected with: (remote) " + loggingSymbols[0] + " (local) " + loggingSymbols[1]
       );
     }
+    // This is async washed, but works in practice.  
     this.loadAllLists();
   }
 

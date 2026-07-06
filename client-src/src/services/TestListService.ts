@@ -13,6 +13,7 @@ import type { NotifyType } from "../types/Actionables";
  * @public
  */
 export class TestListService extends ListService implements ListCollection<string> {
+/* An accessible variable to classes know their name after minification */
   protected static _debugSymbol = Symbol("TestListService");
 
   /**
@@ -20,6 +21,7 @@ export class TestListService extends ListService implements ListCollection<strin
    * Normal Con'tor
 
    * @param {Array<TestDataSchema>} src
+   * @param {NotifyType} n - a feedback callback to notify Vue stack on data changes 
    * @public
    * @returns {ListService}
    */
