@@ -62,7 +62,7 @@ function updateListCount(nu: number): void {
   listCountRef.value = nu;
 }
 await currentNetworkConfig(location, updateListCount, data);
- // listCountRef.value SHOULD be updated inside DataFactory.currentNetworkConfig
+// listCountRef.value SHOULD be updated inside DataFactory.currentNetworkConfig
 console.timeEnd("boot-data-connection");
 TOOL.provide("helpText", "menu");
 TOOL.provide("canSeeHelp", DEFAULT_HELP_SHOW);
@@ -75,4 +75,3 @@ TOOL.provide("log", useLog());
 STORE.install(TOOL, APP_NAME);
 TOOL.mount(ROOT_NODE);
 console.timeEnd("boot-app");
- 

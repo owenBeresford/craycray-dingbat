@@ -213,7 +213,7 @@ export default defineComponent({
     } else if (CACHE.check()) {
       état += " disabled";
     }
- 
+
     return {
       installEnabled: état,
       installEnabledBool: location.protocol === "https:" && CACHE.check(),
@@ -252,10 +252,10 @@ export default defineComponent({
   },
   computed: {
     hasDataAndList(): boolean {
-      if( this.route.name === "a-list" ) {
+      if (this.route.name === "a-list") {
         return !(this.dataOnLoad && Object.keys(this.route.params).length > 0);
       }
-      // if(this.route.name === "list-everything") 
+      // if(this.route.name === "list-everything")
       // if(this.route.name === "serps") {
       return !this.dataOnLoad;
     },

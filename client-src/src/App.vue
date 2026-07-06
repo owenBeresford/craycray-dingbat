@@ -1,7 +1,7 @@
 <template>
   <VErrorBoundary
     :fall-back="safeFailover"
-    :params="{ testid: 'eb-failOver1', currentStateKey: currentStateKey, error_info:info }"
+    :params="{ testid: 'eb-failOver1', currentStateKey: currentStateKey, error_info: info }"
     v-slot="{ error }"
     stop-propagation
   >

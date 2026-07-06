@@ -129,7 +129,7 @@ export default defineComponent({
 
     const log: Loggable = inject<Loggable>("log");
     const dataOnLoad: Ref<number> = inject<Ref<number>>("dataOnLoad").listCountRef;
-    
+
     const ttl: number = inject<number>("ttl");
     const helpText: string = inject<string>("helpText");
     const canSeeHelp: boolean = inject<boolean>("canSeeHelp");
@@ -141,7 +141,7 @@ export default defineComponent({
     let stack: ExternalMethods;
     try {
       const flux = new MotionStream<ThisListCtx>();
-      const liste: StdList = listData.currentData.get(extractId(itinéraire.params.index ?? EMPTY_LIST_ID)) // ?? EMPTY_LIST;
+      const liste: StdList = listData.currentData.get(extractId(itinéraire.params.index ?? EMPTY_LIST_ID)); // ?? EMPTY_LIST;
 
       const listRef: Ref<StdList> = ref<StdList>(liste);
       let dragging: Array<boolean> = Array(liste.énumérer);
@@ -162,7 +162,7 @@ export default defineComponent({
         listRef,
         ttl,
         draggingRef,
-        dataOnLoad,  // this is a Ref
+        dataOnLoad, // this is a Ref
         gestureRef,
         ctx: { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef } as ThisListCtx,
       } satisfies ThisListSetupValues;

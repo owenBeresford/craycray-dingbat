@@ -43,10 +43,8 @@
 <script lang="ts">
 // https://github.com/josueggh/a11y-cheatsheet
 import { defineComponent, inject } from "vue";
-import { onErrorCaptured, type ComponentPublicInstance } from 'vue';
+import { onErrorCaptured, type ComponentPublicInstance } from "vue";
 import { useRoute } from "vue-router";
-import type { RouteRecordNormalized } from "vue-router";
-import type { MethodOptions } from "vue";
 
 import InterstitialView from "./InterstitialView.vue";
 import { LOGO_PATH } from "../Constants";
@@ -59,7 +57,6 @@ import { useUIText } from "../services/Localisation";
 import { MotionStream } from "../services/MotionStream";
 import { LogService } from "../services/LogStack";
 import { useSearchActions, SearchActions } from "../services/SearchActions";
-
 
 import type { MatchedItems } from "../types/ListCollection";
 import type { FactoryArtefact } from "../services/DataFactory";
@@ -89,15 +86,14 @@ export default defineComponent({
     },
   } satisfies SearchProps,
   setup(props: SearchProps): SearchSetupState {
-    
     const helpText: string = inject<string>("helpText");
     const canSeeHelp: boolean = inject<boolean>("canSeeHelp");
     const ttl: string = inject<number>("ttl");
     const log: LogService = inject<LogService>("log");
     const listData: FactoryArtefact = inject<FactoryArtefact>("listData");
-    onErrorCaptured((err:unknown, instance:ComponentPublicInstance | null, info:string) => {
-      console.error('Caught by boundary:', (err as Error), info);
-      log.addRaw("SearchResults.setup(): " + (err as Error).message+" "+ info, "error");
+    onErrorCaptured((err: unknown, instance: ComponentPublicInstance | null, info: string):void => {
+      console.error("Error found in search results setup :", err as Error, info);
+      log.addRaw("SearchResults.setup(): " + (err as Error).message + " " + info, "error");
     });
 
     let stack: ExternalMethods;
@@ -105,8 +101,8 @@ export default defineComponent({
       const flux = new MotionStream<SearchCtx>();
       const list: SearchList = SearchList.serps(listData.currentData.searchItems(props.term));
       stack = useSearchActions(list, flux, listData);
-            
-     // log.addRaw("User query: " + props.term, "info");
+
+      // log.addRaw("User query: " + props.term, "info");
       return {
         extraMethods: stack.mount({}, stack),
         helpText,
@@ -150,7 +146,7 @@ export default defineComponent({
     // here 'init' is a contraction of 'initialised'.  Maybe I should have written i10d
     initList(): Array<MatchedItems> {
       if ("list" in this && this.list instanceof SearchList) {
-        let tmp:Array<MatchedItems> = this.list.export();
+        let tmp: Array<MatchedItems> = this.list.export();
         for (let i in tmp) {
           let tmp2 = tmp[i].item;
           tmp2 = tmp2.replace(/[ \t\"\']/g, "_");

@@ -135,14 +135,14 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
    */
   public list(): Array<ListStruct> {
     const liste: Array<ListStruct> = [];
-    if(this.catalog.length===1) {
+    if (this.catalog.length === 1) {
       // if there is no data, return EMPTY_LIST to ensure rest of system works
       liste.push(this.catalog[0].view());
       return liste;
-    } 
+    }
     //  eslint-disable-next-line no-restricted-syntax, guard-for-in
     for (const i in this.catalog) {
-      if(this.catalog[i].id!==EMPTY_LIST_ID) {
+      if (this.catalog[i].id !== EMPTY_LIST_ID) {
         liste.push(this.catalog[i].view());
       }
     }
@@ -159,7 +159,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
    */
   public get(id: number): StdList | undefined {
     if (this.isNotValidId(id) || !(id in this.catalog)) {
-      console.warn("ERROR: Cannot load list with id=" + id );
+      console.warn("ERROR: Cannot load list with id=" + id);
       return undefined;
     }
     let objet = this.catalog[id];
@@ -221,7 +221,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
       });
       ret.push(...tmp2);
     }
-    log.addRaw("Search results of " + égaler + " are " + ret.length+" items.", "info");
+    log.addRaw("Search results of " + égaler + " are " + ret.length + " items.", "info");
     return ret;
   }
 

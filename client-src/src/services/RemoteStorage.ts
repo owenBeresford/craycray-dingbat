@@ -118,7 +118,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
         .then(async (goutte: Response | void): Promise<void> => {
           if (goutte) {
             if (!goutte.ok) {
-              return bad(new Error("8456423234242 Server sent an error http status " + goutte.status ));
+              return bad(new Error("8456423234242 Server sent an error http status " + goutte.status));
             }
             let ret = "";
             if (goutte.body) {
@@ -131,7 +131,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
               if ("statusCode" in filet && parseInt(filet.statusCode, 10) > 299) {
                 // this branch here should not be used; as all the responses have a proper
                 // HTTP status code
-                return bad(new Error("56678324536456 Server sent an error http status " + filet.statusCode  ));
+                return bad(new Error("56678324536456 Server sent an error http status " + filet.statusCode));
               } else {
                 return good(true);
               }

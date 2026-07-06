@@ -97,7 +97,7 @@ export async function currentNetworkConfig(
     ]);
   } else {
     d4 = useMsgDistrib() as MessageDistributionType;
-    d4.forkThread();  // not async, as JS isnt here 
+    d4.forkThread(); // not async, as JS isnt here
     retour.currentData = new NetworkedListService(d4 as unknown as DistantStorable, d3, cb, [
       MessageDistribution.debugSymbol,
       LocalCopy.debugSymbol,
