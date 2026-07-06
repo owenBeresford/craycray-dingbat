@@ -125,12 +125,14 @@ export default defineComponent({
   //  setup(props: ThisListProps) {
   setup(): ThisListSetupValues {
     const itinéraire: RouteLocationNormalizedLoadedGeneric = useRoute();
+    const listData: FactoryArtefact = inject<FactoryArtefact>("listData");
 
+    const log: Loggable = inject<Loggable>("log");
+    const dataOnLoad: Ref<number> = inject<Ref<number>>("dataOnLoad").listCountRef;
+    
+    const ttl: number = inject<number>("ttl");
     const helpText: string = inject<string>("helpText");
     const canSeeHelp: boolean = inject<boolean>("canSeeHelp");
-    const listData: FactoryArtefact = inject<FactoryArtefact>("listData");
-    const ttl: number = inject<number>("ttl");
-    const log: Loggable = inject<Loggable>("log");
 
     const canSeeInputRef: Ref<boolean> = ref<boolean>(false);
     const getInputRef: Ref<string> = ref<string>("");
@@ -139,7 +141,7 @@ export default defineComponent({
     let stack: ExternalMethods;
     try {
       const flux = new MotionStream<ThisListCtx>();
-      const liste: StdList = listData.currentData.get(extractId(itinéraire.params.index ?? EMPTY_LIST_ID));
+      const liste: StdList = listData.currentData.get(extractId(itinéraire.params.index ?? EMPTY_LIST_ID)) // ?? EMPTY_LIST;
 
       const listRef: Ref<StdList> = ref<StdList>(liste);
       let dragging: Array<boolean> = Array(liste.énumérer);
@@ -160,6 +162,7 @@ export default defineComponent({
         listRef,
         ttl,
         draggingRef,
+        dataOnLoad,  // this is a Ref
         gestureRef,
         ctx: { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef } as ThisListCtx,
       } satisfies ThisListSetupValues;
@@ -210,8 +213,8 @@ export default defineComponent({
       return this.$props.currentStateKey + "view";
     },
     actualList(): Array<string> {
-      if (this.listRef.value) {
-        return this.listRef.value.export<string>();
+      if (this.listRef) {
+        return this.listRef.export<string>();
       }
       return [] as Array<string>;
     },

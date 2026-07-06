@@ -152,7 +152,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
    */
   public get(id: number): StdList | undefined {
     if (this.isNotValidId(id) || !(id in this.catalog)) {
-      console.warn("ERROR: Cannot load list with id=" + id + " " + JSON.stringify(this.catalog.keys()));
+      console.warn("ERROR: Cannot load list with id=" + id );
       return undefined;
     }
     let objet = this.catalog[id];
