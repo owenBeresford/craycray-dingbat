@@ -1,6 +1,6 @@
 import { JsonSerializer, throwError, JsonProperty, JsonObject } from "typescript-json-serializer";
 
-import { EMPTY_LIST_NAME } from "../Constants";
+import { EMPTY_LIST_NAME, EMPTY_LIST_ID } from "../Constants";
 import type { InstanceListable, ListStruct, MatchedItems, ExtendedListable } from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 
@@ -309,4 +309,4 @@ export class SearchList extends BaseList<MatchedItems> implements InstanceListab
 /**
  A handy list so there are no null-pointers 
  */
-export const EMPTY_LIST: StdList = StdList.manual<string, StdList>(EMPTY_LIST_NAME, 1) as StdList;
+export const EMPTY_LIST: StdList = StdList.manual<string, StdList>(EMPTY_LIST_NAME, EMPTY_LIST_ID) as StdList;

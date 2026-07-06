@@ -4,6 +4,7 @@
     <p>
       Please <strong>do not refresh</strong> the page as this will not help access your local server. This App does
       actively attempt to get data and be useful.
+      {{error_info}} 
     </p>
 
     <p>Returning to the <router-link class="button" :to="linkAll"> catalogue screen</router-link> may have data.</p>
@@ -28,6 +29,8 @@ export default defineComponent({
     currentStateKey: { type: String, required: true },
     testId: { type: String, default: "test0" },
     id: { type: Number, default: 0 }, // Default is flag value.  0 is not a valid id.
+    error: { type:Object,  },
+    error_info: { type:String,  }, 
   },
   data() {
     const itinéraire: RouteLocationNormalizedLoadedGeneric = useRoute();

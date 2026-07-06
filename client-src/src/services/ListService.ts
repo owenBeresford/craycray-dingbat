@@ -1,5 +1,5 @@
 import { StdList, EMPTY_LIST } from "./AList";
-import { EMPTY_LIST_NAME } from "../Constants";
+import { EMPTY_LIST_NAME, EMPTY_LIST_ID } from "../Constants";
 import { useLog } from "./LogStack";
 import { AbstractSelfNameClass } from "../../../common/AbstractSelfNameClass";
 
@@ -135,9 +135,16 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
    */
   public list(): Array<ListStruct> {
     const liste: Array<ListStruct> = [];
+    if(this.catalog.length===1) {
+      // if there is no data, return EMPTY_LIST to ensure rest of system works
+      liste.push(this.catalog[0].view());
+      return liste;
+    } 
     //  eslint-disable-next-line no-restricted-syntax, guard-for-in
     for (const i in this.catalog) {
-      liste.push(this.catalog[i].view());
+      if(this.catalog[i].id!==EMPTY_LIST_ID) {
+        liste.push(this.catalog[i].view());
+      }
     }
     return liste;
   }
@@ -214,10 +221,17 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
       });
       ret.push(...tmp2);
     }
-    log.addRaw("Search results of " + égaler + " are " + ret, "info");
+    log.addRaw("Search results of " + égaler + " are " + ret.length+" items.", "info");
     return ret;
   }
 
+  /**
+   * listNames
+   * Return the name of each list in the current catalogue
+ 
+   * @public
+   * @returns {Array<string>} 
+   */
   public listNames(): Array<string> {
     let nom: Array<string> = [];
     for (let i = 0; i < this.catalog.length; i++) {

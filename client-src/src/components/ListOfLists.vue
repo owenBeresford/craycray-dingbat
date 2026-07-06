@@ -100,7 +100,7 @@ export default defineComponent({
       // DO NOT DELETE, unless making the this.listData.currentData reactive and inside the Vue engine
       let _ = this.dataOnLoad.listCountRef.value;
       let chose: Array<ListStruct> = [];
-      if (this.listData.currentData) {
+      if (this.listData && this.listData.currentData) {
         chose = this.listData.currentData.list();
       }
       return chose;

@@ -1,7 +1,8 @@
 <template>
   <VErrorBoundary
     :fall-back="safeFailover"
-    :params="{ testid: 'eb-failOver1', currentStateKey: currentStateKey }"
+    :params="{ testid: 'eb-failOver1', currentStateKey: currentStateKey, error_info:info }"
+    v-slot="{ error }"
     stop-propagation
   >
     <Suspense :key="currentStateKey">
@@ -24,7 +25,7 @@
 import { defineComponent, Suspense, shallowRef } from "vue";
 import VErrorBoundary from "vue-error-boundary";
 
-import { TTL_FOR_HELP, DEFAULT_HELP_SHOW, LOGGING_ENABLED } from "./Constants";
+import { LOGGING_ENABLED } from "./Constants";
 import { useLog } from "./services/LogStack";
 import type { MainAppProps, MainAppStaticData } from "./types/ComponentProps";
 

@@ -367,7 +367,7 @@ function createSearchCallback(ctx: TabBarCtx): void {
       return;
     }
 
-    LOG.addRaw("Search running against for " + d1, "info");
+    LOG.addRaw("Search running for '" + d1+"'", "info");
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     ctx.visibleRef.value = false;
     StaticRoutes.push({

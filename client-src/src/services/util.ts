@@ -30,7 +30,7 @@ export function extractId(src: string | string[] | null): number {
   if (cp < 1) {
     throw new Error("Illegal shopping list id " + JSON.stringify(src));
   }
-  return cp - 1;
+  return cp;
 }
 
 let ID_OFFSET = 0;
