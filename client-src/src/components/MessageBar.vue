@@ -42,7 +42,7 @@ export default defineComponent({
   },
   methods: {
     refresh: function (e: GuessEvent): void {
-      console.log("Data pretend refresh");
+      console.debug("Data pretend refresh");
     },
   },
   computed: {

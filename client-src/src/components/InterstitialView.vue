@@ -189,7 +189,7 @@ export default defineComponent({
       for (let i = 0; i < HELP_TEXT_NAMES.length; i++) {
         setTimeout(() => {
           this.store.commit("show", true);
-          console.log("Trying help text: " + HELP_TEXT_NAMES[i], mapForHelp(this.store, HELP_TEXT_NAMES[i]), i);
+          console.debug("Trying help text: " + HELP_TEXT_NAMES[i], mapForHelp(this.store, HELP_TEXT_NAMES[i]), i);
           return this.changeText(HELP_TEXT_NAMES[i]);
         }, (i + 1) * this.ttl);
       }

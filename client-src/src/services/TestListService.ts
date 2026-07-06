@@ -29,7 +29,7 @@ export class TestListService extends ListService implements ListCollection<strin
       // Id0 is not a valid list-id, it is reserved for error spotting.
       this.put(i + 1, StdList.importTest(src[i]));
     }
-    console.log(`Imported a initial state of ${src.length} TEST items.`);
+    console.debug(`Imported a initial state of ${src.length} TEST items.`);
   }
 
   /**

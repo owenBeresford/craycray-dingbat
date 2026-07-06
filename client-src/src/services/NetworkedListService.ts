@@ -37,7 +37,7 @@ export class NetworkedListService extends ListService {
     this.remote = loin;
     this.local = proche;
     if (import.meta.env.VITEST) {
-      console.log(
+      console.debug(
         "NetworkListService created & injected with: (remote) " + loggingSymbols[0] + " (local) " + loggingSymbols[1]
       );
     }
@@ -53,7 +53,7 @@ export class NetworkedListService extends ListService {
    */
   public terminate(): void {
     if (import.meta.env.VITEST) {
-      console.log("NetworkListService being destroyed");
+      console.debug("NetworkListService being destroyed");
     }
     if (this.remote && typeof this.remote === "object") {
       (this.remote as RemoteStorage).terminateSoon();
