@@ -53,6 +53,7 @@ import { useStore } from "../services/Store";
 import { StdList, SearchList, BaseList } from "../services/AList";
 
 import { mapURL } from "../services/URLs";
+import { StaticRoutes } from "./Routing";
 import { useUIText } from "../services/Localisation";
 import { MotionStream } from "../services/MotionStream";
 import { LogService } from "../services/LogStack";
@@ -100,7 +101,7 @@ export default defineComponent({
     try {
       const flux = new MotionStream<SearchCtx>();
       const list: SearchList = SearchList.serps(listData.currentData.searchItems(props.term));
-      stack = useSearchActions(list, flux, listData);
+      stack = useSearchActions(list, flux, listData, StaticRoutes);
 
       // log.addRaw("User query: " + props.term, "info");
       return {

@@ -1,13 +1,12 @@
 import { defineComponent } from "vue";
 import type { MethodOptions, Ref } from "vue";
-import type { RouteRecordNormalized } from "vue-router";
+import type { RouteRecordNormalize, Router } from "vue-router";
 
 import { BaseActions } from "./BaseActions";
-
 import { SearchList, StdList } from "./AList";
 import { MotionStream } from "./MotionStream";
 import { isMobile, clearSelection } from "../../../common/util";
-import { StaticRoutes } from "../components/Routing";
+// import { StaticRoutes } from "../components/Routing";
 
 import type { FactoryArtefact } from "./DataFactory";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
@@ -21,15 +20,17 @@ import type { ExternalMethods, UserAction, CBType, SearchCtx } from "../types/Ac
  * @param {SearchList} a
  * @param {MotionStrea<SearchCtx>} b
  * @param {FactoryArtefact} c
+ * @param {Router}  d
  * @public
  * @returns {ExternalMethods } - actually a SearchActions instance
  */
 export function useSearchActions(
   a: SearchList,
   b: MotionStream<SearchCtx>,
-  c: FactoryArtefact
+  c: FactoryArtefact,
+  d: Router,
 ): ExternalMethods<SearchCtx> {
-  return new SearchActions(a, b, c);
+  return new SearchActions(a, b, c, d);
 }
 
 /**
@@ -44,32 +45,34 @@ export class SearchActions extends BaseActions<SearchCtx> implements ExternalMet
   protected list: SearchList;
   protected flux: MotionStream<SearchCtx>;
   protected data: FactoryArtefact;
-
+  protected allRoutes: Router; 
   protected offset: number;
 
   /**
  * Boring con'tor
  * This has params to make building unit-tests easier.
- // NOTE:  not injected: StaticRoutes
- *
+  *
  * @param {SearchList} al
  * @param {MotionStream} ms
  * @param { FactoryArtefact} ld
  * @public
  * @returns {ExternalMethods}
  */
-  public constructor(al: SearchList, ms: MotionStream<SearchCtx>, ld: FactoryArtefact) {
+  public constructor(al: SearchList, ms: MotionStream<SearchCtx>, ld: FactoryArtefact, rr:Router) {
     super();
     this.offset = 0;
     this.list = al;
     this.flux = ms;
     this.data = ld;
-
+    this.allRoutes=rr;
     if (!this.list) {
-      throw new Error("The results aren't populated, this module makes no sense");
+      throw new Error("97464564345 The results aren't populated, this module makes no sense");
     }
     if (!this.flux) {
-      throw new Error("The service class (MotionStream) for processing user gestures is absent");
+      throw new Error("8723459563534534 The service class (MotionStream) for processing user gestures is absent");
+    }
+    if(! this.allRoutes) {
+      throw new Error("823467234745234235 The routes object is missing  ");
     }
     this.flux.register("0", this.onSwipeFinalise.bind(this));
   }
@@ -134,6 +137,6 @@ export class SearchActions extends BaseActions<SearchCtx> implements ExternalMet
       buff.add(tmp[i].item);
     }
     this.data.currentData!.append(buff);
-    StaticRoutes.push({ name: "list-everything" });
+    this.allRoutes.push({ name: "list-everything" });
   }
 }

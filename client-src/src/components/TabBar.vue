@@ -137,6 +137,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useStore } from "../services/Store";
 import { useCacheWrapper, CacheWrapper } from "../workers/InstallWorker";
 import { mapURL } from "../services/URLs";
+import { StaticRoutes } from "./Routing";
 import { useUIText } from "../services/Localisation";
 import { useTabActions, noop, TabActions } from "../services/TabActions";
 import { EMPTY_LIST_ID } from "../Constants";
@@ -185,7 +186,7 @@ export default defineComponent({
 
     let stack: ExternalMethods;
     try {
-      stack = useTabActions(useStore(), listData, useCacheWrapper(), useRoute());
+      stack = useTabActions(useStore(), listData, useCacheWrapper(), useRoute(), StaticRoutes);
       return {
         extraMethods: stack.mount(
           { visibleRef, getInputRef, CBRef, storeRef, menuStateRef } satisfies TabBarCtx,

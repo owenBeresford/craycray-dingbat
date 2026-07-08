@@ -1,9 +1,9 @@
-import type { RouteLocationNormalizedLoadedGeneric } from "vue-router";
+import type { RouteLocationNormalizedLoadedGeneric, Router } from "vue-router";
 
 import { BaseActions } from "./BaseActions";
 import { StdList } from "./AList";
-import { CacheWrapper } from "../workers/InstallWorker";
-import { StaticRoutes } from "../components/Routing";
+import type { CacheWrapper } from "../workers/InstallWorker";
+// import { StaticRoutes } from "../components/Routing";
 import { hashState } from "../../../common/util";
 import { extractId } from "./util";
 import { useUIText } from "./Localisation";
@@ -23,6 +23,7 @@ import type { ExternalMethods, CBType, TabBarCtx } from "../types/Actionables";
  * @param {FactoryArtefact} b
  * @param {CacheWrapper} c
  * @param {RouteLocationNormalizedLoadedGeneric} d
+ * @param {Router} e
  * @public
  * @returns {ExternalMethods}
  */
@@ -30,9 +31,10 @@ export function useTabActions(
   a: COMPLETE_STORE,
   b: FactoryArtefact,
   c: CacheWrapper,
-  d: RouteLocationNormalizedLoadedGeneric
+  d: RouteLocationNormalizedLoadedGeneric,
+  e: Router
 ): ExternalMethods<TabBarCtx> {
-  let tmp = new TabActions(d, a, c, b);
+  let tmp = new TabActions(d, a, c, b, e);
   if (b.currentData) {
     tmp.loadedStateKey = hashState(b.currentData.list());
   }
@@ -53,18 +55,19 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
   protected route: RouteLocationNormalizedLoadedGeneric;
   protected cache: CacheWrapper;
   protected data: FactoryArtefact;
+  protected allRoutes: Router;
 
   public loadedStateKey: string;
 
   /**
  * Boring con'tor
  * This has params to make building unit-tests easier.
- // NOTE:  not injected: StaticRoutes
  *
  * @param {RouteLocationNormalizedLoadedGeneric} rr
  * @param {shopStore} ss
  * @param {CacheWrapper} ca
  * @param {FactoryArtefact} ld
+ * @param {Router} ee
  * @public
  * @returns {ExternalMethods}
  */
@@ -72,13 +75,15 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
     rr: RouteLocationNormalizedLoadedGeneric,
     ss: COMPLETE_STORE,
     ca: CacheWrapper,
-    ld: FactoryArtefact
+    ld: FactoryArtefact,
+    ee: Router
   ) {
     super();
     this.route = rr;
     this.store = ss;
     this.cache = ca;
     this.data = ld;
+    this.allRoutes=ee;
 
     if (!this.store) {
       throw new Error("23465345685687 The Store of ShopState isn't present");
@@ -91,6 +96,9 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
     }
     if (!this.route) {
       throw new Error("2434363586786 The vue Route isn't present");
+    }
+    if(! this.allRoutes) {
+      throw new Error("2434363586786 The vue Router isn't present");
     }
     if (this.store.state.currentURL !== this.route.path) {
       this.store.commit("setPath", this.route.path);
@@ -210,7 +218,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
     } else {
       LOG.addRaw("Attempt duplicate list? BUT list not found for '" + this.store.state.currentId + "'.", "warn");
     }
-    StaticRoutes.push({ name: "list-everything" });
+    this.allRoutes.push({ name: "list-everything" });
   }
 
   /**
@@ -282,7 +290,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
    */
   public onSearch(ignored: GuessEvent, ctx: TabBarCtx): void {
     ctx.getInputRef.value = "";
-    createSearchCallback(ctx);
+    createSearchCallback(ctx, this.allRoutes);
     ctx.visibleRef.value = true;
     ctx.menuStateRef.value = false;
   }
@@ -305,7 +313,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
       return;
     }
 
-    createNameCallback(ctx, this.data);
+    createNameCallback(ctx, this.data, this.allRoutes);
     ctx.getInputRef.value = liste.nom ?? TEXT.get("menu.renameSupport");
     ctx.visibleRef.value = true;
 
@@ -322,10 +330,11 @@ export { noop } from "./BaseActions";
 
  * @param {TabBarCtx} ctx
  * @param { FactoryArtefact } data
+ * @param {Router} routes
  * @public
  * @returns {void}
  */
-function createNameCallback(ctx: TabBarCtx, data: FactoryArtefact): void {
+function createNameCallback(ctx: TabBarCtx, data: FactoryArtefact, routes:Router): void {
   ctx.CBRef.value = (d1: string | null): any => {
     if (d1 === null) {
       ctx.visibleRef.value = false;
@@ -347,7 +356,7 @@ function createNameCallback(ctx: TabBarCtx, data: FactoryArtefact): void {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     data.currentData.put(ctx.storeRef.value.state.currentId as number, liste);
     ctx.visibleRef.value = false;
-    StaticRoutes.push({ name: "list-everything" });
+    routes.push({ name: "list-everything" });
   };
 }
 
@@ -357,10 +366,11 @@ function createNameCallback(ctx: TabBarCtx, data: FactoryArtefact): void {
  * very IMPURE
 
  * @param {TabBarCtx} ctx
+ * @param {Router} routes
  * @public
  * @returns {void}
  */
-function createSearchCallback(ctx: TabBarCtx): void {
+function createSearchCallback(ctx: TabBarCtx, routes:Router): void {
   ctx.CBRef.value = (d1: string | null): any => {
     if (d1 === null || d1 === "") {
       ctx.visibleRef.value = false;
@@ -370,7 +380,7 @@ function createSearchCallback(ctx: TabBarCtx): void {
     LOG.addRaw("Search running for '" + d1 + "'", "info");
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     ctx.visibleRef.value = false;
-    StaticRoutes.push({
+    routes.push({
       name: "serps",
       params: { term: d1 },
     });
