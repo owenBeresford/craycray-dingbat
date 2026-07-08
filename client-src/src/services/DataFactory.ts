@@ -237,7 +237,7 @@ function setupCurrentList(
     }
 
     id = extractId(itinéraire.params.index);
-    currentData = {};
+    currentData = {} as ListCollection<string>;
     // currentData = ListData.currentData; // IOIO
     if (currentData) {
       liste = (currentData.get(id) as StdList) ?? EMPTY_LIST;

@@ -37,7 +37,8 @@ export abstract class BaseActions<I> implements ExternalMethods<I> {
       // an iterator function because JS is clear and well organised,
       // @see [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/iterator]
       // #leSigh.
-      [Symbol.iterator]():Iterator<ExternalMethods<I>> {
+      [Symbol.iterator]() {
+   //   :Iterator<ExternalMethods<I>> {
         const ar = Object.values(this);
         let i = 0;
         return {
@@ -63,7 +64,7 @@ export abstract class BaseActions<I> implements ExternalMethods<I> {
     let fna: Array<string> = Object.getOwnPropertyNames(Object.getPrototypeOf(cls)).filter(
       (x) => x.indexOf("on") === 0
     );
-    for (const i of myArray.keys()) {
+    for (const i of fna.keys()) {
       (ret as Record<string, any>)[fna[i]] = this.wrapper(this, (this as Record<string, any>)[fna[i]], ctx);
     }
     return ret;
@@ -79,7 +80,7 @@ export abstract class BaseActions<I> implements ExternalMethods<I> {
    * @public
    * @returns {UserAction }
    */
-  protectred wrapper(SELF: BaseActions<I>, f1: UserAction<I>, ctx: I): UserAction<I> {
+  protected wrapper(SELF: BaseActions<I>, f1: UserAction<I>, ctx: I): UserAction<I> {
     return function (e: GuessEvent): boolean {
       if (e.type && e.type === "mouseup") {
         LOG.addRaw("event action in Base, mouse UP event", "debug");

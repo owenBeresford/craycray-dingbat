@@ -41,6 +41,7 @@ export class LocalCopy extends AbstractSelfNameClass implements Storable {
     // noop
   }
 
+  /* An accessible variable to classes know their name after minification */
   protected static _debugSymbol = Symbol("LocalCopy");
 
   /**

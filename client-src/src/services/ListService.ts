@@ -19,6 +19,7 @@ const log: Loggable = useLog();
 export class ListService extends AbstractSelfNameClass implements ListCollection<string> {
   protected catalog: Array<StdList>;
   protected notify: NotifyType;
+  /* An accessible variable to classes know their name after minification */
   protected static _debugSymbol = Symbol("ListService");
 
   /**

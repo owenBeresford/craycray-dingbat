@@ -36,6 +36,7 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
   private errMsgs: Array<string>;
   private running: boolean;
   protected goodSource: Readonly<string>;
+  /* An accessible variable to classes know their name after minification */
   protected static _debugSymbol = Symbol("MessageDistribution");
 
   /**

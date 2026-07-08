@@ -22,6 +22,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
   private other: RSRemoteConfig;
   private cease: boolean;
   protected agent: any;
+  /* An accessible variable to classes know their name after minification */
   protected static _debugSymbol = Symbol("RemoteStorage");
 
   /**
