@@ -9,6 +9,7 @@ import {
 } from "vitest";
 
 import { TEST_ONLY } from "../../../../common/cURL";
+import { TEST_LOCATION_URL } from '../../Constants';
 
 const fixture1 = [
   "HTTP/2 200 \r\n" +
@@ -40,14 +41,14 @@ const fixture1 = [
 ];
 const fixture2 = [
   "HEAD /api/shared-state HTTP/\r\n" +
-    "Host: app.hiss:3001\r\n" +
+    "Host: app.hiss:3001\r\n" +  // cant map to const
     "accept: */*\r\n" +
     "accept-language: en-GB,en;q=0.9,nl;q=0.8,de-DE;q=0.7,de;q=0.6\r\n" +
     "cache-control: no-cache\r\n" +
     "content-type: application/json\r\n" +
     "pragma: no-cache\r\n" +
     "priority: u=1, i\r\n" +
-    "referer: https://app.hiss:3001/list/3\r\n" +
+    "referer: "+TEST_LOCATION_URL+"/list/3\r\n" +
     'sec-ch-ua: "Chromium";v="149", "Not)A;Brand";v="24"\r\n' +
     "sec-ch-ua-mobile: ?0\r\n" +
     'sec-ch-ua-platform: "Linux"\r\n' +
