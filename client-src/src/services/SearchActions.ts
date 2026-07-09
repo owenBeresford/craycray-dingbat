@@ -1,6 +1,6 @@
 import { defineComponent } from "vue";
 import type { MethodOptions, Ref } from "vue";
-import type { RouteRecordNormalize, Router } from "vue-router";
+import type { RouteRecordNormalized, Router } from "vue-router";
 
 import { BaseActions } from "./BaseActions";
 import { SearchList, StdList } from "./AList";
