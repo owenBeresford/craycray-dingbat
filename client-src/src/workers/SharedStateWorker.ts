@@ -73,7 +73,7 @@ export class SharedStateWorker implements DataPipeline {
             .saveState(json)
             .then((dat: boolean): boolean => {
               if (import.meta.env.VITEST) {
-                console.log("Save said " + dat);
+                console.debug("Save said tersely " + dat);
               }
               good(true);
               return true;
