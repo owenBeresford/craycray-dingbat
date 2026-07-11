@@ -39,15 +39,17 @@ export function transform2list(dat: string | object): Array<SaveStruct> {
       thing = JSON.parse(dat);
     } else {
       thing = dat;
+      //  Add validation steps here at some point
+      // Can use AList/StdList
     }
   } catch (e: unknown) {
     console.warn("52382354357457 JSON parsing broke " + (e as Error).message);
+    throw new Error("52382354357457 Unable to send data to server (got bad data)");
   }
 
   if (!Array.isArray(thing)) {
-    throw new Error("345723456455 This should be an Array");
+    throw new Error("345723456455 Unable to send data to server (Array needed)");
   }
-  // Push into AList, then export to SaveStruct
   return thing as Array<SaveStruct>;
 }
 

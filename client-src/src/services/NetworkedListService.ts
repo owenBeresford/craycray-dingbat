@@ -41,11 +41,12 @@ export class NetworkedListService extends ListService {
     this.local = proche;
     if (import.meta.env.VITEST) {
       console.debug(
-        "NetworkListService created & injected with: (remote) " + loggingSymbols[0] + " (local) " + loggingSymbols[1]
+        "NetworkListService created & injected with: (remote) " + loggingSymbols[0].toString() + " (local) " + loggingSymbols[1].toString()
       );
-    }
+    } else {
     // This is async washed, but works in practice.  
-    this.loadAllLists();
+      this.loadAllLists();
+    }
   }
 
   /**
