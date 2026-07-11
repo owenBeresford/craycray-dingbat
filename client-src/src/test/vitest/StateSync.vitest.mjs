@@ -32,7 +32,7 @@ describe("test on StateSync ", () => {
 	});
 */
   it("Can run StateSync", async () => {
-    const w = await new Worker(
+    const w = new Worker(
       new URL("../../workers/StateSyncing", import.meta.url),
       { type: "module" }
     );
@@ -55,5 +55,5 @@ describe("test on StateSync ", () => {
       w.terminate();
       console.log("TEST complete");
     });
-  }, 10_000);
+  }, 1_000);
 });
