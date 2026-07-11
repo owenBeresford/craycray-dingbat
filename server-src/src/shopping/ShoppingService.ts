@@ -21,9 +21,9 @@ const SOL_STORE_IMAGE = path.join(base, "dist", "private", "list.json");
 
 console.log("For " + process.pid + ", my data file is " + SOL_STORE_IMAGE);
 /**
- * ShoppingService 
- * An actual class 
- 
+ * ShoppingService
+ * An actual class
+
  * @public
  */
 export class ShoppingService {
@@ -33,7 +33,6 @@ export class ShoppingService {
   /**
    * constructor
    * A plain con'tor
- 
    * @public
    */
   constructor() {
@@ -44,7 +43,7 @@ export class ShoppingService {
   /**
    * load
    * An API call implementation to return data in the local DB
- 
+
    * @public
    * @returns <string> - the whole file contents, without adjustments
    */
@@ -65,7 +64,7 @@ export class ShoppingService {
   /**
    * merge
    * A non-public function to use the newest copy of each item in two lists of lists
- 
+
    * @param {Array<SaveStruct>} left
    * @param {Array<SaveStruct>} right
    * @public
@@ -98,7 +97,7 @@ export class ShoppingService {
    * actualSave
    * Flush data to disk.
    * MAYBE RENAME
- 
+
    * @param {Array<SaveStruct>} dat
    * @public
    * @returns {Promise<string>}
@@ -122,7 +121,7 @@ export class ShoppingService {
   /**
    * inner
    * A unpublished until that validates inbound data and does some transforms
- 
+
    * @param {string} data
    * @public
    * @returns {void}
@@ -154,8 +153,8 @@ export class ShoppingService {
 
   /**
    * typeAssert
-   * A util to check data is the right shape 
- 
+   * A util to check data is the right shape
+
    * @param {Array<any>} newer
    * @public
    * @returns {Array<SaveStruct>}
@@ -186,7 +185,7 @@ export class ShoppingService {
   /**
    * save
    * The API point implementation to persist the clients data
- 
+
    * @param {Array<SaveStruct>} left
    * @public
    * @return {Promise<string>}
@@ -201,7 +200,7 @@ export class ShoppingService {
     return local
       .readFile({ encoding: "utf8" })
       .then(this.inner.bind(this))
-      .then(() => {
+      .finally(() => {
         local.close();
         return this.actualSave(this.merge(this.left, this.right));
       });
