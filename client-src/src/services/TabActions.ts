@@ -60,17 +60,17 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
   public loadedStateKey: string;
 
   /**
- * Boring con'tor
- * This has params to make building unit-tests easier.
- *
- * @param {RouteLocationNormalizedLoadedGeneric} rr
- * @param {shopStore} ss
- * @param {CacheWrapper} ca
- * @param {FactoryArtefact} ld
- * @param {Router} ee
- * @public
- * @returns {ExternalMethods}
- */
+   * Boring con'tor
+   * This has params to make building unit-tests easier.
+   *
+   * @param {RouteLocationNormalizedLoadedGeneric} rr
+   * @param {shopStore} ss
+   * @param {CacheWrapper} ca
+   * @param {FactoryArtefact} ld
+   * @param {Router} ee
+   * @public
+   * @returns {ExternalMethods}
+   */
   public constructor(
     rr: RouteLocationNormalizedLoadedGeneric,
     ss: COMPLETE_STORE,
@@ -83,7 +83,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
     this.store = ss;
     this.cache = ca;
     this.data = ld;
-    this.allRoutes=ee;
+    this.allRoutes = ee;
 
     if (!this.store) {
       throw new Error("23465345685687 The Store of ShopState isn't present");
@@ -97,7 +97,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
     if (!this.route) {
       throw new Error("2434363586786 The vue Route isn't present");
     }
-    if(! this.allRoutes) {
+    if (!this.allRoutes) {
       throw new Error("2434363586786 The vue Router isn't present");
     }
     if (this.store.state.currentURL !== this.route.path) {
@@ -334,7 +334,7 @@ export { noop } from "./BaseActions";
  * @public
  * @returns {void}
  */
-function createNameCallback(ctx: TabBarCtx, data: FactoryArtefact, routes:Router): void {
+function createNameCallback(ctx: TabBarCtx, data: FactoryArtefact, routes: Router): void {
   ctx.CBRef.value = (d1: string | null): any => {
     if (d1 === null) {
       ctx.visibleRef.value = false;
@@ -370,7 +370,7 @@ function createNameCallback(ctx: TabBarCtx, data: FactoryArtefact, routes:Router
  * @public
  * @returns {void}
  */
-function createSearchCallback(ctx: TabBarCtx, routes:Router): void {
+function createSearchCallback(ctx: TabBarCtx, routes: Router): void {
   ctx.CBRef.value = (d1: string | null): any => {
     if (d1 === null || d1 === "") {
       ctx.visibleRef.value = false;

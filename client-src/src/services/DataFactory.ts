@@ -45,8 +45,8 @@ Note **: MesaggeDistribution class will ensure the data gets to the phone,
 // This interface should be kept here, as I think it will mutate
 export interface FactoryArtefact {
   currentData: ListCollection<string> | undefined;
-  updateData (a: ListCollection<string>) :void;
-  initData (loc: Location | MockLocation, n: NotifyType): void;
+  updateData(a: ListCollection<string>): void;
+  initData(loc: Location | MockLocation, n: NotifyType): void;
 }
 
 /** A module-wide collection of known variables
@@ -74,9 +74,9 @@ export function idOf(obj: object): number {
  * A "use function" to create ListCollections, which has different composition depending on network settings
  * @todo add simplification when Storybook or Vitest is running
  *
- * @param {Location | MockLocation} locb 
- * @param {NotifyType} cb 
- * @param {FactoryArtefact} retour 
+ * @param {Location | MockLocation} locb
+ * @param {NotifyType} cb
+ * @param {FactoryArtefact} retour
  * @public
  * @returns {Promise<void >}
  */
@@ -205,8 +205,8 @@ export function createEmptyFactory(): FactoryArtefact {
   return retour satisfies FactoryArtefact;
 }
 
-// A fixture empty callbacxk for tests, 
-//  to be used in NotifyType slots  
+// A fixture empty callbacxk for tests,
+//  to be used in NotifyType slots
 export const PASSBACK = (a: number): void => {};
 
 // What external modules (aside from test) will gain from accessing.
@@ -224,9 +224,7 @@ export const PASSBACK = (a: number): void => {};
  * @public
  * @returns {Promise<InstanceListable<string>>}
  */
-function setupCurrentList(
-  itinéraire: undefined | RouteLocationNormalizedLoadedGeneric
-): InstanceListable<string> {
+function setupCurrentList(itinéraire: undefined | RouteLocationNormalizedLoadedGeneric): InstanceListable<string> {
   let id: number = 0;
   let liste = EMPTY_LIST;
   let currentData: ListCollection<string> | undefined;

@@ -110,7 +110,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
    * @returns {Promise<boolean>}
    */
   public saveState(goutte: Array<SaveStruct>): Promise<boolean> {
-    if(!this.validateData( goutte) ) {
+    if (!this.validateData(goutte)) {
       return Promise.reject(new Error("Data is invalid (no details recorded yet)."));
     }
     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject): void => {
@@ -132,20 +132,20 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
               return bad(new Error("8456423234242 Server sent an error http status " + goutte.status));
             }
             let ret = "";
-            if(goutte.json && (goutte.headers.get("Content-Type") as string).startsWith("application/json") ) {
+            if (goutte.json && (goutte.headers.get("Content-Type") as string).startsWith("application/json")) {
               // this should be the dominant used branch
               ret = await goutte.json();
-            } else if(goutte.text) {
-              
+            } else if (goutte.text) {
               ret = await goutte.text();
             } else {
               // used in Vitest tests
-              ret = (goutte.body ?? "[]").toString() ;
+              ret = (goutte.body ?? "[]").toString();
             }
             try {
-              let filet: APIResponseType ;
-              if(typeof ret==="object" ) { // data arrived as JSON
-                filet=  ret;
+              let filet: APIResponseType;
+              if (typeof ret === "object") {
+                // data arrived as JSON
+                filet = ret;
               } else {
                 filet = JSON.parse(ret) as APIResponseType;
               }
@@ -194,7 +194,8 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
           return bad(new Error("8356456234352 No data was found"));
         })
         .then(async (filet: Response | void): Promise<void> => {
-          if (!filet ){ // } ||  !( filet instanceof Response))  {  // #leSigh JS
+          if (!filet) {
+            // } ||  !( filet instanceof Response))  {  // #leSigh JS
             return bad(new Error("73456834535634 Valid HTTP, but got nothing back"));
           }
           if (!filet.ok) {
@@ -232,20 +233,19 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
     return "no impl";
   }
 
-  protected validateData(goutte: Array<SaveStruct>):boolean {
-    let ret=false;
-    if(!Array.isArray(goutte) ||goutte.length<1) {
+  protected validateData(goutte: Array<SaveStruct>): boolean {
+    let ret = false;
+    if (!Array.isArray(goutte) || goutte.length < 1) {
       return false;
     }
-    for(let i=0; i<goutte.length; i++) {
-      if(goutte[i].list.length===0) {  
-         return false;
+    for (let i = 0; i < goutte.length; i++) {
+      if (goutte[i].list.length === 0) {
+        return false;
       }
-      if(goutte[i].name.length===0) {  
-         return false;
+      if (goutte[i].name.length === 0) {
+        return false;
       }
-
     }
     return true;
-  } 
+  }
 }

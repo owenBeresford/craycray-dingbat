@@ -28,7 +28,7 @@ export function useSearchActions(
   a: SearchList,
   b: MotionStream<SearchCtx>,
   c: FactoryArtefact,
-  d: Router,
+  d: Router
 ): ExternalMethods<SearchCtx> {
   return new SearchActions(a, b, c, d);
 }
@@ -45,33 +45,33 @@ export class SearchActions extends BaseActions<SearchCtx> implements ExternalMet
   protected list: SearchList;
   protected flux: MotionStream<SearchCtx>;
   protected data: FactoryArtefact;
-  protected allRoutes: Router; 
+  protected allRoutes: Router;
   protected offset: number;
 
   /**
- * Boring con'tor
- * This has params to make building unit-tests easier.
-  *
- * @param {SearchList} al
- * @param {MotionStream} ms
- * @param { FactoryArtefact} ld
- * @public
- * @returns {ExternalMethods}
- */
-  public constructor(al: SearchList, ms: MotionStream<SearchCtx>, ld: FactoryArtefact, rr:Router) {
+   * Boring con'tor
+   * This has params to make building unit-tests easier.
+   *
+   * @param {SearchList} al
+   * @param {MotionStream} ms
+   * @param { FactoryArtefact} ld
+   * @public
+   * @returns {ExternalMethods}
+   */
+  public constructor(al: SearchList, ms: MotionStream<SearchCtx>, ld: FactoryArtefact, rr: Router) {
     super();
     this.offset = 0;
     this.list = al;
     this.flux = ms;
     this.data = ld;
-    this.allRoutes=rr;
+    this.allRoutes = rr;
     if (!this.list) {
       throw new Error("97464564345 The results aren't populated, this module makes no sense");
     }
     if (!this.flux) {
       throw new Error("8723459563534534 The service class (MotionStream) for processing user gestures is absent");
     }
-    if(! this.allRoutes) {
+    if (!this.allRoutes) {
       throw new Error("823467234745234235 The routes object is missing  ");
     }
     this.flux.register("0", this.onSwipeFinalise.bind(this));

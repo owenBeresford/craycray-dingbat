@@ -38,7 +38,7 @@ export abstract class BaseActions<I> implements ExternalMethods<I> {
       // @see [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/iterator]
       // #leSigh.
       [Symbol.iterator]() {
-   //   :Iterator<ExternalMethods<I>> {
+        //   :Iterator<ExternalMethods<I>> {
         const ar = Object.values(this);
         let i = 0;
         return {

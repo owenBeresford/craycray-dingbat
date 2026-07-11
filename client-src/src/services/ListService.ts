@@ -138,13 +138,13 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
     const liste: Array<ListStruct> = [];
     if (this.catalog.length === 1) {
       // if there is no data, return EMPTY_LIST to ensure rest of system works
-      liste.push((this.catalog[0].view() ));
+      liste.push(this.catalog[0].view());
       return liste;
     }
     //  eslint-disable-next-line no-restricted-syntax, guard-for-in
     for (const i in this.catalog) {
-       if (this.catalog[i].id !== EMPTY_LIST_ID) {
-  // this.catalog[i] instanceof StdList &&       
+      if (this.catalog[i].id !== EMPTY_LIST_ID) {
+        // this.catalog[i] instanceof StdList &&
         liste.push(this.catalog[i].view());
       }
     }

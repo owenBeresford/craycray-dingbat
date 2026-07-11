@@ -214,12 +214,12 @@ export class BaseList<T> implements InstanceListable<T>, ListStruct {
    * @returns {ListStruct}
    */
   public view(): ListStruct {
-    return { 
-    nom: this.nom,
-    'créé': this.créé,
-    'modifié': this.modifié,
-    'énumérer': this.énumérer,
-    id: this.id,
+    return {
+      nom: this.nom,
+      créé: this.créé,
+      modifié: this.modifié,
+      énumérer: this.énumérer,
+      id: this.id,
     } as ListStruct;
   }
 }

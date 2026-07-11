@@ -10,7 +10,7 @@ import type { PromiseSucceed, PromiseReject } from "../../../../common/types/pro
 
 function testRS() {
   let d3: RemoteConfig = {
-    url: TEST_LOCATION_URL+"/api/shared-state",
+    url: TEST_LOCATION_URL + "/api/shared-state",
     timeout: API_RETRY,
     headers: { "Content-Type": "application/json" },
     mode: "same-origin",
@@ -90,7 +90,7 @@ describe("test on RemoteStorage ", () => {
   it("Can poll() 3", async (): Promise<void> => {
     // real domain, fake path
     // I am annoying.  My code will mask out /api for latyer API points.   This is /v10/api, so it hits the wildcard.
-    let LOC = new TestLocation( TEST_LOCATION_URL+"/v10/api/new-shiny-feature");
+    let LOC = new TestLocation(TEST_LOCATION_URL + "/v10/api/new-shiny-feature");
     let d3 = {
       url: LOC.href,
       timeout: 500,
@@ -111,7 +111,7 @@ describe("test on RemoteStorage ", () => {
 
   it("Can poll() 4", async (): Promise<void> => {
     // real domain, fake path
-    let LOC = new TestLocation( TEST_LOCATION_URL+"/api/new-shiny-feature");
+    let LOC = new TestLocation(TEST_LOCATION_URL + "/api/new-shiny-feature");
     let d3 = {
       url: LOC.href,
       timeout: 500,
@@ -132,7 +132,7 @@ describe("test on RemoteStorage ", () => {
 
   it("I can GET data", async (): Promise<void> => {
     let conf = {
-      url: TEST_LOCATION_URL+"/api/shared-state",
+      url: TEST_LOCATION_URL + "/api/shared-state",
       timeout: 1_000,
       mode: "no-cors", // no-cors, *cors, same-origin
       method: "GET",
@@ -173,7 +173,7 @@ describe("test on RemoteStorage ", () => {
 
   it("I can POST data", async (): Promise<void> => {
     let conf = {
-      url: TEST_LOCATION_URL+"/api/shared-state",
+      url: TEST_LOCATION_URL + "/api/shared-state",
       timeout: 1000,
       mode: "no-cors", // no-cors, *cors, same-origin
       method: "POST",
@@ -221,7 +221,7 @@ describe("test on RemoteStorage ", () => {
 
   it("I can POST data, BAD URL", async (): Promise<void> => {
     let conf = {
-      url: TEST_LOCATION_URL+"/sdfsdf+sdfsdfsdfs+fsdf_sd",
+      url: TEST_LOCATION_URL + "/sdfsdf+sdfsdfsdfs+fsdf_sd",
       timeout: 1000,
       mode: "no-cors", // no-cors, *cors, same-origin
       method: "POST",
@@ -282,7 +282,7 @@ describe("test on RemoteStorage ", () => {
 
   it("I can POST data, BAD headers", async (): Promise<void> => {
     let conf = {
-      url: TEST_LOCATION_URL+"/api/shared-state",
+      url: TEST_LOCATION_URL + "/api/shared-state",
       timeout: 1000,
       mode: "same-origin", // no-cors, *cors, same-origin
       method: "POST",

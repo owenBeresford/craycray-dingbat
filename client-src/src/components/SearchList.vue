@@ -92,7 +92,7 @@ export default defineComponent({
     const ttl: string = inject<number>("ttl");
     const log: LogService = inject<LogService>("log");
     const listData: FactoryArtefact = inject<FactoryArtefact>("listData");
-    onErrorCaptured((err: unknown, instance: ComponentPublicInstance | null, info: string):void => {
+    onErrorCaptured((err: unknown, instance: ComponentPublicInstance | null, info: string): void => {
       console.error("Error found in search results setup :", err as Error, info);
       log.addRaw("SearchResults.setup(): " + (err as Error).message + " " + info, "error");
     });

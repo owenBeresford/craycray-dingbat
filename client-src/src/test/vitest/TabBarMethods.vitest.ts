@@ -1,11 +1,11 @@
 import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vitest";
 import { ref } from "vue";
- import type { MethodOptions } from "vue";
+import type { MethodOptions } from "vue";
 // https://github.com/meant4/vitestvuerouter/
-// 
+//
 
-import { useRoute, createRouter  } from "vue-router";
-import type { RouteLocationNormalizedLoadedGeneric, RouterHistory } from 'vue-router';
+import { useRoute, createRouter } from "vue-router";
+import type { RouteLocationNormalizedLoadedGeneric, RouterHistory } from "vue-router";
 import type { HistoryState, RouteLocationAsPathGeneric, LocationQueryRaw } from "vue-router";
 
 // https://medium.com/@vasanthancomrads/unit-testing-vue-3-components-with-vitest-and-testing-library-part-3-985d9c3585c8
@@ -31,81 +31,80 @@ vi.hoisted(() => {
 const PASSBACK = (a: number): void => {};
 //https://github.com/vitest-dev/vitest/issues/1918
 
-
 function createMockRoute1(
   overrides: Partial<RouteLocationNormalizedLoadedGeneric> = {}
 ): RouteLocationNormalizedLoadedGeneric {
   return {
-    path: '/list-all',
-    fullPath: '/list-all',
+    path: "/list-all",
+    fullPath: "/list-all",
     name: "list-everything",
     params: {},
     query: {},
-    hash: '',
+    hash: "",
     matched: [],
     meta: {},
-    redirectedFrom:undefined,
-    ...overrides
+    redirectedFrom: undefined,
+    ...overrides,
   };
-} 
+}
 
 function createMockRoute2(
   overrides: Partial<RouteLocationNormalizedLoadedGeneric> = {}
 ): RouteLocationNormalizedLoadedGeneric {
   return {
-    path: '/list/:index',
-    fullPath: '/list/:index',
+    path: "/list/:index",
+    fullPath: "/list/:index",
     name: "a-list",
-    params: {index:"1" },
+    params: { index: "1" },
     query: {},
-    hash: '',
+    hash: "",
     matched: [],
     meta: {},
-    redirectedFrom:undefined,
-    ...overrides
+    redirectedFrom: undefined,
+    ...overrides,
   };
 }
 
-// const useRouteMock = 
+// const useRouteMock =
 vi.mock(import("vue-router"), async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...actual,
-  useRoute: () => createMockRoute1,
-  useRouter: () => ({
-    push: vi.fn(),
-    replace: vi.fn(),
-  }),
-  createRouter: () => ({
-    push: vi.fn(),
-  }),
-//  createRouter: vi.fn(),  createRoutes: vi.fn(),
- }});
- ;
- const StaticRoutes=createRouter({
-  routes:[
+    useRoute: () => createMockRoute1,
+    useRouter: () => ({
+      push: vi.fn(),
+      replace: vi.fn(),
+    }),
+    createRouter: () => ({
+      push: vi.fn(),
+    }),
+    //  createRouter: vi.fn(),  createRoutes: vi.fn(),
+  };
+});
+const StaticRoutes = createRouter({
+  routes: [
     {
-      path: '/list-all',
-      name: 'list-everything',
+      path: "/list-all",
+      name: "list-everything",
       component: { template: "TEST COMPONENT (no interactions)" },
     },
   ],
- history:{} as RouterHistory
-    });
+  history: {} as RouterHistory,
+});
 
-// thi stes is to show that te module packs correctly.  
+// thi stes is to show that te module packs correctly.
 // The actions and side effects ought to be tested in a more complete stack fashion, so if anything needs HTTPS etc, this is tested
 
- describe("test on TabActions", () => {
+describe("test on TabActions", () => {
   const DATA = createDataFactory(fixture1(), new TestLocation(TEST_LOCATION_URL), PASSBACK);
 
   it("Can use useFunction", async () => {
-  let txt: TabActions = (await useTabActions(
+    let txt: TabActions = (await useTabActions(
       useStore(),
       DATA,
       useCacheWrapper(),
       useRoute(),
-      StaticRoutes,
+      StaticRoutes
     )) as TabActions;
     expect(typeof txt).toBe("object");
     assertType<TabActions>(txt);
@@ -113,11 +112,10 @@ vi.mock(import("vue-router"), async (importOriginal) => {
   });
 
   it("Can use mount (reviw on return type, as its soft/a runtime thing, not a class)", async () => {
- 
-//    StaticRoutes.currentRoute.value.path= '/list/:index';
-//    StaticRoutes.currentRoute.value.fullPath= '/list/:index';
-//    StaticRoutes.currentRoute.value.name= "a-list";
-//    StaticRoutes.currentRoute.value.params= {index:"1" };
+    //    StaticRoutes.currentRoute.value.path= '/list/:index';
+    //    StaticRoutes.currentRoute.value.fullPath= '/list/:index';
+    //    StaticRoutes.currentRoute.value.name= "a-list";
+    //    StaticRoutes.currentRoute.value.params= {index:"1" };
 
     let txt = await useTabActions(useStore(), DATA, useCacheWrapper(), useRoute(), StaticRoutes);
     expect(typeof txt).toBe("object");
@@ -149,8 +147,7 @@ vi.mock(import("vue-router"), async (importOriginal) => {
       expect(typeof obj[funcList[i]]).toBe("function");
       expect(obj[funcList[i]].name.startsWith("bound ")).toBe(true);
     }
-
-   });
+  });
 
   it("Can use mount 2", async () => {
     /*
@@ -159,7 +156,7 @@ vi.mock(import("vue-router"), async (importOriginal) => {
     StaticRoutes.currentRoute.value.name= "a-list";
     StaticRoutes.currentRoute.value.params= {index:"2" };
     */
-    let txt = await useTabActions(useStore(), DATA, useCacheWrapper(), useRoute(), StaticRoutes );
+    let txt = await useTabActions(useStore(), DATA, useCacheWrapper(), useRoute(), StaticRoutes);
     expect(typeof txt).toBe("object");
     const visibleRef = ref<boolean>(false);
     const getInputRef = ref<string>("");
@@ -189,9 +186,7 @@ vi.mock(import("vue-router"), async (importOriginal) => {
       expect(typeof obj[funcList[i]]).toBe("function");
       expect(obj[funcList[i]].name.startsWith("bound ")).toBe(true);
     }
-
   });
-
 });
 
 // vim: nospell syn=typescript

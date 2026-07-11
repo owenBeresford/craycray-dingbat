@@ -58,7 +58,7 @@ TOOL.directive("longpress", {
 console.time("boot-data-connection");
 const data: FactoryArtefact = createEmptyFactory();
 const listCountRef = ref<number>(0);
-// this is too small to add a doc header, 
+// this is too small to add a doc header,
 // it's just to be able tost the var as a given point, as the assigment has its own stack pointer
 function updateListCount(nu: number): void {
   listCountRef.value = nu;
