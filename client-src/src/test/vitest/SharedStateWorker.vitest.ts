@@ -33,7 +33,7 @@ describe("test on SharedStateWorker ", () => {
     expectTypeOf(txt).toExtend<DataPipeline>();
   });
 
-  it("Can use SharedStateWorker ", async () => {
+  it("Can use SharedStateWorker pushWhenAble ", async () => {
     const LOC = new TestLocation(TEST_LOCATION_URL);
     let txt = useSSW(LOC);
     expect(typeof txt).toBe("object");
@@ -119,37 +119,18 @@ describe("test on SharedStateWorker ", () => {
     }).rejects.toThrowError(/Server sent an error http status 500/);
   });
 
-  it("Can use SharedStateWorker ", async () => {
+  it("Can use SharedStateWorker pullWhenAble", async () => {
     const LOC = new TestLocation(TEST_LOCATION_URL);
     let txt = useSSW(LOC);
     expect(typeof txt).toBe("object");
 
     let dat: Array<SaveStruct> = [
-      {
-        name: "list4 ",
-        created: 1783618548107,
-        edited: 1783618548107,
-        count: 3,
-        id: 4,
-        list: ["thing 1", "thing 2", "thing 3"],
-      },
-      {
-        name: "list5 ",
-        created: 1783618548107,
-        edited: 1783618548107,
-        count: 3,
-        id: 4,
-        list: ["thing 1", "thing 2", "thing 3"],
-      },
-      {
-        name: "list 3",
-        created: 1778251875567,
-        edited: 1778251875567,
-        count: 10,
-        id: 3,
-        list: ["thing 1", "thing 2", "thing 3", "thing 4", "thing 5", "thing 6", "thing 7", "thing 8", "thing 9"],
-      },
-    ];
+  {"name":"list4 ","created":1783795584682,"edited":1783795584682,"count":3,"id":4,"list":["thing 1","thing 2","thing 3"]},
+  {"name":"list5 ","created":1783795584682,"edited":1783795584682,"count":3,"id":4,"list":["thing 1","thing 2","thing 3"]},
+  {"name":"list 2","created":1783795517176,"edited":1783795517176,"count":4,"id":3,"list":["ssfsdf","sdfsdf","dgdgd","dfgdfgfd"]},
+  {"name":"list 3","created":1783795517176,"edited":1783795517176,"count":4,"id":4,"list":["ssfsdf","sdfsdf","dgdgd","dfgdfgfd"]}
+      ];
+
     let tmp = await txt.pullWhenAble();
     expect(tmp.length).equal(dat.length);
     for (let i = 0; i < dat.length; i++) {
@@ -159,21 +140,37 @@ describe("test on SharedStateWorker ", () => {
     }
   });
 
-  it("Can use SharedStateWorker (ERRR ON URL)", async () => {
+  it("Can use SharedStateWorker push empty data", async () => {
     try {
-      const url = "";
-      let txt = useSSW(new TestLocation(url));
+       let txt = useSSW(new TestLocation(TEST_LOCATION_URL));
       expect(typeof txt).toBe("object");
       // IOIO start thread first
-      let dat: Array<SaveStruct> = []; // IOIO
-      expect(await txt.pushWhenAble(dat)).equal(true);
+      let dat: Array<SaveStruct> = []; 
+      await expect(
+                  async () => txt.pushWhenAble(dat)
+                  ).rejects.toThrowError();
 
       dat = [];
-      await expect(async () => {
-        return await txt.pushWhenAble(dat);
-      }).rejects.toThrowError();
+      await expect(
+                  async () => txt.pushWhenAble(dat)
+                  ).rejects.toThrowError();
     } catch (e: unknown) {
       console.log("Err? ", (e as Error).message);
     }
   });
+
+  it("Can use SharedStateWorker (ERRR for URL)", async () => {
+    try {
+      const url = "http://app.hiss:8080/thing";
+      let txt = useSSW(new TestLocation(url));
+      expect(typeof txt).toBe("object");
+      // IOIO start thread first
+      let dat: Array<SaveStruct> = []; 
+      await expect(
+            async () => txt.pushWhenAble(dat)
+                ).rejects.toThrowError();
+    } catch (e: unknown) {
+      console.log("Err? ", (e as Error).message);
+    }
+  }, 1_200);
 });

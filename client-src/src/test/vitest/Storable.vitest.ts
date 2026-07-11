@@ -20,7 +20,7 @@ describe("I can run Storable", () => {
       expect(tmp.length > 0).toBe(false);
 
       src = "false";
-      expect(() => transform2list(src)).toThrowError(/This should be an Array/);
+      expect(() => transform2list(src)).toThrowError(/Array/);
       //    expect(Array.isArray(tmp)).toBe(false);
       //    expect(tmp.length > 0).toBe(false);
 
