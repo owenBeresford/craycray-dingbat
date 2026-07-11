@@ -96,7 +96,7 @@ export const TrackTextRendered6: Story = {
   loaders: [
     () => {
       const { currentData, initData, updateData } = createDataFactory(fixture1(), location, PASSBACK);
-      if (currentData ) {
+      if (currentData) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
 
@@ -113,7 +113,7 @@ export const TrackTextRendered6: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const { currentData, initData, updateData } = createDataFactory(fixture1(), location, PASSBACK);
-    if (currentData ) {
+    if (currentData) {
       console.log("KKK Story.play:: decomposed currentData id:", idOf(currentData));
     }
 

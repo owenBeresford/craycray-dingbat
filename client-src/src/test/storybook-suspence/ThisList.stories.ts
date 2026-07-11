@@ -87,7 +87,7 @@ export const TrackTextRendered2: Story = {
   loaders: [
     () => {
       const { currentData, initData, updateData } = createDataFactory(fixture1(), location, PASSBACK);
-      if (currentData ) {
+      if (currentData) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
 
@@ -148,7 +148,7 @@ export const TrackTextRendered2_5: Story = {
   loaders: [
     () => {
       const { currentData, initData, updateData } = createDataFactory(fixture1(), location, PASSBACK);
-      if (currentData ) {
+      if (currentData) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
       if (!currentData) {
@@ -195,7 +195,7 @@ export const TrackTextRendered3: Story = {
   loaders: [
     () => {
       const { currentData, initData, updateData } = createDataFactory(fixture2(), location, PASSBACK);
-      if (currentData ) {
+      if (currentData) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
 
@@ -244,7 +244,7 @@ export const TrackTextRendered4: Story = {
   loaders: [
     () => {
       const { currentData, initData, updateData } = createDataFactory(fixture3(), location, PASSBACK);
-      if (currentData ) {
+      if (currentData) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
 
@@ -297,7 +297,7 @@ export const TrackTextRendered5: Story = {
   loaders: [
     () => {
       const { currentData, initData, updateData } = createDataFactory(fixture4(), location, PASSBACK);
-      if (currentData ) {
+      if (currentData) {
         console.log("KKK Story.loaders[]:: NEW currentData id:", idOf(currentData));
       }
 
