@@ -7,17 +7,17 @@
 
 - ESLINT ON VUE FILES
 - increase tests
-- StateSyncing test cover full state map - when threads work.
 - think about best name for ShopState
 - Make better favico, consider badges, 
 - May be need to re-add STORE.getters
 - Replace self-signed-certs with real-ones via lets-encrypt
 - Storybook "run tests" on page load
 - Workout if should cache list data in browser cache?
-- list sorting? a-z
 - Simplify initGeneratedMethods
 - maybe lineup state-keys to show net status in later builds
-
+- list sorting? a-z
+- test showing transition between network modalities correctly
+- Add cache event messages in localStorage, so can restart app
 
 
 ### LOW IMPACT, nioce to haves
