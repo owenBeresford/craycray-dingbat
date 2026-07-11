@@ -23,7 +23,9 @@ export default defineConfig({
     },
     environmentOptions: {
       jsdom: { // IOIO XX FIXME change later if IP changes
-        url: "https://app.hiss:3001/"
+        url: "https://app.hiss:3001/",
+        console: true,
+
       }
     },
 
