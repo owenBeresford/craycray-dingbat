@@ -10,6 +10,7 @@ import { transform2text, transform2list, packMsg } from "../services/Storable";
 export {};
 declare const self: DedicatedWorkerGlobalScope;
 
+
 //if (! globalThis.Worker ) {
 // I think this error report is too late, here.  BUT, if it is absent, still whine about it
 //  throw new Error("Runtime doesn't support Workers, FAIL, ABORT.");
@@ -21,7 +22,6 @@ const STATE: DataPipeline = useSSW(self.location);
 // The UI thread drives MessageDistribution
 const goodSource: Readonly<string> = self.location.protocol + "//" + self.location.hostname + ":" + self.location.port;
 if (import.meta.env.VITEST) {
-  // test only logging
   console.log("CODE under TEST started " + process.pid, goodSource);
 }
 
@@ -91,7 +91,7 @@ self.onmessageerror = (e: unknown): void => {
   console.warn("WORKER: got bad message ", e as Error);
 };
 if (import.meta.env.VITEST) {
-  console.log("CODE under TEST end module ", typeof self);
+  console.log("CODE under TEST end module ", typeof self, process.pid );
 }
 /* taken from snap/chromium/common/chromium/WasmTtsEngine/20260305.1/bindings_main.js
  loadWasmModuleToWorker: worker => new Promise(onFinishedLoading => {
