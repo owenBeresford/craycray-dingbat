@@ -53,7 +53,7 @@ interface ControlledEnv {
 /**
  * extractEnv
  * A map function to get a sanitised subset of bash env
- * @tODO: lookup local IP, rather than static value
+ * The IP value mut match the certs, and for phones would recommend a domain name 
 
  * @param {NodeJS.ProcessEnv} env
  * @private
@@ -208,7 +208,20 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
     fast, // FastifyHttp2SecureOptions
     { logger: new ConsoleLogger({ json: true, prefix: "shop", colors: false }) },
   );
-  app.enableCors({ credentials: true });
+ //  app.enableCors({ credentials: true });
+  app.enableCors({
+            allowedHeaders: 'Content-Type,Accept,Authorization,Observe,last-modified', 
+             // REQT hedaers  accept-language, accept-encoding, upgrade-insecure-requests
+   //         origin: [
+      // the last value is for Storybook        
+   // 'https://localhost:'+ vars.SPort, 'https://'+ vars.SIpAddr +':'+ vars.SPort, 'https://localhost:6006',
+     //        ],
+            origin:"*",
+            methods: 'GET,HEAD,POST,DELETE',
+            credentials: true,
+            optionsSuccessStatus: 204,
+        });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: false,
