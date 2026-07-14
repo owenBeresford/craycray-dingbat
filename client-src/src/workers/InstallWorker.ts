@@ -25,7 +25,8 @@ export function useCacheWrapper(): CacheWrapper {
 }
 
 // List of files needed in the installation
-const prefix = "https://" + REMOTE_HOST;
+const prefix = "https://" + REMOTE_HOST();
+
 // web manifests do not list files, so list lives here
 const FILES: Array<string> = [
   prefix + "/index.html",
