@@ -38,6 +38,7 @@ export class ShoppingService {
   constructor() {
     this.left = [];
     this.right = [];
+    this.inner=this.inner.bind(this);
   }
 
   /**
@@ -196,13 +197,11 @@ export class ShoppingService {
     }
 
     this.left = this.typeAssert(left);
-    const local = await FSP.open(SOL_STORE_IMAGE, "r");
-    return local
-      .readFile({ encoding: "utf8" })
-      .then(this.inner.bind(this))
-      .finally(() => {
-        local.close();
-        return this.actualSave(this.merge(this.left, this.right));
-      });
+    const locl = await FSP.open(SOL_STORE_IMAGE, "r");
+    let dat=await locl.readFile({ encoding: "utf8" });
+    this.inner(dat);
+    locl.close();
+    return this.actualSave(this.merge(this.left, this.right));
+       
   }
 }
