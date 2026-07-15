@@ -11,21 +11,23 @@ A simple and facile app for shopping lists, or lists in general.  To run on our 
 
 - Have better UX than the default google note taking app.
 - To work in steel-frame supermarkets that block most 4g signal.
-- To support edit-without-save so the same list can be used each week
+- To support edit-without-save so the same list can be used each week (not found in Google freeware).
 - To have long-term storage capacity, with visible meta data so annual lists are feasible 
 
 smaller goals:
-- Avoid my hand writing
-- A find feature
-- Port data between phone and desktop/ laptop easily
+- Avoid my hand writing (absent from Google freeware I hope)
+- A find feature (absent from Google freeware)
+- Port data between phone and desktop/ laptop easily (aside from Gmail, dunno if Google support this)
 - Be able to copy lists (absent from Google freeware)
 - Write some code that people can see, its not ground breaking.
 
 > [!NOTE] 
-> the commit log doesn't show in github as I am not making branches per feature, as I am just iteratively patching.   I think that's why.   This project is >300 commits in 2026.  
+> The commit log doesn't show in github as I am not making branches per feature, as I am just iteratively patching.   I think that's why.   This project is >300 commits in 2026.  
 > In a work env, I would have less exploration and more PM time-structures.
 
-
+> [!NOTE]
+> Storybook by default loads on a different domain to the app that needs to be accessible via mobile.  Please read about state partitioning, and set or the test cannot run properly. https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/State_Partitioning
+>
 
 ### Technical deliveries
 
@@ -40,6 +42,7 @@ smaller goals:
 - Classes that can name themselves, aside from a toString().  This is useful for logging and is trivial in Python or PHP, but harder in TS.   An attempt at logging RAM used, available in tests.
 - Like Google todo list app, there is no id/ account /login / auth steps in the app.  You are an anon local user.  I never know that you exist.  
    - Note: NPM might know the person that installed the app exists.  
+- Note there are **no access** restrictions to the data in this app.  You can access anything via XHR, or via HTTPS (just not HTTP).   
 
 
 ### Data caching
@@ -55,6 +58,7 @@ smaller goals:
 - There is a memory cache called DataCache that holds the most current data from the above data items.
 - For testing, I can load fixtures into the data cache as a different run mode.
 - There are references to the data cache in all the components.  I believe this last line is in sync with the data cache.
+- There is a W.O.R.M. event-audit (called Log) held in RAM, TODO: later versions will persist this to localStorage.
 
 
 ### To use
@@ -71,6 +75,7 @@ smaller goals:
 - Nag me for JSON import from XYZ other platform capacity
 
 - Advanced use: [read the TODO list](./TODO.md)
+- Some of the tests will fail, they reflect things that might happen, and to-date I have no code solution.  These specific units are generally tagged (bad XXX), or (fail on XXX) or similar.
 - Think about creating a 'home page link' if the tools is useful see [Android chrome guide](https://support.google.com/chrome/answer/9658361?hl=en&co=GENIE.Platform%3DAndroid) [Or a second guide](https://support.google.com/chrome/answer/15085120?hl=en&co=GENIE.Platform%3DAndroid).  This is 2 taps, and not automatable from normal JS for security reasons. 
 - To be able to delete the installed version please scan [Deleting cached files in Chrome](https://support.google.com/chrome/answer/2392709?hl=en&co=GENIE.Platform%3DAndroid&sjid=5819306311445701255-EU#zippy=%2Cdata-that-doesnt-get-deleted%2Cdata-that-can-be-deleted).  I think purge/ delete capacity should be outside the app, so you don't run an app you just removed. 
 - WARN: DO NOT edit code-base without an IDE. (I'm  using glyths that are not found on a EN-US keyboard, so you need auto-complete).   Config/ Constant files are in ASCII 127 to be be more broadly compatible.   
