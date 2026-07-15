@@ -210,17 +210,29 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
   );
  //  app.enableCors({ credentials: true });
   app.enableCors({
-            allowedHeaders: 'Content-Type,Accept,Authorization,Observe,last-modified', 
-             // REQT hedaers  accept-language, accept-encoding, upgrade-insecure-requests
-   //         origin: [
+            allowedHeaders: 'Content-Type,Accept,Authorization,Observe', 
+      // REQT hedaers  accept-language, accept-encoding, upgrade-insecure-requests
+      // origin: [
       // the last value is for Storybook        
-   // 'https://localhost:'+ vars.SPort, 'https://'+ vars.SIpAddr +':'+ vars.SPort, 'https://localhost:6006',
-     //        ],
+      // 'https://localhost:'+ vars.SPort, 'https://'+ vars.SIpAddr +':'+ vars.SPort, 'https://localhost:6006',
+      // ],
             origin:"*",
             methods: 'GET,HEAD,POST,DELETE',
             credentials: true,
             optionsSuccessStatus: 204,
         });
+
+  app.use((req:Request, res, next:Function):void => {
+    const originalCookie = res.cookie.bind(res);
+    res.cookie = function (name:string, value:string, options = {}) {
+      return originalCookie(name, value, {
+        sameSite: 'none',
+        secure: true,
+        ...options, // allow per-cookie overrides if needed
+      });
+    };
+    next();
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
