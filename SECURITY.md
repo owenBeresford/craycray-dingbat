@@ -1,3 +1,6 @@
+’’There is no such thing as security, there never has been’’. 
+    ~ [Germaine Greer](https://www.thoughtco.com/germaine-greer-quotes-3530088) ~ has no PhD in CompSci, and *still not wrong*.    
+
 If you see any security errors please [raise a fault in github](https://github.com/owenBeresford/craycray-dingbat/issues)
 
 
