@@ -11,7 +11,7 @@ If you see any security errors please [raise a fault in github](https://github.c
 * Comms are HTTP2, even when this is hard. 
 * REPEAT: There is no access restrictions, as this is designed PURELY to be a LAN service.
    * However, please secure your LAN (out of scope to this project).  
-* THEREFORE There is no pathway for data to flow from <what you enter to this app>, and <other organisations on the internet>.   
+* THEREFORE There is no pathway for data to flow from {what you enter to this app}, and {other organisations on the internet}.   
 * As this is OSS, you can read the source to confirm this.
 
 
