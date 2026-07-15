@@ -26,7 +26,7 @@ smaller goals:
 > In a work env, I would have less exploration and more PM time-structures.
 
 > [!NOTE]
-> Storybook by default loads on a different domain to the app that needs to be accessible via mobile.  Please read about state partitioning, and set or the test cannot run properly. https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/State_Partitioning
+> Storybook by default loads on a different domain to the app that needs to be accessible via mobile.  Please read about [state partitioning](https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/State_Partitioning) , and set or the test cannot run properly. 
 >
 
 ### Technical deliveries
