@@ -1,21 +1,25 @@
 #!/bin/bash  
 #
 # Setup the files that arent checked-in. 
-# Written in bash as faster to write and is more concise
+# Written in bash as faster to write and is more concise.
+# This file only supports debian or ubuntu family of Linux.  
+# Assuming you are technical, it is quite simple to make a copy for other operating systems.
 #
-#  Node people will probably get anxiety about all the return early branches
-#    So I used bash
 # Unfortunately, this script can't really be unit tested,
-#  please run with a '-x' param to the bash interpreter 
-
-# https://www.certguard.app/blog/self-signed-certificates-dev-ci-testing
-# add legacy SSL certs for storybook
+#  Please run with a '-x' param to the bash interpreter 
 
 export BASE=`dirname "$0"`
 export BASE="$BASE/.."
 cd $BASE
 export PRIVATE="dist/private"
-export PROD_URL="app.hiss"  # edit to take value from user
+export PROD_URL="app.hiss"  # Overwriten with value from user
+# TODO Improvewment: Need to edit IPs where this is used
+export PRTKEY="shoppinglist-private.key"
+export PBCKEY="shoppinglist-public.pem"
+# Data that might change:
+export MKCERT_VERSION="v1.4.4"
+export BIN_DIR=~/bin
+
 
 bigVersion=`node -v | sed -e "s/v//" -e "s/\..*//"`
 if [ "24" != "$bigVersion" ]; then
@@ -68,39 +72,105 @@ if [ -z "`which openssl`" ]; then
 	exit 6
 fi
 
-bigVersion=`openssl version | sed -e "s/OpenSSL //" -e "s/\..*//" `
-if [ 3 -gt "$bigVersion" ]; then
-	echo "ERROR: Please use a newer and more stable version of OpenSSL (>=3.0)"
-	exit 7
+########################################### CHOICE: strong, rootCA
+read -t 5 -n 5 -i "Do you want 'strong' certs, or certs with a 'rootca'? (stupid question, but select implementation) " DAT
+if [ $? -ne 0 ]; then   # above zero implies timeout (most likely)
+	DAT="rootca"
 fi
+if [ "strong" == "$DAT" ]; then
+	bigVersion=`openssl version | sed -e "s/OpenSSL //" -e "s/\..*//" `
+	if [ 3 -gt "$bigVersion" ]; then
+		echo "ERROR: Please use a newer and more stable version of OpenSSL (>=3.0)"
+		exit 7
+	fi
 
-echo -e "This makes a cert for the local host ~ where the tests are run.\nDo you want to setup a host name (in your hosts file)? If so, break this and do it now."
-read -t 5 -n 5 -i "Hit enter to continue, or <cntl-C> to abort." IGNORED
-if [ $? -ne 0 ]; then
-	exit 2
-fi
+	echo -e "This makes a cert for the local host ~ where the tests are run.\nDo you want to setup a host name (in your hosts file)? If so, break this and do it now."
+	read -t 5 -n 5 -i "Hit enter to continue, or <cntl-C> to abort." IGNORED
+	if [ $? -ne 0 ]; then
+		exit 2
+	fi
 
-openssl ecparam -genkey -name prime256v1 -noout -out $BASE/dist/private/params.pem 
-# openssl genpkey -genparam -algorithm ec -pkeyopt ec_paramgen_curve:P-256 -out ~/VALUELESS-params-P-256.pem
-if [ $? -ne 0 ]; then
-	echo "1st Openssl cmd failed.  Panic, contact dev?"
-	exit 8
-fi
+	read -t 30 -n 100 -i "Enter your hostname (needed for the cert, users will later need to type this)" PROD_URL
+	if [ $? -ne 0 ]; then
+		exit 2
+	fi
 
-openssl pkcs8 -topk8 -nocrypt -in $BASE/dist/private/params.pem -out $BASE/dist/private/private.key
-#echo "This next step is interactive, please follow prompts for a new web cert"
-#openssl req -newkey ec:/home/$USER/VALUELESS-params-P-256.pem -keyout $PRIVATE/private.key -out $PRIVATE/csr.pem
-if [ $? -ne 0 ]; then
-	echo "2nd Openssl cmd failed.  Panic, contact dev?"
-	exit 8
-fi
+	ping -c 1 $PROD_URL 
+	if [ $? -eq 2 ]; then
+		echo "That domain name  '$PROD_URL' didnt work."
+		exit 126
+	fi
 
-openssl req -new -x509 -key $BASE/dist/private/private.key -out $BASE/dist/private/server.pem -days 365 -subj "/CN=$PROD_URL" -addext "keyUsage = digitalSignature, keyEncipherment" -addext "extendedKeyUsage = serverAuth"
-# openssl req -x509 -key $PRIVATE/private.key -in $PRIVATE/csr.pem -out  $PRIVATE/server.pem -days 365 -sha256 
-if [ $? -ne 0 ]; then
-	echo "3rd Openssl cmd failed.  Panic, contact dev?"
-	exit 8
-fi
+
+	openssl ecparam -genkey -name prime256v1 -noout -out $BASE/$PRIVATE/params.pem 
+	if [ $? -ne 0 ]; then
+		echo "1st Openssl cmd failed.  Panic, contact dev?"
+		exit 8
+	fi
+
+	openssl pkcs8 -topk8 -nocrypt -in $BASE/$PRIVATE/params.pem -out $BASE/$PRIVATE/$PRTKEY
+	if [ $? -ne 0 ]; then
+		echo "2nd Openssl cmd failed.  Panic, contact dev?"
+		exit 8
+	fi
+
+	openssl req -new -x509 -key $BASE/$PRIVATE/$PRTKEY -out $BASE/$PRIVATE/$PBCKEY -days 365 -subj "/CN=$PROD_URL" -addext "keyUsage = digitalSignature, keyEncipherment" -addext "extendedKeyUsage = serverAuth"
+	if [ $? -ne 0 ]; then
+		echo "3rd Openssl cmd failed.  Panic, contact dev?"
+		exit 8
+	fi
+
+############################################################# else
+elif [ "rootca" == "$DAT" ]; then
+	read -t 5 -n 5 -i "This script will edit your local machine, and ask for root to do so.\nEnter to continue, or <cntl-C> to abort." IGNORED
+	if [ $? -ne 0 ]; then
+		exit 2
+	fi
+
+	read -t 30 -n 100 -i "Enter your hostname (needed for the cert, users will later need to type this)" PROD_URL
+	if [ $? -ne 0 ]; then
+		exit 2
+	fi
+
+	ping -c 1 $PROD_URL 
+	if [ $? -eq 2 ]; then
+		echo "That domain name  '$PROD_URL' didnt work."
+		exit 126
+	fi
+
+
+	if [ ! -d $BIN_DIR ]; then
+		# asks for root
+		sudo apt install curl libnss3-tools -y 
+
+		mkdir $BIN_DIR
+		# edit path if dir not found, as users aren't likely to manually mention a dir that is absent.
+		export PATH=$PATH:$BIN_DIR
+	fi 
+
+	if [ ! -f "$BIN_DIR/mkcert" ]; then
+		curl -v https://github.com/FiloSottile/mkcert/releases/download/$MKCERT_VERSION/mkcert-$MKCERT_VERSION-linux-amd64 -L > $BIN_DIR/mkcert
+		chmod 755 $BIN_DIR/mkcert 
+	fi 
+
+	# asks for root
+	mkcert -install 
+	echo -n "Your new local CAfile is"; mkcert -CAROOT 
+
+	# TODO: Edit the following lines to have all the machines names OR IPs that you will use for this app.
+	# 
+	mkcert "$PROD_URL" localhost 192.168.1.218 ::1 
+
+	# Where the app and tests expect the certs.
+	mv ./*-key.pem $BASE/$PRIVATE/$PRTKEY
+	mv ./*.pem     $BASE/$PRIVATE/$PBCKEY
+
+########################################################################################################	
+else
+	echo "Unknown option entered '$DAT'"
+	exit 127
+fi	
+
 
 echo -e "Certs for a year have been created just now.  Rerun this script after the year for more.\nThe certs are invisible to Git, do not add them to a repo."
 
