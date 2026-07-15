@@ -26,7 +26,7 @@ smaller goals:
 > In a work env, I would have less exploration and more PM time-structures.
 
 > [!NOTE]
-> Storybook by default loads on a different domain to the app that needs to be accessible via mobile.  Please read about [state partitioning](https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/State_Partitioning) , and set or the test cannot run properly. 
+> Storybook by default loads on a different domain to the app ~ that needs to be accessible via mobile.  Please read about [state partitioning](https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/State_Partitioning), and set details or the test cannot run properly. 
 >
 
 ### Technical deliveries
@@ -120,11 +120,11 @@ As a data architecture, my Vue components should have:
 
 
 - I am not accountable or responsible for anything NPM decides.   Do not run it as root or admin.  
-- Due the way that security theatre and SSL are designed, "low risk" URLs local to your own hardware will require fiddling to be accessed.  Browsers are not happy with HTTP, or HTTPS self signed for good general reasons.  However this doesn't make sense for local domains.  Some browsers often do not read the local hosts file to eliminate virus's on win32.   As a casual app-dev on the outside of those projects, I can document known work-rounds and no more.   
-   - TODO: use letsEncrypt to avoid this point.
-- If you talk HTTP/0.9 or HTTP/1.0, or HTTP/1.1 to the API you get TCP transit, and nothing on higher protocols.  This is HTTPS and HTTP/2 only service, your browser should default to HTTPS and ALN upgrade steps.   
+- RESOLVED ISSUE: Due the way that security theatre and SSL are designed, "low risk" URLs local to your own hardware will require fiddling to be accessed.  Browsers are not happy with HTTP, or HTTPS self signed for good general reasons.  However this doesn't make sense for local domains.  Some browsers often do not read the local hosts file to eliminate virus's on win32. 
+   - See revised [checksum script](./build-toolsi/checksum.bash), I have updated this.   Please read the script before running it.
+- If you talk HTTP/0.9 or HTTP/1.0, or HTTP/1.1 to the API you get TCP transit, and nothing on higher protocols.  This is HTTPS and HTTP/2 only service, your browser _should_ default to HTTPS and ALN upgrade steps, so this is invisible to you.   
 - I strongly recommend applying a local domain name to the IP that runs this service, for UX.  Details will vary, please consult your docs.   My router creates a local name for each machine that uses DHCP by default, yours might too. 
-- This project likes Node24, absolutely no warranty on older versions as I expect NPM will make your life very hard.  Package.json includes some magic for getting Node24, but that tech is very frail as it moves version of NPM.  #leSigh.
+- This project likes Node24, no warranty on older versions as I expect NPM will make your life very hard.  Package.json includes some magic for getting Node24, but that tech is very frail as it moves version of NPM.  #leSigh.
    - Assuming you are a techie, adopt/ deploy NVM to have flexibility.
 - For better readability, I moved many local variable names to a non-English lang ~ fr-FR ~ so there is no clash with JS keywords.    Public symbols should be in en-UK.   This convention isn't global, but its not bad spelling.   JS does allow UTF-8 in variable names.
 - Node supports a different Thread implementation to browsers.  I could make some more of my tests work, but that is adding code to pass test env that cannot be used outside of tests.  This is not productive.

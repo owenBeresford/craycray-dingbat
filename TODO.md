@@ -14,10 +14,14 @@
 - Storybook "run tests" on page load
 - Workout if should cache list data in browser cache?
 - Simplify initGeneratedMethods
-- maybe lineup state-keys to show net status in later builds
+- maybe lineup state-keys to show net status in later builds :: NetworkedListService->reportConnections 
 - list sorting? a-z
 - test showing transition between network modalities correctly
+- long tap on list name to rename
 - Add cache event messages in localStorage, so can restart app
+- Test that changes the central API store, must put the earlier value back, or the other test break.
+- FIX Property "info" was accessed during render but is not defined on instance. App.vue
+- rename main.min.mjs to something a end-user might be able to guess
 
 
 ### LOW IMPACT, nioce to haves
@@ -35,6 +39,7 @@
 - this might be child components being ready before parent.  [Vue warn]: injection "shopping" not found.
 - Work out if I can afford to strip my ["disable TS when its current limitations are loud and annoying"](https://dev.to/softwarejutsu/understanding-typescripts-comments-ts-ignore-ts-expect-error-and-friends-38p9)
 - implement my DOCS file (JSON validation)
+- Auto restart scripting (eg service files, or init.d files)?
 - look at atomic IO in Node.  #leSigh.  A write isn't likely to collide with a read, but if it did the reader gets a mess.
 - Maybe lineup state-keys to show net status in later builds
 - update Localisation to a better string storage, I discover <i18n> feature 
@@ -48,7 +53,8 @@
   - OR drop them... deprecating...
 - Think about [scan barcode on older packet](https://www.actowizsolutions.com/uk-grocery-api-real-time-data-tesco-aldi-asda-sainsburys.php)
 
-Yes, the storybook tests use storybook/test module that currently I can't install.   Storybook seems to include it even though its doesn't exist in the correct version ~ its a mono-repo product.   #WorksForMe, I hope it works-for-you.
+> [!NOTE] 
+> Yes, the storybook tests use **storybook/test** module that currently I can't install.   Storybook seems to include it even though its doesn't exist in the correct version ~ its a mono-repo product.   #WorksForMe, I hope it works-for-you.
 
 
 ### Storybook behaviours
@@ -59,26 +65,29 @@ I believe this steps are in the Storybook tests
 On / or /list-all
   * display lists that the client knows about
     * each list should a name, a size, and a save date
-  * a tabbar, which holds
-    * "list all"
-    * "new"
+  * a tabBar, which holds
+    * "list all" interaction
+    * "new" interaction
+    * search interaction 
     * burger menu
   * actions:
     * std hovers
     * triggering a list name should change to that screen
     * triggering the burger menu a should display it (see own section)
-    * triggering the new button should load an empty list
-    * if no cookie (first-touch), will display help intro, set a cookie, then the menu help
+    * triggering the new button should load an empty list, marked "New Empty list"
+    * if no cookie (first-touch to app), will display help intro, set a cookie, then the menu help
     * if in first-touch, display help for this screen
 
 On /list/$X
   * displays items in that list 
-  * sets list name in tabbar header
+  * sets list name in tabBar header
   * actions:
     * std hovers
-    * long trigger on item open edittext small-screen
-    * swipe left on an item will remove it
-    * triggering "add item" will open edittext small-screen on a blank input
+    * long trigger on item will open edit text component
+    * swipe left on an item will remove it from the list
+    * triggering "add item" will open edit-text component with a blank input
+    * In mobile render, there is a drag toggle to drag items around
+    * in bigScreen render, click and drag will do the same
     * if in first-touch, display help for this screen
     
 On menu
@@ -86,8 +95,11 @@ On menu
   * list of menu items
   * actions
     * each one of the buttons does as described
+    * mostly for screen readers, there is a title on each menu item.
     * items that change a list go to that list
     * items that change all lists go to all lists
-    * show help show the help
+    * actions that are "end actions" (IMO) close the menu
+    * actions that may be followed by something else (IMO) do not
+    * show help will show the help interstitial
 
 
