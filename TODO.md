@@ -21,7 +21,8 @@
 - Add cache event messages in localStorage, so can restart app
 - Test that changes the central API store, must put the earlier value back, or the other test break.
 - FIX Property "info" was accessed during render but is not defined on instance. App.vue
-- rename main.min.mjs to something a end-user might be able to guess
+- Rename main.min.mjs to something an end-user might be able to guess
+- Find a markdown editor and viewer that doesn't crash or hang.  This will reduce number number of 1line changes, as "in public" is my _current_ only viewer.
 
 
 ### LOW IMPACT, nioce to haves
