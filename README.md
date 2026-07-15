@@ -67,8 +67,8 @@ smaller goals:
 
 
 - Clone repo to a big screen device
-- Read the file, then Run build-tools/checksum.bash  this creates certs and runs `npm i` twice
-- OR run `npm i` in each package directory, and build your own certs 
+- Read build-tools/checksum.bash, then run it.  This creates certs and runs `npm i` twice
+- **OR** run `npm i` in each package directory, and build your own certs 
 - run `npm run build:app`
 - run `npm run app`
 - launch on phone or desktop and build your initial lists (labour-intensive here)
