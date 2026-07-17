@@ -4,7 +4,6 @@ import { LocalStorage } from "node-localstorage";
 import { ListService } from "../../services/ListService";
 import { useLocal, LocalCopy } from "../../services/LocalCopy";
 import { NetworkedListService } from "../../services/NetworkedListService";
-import { createDataFactory } from "../../services/DataFactory";
 import { useMsgDistrib, MessageDistribution } from "../../services/MessageDistribution";
 import { RemoteStorage } from "../../services/RemoteStorage";
 import { TEST_LOCATION_URL, API_RETRY, APP_NAME } from "../../Constants";

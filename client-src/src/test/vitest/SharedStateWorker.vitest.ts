@@ -125,8 +125,8 @@ describe("test on SharedStateWorker ", () => {
     expect(typeof txt).toBe("object");
 
     let dat: Array<SaveStruct> = [
-  {"name":"list4 ","created":1783795584682,"edited":1783795584682,"count":3,"id":4,"list":["thing 1","thing 2","thing 3"]},
-  {"name":"list5 ","created":1783795584682,"edited":1783795584682,"count":3,"id":4,"list":["thing 1","thing 2","thing 3"]},
+  {"name":"list 3","created":1783795584682,"edited":1783795584682,"count":3,"id":4,"list":["ssfsdf","sdfsdf","dgdgd","dfgdfgfd"]},
+  {"name":"list 1","created":1783795584682,"edited":1783795584682,"count":3,"id":1,"list":["ssfsdf","sdfsdf","dgdgd","dfgdfgfd"]},
   {"name":"list 2","created":1783795517176,"edited":1783795517176,"count":4,"id":3,"list":["ssfsdf","sdfsdf","dgdgd","dfgdfgfd"]},
   {"name":"list 3","created":1783795517176,"edited":1783795517176,"count":4,"id":4,"list":["ssfsdf","sdfsdf","dgdgd","dfgdfgfd"]}
       ];
