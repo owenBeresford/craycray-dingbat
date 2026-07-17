@@ -6,7 +6,7 @@
 
 
 - ESLINT ON VUE FILES
-- increase tests
+- increase tests - need to show CORS is correct, from another host #leSigh
 - think about best name for ShopState
 - Make better favico, consider badges, 
 - May be need to re-add STORE.getters
@@ -18,7 +18,7 @@
 - test showing transition between network modalities correctly
 - long tap on list name to rename
 - Add cache event messages in localStorage, so can restart app
-- Test that changes the central API store, must put the earlier value back, or the other test break.
+- Tests that change the central API store, must put the initial value back, or the other tests break.
 - FIX Property "info" was accessed during render but is not defined on instance. App.vue
 - Find a markdown editor and viewer that doesn't crash or hang.  This will reduce number number of 1line changes, as "in public" is my _current_ only viewer.
 
