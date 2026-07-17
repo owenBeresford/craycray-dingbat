@@ -1,6 +1,9 @@
 #!/bin/bash 
+# PURPOSE: Script converts TS modular code to bundled MJS code
+#
 # This script reads and follows $NODE_ENV
-# accepts "--be" and "--fe"
+# It accepts "--be" and "--fe"
+#
 # If I ever move to support win32, I will need to port this to Python3
 
 what="all"
@@ -25,7 +28,6 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 		fi
 	fi
 
-
 	$NODEBIN $EXECDIR/vite --config ./vite.config.mjs build --l info # -m $buildenv
 	ret=$?
 	if [ $ret -ne 0 ]; then
@@ -33,7 +35,7 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 		exit 1
 	else 
 		# TODO work out why my FE deps now inject checks against "process.env"
-		echo -n "const process={env:{}};" > ../dist/public/shopping.es.min.mjs
+		echo -n "var process={env:{}};" > ../dist/public/shopping.es.min.mjs
 		# Im not setting nODE_ENV here. 
 		# I have logic in vite config to call thing ...-test when NODE_ENV is development
 		if [ -f dist/shopping.es.mjs ]; then 
@@ -68,22 +70,19 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 		echo "Tool uglifycss exited $ret on *.css"
 		exit 1
 	fi
-	cat ./src/assets/foundation.min.css ./shopping.tmp.css > ../dist/public/shopping.min.css
+	cat ./node_modules/foundation-sites/dist/css/foundation.min.css ./shopping.tmp.css > ../dist/public/shopping.min.css
 	cp src/assets/favicon.ico ../dist/public/
 	cp src/assets/index.html ../dist/public/
 	cp src/assets/logo.png ../dist/public/
 	cp src/assets/manifest.json ../dist/public/	
-# old test certs.
-#	cp src/assets/cert.pem ../dist/public/
-#	cp src/assets/private.key ../dist/public/
 
 	echo "Created fresh shopping.min.css ."
 	rm ./shopping.tmp.css
 	rm ./dist/*.*
 
 # build storybook tests
-	node $EXECDIR/storybook build
-	node $EXECDIR/storybook build -c .storybook-suspence/
+#	node $EXECDIR/storybook build
+#	node $EXECDIR/storybook build -c .storybook-suspence/
 	cd ..
 fi
 
@@ -125,5 +124,5 @@ if [ "$what" == "--be" -o "$what" == "all" ]; then
 fi
 
 # to EXEC 
-#  node dist/main.js
+#  ./launch-shopping-app
 

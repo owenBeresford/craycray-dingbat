@@ -1,4 +1,6 @@
 #!/bin/bash
+# PURPOSE: execute tests
+#
 EXECDIR=node_modules/.bin
 export NODE_ENV=development
 APIPID=~/shopping.pid
@@ -35,17 +37,24 @@ if [ "$what" = "fe" -o "$what" = "all" ]; then
 	# I have added a thing for timeout to return 127
 	# Due to using typeschecks, I cannot use this feature in Devops tools,  
 	# as Vitest thinks there are ~850 errors in node_modules/@types, and is always 1
-	#
-	# IOIO XXX When stable process strip build from here its in the build.bash
 
-	node $SEXECDIR/storybook build
+	node $SEXECDIR/storybook build --loglevel debug 
 	# https://tiberriver256.github.io/web%20development/how-to-run-storybook-with-https-on-localhost/
-	node $SEXECDIR/storybook dev -p 6006 --https --ssl-cert ../dist/private/server.pem --ssl-key ../dist/private/private.key 
+	#
+	if [ ! -d  ../dist/public/sb-asset/ ]; then
+		mkdir ../dist/public/sb-asset/
+	fi
+	cp ../dist/public/worker1.es.min.mjs ../dist/public/sb-asset/
+	cp ./node_modules/foundation-sites/dist/css/foundation.min.css.map  ../dist/public/sb-asset/
+	cp ./src/assets/foundation.min.css  ../dist/public/sb-asset/
 
-	node $SEXECDIR/storybook build -c .storybook-suspence/
-	node $SEXECDIR/storybook dev -p 6006 -c .storybook-suspence/ --https --ssl-cert ../dist/private/server.pem --ssl-key ../dist/private/private.key 
+	node $SEXECDIR/storybook dev -p 6006 --https --ssl-cert ../dist/private/shoppinglist-public.pem --ssl-key ../dist/private/shoppinglist-private.pem --loglevel debug --no-version-updates --disable-telemetry 
+# -h HOSTNAME
 
-    # node node_modules/.bin/storybook dev -p 6006 --https --ssl-cert ../dist/private/server.pem --ssl-key ../dist/private/private.key 
+
+	node $SEXECDIR/storybook build -c .storybook-suspence/ --loglevel debug 
+	node $SEXECDIR/storybook dev -p 6006 -c .storybook-suspence/ --https --ssl-cert ../dist/private/shoppinglist-public.pem --ssl-key ../dist/private/shoppinglist-private.pem --loglevel debug --no-version-updates --disable-telemetry 
+
 	# I wish I had a way to "run then quit" on Storybook
 	# UPDATE: there is a 'run all tests' button, just need a CLI access path
 

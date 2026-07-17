@@ -1,9 +1,9 @@
 #!/bin/bash  
+# PURPOSE: create static files that shouldnt be checked in to Git
 #
-# Setup the files that arent checked-in. 
-# Written in bash as faster to write and is more concise.
 # This file only supports debian or ubuntu family of Linux.  
 # Assuming you are technical, it is quite simple to make a copy for other operating systems.
+# Written in bash as faster to write and is more concise.
 #
 # Unfortunately, this script can't really be unit tested,
 #  Please run with a '-x' param to the bash interpreter 

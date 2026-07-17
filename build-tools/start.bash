@@ -1,4 +1,5 @@
 #!/bin/bash 
+# PURPOSE: hold env details and launch app, also supported stop.
 
 export CURSERVICE=0; 
 PIDFN=~/shopping.pid 
@@ -20,13 +21,11 @@ fi
 if [ "client-src" == "`basename $PWD`" -o "server-src" == "`basename $PWD`" ] ;then
 	cd ..; 
 fi
-# might need to add Nest into this...
-#  "#start:debug": "nest start --debug --watch",
+# Another option: run via Nestjs
+#   node node_modules/.bin/nest start --debug 
 
-# export SHOPPING_PORT=3001 
-# export SHOPPING_IPADDR="app.hiss"  
-export SHOPPING_CERT=./dist/private/server.pem
-export SHOPPING_KEY=./dist/private/private.key  
+export SHOPPING_CERT=./dist/private/shoppinglist-public.pem
+export SHOPPING_KEY=./dist/private/shoppinglist-private.pem  
 export SHOPPING_PASSPHRASE=""
 export NODE_DEBUG='https,http'
 # export NODE_DEBUG='tls,https'

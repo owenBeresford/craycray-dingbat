@@ -1,4 +1,6 @@
 #!/bin/bash
+# PUROPOSE: to tell a dev about minor errors and code style
+#
 EXECDIR=./node_modules/.bin
 NODEBIN='node '
 
@@ -7,11 +9,12 @@ if [ "$1" == "--fix" ]; then
 	tweak="--fix"
 fi
 args="--no-cache --exit-on-fatal-error $tweak "
+
+###############################################################################
 if [ `basename $PWD` != 'client-src' ]; then
 	cd client-src
 fi
 
-####################################################################################
 $NODEBIN $EXECDIR/prettier --write src
 ret=$?
 if [ $ret -ne 0 ]; then
@@ -57,7 +60,7 @@ if [ $ret -ne 0 ]; then
 	exit 1
 fi
 
-$NODEBIN $EXECDIR/vue-tsc -p ./tsconfig.json
+$NODEBIN $EXECDIR/tsc -p ./tsconfig.json
 ret=$?
 if [ $ret -ne 0 ]; then
 	echo "[step 3/3 server] vue-tsc exited $ret on everything"
