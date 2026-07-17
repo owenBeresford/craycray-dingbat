@@ -10,7 +10,6 @@
 - think about best name for ShopState
 - Make better favico, consider badges, 
 - May be need to re-add STORE.getters
-- Replace self-signed-certs with real-ones via lets-encrypt
 - Storybook "run tests" on page load
 - Workout if should cache list data in browser cache?
 - Simplify initGeneratedMethods
@@ -21,7 +20,6 @@
 - Add cache event messages in localStorage, so can restart app
 - Test that changes the central API store, must put the earlier value back, or the other test break.
 - FIX Property "info" was accessed during render but is not defined on instance. App.vue
-- Rename main.min.mjs to something an end-user might be able to guess
 - Find a markdown editor and viewer that doesn't crash or hang.  This will reduce number number of 1line changes, as "in public" is my _current_ only viewer.
 
 

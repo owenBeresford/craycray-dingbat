@@ -1,0 +1,12 @@
+#!/bin/bash
+# I wish there was a way to change the icon on this file.  But that's for binaries only, AFAIK
+
+BASE=`realpath "$0"`
+BASE=`dirname "$BASE"`
+cd $BASE
+
+export SHOPPING_CERT=./dist/private/shoppinglist-public.pem
+export SHOPPING_KEY=./dist/private/shoppinglist-private.pem  
+export SHOPPING_PASSPHRASE=""
+node $BASE/dist/main.min.mjs &
+
