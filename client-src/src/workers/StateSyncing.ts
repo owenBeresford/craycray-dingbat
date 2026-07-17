@@ -2,10 +2,11 @@ import type { DataPipeline } from "../types/Saveable";
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { ShippingStruct, ActionEnum } from "../../../common/types/Messagable";
 // import type { DistantStorable } from "../types/RemoteTypes";
-import { WORKER_NAME } from "../Constants";
+import { WORKER_NAME, TEST_LOCATION_URL } from "../Constants";
 // import { createRemoteService } from "../Constants";
 import { useSSW } from "./SharedStateWorker";
 import { transform2text, transform2list, packMsg } from "../services/Storable";
+import { TestLocation } from '../test/MockLocation';
 
 export {};
 declare const self: DedicatedWorkerGlobalScope;
@@ -16,7 +17,7 @@ declare const self: DedicatedWorkerGlobalScope;
 //  throw new Error("Runtime doesn't support Workers, FAIL, ABORT.");
 //}
 
-const STATE: DataPipeline = useSSW(self.location);
+const STATE: DataPipeline = useSSW( new TestLocation(TEST_LOCATION_URL ) );
 // "self" refers to current thread, this should only be run after forking.
 // this module is a Worker object, and runs as a second thread in the browser.
 // The UI thread drives MessageDistribution
@@ -35,7 +36,7 @@ if (import.meta.env.VITEST) {
  */
 self.onmessage = async function (ev: MessageEvent): Promise<void> {
   console.log(
-    "WORKER THREAD received MSG sent to " + ev.origin,
+    "WORKER THREAD received MSG sent to " , ev,
     (ev.data as ShippingStruct).action,
     (ev.data as ShippingStruct).data,
     "isolated",
@@ -43,16 +44,13 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
     crossOriginIsolated
   );
 
-  if (ev.origin !== WORKER_NAME) {
-    console.warn("Recv msg from un-authorised source " + ev.origin);
-    return;
-  }
-
   const payload: ShippingStruct = ev.data as ShippingStruct;
   let isDone = false;
 
   if (("save-payload" as ActionEnum) === payload.action) {
     await STATE.pushWhenAble(transform2list(payload.data));
+console.log("WORKER THREAD received MSG after dispatch"  );  
+
     let tt2: ShippingStruct = packMsg("save-payload", { wrote: payload.data.length, duration: -1 });
     self.postMessage(transform2text(tt2), undefined);
     isDone = true;

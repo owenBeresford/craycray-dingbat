@@ -12,6 +12,7 @@ import type { DelayCallbackType, DataPipeline } from "../types/Saveable";
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 import { createRemoteService } from "../Constants";
+import type { TestLocation } from '../test/MockLocation';
 // import type { BasicThreadable } from "../types/BasicThreadable";
 
 /**
@@ -22,7 +23,7 @@ import { createRemoteService } from "../Constants";
  * @public
  * @returns {DataPipeline}
  */
-export function useSSW(loc: Location | WorkerLocation): DataPipeline {
+export function useSSW(loc: Location | WorkerLocation | TestLocation): DataPipeline {
   return new SharedStateWorker(createRemoteService(loc), exponentialDelay);
 }
 
@@ -64,7 +65,7 @@ export class SharedStateWorker implements DataPipeline {
    */
   public async pushWhenAble(json: Array<SaveStruct>): Promise<boolean> {
     const SELF = this;
-
+ 
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       const ATTEMPT = async (good: PromiseSucceed<boolean>, bad: PromiseReject): Promise<void> => {
         let access = await SELF.conn.poll();

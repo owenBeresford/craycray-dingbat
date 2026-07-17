@@ -36,7 +36,11 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
     super();
     this.url = c.url + "";
     this.cease = false;
-    this.agent = c.agent ?? globalThis.fetch.bind(globalThis);
+  /* this is a another ugly hack.
+    I need injection support on the HTTP client, 'cus Node lags behind the browser
+    However there is a security issue if fetch in a thread doesnt sit in the worker context.
+  */  
+    this.agent = c.agent ?? globalThis.fetch.bind(globalThis );
     const { url, ...rest } = c; // url local var will be deleted
     this.other = rest;
   }
