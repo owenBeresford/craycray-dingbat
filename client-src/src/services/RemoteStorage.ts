@@ -185,7 +185,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
       const REQT: RequestInit = Object.assign(this.other, {
         method: "GET",
         body: null,
-        mode: "no-cors",
+        mode: "same-origin",
         credentials: "same-origin",
       }) as RequestInit;
       if (this.cease) {
