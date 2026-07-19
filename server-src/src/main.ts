@@ -7,6 +7,7 @@ import http2 from "node:http2";
 import fs from "node:fs";
 import path from "node:path";
 import { getGlobals } from "common-es";
+import type { Response as NestResponse } from 'express';
 
 import type {
   FastifyInstance,
@@ -28,6 +29,7 @@ import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import { ShoppingModule } from "./shopping/shopping-module";
 const { __dirname, __filename } = getGlobals(import.meta.url);
 
+// Currently all the files in the App
 const VALID_ROUTES = [
   "/",
   "/index.html",
@@ -81,7 +83,7 @@ function extractEnv(env: NodeJS.ProcessEnv): ControlledEnv {
   if (env.SHOPPING_KEY) {
     out.SSLkey = "" + env.SHOPPING_KEY;
   }
-  // in theory i want a password on the cert.   So this code supports it
+  // in theory I want a password on the cert.   So this code supports it
   // in practice, its less use, and am using PK8 files that doesnt include it (so storybook works cleanly)
   if ("SHOPPING_PASSPHRASE" in env) {
     out.passphrase = "" + env.SHOPPING_PASSPHRASE;
@@ -222,9 +224,12 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
             optionsSuccessStatus: 204,
         });
 
-  app.use((req:Request, res, next:Function):void => {
-    const originalCookie = res.cookie.bind(res);
-    res.cookie = function (name:string, value:string, options = {}) {
+  app.use((req:Request, res:NestResponse, next:Function):void => {
+// https://dev.to/dan9el8/implementing-cookies-with-nestjs-c0e
+// https://expressjs.com/en/5x/api/response/  
+console.log("NEST API cookie is", res.cookie );
+    const originalCookie = res.cookie; //.bind(res);
+    res.cookie = function (name:string, value:string, options:Object = {}) {
       return originalCookie(name, value, {
         sameSite: 'none',
         secure: true,
