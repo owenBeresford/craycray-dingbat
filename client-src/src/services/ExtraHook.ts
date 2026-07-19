@@ -1,5 +1,5 @@
-import { CBHookType } from '../types/Actionables';
-import { activity } from '../test/SameSiteCORStest';
+import { CBHookType } from "../types/Actionables";
+import { activity } from "../test/SameSiteCORStest";
 // This file needs to import all the extra function files, to ensure code present at the right time.
 // Otherwise it will be too late.
 
@@ -7,7 +7,7 @@ import { activity } from '../test/SameSiteCORStest';
 // it's a function really.
 // this is staic loading, as JS tree shaking was fighting me.
 // this will be disabled in most builds
-var list:Array<CBHookType>=[activity];
+var list: Array<CBHookType> = [activity];
 
 /**
  * registerHook
@@ -17,8 +17,8 @@ var list:Array<CBHookType>=[activity];
  * @public
  * @returns {void}
  */
-export function registerHook(cb:CBHookType):void {
-    list.push(cb);
+export function registerHook(cb: CBHookType): void {
+  list.push(cb);
 }
 
 /**
@@ -28,13 +28,12 @@ export function registerHook(cb:CBHookType):void {
  * @public
  * @returns {void}
  */
-export function ExtraHook():void {
-     for(let i=0; i<list.length; i++) {
-        try {
-            list[i]();
-        } catch(e:unknown) { 
-            console.log("Hook emitted an error ", (e as Error).message);
-        }
+export function ExtraHook(): void {
+  for (let i = 0; i < list.length; i++) {
+    try {
+      list[i]();
+    } catch (e: unknown) {
+      console.log("Hook emitted an error ", (e as Error).message);
     }
+  }
 }
-

@@ -20,6 +20,7 @@
 - Add cache event messages in localStorage, so can restart app
 - Tests that change the central API store, must put the initial value back, or the other tests break.
 - FIX Property "info" was accessed during render but is not defined on instance. App.vue
+- If bigScreen, add "export data" menu option
 - Find a markdown editor and viewer that doesn't crash or hang.  This will reduce number number of 1line changes, as "in public" is my _current_ only viewer.
 
 

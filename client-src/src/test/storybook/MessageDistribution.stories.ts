@@ -150,7 +150,7 @@ async function grp6() {
 
   const DAT = await obj.loadState();
   expect(typeof DAT).toBe("object");
-//  expectTypeOf(DAT).toExtend<Array<SaveStruct>>();
+  //  expectTypeOf(DAT).toExtend<Array<SaveStruct>>();
 }
 
 const meta: Meta = {

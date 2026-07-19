@@ -9,10 +9,8 @@ import {
   assertType,
 } from "vitest";
 
- 
-import {  packMsg } from "../../services/Storable";
+import { packMsg } from "../../services/Storable";
 import * as StateSync from "../../workers/StateSyncing";
-
 
 // defineWebWorkers({ clone: "none" });
 describe("test on StateSync ", () => {
@@ -27,16 +25,16 @@ describe("test on StateSync ", () => {
  	//	expectTypeOf(txt).toExtend<ListCollection>(	);
 	});
 */
-  it("Can run StateSync", async ({skip}) => {
-console.log("After mocks setip ", typeof Worker, globalThis.Worker  );
+  it("Can run StateSync", async ({ skip }) => {
+    console.log("After mocks setip ", typeof Worker, globalThis.Worker);
 
-   skip(!('Worker' in globalThis));
+    skip(!("Worker" in globalThis));
 
     const w = new Worker(
       new URL("../../workers/StateSyncing", import.meta.url),
       { type: "module" }
     );
-    console.log("TEST made thread " + process.pid );
+    console.log("TEST made thread " + process.pid);
     await new Promise(async (good, bad) => {
       let NEXT_ACTION = "running";
 

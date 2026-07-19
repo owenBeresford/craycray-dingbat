@@ -4,21 +4,18 @@ import { RemoteStorage } from "./services/RemoteStorage";
 /* TODO: You need to set this URL to yopur host wher the app is run. */
 export const TEST_LOCATION_URL = "https://app.hiss:3001";
 
-export function REMOTE_HOST():string {
-  if( globalThis.__STORYBOOK_MODULE_TEST__ ) { 
+export function REMOTE_HOST(): string {
+  if (globalThis.__STORYBOOK_MODULE_TEST__) {
     // IOIO XXX #FIXME YOU MUST UPDATE THIS TO YOUR LOCAL MACHINE NAME
     // when storybookj is running, need to use a different value
     return "app.hiss:3001";
-  } 
+  }
   // outside of storybook tests, there is only 1 stack, and this works fins
   return location.hostname + ":" + location.port;
-} 
+}
 // maybe MSG_THREAD should start https://...
-export const MSG_THREAD = /* @vite-ignore */ new URL( "/asset/worker1.es.min.mjs", import.meta.url);
-export const MSG_THREAD_SB = /* @vite-ignore */ new URL( "https://localhost:6006/sb-asset/worker1.es.min.mjs" );
-
-
-
+export const MSG_THREAD = /* @vite-ignore */ new URL("/asset/worker1.es.min.mjs", import.meta.url);
+export const MSG_THREAD_SB = /* @vite-ignore */ new URL("https://localhost:6006/sb-asset/worker1.es.min.mjs");
 
 // networking values + postMessages
 export const APP_NAME = "shopping";
@@ -76,7 +73,6 @@ if (typeof globalThis.fetch === "undefined" || !globalThis.fetch) {
   throw new Error("73453894563453 Fetch() not found.  BAILING OUT");
 }
 
-
 /**
  * createRemoteService
  * Create a remote HTTP client.  
@@ -87,7 +83,6 @@ if (typeof globalThis.fetch === "undefined" || !globalThis.fetch) {
  * @returns {RemoteStorage}
  */
 export function createRemoteService(loc: Location | WorkerLocation): RemoteStorage {
- 
   if (
     "process" in globalThis &&
     process.env.NODE_ENV !== "development" &&
@@ -103,9 +98,9 @@ export function createRemoteService(loc: Location | WorkerLocation): RemoteStora
     throw new Error("9757353545757 Message passing is only possible inside a reasonable browser.");
   }
 
-  let whereTo=loc.protocol + "//" + loc.hostname + ":" + loc.port + "/api/shared-state";
+  let whereTo = loc.protocol + "//" + loc.hostname + ":" + loc.port + "/api/shared-state";
   let d3: RemoteConfig = {
-    url:whereTo,
+    url: whereTo,
     timeout: API_RETRY,
     headers: { "Content-Type": "application/json" },
     mode: "same-origin",

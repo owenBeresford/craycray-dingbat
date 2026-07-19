@@ -6,7 +6,7 @@ import type { ShippingStruct, ActionEnum } from "../../../common/types/Messagabl
 import type { BasicThreadable } from "../types/BasicThreadable";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
 import { transform2list, packMsg } from "./Storable";
-import { useLog} from './LogStack';
+import { useLog } from "./LogStack";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 
 type Timer = number;
@@ -22,9 +22,11 @@ export function useMsgDistrib(): DistantStorable {
   return new MessageDistribution();
 }
 
-const LOG=useLog();
-let workerUrl=MSG_THREAD;
-if( globalThis.__STORYBOOK_MODULE_TEST__ ) { workerUrl=MSG_THREAD_SB; }
+const LOG = useLog();
+let workerUrl = MSG_THREAD;
+if (globalThis.__STORYBOOK_MODULE_TEST__) {
+  workerUrl = MSG_THREAD_SB;
+}
 
 /**
  * MessageDistribution
@@ -80,7 +82,7 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
       }
 
       this.worker.onmessage = this.receipt.bind(this);
-      this.worker.onerror= this.errorTrap.bind(this);
+      this.worker.onerror = this.errorTrap.bind(this);
       this.worker.onmessageerror = this.errorTrap.bind(this);
       this.running = true;
       return true;
@@ -115,7 +117,6 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
     console.warn("Worker->onError handler ", ev);
     this.errMsgs.push("Worker->onError handler (see console for more details) ");
     LOG.addRaw("Worker->onError handler (see console for more details) ", "debug");
-
   }
 
   /**
@@ -138,10 +139,10 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
       crossOriginIsolated
     );
     //if (ev.origin !== WORKER_NAME) {
-      // if (ev.origin !== this.goodSource) {
-   //  console.warn("Recv msg from un-authorised source " + ev.origin);
-   //   return;
-   // }
+    // if (ev.origin !== this.goodSource) {
+    //  console.warn("Recv msg from un-authorised source " + ev.origin);
+    //   return;
+    // }
 
     if (!expédition.action) {
       console.warn("Received bad message; not processed ", expédition);
@@ -262,7 +263,12 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
         tentatives++;
         if (tentatives > PMQUE_ATTEMPTS) {
           console.warn(
-            "782345762347345 No response from worker thread in " + PMQUE_ATTEMPTS + "*" + PMQUE_TIMER + "ms.  Aborting ", this.worker
+            "782345762347345 No response from worker thread in " +
+              PMQUE_ATTEMPTS +
+              "*" +
+              PMQUE_TIMER +
+              "ms.  Aborting ",
+            this.worker
           );
           if (poignée) {
             clearTimeout(poignée);

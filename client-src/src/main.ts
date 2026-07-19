@@ -17,7 +17,7 @@ import ShoppingApp from "./App.vue";
 import { useLog } from "./services/LogStack";
 import type { FactoryArtefact } from "./services/DataFactory";
 import { currentNetworkConfig, createEmptyFactory } from "./services/DataFactory";
-import { ExtraHook } from './services/ExtraHook';
+import { ExtraHook } from "./services/ExtraHook";
 
 console.time("boot-app");
 const TOOL = createApp(ShoppingApp, { currentStateKey: "scr1", instanceId: "v1.1" });

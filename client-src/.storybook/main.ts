@@ -11,7 +11,7 @@ const __filename = path.basename(URL.fileURLToPath(import.meta.url));
 /** @type { import('@storybook/vue3-vite').StorybookConfig } */
 const config: StorybookConfig = {
   stories: ["../src/test/storybook/*.stories.@(mjs|ts|tsx)"],
-  staticDirs: [ "../../dist/public/", "./asset/" ],
+  staticDirs: [ "../../dist/public/",  ],
   addons: [
     "@chromatic-com/storybook",
     "@storybook/addon-vitest",

@@ -6,18 +6,17 @@ import { WORKER_NAME, TEST_LOCATION_URL } from "../Constants";
 // import { createRemoteService } from "../Constants";
 import { useSSW } from "./SharedStateWorker";
 import { transform2text, transform2list, packMsg } from "../services/Storable";
-import { TestLocation } from '../test/MockLocation';
+import { TestLocation } from "../test/MockLocation";
 
 export {};
 declare const self: DedicatedWorkerGlobalScope;
-
 
 //if (! globalThis.Worker ) {
 // I think this error report is too late, here.  BUT, if it is absent, still whine about it
 //  throw new Error("Runtime doesn't support Workers, FAIL, ABORT.");
 //}
 
-const STATE: DataPipeline = useSSW( new TestLocation(TEST_LOCATION_URL ) );
+const STATE: DataPipeline = useSSW(new TestLocation(TEST_LOCATION_URL));
 // "self" refers to current thread, this should only be run after forking.
 // this module is a Worker object, and runs as a second thread in the browser.
 // The UI thread drives MessageDistribution
@@ -36,7 +35,8 @@ if (import.meta.env.VITEST) {
  */
 self.onmessage = async function (ev: MessageEvent): Promise<void> {
   console.log(
-    "WORKER THREAD received MSG sent to " , ev,
+    "WORKER THREAD received MSG sent to ",
+    ev,
     (ev.data as ShippingStruct).action,
     (ev.data as ShippingStruct).data,
     "isolated",
@@ -49,7 +49,7 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
 
   if (("save-payload" as ActionEnum) === payload.action) {
     await STATE.pushWhenAble(transform2list(payload.data));
-console.log("WORKER THREAD received MSG after dispatch"  );  
+    console.log("WORKER THREAD received MSG after dispatch");
 
     let tt2: ShippingStruct = packMsg("save-payload", { wrote: payload.data.length, duration: -1 });
     self.postMessage(transform2text(tt2), undefined);
@@ -89,7 +89,7 @@ self.onmessageerror = (e: unknown): void => {
   console.warn("WORKER: got bad message ", e as Error);
 };
 if (import.meta.env.VITEST) {
-  console.log("CODE under TEST end module ", typeof self, process.pid );
+  console.log("CODE under TEST end module ", typeof self, process.pid);
 }
 /* taken from snap/chromium/common/chromium/WasmTtsEngine/20260305.1/bindings_main.js
  loadWasmModuleToWorker: worker => new Promise(onFinishedLoading => {
