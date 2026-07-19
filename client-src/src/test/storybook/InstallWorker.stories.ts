@@ -11,8 +11,6 @@ function grp1() {
   // I think useless here
   let txt = useCacheWrapper();
   expect(typeof txt).toBe("object");
-  //    assertType<Function>(CacheWrapper);
-  //    expectTypeOf(txt).toExtend<CacheWrapper>();
 }
 
 async function grp2() {
@@ -67,7 +65,6 @@ export const runInstallationDESTRUCTIVELY: StoryObj = {
     async mounted() {
       const frame: HTMLIFrameElement = document.getElementById("test-frame") as HTMLIFrameElement;
       try {
-        const ops = frame.contentWindow;
         await grp2();
 
         this.result += "<br /> ✔ All async tests passed";

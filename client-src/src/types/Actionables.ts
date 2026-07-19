@@ -11,6 +11,7 @@ export type FakeThis<T> = { [K in keyof T]: Ref<T[K]> };
 export type UserAction<I> = (e: GuessEvent, ctx: I) => boolean;
 export type CBType = (d1: string | null) => any;
 export type NotifyType = (d1: number) => any;
+export type CBHookType = () => void;
 
 /**
   The basic type for the Actionables structure

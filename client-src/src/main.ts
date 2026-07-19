@@ -1,7 +1,5 @@
-// import "reflect-metadata";
 import { createApp, ref } from "vue";
 import type { Plugin, DirectiveBinding } from "vue";
-// import Vue3TouchEvents from "vue3-touch-events";
 import { STORE } from "./services/Store";
 import {
   APP_NAME,
@@ -19,11 +17,11 @@ import ShoppingApp from "./App.vue";
 import { useLog } from "./services/LogStack";
 import type { FactoryArtefact } from "./services/DataFactory";
 import { currentNetworkConfig, createEmptyFactory } from "./services/DataFactory";
+import { ExtraHook } from './services/ExtraHook';
 
 console.time("boot-app");
 const TOOL = createApp(ShoppingApp, { currentStateKey: "scr1", instanceId: "v1.1" });
 TOOL.use(StaticRoutes);
-// TOOL.use(Vue3TouchEvents as Plugin, { disableClick: false, passive: false });
 TOOL.use(STORE);
 
 TOOL.directive("longpress", {
@@ -59,7 +57,7 @@ console.time("boot-data-connection");
 const data: FactoryArtefact = createEmptyFactory();
 const listCountRef = ref<number>(0);
 // this is too small to add a doc header,
-// it's just to be able tost the var as a given point, as the assigment has its own stack pointer
+// it's just to be able to set the var as a given point, as the assignment has its own stack pointer
 function updateListCount(nu: number): void {
   listCountRef.value = nu;
 }
@@ -76,4 +74,5 @@ TOOL.provide("log", useLog());
 
 STORE.install(TOOL, APP_NAME);
 TOOL.mount(ROOT_NODE);
+ExtraHook();
 console.timeEnd("boot-app");
