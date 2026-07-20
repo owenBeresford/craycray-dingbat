@@ -219,7 +219,7 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
       // 'https://localhost:'+ vars.SPort, 'https://'+ vars.SIpAddr +':'+ vars.SPort, 'https://localhost:6006',
       // ],
             origin:"*",
-            methods: 'GET,HEAD,POST,DELETE',
+            methods: 'GET,HEAD,POST,DELETE,OPTIONS',
             credentials: true,
             optionsSuccessStatus: 204,
         });
