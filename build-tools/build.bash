@@ -75,6 +75,7 @@ if [ "$what" == "--fe" -o "$what" == "all" ]; then
 	cp src/assets/index.html ../dist/public/
 	cp src/assets/logo.png ../dist/public/
 	cp src/assets/manifest.json ../dist/public/	
+    cp ../dist/public/worker1.es.min.mjs ../dist/public/sb-asset/
 
 	echo "Created fresh shopping.min.css ."
 	rm ./shopping.tmp.css
