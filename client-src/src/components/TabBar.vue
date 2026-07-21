@@ -177,12 +177,13 @@ export default defineComponent({
   setup(): TabBarSetupValues {
     const dataOnLoad: Ref<number> = inject<Ref<number>>("dataOnLoad").listCountRef;
     const listData: FactoryArtefact = inject<FactoryArtefact>("listData");
+    const log: Loggable = inject<Loggable>("log");
+
     const visibleRef = ref<boolean>(false);
     const getInputRef = ref<string>("");
     const CBRef = ref<CBType>(noop);
     const storeRef = ref<COMPLETE_STORE>(useStore());
     const menuStateRef = ref<boolean>(false);
-    const log: Loggable = inject<Loggable>("log");
 
     let stack: ExternalMethods;
     try {

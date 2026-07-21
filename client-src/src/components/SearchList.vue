@@ -93,7 +93,6 @@ export default defineComponent({
     const log: LogService = inject<LogService>("log");
     const listData: FactoryArtefact = inject<FactoryArtefact>("listData");
     onErrorCaptured((err: unknown, instance: ComponentPublicInstance | null, info: string): void => {
-      console.error("Error found in search results setup :", err as Error, info);
       log.addRaw("SearchResults.setup(): " + (err as Error).message + " " + info, "error");
     });
 
@@ -117,7 +116,6 @@ export default defineComponent({
       } satisfies SearchSetupState;
     } catch (e: unknown) {
       log.addRaw("SearchResults.setup(): " + (e as Error).message, "error");
-      console.error("SearchResults.setup(): " + (e as Error).message);
     }
   },
   data(): SearchStaticData {

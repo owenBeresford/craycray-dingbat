@@ -77,7 +77,6 @@ export default defineComponent({
     fixPath: { type: Function, required: true },
   },
   data(): ListOfListsProps {
-    //console.debug("ListOfLists->data", this.dataOnLoad   );
     return {
       instanceId: this.$props.testId,
       viewId: this.$props.testId + "View1",
@@ -95,7 +94,6 @@ export default defineComponent({
     },
 
     shoppingLists: function (): Array<ListStruct> {
-      // console.debug("ListOfLists->shoppingLists", this.dataOnLoad.listCountRef.value);
       // this is a NECESSARY magic side-effect.  As the value is read, this gets recomnputed
       // DO NOT DELETE, unless making the this.listData.currentData reactive and inside the Vue engine
       let _ = this.dataOnLoad.listCountRef.value;
