@@ -7,6 +7,8 @@ export interface DistantStorable {
   loadState(): Promise<Array<SaveStruct>>;
 
   poll(): Promise<boolean>;
+  getErrors(): Array<string>;
+
 }
 
 /**

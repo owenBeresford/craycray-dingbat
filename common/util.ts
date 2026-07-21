@@ -141,6 +141,7 @@ export interface SimpleResponse {
  * A simple wrapper current fetch()
  * IMPURE when I add logging
  * This behaves as a VERY SIMPLE middle-ware.
+ *    Not currently used, as I couldn't intgrate the tests with it
  * @param {string|URL} url
  * @param {boolean} trap ~ return null rather than an exception
  * @param {boolean} ldebug
