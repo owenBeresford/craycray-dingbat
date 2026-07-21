@@ -11,11 +11,6 @@ import { TestLocation } from "../test/MockLocation";
 export {};
 declare const self: DedicatedWorkerGlobalScope;
 
-//if (! globalThis.Worker ) {
-// I think this error report is too late, here.  BUT, if it is absent, still whine about it
-//  throw new Error("Runtime doesn't support Workers, FAIL, ABORT.");
-//}
-
 const STATE: DataPipeline = useSSW(new TestLocation(TEST_LOCATION_URL));
 // "self" refers to current thread, this should only be run after forking.
 // this module is a Worker object, and runs as a second thread in the browser.
@@ -48,17 +43,27 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
   let isDone = false;
 
   if (("save-payload" as ActionEnum) === payload.action) {
-    await STATE.pushWhenAble(transform2list(payload.data));
-    console.log("WORKER THREAD received MSG after dispatch");
+    try {
+      await STATE.pushWhenAble(transform2list(payload.data));
 
-    let tt2: ShippingStruct = packMsg("save-payload", { wrote: payload.data.length, duration: -1 });
-    self.postMessage(transform2text(tt2), undefined);
+      let tt2: ShippingStruct = packMsg("save-payload", { wrote: payload.data.length, duration: -1 });
+      self.postMessage(transform2text(tt2), undefined);
+    } catch(e :unknown) {
+      let tt2: ShippingStruct = packMsg("error-payload", { wrote: payload.data.length, error:(e as Error).message });
+      self.postMessage(transform2text(tt2), undefined);
+    }
     isDone = true;
   }
   if (("load-request" as ActionEnum) === payload.action) {
+        try {
     let tt1: Array<SaveStruct> = await STATE.pullWhenAble();
     let tt2: ShippingStruct = packMsg("ret-payload", tt1);
     self.postMessage(transform2text(tt2), undefined);
+    } catch(e :unknown) {
+      let tt2: ShippingStruct = packMsg("error-payload", { wrote: 0, error:(e as Error).message });
+      self.postMessage(transform2text(tt2), undefined);
+    }
+
     isDone = true;
   }
   if (("status-request" as ActionEnum) === payload.action) {

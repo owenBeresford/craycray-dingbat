@@ -65,7 +65,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
  * @public
  * @returns Promise<boolean>
  */
-  public poll(): Promise<boolean> {
+  public async poll(): Promise<boolean> {
     let didTimeOut = false;
     const REQT: RequestInit = Object.assign(this.other, { method: "HEAD", body: null }) as RequestInit;
     const EEE = new Error("572357653453653 Request timed out for " + this.url);
@@ -81,6 +81,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
         bad(EEE);
       }, FETCH_TIMEOUT);
 
+      try {
       this.agent(this.url, REQT)
         .then((filet: Response): boolean => {
           clearTimeout(sortie);
@@ -102,6 +103,10 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
             clearTimeout(sortie);
           }
         });
+      } catch(e:unknown) {
+        console.warn("Atttempt to get better error info", (e as Error).message);
+        bad(e);
+      }  
     });
   }
 
@@ -118,7 +123,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
       return Promise.reject(new Error("Data is invalid (no details recorded yet)."));
     }
     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject): void => {
-      const REQT: RequestInit = Object.assign(this.other, {
+       const REQT: RequestInit = Object.assign(this.other, {
         method: "POST",
         body: transform2text(goutte),
       }) as RequestInit;
@@ -126,6 +131,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
         return good(false);
       }
 
+      try {
       this.agent(this.url, REQT)
         .catch((err: Error) => {
           bad(err);
@@ -169,6 +175,10 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
           }
           // return "value for eslint.";
         });
+      } catch(e:unknown) {
+        console.warn("Atttempt to get better error info", (e as Error).message);
+        bad(e);
+      }
     });
   }
 
@@ -182,16 +192,15 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
    */
   public async loadState(): Promise<Array<SaveStruct>> {
     return new Promise((good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
-      const REQT: RequestInit = Object.assign(this.other, {
+       const REQT: RequestInit = Object.assign(this.other, {
         method: "GET",
         body: null,
-        mode: "same-origin",
-        credentials: "same-origin",
       }) as RequestInit;
       if (this.cease) {
         return good([] as Array<SaveStruct>);
       }
 
+      try {
       this.agent(this.url, REQT)
         .catch((err: unknown) => {
           console.warn("Failed to load state", (err as Error).message);
@@ -222,6 +231,10 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
             good(transform2list(tmp));
           }
         });
+      } catch(e:unknown) {
+        console.warn("Atttempt to get better error info", (e as Error).message);
+        bad(e);
+      }
     });
   }
 
@@ -238,18 +251,23 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
   }
 
   protected validateData(goutte: Array<SaveStruct>): boolean {
-    let ret = false;
+    let msg="";
+    let ret=true;
     if (!Array.isArray(goutte) || goutte.length < 1) {
-      return false;
+      msg+="\nentire struct should be arry wih items";
+      ret=false;
     }
     for (let i = 0; i < goutte.length; i++) {
       if (goutte[i].list.length === 0) {
-        return false;
+        msg+="\nlist["+i+"].list should have items ";
+        ret=false;
       }
       if (goutte[i].name.length === 0) {
-        return false;
+        msg+="\nlist["+i+"].name should be filled in";
+        ret=false;
       }
     }
-    return true;
+// console.warn("Rs->validateData "+msg, goutte[0]);
+    return ret;
   }
 }

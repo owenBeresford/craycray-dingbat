@@ -53,6 +53,7 @@ export class SharedStateWorker implements DataPipeline {
     this.currentDelay = 30_000;
     // there won't be vast numbers of this class made
     this.pushWhenAble.bind(this);
+    this.pullWhenAble.bind(this);
   }
 
   /**
@@ -65,8 +66,9 @@ export class SharedStateWorker implements DataPipeline {
    */
   public async pushWhenAble(json: Array<SaveStruct>): Promise<boolean> {
     const SELF = this;
-
+    let poignée: Timer | null = null;
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
+
       const ATTEMPT = async (good: PromiseSucceed<boolean>, bad: PromiseReject): Promise<void> => {
         let access = await SELF.conn.poll();
         if (access) {
@@ -76,6 +78,7 @@ export class SharedStateWorker implements DataPipeline {
               if (import.meta.env.VITEST) {
                 console.debug("Save said tersely " + dat);
               }
+              if(poignée) { clearTimeout(poignée); poignée=null; }
               good(true);
               return true;
             })
@@ -83,11 +86,15 @@ export class SharedStateWorker implements DataPipeline {
               console.error(
                 "Am connected to wifi; cannot save data ??\nImprove error handler here. " + (err as Error).message
               );
+              if(poignée) {
+                clearTimeout(poignée);
+                poignée=null;
+              }
               bad(err as Error);
             });
         } else {
           // I think I need to replace this section
-          setTimeout(() => {
+          poignée=setTimeout(() => {
             return ATTEMPT(good, bad);
           }, SELF.delay(SELF));
         }
@@ -105,22 +112,31 @@ export class SharedStateWorker implements DataPipeline {
    */
   public async pullWhenAble(): Promise<Array<SaveStruct>> {
     const SELF = this;
-
+    let poignée: Timer | null = null;
     return new Promise(async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
       const ATTEMPT = async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject): Promise<void> => {
-        let access = await SELF.conn.poll();
+         let access = await SELF.conn.poll();
+ 
         if (access) {
-          SELF.conn
+           SELF.conn
             .loadState()
             .then((out: Array<SaveStruct>) => {
+               if(poignée) {
+                clearTimeout(poignée);
+                poignée=null;
+              }      
               return good(out);
             })
             .catch((err: unknown) => {
               // #leSigh
+              if(poignée) {
+                clearTimeout(poignée);
+                poignée=null;
+              }
               return bad(err as Error);
             });
         } else {
-          setTimeout(() => {
+          poignée= setTimeout(() => {
             return ATTEMPT(good, bad);
           }, SELF.delay(SELF));
         }
