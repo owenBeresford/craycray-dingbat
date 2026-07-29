@@ -2,14 +2,17 @@ import type { SaveStruct } from "../../../common/types/SaveStruct";
 import { PMQUE_TIMER, PMQUE_ATTEMPTS, MSG_THREAD, WORKER_NAME, MSG_THREAD_SB } from "../Constants";
 import { AbstractSelfNameClass } from "../../../common/AbstractSelfNameClass";
 // import { WorkerHandle } from '../types/Workable';
-import type { ShippingStruct, ActionEnum } from "../../../common/types/Messagable";
-import type { BasicThreadable } from "../types/BasicThreadable";
-import type { DistantStorable } from "../../../common/types/RemoteTypes";
+
 import { transform2list, packMsg } from "./Storable";
 import { useLog } from "./LogStack";
+import type { DistantStorable } from "../../../common/types/RemoteTypes";
+import type { ShippingStruct, ActionEnum } from "../../../common/types/Messagable";
+import type { BasicThreadable } from "../types/BasicThreadable";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
+import type { NullableSysTimerType } from '../../../common/types/Timer';
 
-type Timer = number;
+ 
+type MSG_RETURN_SAVE= { wrote: number, duration: number };
 
 /**
  * useMsgDistrib
@@ -82,8 +85,14 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
       }
 
       this.worker.onmessage = this.receipt.bind(this);
-      this.worker.onerror = this.errorTrap.bind(this);
-      this.worker.onmessageerror = this.errorTrap.bind(this);
+
+      this.worker.onerror = ( ev: ErrorEvent):void => { return this.errorTrap(ev); }
+      if( this.worker.onmessageerror ) {
+        this.worker.onmessageerror = ( ev: MessageEvent<any> ):void => { return this.errorTrap( ev); }; 
+      } else {
+        this.worker.addEventListener("messageerror", (ev:MessageEvent<any>):void => { return this.errorTrap( ev);  });
+      }
+
       this.running = true;
       return true;
     } catch (ee: unknown) {
@@ -113,9 +122,10 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
     return true;
   }
 
-  protected errorTrap(ev: MessageEvent): void {
+  protected errorTrap(ev: MessageEvent<any>|ErrorEvent): void {
     this.errMsgs.push("Worker->onError handler (see console for more details) ");
     LOG.addRaw("Worker->onError handler (see console for more details) ", "debug");
+    console.debug("error handler sees", ev );
   }
 
   /**
@@ -164,7 +174,9 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
       used = true;
     }
     if (expédition.action === ("save-payload" as ActionEnum)) {
-      if (expédition.data.wrote <= 100) {
+      // i have no idea why TSC think data should be a string?
+      let tmp:MSG_RETURN_SAVE=expédition.data as unknown as MSG_RETURN_SAVE;
+      if (tmp.wrote <= 100) {
         console.warn("Failed to writre very much data in the thread.", expédition);
         this.errMsgs.push("Previous save request failed (consult a dev, need server maintenance)");
       }
@@ -251,12 +263,12 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
     const SELF = this;
     let tentatives = 0;
     this.worker.postMessage(expédition, undefined);
-    let poignée: Timer | null = null;
+    let poignée: NullableSysTimerType = undefined;
     const ATTEMPT = async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject): Promise<void> => {
       if (SELF.state.length) {
         if (poignée) {
           clearTimeout(poignée);
-          poignée = null;
+          poignée = undefined;
         }
         good(SELF.state);
       } else {
@@ -272,7 +284,7 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
           );
           if (poignée) {
             clearTimeout(poignée);
-            poignée = null;
+            poignée = undefined;
           }
           bad(
             new Error(
@@ -280,7 +292,7 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
             )
           );
         } else {
-          poignée = +setTimeout(() => {
+          poignée = setTimeout(() => {
             return ATTEMPT(good, bad);
           }, PMQUE_TIMER);
         }
@@ -288,7 +300,7 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
     };
 
     return new Promise((good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
-      poignée = +setTimeout(() => {
+      poignée = setTimeout(() => {
         ATTEMPT(good, bad);
       }, PMQUE_TIMER);
     });

@@ -6,8 +6,7 @@ import type { Storable } from "../types/Saveable";
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { DistantStorable, RemoteConfig, APIResponseType, RSRemoteConfig } from "../../../common/types/RemoteTypes";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
-
-type NullableTimeout = ReturnType<typeof globalThis.setTimeout> | undefined;
+import type { NullableSysTimerType } from '../../../common/types/Timer';
 
 /**
  * RemoteStorage
@@ -76,7 +75,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
     }
 
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-      let sortie: NullableTimeout = setTimeout(() => {
+      let sortie: NullableSysTimerType = globalThis.setTimeout(() => {
         didTimeOut = true;
         bad(EEE);
       }, FETCH_TIMEOUT);
@@ -84,7 +83,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
       try {
         this.agent(this.url, REQT)
           .then((filet: Response): boolean => {
-            clearTimeout(sortie);
+            globalThis.clearTimeout(sortie);
             sortie = undefined;
             if (!didTimeOut) {
               good(Math.round(filet.status / 100) === 2);
@@ -100,12 +99,12 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
           })
           .finally((): void => {
             if (sortie) {
-              clearTimeout(sortie);
+              globalThis.clearTimeout(sortie);
             }
           });
       } catch (e: unknown) {
         console.warn("Atttempt to get better error info", (e as Error).message);
-        bad(e);
+        bad(e as Error);
       }
     });
   }
@@ -177,7 +176,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
           });
       } catch (e: unknown) {
         console.warn("Atttempt to get better error info", (e as Error).message);
-        bad(e);
+        bad(e as Error);
       }
     });
   }
@@ -233,7 +232,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
           });
       } catch (e: unknown) {
         console.warn("Atttempt to get better error info", (e as Error).message);
-        bad(e);
+        bad(e as Error);
       }
     });
   }
@@ -249,6 +248,9 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
     // loadProperty(nom:string):string {
     return "no impl";
   }
+
+  // TODO IOIO evaluate gain from making this a real feature here...
+  getErrors(): Array<string> { return []; };
 
   protected validateData(goutte: Array<SaveStruct>): boolean {
     //    let msg="";

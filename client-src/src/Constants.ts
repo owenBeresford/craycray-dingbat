@@ -99,7 +99,7 @@ export function createRemoteService(loc: Location | WorkerLocation): RemoteStora
   }
 
   let cred = "same-origin";
-  if (location.hostName !== TEST_LOCATION_URL) {
+  if (location.hostname !== TEST_LOCATION_URL) {
     // ie in Storybook
     cred = "omit";
   }

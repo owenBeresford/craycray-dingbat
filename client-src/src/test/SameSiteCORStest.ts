@@ -5,7 +5,7 @@ export async function activity() {
   let RET = await window.fetch("/asset/shopping.es.min.mjs");
   console.assert(RET.ok, "Asset '/asset/shopping.es.min.mjs' can be d/l from client of the server");
   console.assert(
-    RET.headers.get("access-control-allow-origin"),
+    (RET.headers.get("access-control-allow-origin") as string).length>0,
     "Asset '/asset/shopping.es.min.mjs' has Access-Control-Allow-Origin:  = " +
       RET.headers.get("Access-Control-Allow-Origin")
   );
@@ -26,7 +26,7 @@ export async function activity() {
     "Asset '" + TEST_LOCATION_URL + "/asset/shopping.es.min.mjs' can be d/l from client of the server"
   );
   console.assert(
-    RET.headers.get("access-control-allow-origin"),
+   (RET.headers.get("access-control-allow-origin") as string).length>0,
     "Asset '" +
       TEST_LOCATION_URL +
       "/asset/shopping.es.min.mjs' has Access-Control-Allow-Origin = " +

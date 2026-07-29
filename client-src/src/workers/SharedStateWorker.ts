@@ -13,7 +13,10 @@ import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 import { createRemoteService } from "../Constants";
 import type { TestLocation } from "../test/MockLocation";
+import type { NullableSysTimerType } from '../../../common/types/Timer';
 // import type { BasicThreadable } from "../types/BasicThreadable";
+
+ 
 
 /**
  * useSSW
@@ -66,7 +69,7 @@ export class SharedStateWorker implements DataPipeline {
    */
   public async pushWhenAble(json: Array<SaveStruct>): Promise<boolean> {
     const SELF = this;
-    let poignée: Timer | null = null;
+    let poignée: NullableSysTimerType = undefined;
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
       const ATTEMPT = async (good: PromiseSucceed<boolean>, bad: PromiseReject): Promise<void> => {
         let access = await SELF.conn.poll();
@@ -79,7 +82,7 @@ export class SharedStateWorker implements DataPipeline {
               }
               if (poignée) {
                 clearTimeout(poignée);
-                poignée = null;
+                poignée = undefined;
               }
               good(true);
               return true;
@@ -90,7 +93,7 @@ export class SharedStateWorker implements DataPipeline {
               );
               if (poignée) {
                 clearTimeout(poignée);
-                poignée = null;
+                poignée = undefined;
               }
               bad(err as Error);
             });
@@ -114,7 +117,7 @@ export class SharedStateWorker implements DataPipeline {
    */
   public async pullWhenAble(): Promise<Array<SaveStruct>> {
     const SELF = this;
-    let poignée: Timer | null = null;
+    let poignée: NullableSysTimerType = undefined;
     return new Promise(async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
       const ATTEMPT = async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject): Promise<void> => {
         let access = await SELF.conn.poll();
@@ -125,7 +128,7 @@ export class SharedStateWorker implements DataPipeline {
             .then((out: Array<SaveStruct>) => {
               if (poignée) {
                 clearTimeout(poignée);
-                poignée = null;
+                poignée = undefined;
               }
               return good(out);
             })
@@ -133,7 +136,7 @@ export class SharedStateWorker implements DataPipeline {
               // #leSigh
               if (poignée) {
                 clearTimeout(poignée);
-                poignée = null;
+                poignée = undefined;
               }
               return bad(err as Error);
             });

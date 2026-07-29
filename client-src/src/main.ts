@@ -18,6 +18,7 @@ import { useLog } from "./services/LogStack";
 import type { FactoryArtefact } from "./services/DataFactory";
 import { currentNetworkConfig, createEmptyFactory } from "./services/DataFactory";
 import { ExtraHook } from "./services/ExtraHook";
+import type { NullableSysTimerType } from '../../common/types/Timer';
 
 console.time("boot-app");
 const TOOL = createApp(ShoppingApp, { currentStateKey: "scr1", instanceId: "v1.1" });
@@ -26,7 +27,7 @@ TOOL.use(STORE);
 
 TOOL.directive("longpress", {
   beforeMount(el: HTMLElement, binding: DirectiveBinding): void {
-    let pressTimer: number | null = null;
+    let pressTimer: NullableSysTimerType = undefined;
 
     const start = (e: MouseEvent): void => {
       let delay = DELAY_LONGTAP;
@@ -34,17 +35,17 @@ TOOL.directive("longpress", {
         delay = MOBILE_LONGTAP;
       }
 
-      if (pressTimer === null) {
-        pressTimer = window.setTimeout((): void => {
+      if (pressTimer === undefined) {
+        pressTimer = globalThis.setTimeout((): void => {
           binding.value(e);
         }, delay);
       }
     };
 
     const cancel = (e: MouseEvent): void => {
-      if (pressTimer !== null) {
-        clearTimeout(pressTimer);
-        pressTimer = null;
+      if (pressTimer !== undefined) {
+        globalThis.clearTimeout(pressTimer);
+        pressTimer = undefined;
       }
     };
 
