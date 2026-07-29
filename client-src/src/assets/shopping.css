@@ -75,7 +75,7 @@
   color: var(--colour-disabled);
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 480px) {
   .tabBar {
     display: block;
   }
@@ -138,7 +138,7 @@
   display: block;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 480px) {
   .tabBar.buttonRow menu.menuTrigger[aria-hidden="false"] {
     top: 3em;
     right: 0em;
@@ -185,7 +185,7 @@
   flex-basis: calc(100% - 6em);
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 480px) {
   .ListOfList ul {
     width: 100%;
   }
@@ -329,7 +329,7 @@ dialog[open] * {
   right: -40px;
   top: -24px;
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 480px) {
   .enterInput .labelRow span.cancel {
     right: -4em;
     top: -3em;
@@ -608,7 +608,7 @@ body {
   justify-content: space-between;
   flex-direction: column;
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 480px) {
   #app {
     /* room for browser fixed furniture, #leSigh */
     height: calc(100% - 2em);
