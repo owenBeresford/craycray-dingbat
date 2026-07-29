@@ -68,7 +68,6 @@ export class SharedStateWorker implements DataPipeline {
     const SELF = this;
     let poignée: Timer | null = null;
     return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
-
       const ATTEMPT = async (good: PromiseSucceed<boolean>, bad: PromiseReject): Promise<void> => {
         let access = await SELF.conn.poll();
         if (access) {
@@ -78,7 +77,10 @@ export class SharedStateWorker implements DataPipeline {
               if (import.meta.env.VITEST) {
                 console.debug("Save said tersely " + dat);
               }
-              if(poignée) { clearTimeout(poignée); poignée=null; }
+              if (poignée) {
+                clearTimeout(poignée);
+                poignée = null;
+              }
               good(true);
               return true;
             })
@@ -86,15 +88,15 @@ export class SharedStateWorker implements DataPipeline {
               console.error(
                 "Am connected to wifi; cannot save data ??\nImprove error handler here. " + (err as Error).message
               );
-              if(poignée) {
+              if (poignée) {
                 clearTimeout(poignée);
-                poignée=null;
+                poignée = null;
               }
               bad(err as Error);
             });
         } else {
           // I think I need to replace this section
-          poignée=setTimeout(() => {
+          poignée = setTimeout(() => {
             return ATTEMPT(good, bad);
           }, SELF.delay(SELF));
         }
@@ -115,28 +117,28 @@ export class SharedStateWorker implements DataPipeline {
     let poignée: Timer | null = null;
     return new Promise(async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
       const ATTEMPT = async (good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject): Promise<void> => {
-         let access = await SELF.conn.poll();
- 
+        let access = await SELF.conn.poll();
+
         if (access) {
-           SELF.conn
+          SELF.conn
             .loadState()
             .then((out: Array<SaveStruct>) => {
-               if(poignée) {
+              if (poignée) {
                 clearTimeout(poignée);
-                poignée=null;
-              }      
+                poignée = null;
+              }
               return good(out);
             })
             .catch((err: unknown) => {
               // #leSigh
-              if(poignée) {
+              if (poignée) {
                 clearTimeout(poignée);
-                poignée=null;
+                poignée = null;
               }
               return bad(err as Error);
             });
         } else {
-          poignée= setTimeout(() => {
+          poignée = setTimeout(() => {
             return ATTEMPT(good, bad);
           }, SELF.delay(SELF));
         }
