@@ -98,10 +98,11 @@ export function createRemoteService(loc: Location | WorkerLocation): RemoteStora
     throw new Error("9757353545757 Message passing is only possible inside a reasonable browser.");
   }
 
-      let cred="same-origin";
-      if(location.hostName!==TEST_LOCATION_URL) { // ie in Storybook
-        cred="omit";
-      }
+  let cred = "same-origin";
+  if (location.hostName !== TEST_LOCATION_URL) {
+    // ie in Storybook
+    cred = "omit";
+  }
 
   let whereTo = loc.protocol + "//" + loc.hostname + ":" + loc.port + "/api/shared-state";
   let d3: RemoteConfig = {

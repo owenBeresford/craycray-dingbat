@@ -19,7 +19,7 @@ async function grp2() {
   expect(obj instanceof MessageDistribution).toBe(true);
   expect((obj as unknown as MessageDistribution).forkThread()).toBe(true);
 
-  let buf:Array<string> = obj.getErrors();
+  let buf: Array<string> = obj.getErrors();
   const msg1 = {
     name: "empty list cant save",
     created: new Date().getTime(),
@@ -29,10 +29,10 @@ async function grp2() {
 
     list: [],
   } as SaveStruct;
-   expect( await obj.saveState([msg1]) ).toBe(true);
-    expect(buf).toEqual( obj.getErrors() ); 
+  expect(await obj.saveState([msg1])).toBe(true);
+  expect(buf).toEqual(obj.getErrors());
 
-      const msg2 = {
+  const msg2 = {
     name: "normal list",
     created: new Date().getTime(),
     edited: new Date().getTime(),
@@ -104,7 +104,6 @@ async function grp5() {
 
     list: ["asda adasda asdad ", "brgdrgdbsdgd sb bsef ", "cwserfsf cjkihiklhj ", "dwerwer ", "etyiutyut eytuiyuiy"],
   } as SaveStruct;
-console.log("ERTERT ", msg1.name); 
   expect(await obj.saveState([msg1])).toBe(true);
 
   const msg2 = {
@@ -116,7 +115,6 @@ console.log("ERTERT ", msg1.name);
 
     list: ["asda adasda asdad ", "brgdrgdbsdgd sb bsef ", "cwserfsf cjkihiklhj ", "dwerwer ", "etyiutyut eytuiyuiy"],
   } as SaveStruct;
-console.log("ERTERT ", msg2.name);
   expect(await obj.saveState([msg2])).toBe(true);
 
   const msg3 = {
@@ -130,8 +128,7 @@ console.log("ERTERT ", msg2.name);
       "Werw ertert ert earterte erte rte erte ertert ertete erte ertet erter tete ertert ertert ertert et ".repeat(5),
     ],
   } as SaveStruct;
-console.log("ERTERT ", msg3);  
-  expect( await obj.saveState([msg3]) ).toBe(true);
+  expect(await obj.saveState([msg3])).toBe(true);
 
   /*     // i can't get this to compile, to skipped.
       const msg4= {
@@ -189,7 +186,7 @@ export const runCommunication: StoryObj = {
 
         this.result += "<br /> ✔ All async tests passed";
       } catch (err: unknown) {
-        this.result += "<br /> ❌ Test failed: " + (err as Error).message ;
+        this.result += "<br /> ❌ Test failed: " + (err as Error).message;
       }
     },
   }),

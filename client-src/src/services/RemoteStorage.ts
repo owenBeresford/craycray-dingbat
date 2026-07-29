@@ -82,31 +82,31 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
       }, FETCH_TIMEOUT);
 
       try {
-      this.agent(this.url, REQT)
-        .then((filet: Response): boolean => {
-          clearTimeout(sortie);
-          sortie = undefined;
-          if (!didTimeOut) {
-            good(Math.round(filet.status / 100) === 2);
-          } else {
-            bad(EEE);
-          }
-          return Math.round(filet.status / 100) === 2;
-        })
-        .catch((err: Error): void => {
-          if (!didTimeOut) {
-            bad(err);
-          }
-        })
-        .finally((): void => {
-          if (sortie) {
+        this.agent(this.url, REQT)
+          .then((filet: Response): boolean => {
             clearTimeout(sortie);
-          }
-        });
-      } catch(e:unknown) {
+            sortie = undefined;
+            if (!didTimeOut) {
+              good(Math.round(filet.status / 100) === 2);
+            } else {
+              bad(EEE);
+            }
+            return Math.round(filet.status / 100) === 2;
+          })
+          .catch((err: Error): void => {
+            if (!didTimeOut) {
+              bad(err);
+            }
+          })
+          .finally((): void => {
+            if (sortie) {
+              clearTimeout(sortie);
+            }
+          });
+      } catch (e: unknown) {
         console.warn("Atttempt to get better error info", (e as Error).message);
         bad(e);
-      }  
+      }
     });
   }
 
@@ -123,7 +123,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
       return Promise.reject(new Error("Data is invalid (no details recorded yet)."));
     }
     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject): void => {
-       const REQT: RequestInit = Object.assign(this.other, {
+      const REQT: RequestInit = Object.assign(this.other, {
         method: "POST",
         body: transform2text(goutte),
       }) as RequestInit;
@@ -132,50 +132,50 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
       }
 
       try {
-      this.agent(this.url, REQT)
-        .catch((err: Error) => {
-          bad(err);
-        })
-        .then(async (goutte: Response | void): Promise<void> => {
-          if (goutte) {
-            if (!goutte.ok) {
-              return bad(new Error("8456423234242 Server sent an error http status " + goutte.status));
-            }
-            let ret = "";
-            if (goutte.json && (goutte.headers.get("Content-Type") as string).startsWith("application/json")) {
-              // this should be the dominant used branch
-              ret = await goutte.json();
-            } else if (goutte.text) {
-              ret = await goutte.text();
+        this.agent(this.url, REQT)
+          .catch((err: Error) => {
+            bad(err);
+          })
+          .then(async (goutte: Response | void): Promise<void> => {
+            if (goutte) {
+              if (!goutte.ok) {
+                return bad(new Error("8456423234242 Server sent an error http status " + goutte.status));
+              }
+              let ret = "";
+              if (goutte.json && (goutte.headers.get("Content-Type") as string).startsWith("application/json")) {
+                // this should be the dominant used branch
+                ret = await goutte.json();
+              } else if (goutte.text) {
+                ret = await goutte.text();
+              } else {
+                // used in Vitest tests
+                ret = (goutte.body ?? "[]").toString();
+              }
+              try {
+                let filet: APIResponseType;
+                if (typeof ret === "object") {
+                  // data arrived as JSON
+                  filet = ret;
+                } else {
+                  filet = JSON.parse(ret) as APIResponseType;
+                }
+                if ("statusCode" in filet && parseInt(filet.statusCode, 10) > 299) {
+                  // this branch here should not be used; as all the responses have a proper
+                  // HTTP status code
+                  return bad(new Error("56678324536456 Server sent an error http status " + filet.statusCode));
+                } else {
+                  return good(true);
+                }
+              } catch (ee: unknown) {
+                // I can leak the stack trace, this is just a local API.
+                return bad(ee as Error);
+              }
             } else {
-              // used in Vitest tests
-              ret = (goutte.body ?? "[]").toString();
+              return bad(new Error("223423423233434 Valid HTTP, but null response"));
             }
-            try {
-              let filet: APIResponseType;
-              if (typeof ret === "object") {
-                // data arrived as JSON
-                filet = ret;
-              } else {
-                filet = JSON.parse(ret) as APIResponseType;
-              }
-              if ("statusCode" in filet && parseInt(filet.statusCode, 10) > 299) {
-                // this branch here should not be used; as all the responses have a proper
-                // HTTP status code
-                return bad(new Error("56678324536456 Server sent an error http status " + filet.statusCode));
-              } else {
-                return good(true);
-              }
-            } catch (ee: unknown) {
-              // I can leak the stack trace, this is just a local API.
-              return bad(ee as Error);
-            }
-          } else {
-            return bad(new Error("223423423233434 Valid HTTP, but null response"));
-          }
-          // return "value for eslint.";
-        });
-      } catch(e:unknown) {
+            // return "value for eslint.";
+          });
+      } catch (e: unknown) {
         console.warn("Atttempt to get better error info", (e as Error).message);
         bad(e);
       }
@@ -192,7 +192,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
    */
   public async loadState(): Promise<Array<SaveStruct>> {
     return new Promise((good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
-       const REQT: RequestInit = Object.assign(this.other, {
+      const REQT: RequestInit = Object.assign(this.other, {
         method: "GET",
         body: null,
       }) as RequestInit;
@@ -201,37 +201,37 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
       }
 
       try {
-      this.agent(this.url, REQT)
-        .catch((err: unknown) => {
-          console.warn("Failed to load state", (err as Error).message);
-          return bad(new Error("8356456234352 No data was found"));
-        })
-        .then(async (filet: Response | void): Promise<void> => {
-          if (!filet) {
-            // } ||  !( filet instanceof Response))  {  // #leSigh JS
-            return bad(new Error("73456834535634 Valid HTTP, but got nothing back"));
-          }
-          if (!filet.ok) {
-            return bad(new Error("776834534563522 Server sent an error http status " + filet.status));
-          }
+        this.agent(this.url, REQT)
+          .catch((err: unknown) => {
+            console.warn("Failed to load state", (err as Error).message);
+            return bad(new Error("8356456234352 No data was found"));
+          })
+          .then(async (filet: Response | void): Promise<void> => {
+            if (!filet) {
+              // } ||  !( filet instanceof Response))  {  // #leSigh JS
+              return bad(new Error("73456834535634 Valid HTTP, but got nothing back"));
+            }
+            if (!filet.ok) {
+              return bad(new Error("776834534563522 Server sent an error http status " + filet.status));
+            }
 
-          if (filet.json && (filet.headers.get("Content-Type") as string).startsWith("application/json")) {
-            // this will happen in browser stack
-            await filet.json().then(function (text: string): void {
-              good(transform2list(text));
-            });
-          } else if (filet.text) {
-            // this will happen in browser stack
-            await filet.text().then(function (text: string): void {
-              good(transform2list(text));
-            });
-          } else if (filet.body) {
-            // this will happen in unit tests
-            let tmp = filet.body.toString();
-            good(transform2list(tmp));
-          }
-        });
-      } catch(e:unknown) {
+            if (filet.json && (filet.headers.get("Content-Type") as string).startsWith("application/json")) {
+              // this will happen in browser stack
+              await filet.json().then(function (text: string): void {
+                good(transform2list(text));
+              });
+            } else if (filet.text) {
+              // this will happen in browser stack
+              await filet.text().then(function (text: string): void {
+                good(transform2list(text));
+              });
+            } else if (filet.body) {
+              // this will happen in unit tests
+              let tmp = filet.body.toString();
+              good(transform2list(tmp));
+            }
+          });
+      } catch (e: unknown) {
         console.warn("Atttempt to get better error info", (e as Error).message);
         bad(e);
       }
@@ -251,23 +251,23 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
   }
 
   protected validateData(goutte: Array<SaveStruct>): boolean {
-    let msg="";
-    let ret=true;
+    //    let msg="";
+    let ret = true;
     if (!Array.isArray(goutte) || goutte.length < 1) {
-      msg+="\nentire struct should be arry wih items";
-      ret=false;
+      //      msg+="\nentire struct should be arry wih items";
+      ret = false;
     }
     for (let i = 0; i < goutte.length; i++) {
       if (goutte[i].list.length === 0) {
-        msg+="\nlist["+i+"].list should have items ";
-        ret=false;
+        //        msg+="\nlist["+i+"].list should have items ";
+        ret = false;
       }
       if (goutte[i].name.length === 0) {
-        msg+="\nlist["+i+"].name should be filled in";
-        ret=false;
+        //        msg+="\nlist["+i+"].name should be filled in";
+        ret = false;
       }
     }
-// console.warn("Rs->validateData "+msg, goutte[0]);
+    // console.warn("Rs->validateData "+msg, goutte[0]);
     return ret;
   }
 }

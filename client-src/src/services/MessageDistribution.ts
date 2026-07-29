@@ -70,10 +70,10 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
   public forkThread(): boolean {
     try {
       if (typeof globalThis.Worker === "function") {
-let workerUrl = MSG_THREAD;
-if (globalThis.__STORYBOOK_MODULE_TEST__) {
-  workerUrl = MSG_THREAD_SB;
-}
+        let workerUrl = MSG_THREAD;
+        if (globalThis.__STORYBOOK_MODULE_TEST__) {
+          workerUrl = MSG_THREAD_SB;
+        }
         // eslint says not to await on this...??
         this.worker = new Worker(workerUrl, { credentials: "same-origin", name: WORKER_NAME, type: "module" });
       }
@@ -128,22 +128,17 @@ if (globalThis.__STORYBOOK_MODULE_TEST__) {
    * @returns {void}
    */
   protected receipt(ev: MessageEvent): void {
-    let expédition: ShippingStruct={} as ShippingStruct;
+    let expédition: ShippingStruct = {} as ShippingStruct;
     try {
       expédition = JSON.parse(ev.data) as ShippingStruct;
-    } catch(e:unknown) {
+    } catch (e: unknown) {
       console.warn("93464234y3453 MessageDistribution Fail to received valid JSON?? ", (e as Error).message);
       return;
     }
-    console.debug(
-      "BROWSER recieved MSG sent to " + WORKER_NAME,
-      expédition.action,
-      expédition.data,
-    );
+    console.debug("BROWSER recieved MSG sent to " + WORKER_NAME, expédition.action, expédition.data);
 
-  
     if (!expédition.action) {
-      console.warn("Received bad message; not processed ", expédition );
+      console.warn("Received bad message; not processed ", expédition);
       return;
     }
     let used = false;
@@ -168,14 +163,13 @@ if (globalThis.__STORYBOOK_MODULE_TEST__) {
       }
       used = true;
     }
-    if (expédition.action === ("save-payload" as ActionEnum) ) {
-      if (expédition.data.wrote <=100) {
+    if (expédition.action === ("save-payload" as ActionEnum)) {
+      if (expédition.data.wrote <= 100) {
         console.warn("Failed to writre very much data in the thread.", expédition);
         this.errMsgs.push("Previous save request failed (consult a dev, need server maintenance)");
       }
       used = true;
     }
-
 
     if (expédition.action === ("status-payload" as ActionEnum)) {
       console.warn("TEST **Add more code here**\n[ STATUS REPORT ]=", expédition.data);
