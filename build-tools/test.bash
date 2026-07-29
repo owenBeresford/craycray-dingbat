@@ -44,9 +44,9 @@ if [ "$what" = "fe" -o "$what" = "all" ]; then
 	if [ ! -d  ../dist/public/sb-asset/ ]; then
 		mkdir ../dist/public/sb-asset/
 	fi
-	cp ../dist/public/worker1.es.min.mjs ../dist/public/sb-asset/
-	cp ./node_modules/foundation-sites/dist/css/foundation.min.css.map  ../dist/public/sb-asset/
-	cp ./src/assets/foundation.min.css  ../dist/public/sb-asset/
+	cp ../dist/public/worker1.es.min.mjs                               ../dist/public/sb-asset/
+	cp ./node_modules/foundation-sites/dist/css/foundation.min.css.map ../dist/public/sb-asset/
+	cp ./node_modules/foundation-sites/dist/css/foundation.min.css     ../dist/public/sb-asset/
 
 	node $SEXECDIR/storybook dev -p 6006 --https --ssl-cert ../dist/private/shoppinglist-public.pem --ssl-key ../dist/private/shoppinglist-private.pem --loglevel debug --no-version-updates --disable-telemetry 
 # -h HOSTNAME
