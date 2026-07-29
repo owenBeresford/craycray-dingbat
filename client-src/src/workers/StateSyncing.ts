@@ -48,19 +48,19 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
 
       let tt2: ShippingStruct = packMsg("save-payload", { wrote: payload.data.length, duration: -1 });
       self.postMessage(transform2text(tt2), undefined);
-    } catch(e :unknown) {
-      let tt2: ShippingStruct = packMsg("error-payload", { wrote: payload.data.length, error:(e as Error).message });
+    } catch (e: unknown) {
+      let tt2: ShippingStruct = packMsg("error-payload", { wrote: payload.data.length, error: (e as Error).message });
       self.postMessage(transform2text(tt2), undefined);
     }
     isDone = true;
   }
   if (("load-request" as ActionEnum) === payload.action) {
-        try {
-    let tt1: Array<SaveStruct> = await STATE.pullWhenAble();
-    let tt2: ShippingStruct = packMsg("ret-payload", tt1);
-    self.postMessage(transform2text(tt2), undefined);
-    } catch(e :unknown) {
-      let tt2: ShippingStruct = packMsg("error-payload", { wrote: 0, error:(e as Error).message });
+    try {
+      let tt1: Array<SaveStruct> = await STATE.pullWhenAble();
+      let tt2: ShippingStruct = packMsg("ret-payload", tt1);
+      self.postMessage(transform2text(tt2), undefined);
+    } catch (e: unknown) {
+      let tt2: ShippingStruct = packMsg("error-payload", { wrote: 0, error: (e as Error).message });
       self.postMessage(transform2text(tt2), undefined);
     }
 
