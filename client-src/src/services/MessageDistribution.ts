@@ -8,8 +8,8 @@ import type { DistantStorable } from "../../../common/types/RemoteTypes";
 import type { ShippingStruct, ActionEnum } from "../../../common/types/Messagable";
 import type { BasicThreadable } from "../types/BasicThreadable";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
-import type { NullableSysTimerType } from '../../../common/types/Timer';, 
-import type { MSG_RETURN_SAVE, MSG_RETURN_ERROR, SaveStruct } from '../../../common/types/SaveStruct'; 
+import type { NullableSysTimerType } from "../../../common/types/Timer";
+import type { MSG_RETURN_SAVE, MSG_RETURN_ERROR, SaveStruct } from "../../../common/types/SaveStruct";
 
 /**
  * useMsgDistrib
@@ -83,11 +83,17 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
 
       this.worker.onmessage = this.receipt.bind(this);
 
-      this.worker.onerror = ( ev: ErrorEvent):void => { return this.errorTrap(ev); }
-      if( this.worker.onmessageerror ) {
-        this.worker.onmessageerror = ( ev: MessageEvent<any> ):void => { return this.errorTrap( ev); }; 
+      this.worker.onerror = (ev: ErrorEvent): void => {
+        return this.errorTrap(ev);
+      };
+      if (this.worker.onmessageerror) {
+        this.worker.onmessageerror = (ev: MessageEvent<any>): void => {
+          return this.errorTrap(ev);
+        };
       } else {
-        this.worker.addEventListener("messageerror", (ev:MessageEvent<any>):void => { return this.errorTrap( ev);  });
+        this.worker.addEventListener("messageerror", (ev: MessageEvent<any>): void => {
+          return this.errorTrap(ev);
+        });
       }
 
       this.running = true;
@@ -119,10 +125,10 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
     return true;
   }
 
-  protected errorTrap(ev: MessageEvent<any>|ErrorEvent): void {
+  protected errorTrap(ev: MessageEvent<any> | ErrorEvent): void {
     this.errMsgs.push("Worker->onError handler (see console for more details) ");
     LOG.addRaw("Worker->onError handler (see console for more details) ", "debug");
-    console.debug("error handler sees", ev );
+    console.debug("error handler sees", ev);
   }
 
   /**
@@ -159,7 +165,7 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
       used = true;
     }
     if (expédition.action === ("error-payload" as ActionEnum) && expédition.data.length > 0) {
-      let tmp:MSG_RETURN_ERROR=expédition.data as unknown as MSG_RETURN_ERROR;
+      let tmp: MSG_RETURN_ERROR = expédition.data as unknown as MSG_RETURN_ERROR;
       this.errMsgs.push(tmp.error as string);
       used = true;
     }
@@ -172,7 +178,7 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
       used = true;
     }
     if (expédition.action === ("save-payload" as ActionEnum)) {
-      let tmp:MSG_RETURN_SAVE=expédition.data as unknown as MSG_RETURN_SAVE;
+      let tmp: MSG_RETURN_SAVE = expédition.data as unknown as MSG_RETURN_SAVE;
       if (tmp.wrote <= 100) {
         console.warn("Failed to writre very much data in the thread.", expédition);
         this.errMsgs.push("Previous save request failed (consult a dev, need server maintenance)");
@@ -181,7 +187,7 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
     }
 
     if (expédition.action === ("status-payload" as ActionEnum)) {
-      this.errMsgs.push("Status msg reported "+ expédition.data);
+      this.errMsgs.push("Status msg reported " + expédition.data);
       used = true;
     }
     if (!used) {

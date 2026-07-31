@@ -13,10 +13,8 @@ import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 import { createRemoteService } from "../Constants";
 import type { TestLocation } from "../test/MockLocation";
-import type { NullableSysTimerType } from '../../../common/types/Timer';
+import type { NullableSysTimerType } from "../../../common/types/Timer";
 // import type { BasicThreadable } from "../types/BasicThreadable";
-
- 
 
 /**
  * useSSW

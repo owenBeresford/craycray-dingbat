@@ -6,7 +6,7 @@ import type { Storable } from "../types/Saveable";
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { DistantStorable, RemoteConfig, APIResponseType, RSRemoteConfig } from "../../../common/types/RemoteTypes";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
-import type { NullableSysTimerType } from '../../../common/types/Timer';
+import type { NullableSysTimerType } from "../../../common/types/Timer";
 
 /**
  * RemoteStorage
@@ -250,7 +250,9 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
   }
 
   // TODO IOIO evaluate gain from making this a real feature here...
-  getErrors(): Array<string> { return []; };
+  getErrors(): Array<string> {
+    return [];
+  }
 
   protected validateData(goutte: Array<SaveStruct>): boolean {
     //    let msg="";
