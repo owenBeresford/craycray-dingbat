@@ -28,7 +28,7 @@ export abstract class BaseActions<I> implements ExternalMethods<I> {
 
    * @see [https://stackoverflow.com/a/39723622]
    * @param {I } ctx
-   * @param {ExternalMethods} cls 
+   * @param {ExternalMethods} cls
    * @public
    * @returns {MethodOptions}
    */
@@ -37,12 +37,12 @@ export abstract class BaseActions<I> implements ExternalMethods<I> {
       // an iterator function because JS is clear and well organised,
       // @see [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/iterator]
       // #leSigh.
-      [Symbol.iterator]() {
+      [Symbol.iterator]():Iterable<ExternalMethods<I>> {
         //   :Iterator<ExternalMethods<I>> {
         const ar = Object.values(this);
         let i = 0;
         return {
-          next() {
+          next():IteratorResult {
             if (i < ar.length) {
               let tmp = { value: ar[i], done: false };
               i++;
@@ -72,15 +72,17 @@ export abstract class BaseActions<I> implements ExternalMethods<I> {
 
   /**
    * wrapper
-   * A function -makin- function that creates boilerplate
+   * A function -makin- function that creates boilerplate.
+   * The first param is to set the prototype correctly.
 
-   * @param { BaseActions} SELF
-   * @param {UserAction} f1
+   * @param { BaseActions<I>} SELF
+   * @param {UserAction<I>} f1
    * @param { I} ctx
    * @public
-   * @returns {UserAction }
+   * @returns {UserAction<I> }
    */
   protected wrapper(SELF: BaseActions<I>, f1: UserAction<I>, ctx: I): UserAction<I> {
+
     return function (e: GuessEvent): boolean {
       if (e.type && e.type === "mouseup") {
         LOG.addRaw("event action in Base, mouse UP event", "debug");
@@ -88,7 +90,6 @@ export abstract class BaseActions<I> implements ExternalMethods<I> {
       }
       if ("data" in (SELF as BaseActions<I>) && !SELF.data.currentData) {
         LOG.addRaw("event action in Base, no data in currentData ", "debug");
-
         return false;
       }
       f1 = f1.bind(SELF);
@@ -107,3 +108,4 @@ export abstract class BaseActions<I> implements ExternalMethods<I> {
  * @returns {void}
  */
 export function noop(str: string | null): void {}
+

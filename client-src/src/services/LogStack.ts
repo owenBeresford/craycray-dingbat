@@ -1,13 +1,13 @@
 import { reactive, readonly, type UnwrapNestedRefs } from "vue";
+import { MAX_LOG_LENGTH, LOGGING_ENABLED } from "../Constants";
+// add per component , (maybe feature) flag for "no logging", to reduce RAM used if it isnt interesting
 
 import type { Loggable } from "../types/Loggable";
-import { MAX_LOG_LENGTH, LOGGING_ENABLED } from "../Constants";
-// add component flag for "no logging", to reduce RAM used if it isnt interesting
 
 /**
  * useLog
  * Boring use* function
- 
+
  * @public
  * @returns {Loggable}
  */
@@ -19,6 +19,7 @@ export function useLog(): Loggable {
 }
 let SELF: Loggable;
 
+// not exported
 interface LocalLogState {
   log: Array<string>;
 }
@@ -38,7 +39,7 @@ export class LogService implements Loggable {
   /**
      * constructor
      * A boring con'tor
- 
+
      * @public
      * @returns {self}
      */
@@ -48,8 +49,18 @@ export class LogService implements Loggable {
     });
   }
 
+
+ /**
+  * addEvent
+  * Alternative to addRaw(), not currently implemented.
+
   // @TODO
-  addEvent(e: Event, volume: string): void {}
+  * @param {Event} e
+  * @param {string} volume
+  * @public
+  * @returns {void}
+  */
+ public addEvent(e: Event, volume: string): void {}
 
   /**
      * addRaw
@@ -57,9 +68,9 @@ export class LogService implements Loggable {
      * If this requirement scales, make event objects like Stripe / ELK traces
      *  I'm ignoring colour options for now, as logging doesn't need to be pretty, just timely
      * WARN: after a data volume, the unshift() is probably slower that push() then reverse to render, or reverse via CSS
- 
+
      * @param {string} msg
-     * @param {string}  volume
+     * @param {string} volume
      * @public
      * @returns {void}
      */
@@ -85,7 +96,7 @@ export class LogService implements Loggable {
   /**
      * readWhole
      * Data accessor, for whole data volume
- 
+
      * @public
      * @returns {Readonly<Array<string>>}
      */
@@ -97,7 +108,7 @@ export class LogService implements Loggable {
      * readHead
      * Data accessor, this includes data volume limit
      * FIX FOR REACTIVITY
- 
+
      * @param {number} rows
      * @public
      * @returns {Array<string>}

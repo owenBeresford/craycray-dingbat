@@ -1,18 +1,18 @@
-import { CBHookType } from "../types/Actionables";
+import type { CBHookType } from "../types/Actionables";
 import { activity } from "../test/SameSiteCORStest";
 // This file needs to import all the extra function files, to ensure code present at the right time.
 // Otherwise it will be too late.
 
 // This is called "hook" as marketing people for SPA frameworks like this word,
 // it's a function really.
-// this is staic loading, as JS tree shaking was fighting me.
+// this is static loading, as JS tree shaking was fighting me.
 // this will be disabled in most builds
 var list: Array<CBHookType> = [activity];
 
 /**
  * registerHook
- * 
- 
+ *
+
  * @param {CBHookType} cb
  * @public
  * @returns {void}
@@ -24,7 +24,7 @@ export function registerHook(cb: CBHookType): void {
 /**
  * ExtraHook
  * Execute the registered functions
- 
+
  * @public
  * @returns {void}
  */

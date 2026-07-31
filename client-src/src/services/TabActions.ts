@@ -207,7 +207,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
     if (liste) {
       // @ts-ignore  - there are no undef() at runtime after the con'tor.
       const extra: StdList = Object.assign(
-        StdList.manual<string, StdList>(`DUP: ${liste.nom}`, this.data.currentData!.count()) as StdList,
+        StdList.manual<string, StdList>(`DUP: ${liste.nom}`, this.data.currentData!.count()),
         liste
       );
       extra.editName(`DUP: ${liste.nom}`);
@@ -354,7 +354,7 @@ function createNameCallback(ctx: TabBarCtx, data: FactoryArtefact, routes: Route
     );
     liste.editName(d1);
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    data.currentData.put(ctx.storeRef.value.state.currentId as number, liste);
+    data.currentData.put(ctx.storeRef.value.state.currentId, liste);
     ctx.visibleRef.value = false;
     routes.push({ name: "list-everything" });
   };

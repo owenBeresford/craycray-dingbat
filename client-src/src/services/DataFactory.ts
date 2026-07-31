@@ -122,7 +122,7 @@ export async function currentNetworkConfig(
 
   @param {Array<TestDataSchema>|undefined} override ~ supported to initialise Fixtures
   @param {Location | MockLocation} loc
-  @param {NotifyType} cb 
+  @param {NotifyType} cb
   @public
   @returns {FactoryArtefact} - see above tuple interface
  */
@@ -149,7 +149,7 @@ export function createDataFactory(
 /**
  * createEmptyFactory
  * The synchronous aspect to make a FactoryArtefact
- 
+
  * @public
  * @returns {createEmptyFactory}
  */
@@ -163,6 +163,8 @@ export function createEmptyFactory(): FactoryArtefact {
    * initData
    * Consumer access function, that includes "async washing".
 
+   * @param {Location|MockLocation }  locc
+   * @param {NotifyType} cb
    * @public
    * @returns {void}
    */
@@ -205,7 +207,7 @@ export function createEmptyFactory(): FactoryArtefact {
   return retour satisfies FactoryArtefact;
 }
 
-// A fixture empty callbacxk for tests,
+// A fixture empty callback for tests,
 //  to be used in NotifyType slots
 export const PASSBACK = (a: number): void => {};
 
@@ -222,7 +224,7 @@ export const PASSBACK = (a: number): void => {};
 
  * @param {undefined|RouteLocationNormalizedLoadedGeneric} itinéraire - huge great big type is from vue-router
  * @public
- * @returns {Promise<InstanceListable<string>>}
+ * @returns {InstanceListable<string>}
  */
 function setupCurrentList(itinéraire: undefined | RouteLocationNormalizedLoadedGeneric): InstanceListable<string> {
   let id: number = 0;
@@ -266,3 +268,4 @@ function setupCurrentList(itinéraire: undefined | RouteLocationNormalizedLoaded
     return liste;
   }
 }
+

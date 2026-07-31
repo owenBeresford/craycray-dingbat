@@ -3,8 +3,9 @@ import type { MethodOptions, Ref } from "vue";
 import type { RouteRecordNormalized, Router } from "vue-router";
 
 import { BaseActions } from "./BaseActions";
-import { SearchList, StdList } from "./AList";
-import { MotionStream } from "./MotionStream";
+import type { SearchList} from "./AList";
+import { StdList } from "./AList";
+import type { MotionStream } from "./MotionStream";
 import { isMobile, clearSelection } from "../../../common/util";
 // import { StaticRoutes } from "../components/Routing";
 
@@ -15,8 +16,8 @@ import type { ExternalMethods, UserAction, CBType, SearchCtx } from "../types/Ac
 
 /**
  * useSearchActions
- * A standard use* function. 
- 
+ * A standard use* function.
+
  * @param {SearchList} a
  * @param {MotionStrea<SearchCtx>} b
  * @param {FactoryArtefact} c
@@ -54,7 +55,8 @@ export class SearchActions extends BaseActions<SearchCtx> implements ExternalMet
    *
    * @param {SearchList} al
    * @param {MotionStream} ms
-   * @param { FactoryArtefact} ld
+   * @param {FactoryArtefact} ld
+   * @param {Router} rr
    * @public
    * @returns {ExternalMethods}
    */
@@ -78,9 +80,9 @@ export class SearchActions extends BaseActions<SearchCtx> implements ExternalMet
   }
 
   public onSwipe(dir: string, e: TouchEvent, ctx: SearchCtx): void {
-    const agaçant = e!.currentTarget as HTMLElement;
+    const agaçant = e.currentTarget as HTMLElement;
     //  if(dir !="left") { return; }  // IOIO need to see values first
-    this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
+    this.offset = parseInt(agaçant.getAttribute("data-offset") ?? "-1", 10);
     console.log(`Deleting list element [${this.offset}] = ${agaçant.innerText} - ${dir} direction.`);
     this.onSwipeFinalise(e, ctx);
   }
@@ -94,13 +96,13 @@ export class SearchActions extends BaseActions<SearchCtx> implements ExternalMet
   }
 
   public onDragStart(e: MouseEvent, ctx: SearchCtx): void {
-    const agaçant = e!.currentTarget as HTMLElement;
-    this.offset = parseInt(agaçant!.getAttribute("data-offset") ?? "-1", 10);
+    const agaçant = e.currentTarget as HTMLElement;
+    this.offset = parseInt(agaçant.getAttribute("data-offset") ?? "-1", 10);
     this.flux.start(e, ctx);
   }
 
   public onDragStop(e: MouseEvent, ctx: SearchCtx): void {
-    const agaçant = e!.currentTarget as HTMLElement;
+    const agaçant = e.currentTarget as HTMLElement;
     this.flux.end(e, ctx);
     clearSelection();
   }
@@ -120,7 +122,7 @@ export class SearchActions extends BaseActions<SearchCtx> implements ExternalMet
       metaKey: false,
       button: 0,
       buttons: 1,
-    } as MouseEventInit);
+    });
 
     this.flux.end(e2, ctx);
     clearSelection();

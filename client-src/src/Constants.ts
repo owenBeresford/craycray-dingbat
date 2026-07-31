@@ -4,6 +4,13 @@ import { RemoteStorage } from "./services/RemoteStorage";
 /* TODO: You need to set this URL to yopur host wher the app is run. */
 export const TEST_LOCATION_URL = "https://app.hiss:3001";
 
+/**
+ * REMOTE_HOST
+ * A simple util to return correct URLs for storybook or runtime
+
+ * @public
+ * @returns {string}
+ */
 export function REMOTE_HOST(): string {
   if (globalThis.__STORYBOOK_MODULE_TEST__) {
     // IOIO XXX #FIXME YOU MUST UPDATE THIS TO YOUR LOCAL MACHINE NAME
@@ -75,9 +82,9 @@ if (typeof globalThis.fetch === "undefined" || !globalThis.fetch) {
 
 /**
  * createRemoteService
- * Create a remote HTTP client.  
- * Will throw if Node/ browser lacks features 
- 
+ * Create a remote HTTP client.
+ * Will throw if Node/ browser lacks features
+
  * @param {Location | WorkerLocation} loc
  * @public
  * @returns {RemoteStorage}

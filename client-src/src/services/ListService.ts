@@ -11,9 +11,9 @@ import type { NotifyType } from "../types/Actionables";
 
 const log: Loggable = useLog();
 /**
- * ListService 
+ * ListService
  * ListService, the class to mediate List storage
- 
+
  * @public
  */
 export class ListService extends AbstractSelfNameClass implements ListCollection<string> {
@@ -25,7 +25,8 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
   /**
    * constructor
    * Normal Con'tor
- 
+
+   * @param {NotifyType} n
    * @public
    * @returns {ListService}
    */
@@ -39,7 +40,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
    * create
    * Inject a new List ~ will have no items
   // ID=0 isn't valid, so the code +1
- 
+
    * @param {string} nom
    * @public
    * @returns {number}
@@ -53,7 +54,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
   /**
    * poll
    * Check the remote data-sources are active (Wifi, and API running)
- 
+
    * @public
    * @returns {Promise<boolean>}
    */
@@ -66,7 +67,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
   /**
    * isNotValidId
    * Check a possible ID, is valid.  NOTE: negative test
- 
+
    * @param {number} id
    * @public
    * @returns {boolean}
@@ -82,7 +83,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
   /**
    * count
    * Current number of Lists
- 
+
    * @public
    * @returns {number}
    */
@@ -93,7 +94,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
   /**
    * delete
    * Remove a specific List from this collection
- 
+
    * @param {number} id
    * @public
    * @returns {boolean}
@@ -111,7 +112,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
   /**
    * merge
    * Copy a remote collection into this object
- 
+
    * @param {ListCollection} next
    * @public
    * @returns {boolean}
@@ -130,7 +131,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
   /**
    * list
    * Return views() of the current Lists in this collection.
- 
+
    * @public
    * @returns {Array<ListStruct> }
    */
@@ -154,7 +155,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
   /**
    * get
    * Return a item (ie a list) from this List collection.
- 
+
    * @param {number} id
    * @public
    * @returns {StdList | undefined}
@@ -175,7 +176,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
   /**
    * put
    * Set a particular item in a named slot.
- 
+
    * @param {number} id
    * @param {StdList} ret
    * @public
@@ -194,7 +195,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
   /**
    * append
    * Add a List to end of collection
- 
+
    * @param {StdList} ret
    * @public
    * @returns {boolean}
@@ -208,7 +209,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
   /**
    * searchItems
    * Return a view of matching items from this collection
- 
+
    * @param {string|RegExp} égaler
    * @public
    * @returns {Array<MatchedItems>}
@@ -230,9 +231,9 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
   /**
    * listNames
    * Return the name of each list in the current catalogue
- 
+
    * @public
-   * @returns {Array<string>} 
+   * @returns {Array<string>}
    */
   public listNames(): Array<string> {
     let nom: Array<string> = [];
@@ -249,7 +250,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
    * NULL IMPLEMEMENTATION
 
    * @public
-   * @returns {boolean}
+   * @returns {Promise<boolean>}
    */
   public async saveAllLists(): Promise<boolean> {
     const tmp: Array<SaveStruct> = [];
@@ -260,9 +261,9 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
    * loadAllLists
    * Request data from both remote sources, cache response in local states
    * NULL IMPLEMEMENTATION
- 
+
    * @public
-   * @returns {boolean} 
+   * @returns {boolean}
    */
   public loadAllLists(): boolean {
     let out = true;

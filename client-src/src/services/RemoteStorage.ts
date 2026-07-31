@@ -38,7 +38,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
     /* this is a another ugly hack.
     I need injection support on the HTTP client, 'cus Node lags behind the browser
     However there is a security issue if fetch in a thread doesnt sit in the worker context.
-  */
+    */
     this.agent = c.agent ?? globalThis.fetch.bind(globalThis);
     const { url, ...rest } = c; // url local var will be deleted
     this.other = rest;
@@ -47,7 +47,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
   /**
    * terminateSoon
    * Abort all slow pocesses
- 
+
    * @public
    * @returns {void}
    */
@@ -184,7 +184,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
   /**
    * loadState
    * Request current list of lists from remote API
-  // call will happen just after page/ app open, so probably on network
+   * call will happen just after page/ app open, so probably on network
 
    * @public
    * @returns {Promise<Array<SaveStruct>>}
@@ -238,22 +238,38 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
   }
 
   // There is no value in the following API points at the mo
-  // so made private
+  //   would like to be private
   public saveProperty(): boolean {
-    // saveProperty(nom:string, val:string):boolean {
+    // Real params: saveProperty(nom:string, val:string):boolean {
     return true;
   }
 
   public loadProperty(): string {
-    // loadProperty(nom:string):string {
+    // Real params: loadProperty(nom:string):string {
     return "no impl";
   }
 
-  // TODO IOIO evaluate gain from making this a real feature here...
-  getErrors(): Array<string> {
+
+  /**
+   * getErrors
+   * A null implementation
+   * TODO IOIO evaluate gain from making this a real feature here...
+
+   * @public
+   * @returns {Array<string> }
+   */
+  public getErrors(): Array<string> {
     return [];
   }
 
+  /**
+   * validateData
+   * A local util to check the data is well-formed
+
+   * @param {Array<SaveStruct>} goutte
+   * @public
+   * @returns {boolean}
+   */
   protected validateData(goutte: Array<SaveStruct>): boolean {
     //    let msg="";
     let ret = true;

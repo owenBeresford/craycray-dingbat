@@ -8,7 +8,6 @@ import {
   DELAY_LONGTAP,
   TTL_FOR_HELP,
   DEFAULT_HELP_SHOW,
-  LOGGING_ENABLED,
 } from "./Constants";
 
 import { isMobile } from "../../common/util";
