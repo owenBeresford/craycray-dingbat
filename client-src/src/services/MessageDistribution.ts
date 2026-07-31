@@ -1,4 +1,3 @@
-import type { SaveStruct } from "../../../common/types/SaveStruct";
 import { PMQUE_TIMER, PMQUE_ATTEMPTS, MSG_THREAD, WORKER_NAME, MSG_THREAD_SB } from "../Constants";
 import { AbstractSelfNameClass } from "../../../common/AbstractSelfNameClass";
 // import { WorkerHandle } from '../types/Workable';
@@ -9,10 +8,8 @@ import type { DistantStorable } from "../../../common/types/RemoteTypes";
 import type { ShippingStruct, ActionEnum } from "../../../common/types/Messagable";
 import type { BasicThreadable } from "../types/BasicThreadable";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
-import type { NullableSysTimerType } from '../../../common/types/Timer';
-
- 
-type MSG_RETURN_SAVE= { wrote: number, duration: number };
+import type { NullableSysTimerType } from '../../../common/types/Timer';, 
+import type { MSG_RETURN_SAVE, MSG_RETURN_ERROR, SaveStruct } from '../../../common/types/SaveStruct'; 
 
 /**
  * useMsgDistrib
@@ -162,19 +159,19 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
       used = true;
     }
     if (expédition.action === ("error-payload" as ActionEnum) && expédition.data.length > 0) {
-      this.errMsgs.push(expédition.data as string);
+      let tmp:MSG_RETURN_ERROR=expédition.data as unknown as MSG_RETURN_ERROR;
+      this.errMsgs.push(tmp.error as string);
       used = true;
     }
     if (expédition.action === ("ret-payload" as ActionEnum) && expédition.data.length > 0) {
       this.state = transform2list(expédition.data) as Array<SaveStruct>;
       if (this.state.length === 0) {
         console.warn("Loaded an empty dataset from worker thread.");
-        this.errMsgs.push("No lists founds, processed an empty response from network!");
+        this.errMsgs.push("No lists found, processed an empty response from network!");
       }
       used = true;
     }
     if (expédition.action === ("save-payload" as ActionEnum)) {
-      // i have no idea why TSC think data should be a string?
       let tmp:MSG_RETURN_SAVE=expédition.data as unknown as MSG_RETURN_SAVE;
       if (tmp.wrote <= 100) {
         console.warn("Failed to writre very much data in the thread.", expédition);
@@ -184,7 +181,7 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
     }
 
     if (expédition.action === ("status-payload" as ActionEnum)) {
-      console.warn("TEST **Add more code here**\n[ STATUS REPORT ]=", expédition.data);
+      this.errMsgs.push("Status msg reported "+ expédition.data);
       used = true;
     }
     if (!used) {

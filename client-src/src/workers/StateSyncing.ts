@@ -7,6 +7,7 @@ import { WORKER_NAME, TEST_LOCATION_URL } from "../Constants";
 import { useSSW } from "./SharedStateWorker";
 import { transform2text, transform2list, packMsg } from "../services/Storable";
 import { TestLocation } from "../test/MockLocation";
+import type { MSG_RETURN_SAVE, MSG_RETURN_ERROR, MSG_RETURN_STATUS  } from '../../../common/types/SaveStruct';
 
 export {};
 declare const self: DedicatedWorkerGlobalScope;
@@ -46,10 +47,10 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
     try {
       await STATE.pushWhenAble(transform2list(payload.data));
 
-      let tt2: ShippingStruct = packMsg("save-payload", { wrote: payload.data.length, duration: -1 });
+      let tt2: ShippingStruct = packMsg("save-payload", { wrote: payload.data.length, duration: -1 } as MSG_RETURN_SAVE);
       self.postMessage(transform2text(tt2), undefined);
     } catch (e: unknown) {
-      let tt2: ShippingStruct = packMsg("error-payload", { wrote: payload.data.length, error: (e as Error).message });
+      let tt2: ShippingStruct = packMsg("error-payload", { wrote: payload.data.length, error: (e as Error).message } as MSG_RETURN_ERROR );
       self.postMessage(transform2text(tt2), undefined);
     }
     isDone = true;
@@ -60,7 +61,7 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
       let tt2: ShippingStruct = packMsg("ret-payload", tt1);
       self.postMessage(transform2text(tt2), undefined);
     } catch (e: unknown) {
-      let tt2: ShippingStruct = packMsg("error-payload", { wrote: 0, error: (e as Error).message });
+      let tt2: ShippingStruct = packMsg("error-payload", { wrote: 0, error: (e as Error).message } as MSG_RETURN_ERROR);
       self.postMessage(transform2text(tt2), undefined);
     }
 
@@ -70,7 +71,8 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
     if (import.meta.env.VITEST) {
       console.log("CODE under TEST got message ", JSON.stringify(payload));
     }
-    self.postMessage(transform2text([{ status: "running" as ActionEnum }]), undefined);
+    let tt2: ShippingStruct = packMsg("status-payload", { duration: -1, status: "running" as ActionEnum } as MSG_RETURN_STATUS) ;
+    self.postMessage( transform2text( tt2), undefined);
     // in other platforms, I would include session hashes, so these events can be graphed over a long timescale,
     // I do not see this adds value here.
     isDone = true;
@@ -93,9 +95,11 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
 self.onmessageerror = (e: unknown): void => {
   console.warn("WORKER: got bad message ", e as Error);
 };
+
 if (import.meta.env.VITEST) {
   console.log("CODE under TEST end module ", typeof self, process.pid);
 }
+
 /* taken from snap/chromium/common/chromium/WasmTtsEngine/20260305.1/bindings_main.js
  loadWasmModuleToWorker: worker => new Promise(onFinishedLoading => {
     worker.onmessage = e => { }
