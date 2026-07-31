@@ -1,3 +1,6 @@
+import type { ShippingStruct, ActionEnum } from "./Messagable";
+
+
 export interface SaveStruct {
   name: string;
   created: number;
