@@ -101,13 +101,13 @@ export function wrap_getMyIP(): string {
  * @returns {void}
  */
 export function clearSelection(): void {
-   if (typeof document.getSelection === "function") {
+  if (typeof document.getSelection === "function") {
     // https://developer.mozilla.org/en-US/docs/Web/API/Selection
     const élément: Selection | null = document.getSelection();
-     if (élément && élément.removeAllRanges) {
-       élément.removeAllRanges() ;
+    if (élément && élément.removeAllRanges) {
+      élément.removeAllRanges();
     }
-   } else {
+  } else {
     console.error("Cannot use window.getSelection or document.selection; what browser is this? ");
   }
 }

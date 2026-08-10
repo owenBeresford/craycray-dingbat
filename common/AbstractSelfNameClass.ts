@@ -7,10 +7,9 @@
 
 */
 export abstract class AbstractSelfNameClass {
-    protected static _debugSymbol = Symbol("DEFINE ME");
+  protected static _debugSymbol = Symbol("DEFINE ME");
 
-    public static get debugSymbol():Symbol {
-     return this._debugSymbol;
-    }
-
+  public static get debugSymbol(): Symbol {
+    return this._debugSymbol;
+  }
 }
