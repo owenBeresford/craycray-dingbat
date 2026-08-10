@@ -1,6 +1,5 @@
 import type { ShippingStruct, ActionEnum } from "./Messagable";
 
-
 export interface SaveStruct {
   name: string;
   created: number;
@@ -11,11 +10,11 @@ export interface SaveStruct {
   list: Array<string>;
 }
 
-export type MSG_RETURN_SAVE= { wrote: number, duration: number };
+export type MSG_RETURN_SAVE = { wrote: number; duration: number };
 
-export type MSG_RETURN_ERROR = { wrote:number, error:string };
- 
-export type MSG_RETURN_STATUS= { duration: number, status:ActionEnum } ;
+export type MSG_RETURN_ERROR = { wrote: number; error: string };
 
-// type for "ret-payload" Array<SaveStruct> 
+export type MSG_RETURN_STATUS = { duration: number; status: ActionEnum };
+
+// type for "ret-payload" Array<SaveStruct>
 // type for "load-payload" Array<SaveStruct>

@@ -8,7 +8,6 @@ export interface DistantStorable {
 
   poll(): Promise<boolean>;
   getErrors(): Array<string>;
-
 }
 
 /**
@@ -21,10 +20,10 @@ export interface RemoteConfig {
   url: string;
   timeout: number;
   headers: Record<string, string>; // eg 'Content-Type': 'application/json'
-  mode: string; // allowed values no-cors, *cors, same-origin  
+  mode: string; // allowed values no-cors, *cors, same-origin
   method: string;
   credentials: string;
-  agent?:any;
+  agent?: any;
 }
 
 /* 
@@ -45,4 +44,3 @@ export interface APIResponseType {
   statusCode: string;
   result: string;
 }
-
