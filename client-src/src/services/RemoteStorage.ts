@@ -249,7 +249,6 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
     return "no impl";
   }
 
-
   /**
    * getErrors
    * A null implementation

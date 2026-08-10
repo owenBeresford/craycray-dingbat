@@ -3,7 +3,7 @@ import type { MethodOptions, Ref } from "vue";
 import type { RouteRecordNormalized, Router } from "vue-router";
 
 import { BaseActions } from "./BaseActions";
-import type { SearchList} from "./AList";
+import type { SearchList } from "./AList";
 import { StdList } from "./AList";
 import type { MotionStream } from "./MotionStream";
 import { isMobile, clearSelection } from "../../../common/util";

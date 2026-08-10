@@ -49,8 +49,7 @@ export class LogService implements Loggable {
     });
   }
 
-
- /**
+  /**
   * addEvent
   * Alternative to addRaw(), not currently implemented.
 
@@ -60,7 +59,7 @@ export class LogService implements Loggable {
   * @public
   * @returns {void}
   */
- public addEvent(e: Event, volume: string): void {}
+  public addEvent(e: Event, volume: string): void {}
 
   /**
      * addRaw
