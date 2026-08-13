@@ -4,16 +4,14 @@ import { useRoute } from "vue-router";
 
 import { extractId } from "./util";
 import { StdList, EMPTY_LIST } from "./AList";
-
-// import { ListService } from "./ListService";
 import { useLocal, LocalCopy } from "./LocalCopy";
 import { useMsgDistrib, MessageDistribution } from "./MessageDistribution";
 import { createRemoteService, DELAY_FOR_API } from "../Constants";
 import { TestListService } from "./TestListService";
 import { NetworkedListService } from "./NetworkedListService";
 import { RemoteStorage } from "./RemoteStorage";
-import { type MockLocation } from "../test/MockLocation";
 
+import type { MockLocation } from "../test/MockLocation";
 import type { InstanceListable, ListCollection } from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 import type { DistantStorable } from "../../../common/types/RemoteTypes";
@@ -47,6 +45,7 @@ export interface FactoryArtefact {
   currentData: ListCollection<string> | undefined;
   updateData(a: ListCollection<string>): void;
   initData(loc: Location | MockLocation, n: NotifyType): void;
+  flipConnection(isLive: boolean): void;
 }
 
 /** A module-wide collection of known variables
@@ -100,7 +99,7 @@ export async function currentNetworkConfig(
     ]);
   } else {
     d4 = useMsgDistrib() as MessageDistributionType;
-    d4.forkThread(); // not async, as JS isnt here
+    d4.forkThread(); // not async, as JS isn't here
     retour.currentData = new NetworkedListService(d4 as unknown as DistantStorable, d3, cb, [
       MessageDistribution.debugSymbol,
       LocalCopy.debugSymbol,
@@ -158,6 +157,7 @@ export function createEmptyFactory(): FactoryArtefact {
   retour.currentData = undefined;
   retour.updateData = updateData;
   retour.initData = initData;
+  retout.flipConnection = flipConnection;
 
   /**
    * initData
@@ -197,6 +197,16 @@ export function createEmptyFactory(): FactoryArtefact {
 
     if (retour.currentData && import.meta.env.VITEST) {
       console.log("KKK createDataFactory currentData id:", idOf(retour.currentData));
+    }
+  }
+
+  function flipConnection(isLive: boolean, loc:Location=location): void {
+    if(isLive) {
+      retour.currentData.flipConnection( createRemoteService(loc) );
+    } else {
+      let temp=useMsgDistrib();
+      retour.currentData.flipConnection( temp );
+      temp.forkThread();
     }
   }
 
@@ -268,4 +278,3 @@ function setupCurrentList(itinéraire: undefined | RouteLocationNormalizedLoaded
     return liste;
   }
 }
-
