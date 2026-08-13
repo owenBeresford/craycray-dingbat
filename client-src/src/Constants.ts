@@ -1,7 +1,7 @@
 import type { RemoteConfig } from "../../common/types/RemoteTypes";
 import { RemoteStorage } from "./services/RemoteStorage";
 
-/* TODO: You need to set this URL to yopur host wher the app is run. */
+/* TODO: You need to set this URL to your host where the app is run. */
 export const TEST_LOCATION_URL = "https://app.hiss:3001";
 
 /**
