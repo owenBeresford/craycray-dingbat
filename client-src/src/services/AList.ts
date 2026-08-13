@@ -90,6 +90,17 @@ export class BaseList<T> implements InstanceListable<T>, ListStruct {
     return liste;
   }
 
+  public static importRemote<T, U extends BaseList<T>>(this: { new (): U }, origine: SaveStruct): U {
+    const liste = new this();
+    liste.nom = origine.name;
+    liste.créé = origine.created;
+    liste.modifié = origine.edited;
+    liste.énumérer = origine.count;
+    liste.id = origine.id;
+    liste.éléments = [...(origine.list as Array<T>)];
+    return liste;
+  }
+
   /**
    * editName
    * Alter the lists name
