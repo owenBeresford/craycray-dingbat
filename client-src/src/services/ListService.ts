@@ -265,7 +265,7 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
    * @public
    * @returns {boolean}
    */
-  public loadAllLists(): boolean {
+  public async loadAllLists(): boolean {
     let out = true;
     return out;
   }

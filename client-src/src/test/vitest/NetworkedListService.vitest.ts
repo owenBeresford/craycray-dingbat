@@ -163,7 +163,7 @@ describe("I can use NetworkedListService", () => {
     // at present not async
 
     expect(globalThis.localStorage.length).toBe(0);
-    expect(CONN.loadAllLists()).toBe(true);
+    expect(await CONN.loadAllLists()).toBe(true);
     expect(CONN.count()).toBe(1); // the empty list
     await delay(1_000);
     expect(CONN.count()).toBe(5);
@@ -176,7 +176,7 @@ describe("I can use NetworkedListService", () => {
 
     expect(globalThis.localStorage.length).toBe(0);
     try {
-      expect(CONN.loadAllLists()).toBe(true);
+      expect(await CONN.loadAllLists()).toBe(true);
     } catch (e: unknown) {
       console.log("Error found in threaded retrieval " + (e as Error).message);
     }

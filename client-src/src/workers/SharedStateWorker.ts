@@ -31,6 +31,7 @@ export function useSSW(loc: Location | WorkerLocation | TestLocation): DataPipel
 /**
  * SharedStateWorker
  * This is broadcast logic to push data to the server
+ * This class is used in the extra Thread/ Worker
  *
  * @public
  */

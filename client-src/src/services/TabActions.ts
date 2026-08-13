@@ -241,7 +241,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     this.loadedStateKey = hashState(this.data.currentData!.list());
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    this.data.currentData!.saveAllLists();
+    await this.data.currentData!.saveAllLists();
     ctx.menuStateRef.value = false;
   }
 
@@ -262,7 +262,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
     }
     LOG.addRaw("Rebuilding data from cache for all lists.", "info");
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
-    this.data.currentData!.loadAllLists();
+    await this.data.currentData!.loadAllLists();
     ctx.menuStateRef.value = false;
   }
 

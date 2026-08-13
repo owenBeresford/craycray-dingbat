@@ -67,9 +67,9 @@ export class TestListService extends ListService implements ListCollection<strin
    * NULL IMPLEMEMENTATION
 
    * @public
-   * @returns {boolean}
+   * @returns {Promise<boolean>}
    */
-  public loadAllLists(): boolean {
+  public async loadAllLists(): Promise<boolean> {
     let out = true;
     return out;
   }

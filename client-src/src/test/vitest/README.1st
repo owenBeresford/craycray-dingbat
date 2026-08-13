@@ -1,4 +1,5 @@
-I moved 'the Vitests' to this directory, to stop Vitest evaluating Storybook tests without Storybook libraries loaded.  Otherwise it makes loads of warnings that are not constructive but will block automation.
+I moved 'the Vitests' to this directory, to stop Vitest evaluating Storybook tests without Storybook libraries loaded.  Otherwise it makes loads of 
+warnings that are not constructive but will block automation.
 
 The following test files are actually using the network so must be "on Wifi" and browser thread features 
 * InstallWorker uses threads/ Workers
