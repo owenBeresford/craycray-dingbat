@@ -1,9 +1,7 @@
 import type { DataPipeline } from "../types/Saveable";
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { ShippingStruct, ActionEnum } from "../../../common/types/Messagable";
-// import type { DistantStorable } from "../types/RemoteTypes";
 import { WORKER_NAME, TEST_LOCATION_URL } from "../Constants";
-// import { createRemoteService } from "../Constants";
 import { useSSW } from "./SharedStateWorker";
 import { transform2text, transform2list, packMsg } from "../services/Storable";
 import { TestLocation } from "../test/MockLocation";
@@ -47,13 +45,13 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
     try {
       await STATE.pushWhenAble(transform2list(payload.data));
 
-      let tt2: ShippingStruct = packMsg("save-payload", {
+      let tt2: ShippingStruct = packMsg("save-payload" as ActionEnum, {
         wrote: payload.data.length,
         duration: -1,
       } as MSG_RETURN_SAVE);
       self.postMessage(transform2text(tt2), undefined);
     } catch (e: unknown) {
-      let tt2: ShippingStruct = packMsg("error-payload", {
+      let tt2: ShippingStruct = packMsg("error-payload" as ActionEnum, {
         wrote: payload.data.length,
         error: (e as Error).message,
       } as MSG_RETURN_ERROR);
@@ -64,10 +62,10 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
   if (("load-request" as ActionEnum) === payload.action) {
     try {
       let tt1: Array<SaveStruct> = await STATE.pullWhenAble();
-      let tt2: ShippingStruct = packMsg("ret-payload", tt1);
+      let tt2: ShippingStruct = packMsg("ret-payload" as ActionEnum, tt1);
       self.postMessage(transform2text(tt2), undefined);
     } catch (e: unknown) {
-      let tt2: ShippingStruct = packMsg("error-payload", { wrote: 0, error: (e as Error).message } as MSG_RETURN_ERROR);
+      let tt2: ShippingStruct = packMsg("error-payload" as ActionEnum, { wrote: 0, error: (e as Error).message } as MSG_RETURN_ERROR);
       self.postMessage(transform2text(tt2), undefined);
     }
 
@@ -77,7 +75,7 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
     if (import.meta.env.VITEST) {
       console.log("CODE under TEST got message ", JSON.stringify(payload));
     }
-    let tt2: ShippingStruct = packMsg("status-payload", {
+    let tt2: ShippingStruct = packMsg("status-payload" as ActionEnum, {
       duration: -1,
       status: "running" as ActionEnum,
     } as MSG_RETURN_STATUS);
