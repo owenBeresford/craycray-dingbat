@@ -26,7 +26,7 @@ interface RunExecReturn {
 /**
  * runExecProcessOnUrl
  * A util to run a HTTP2 compat client to be able to test the API correctly.
- 
+
  * @param {string} url
  * @param {RequestInit | undefined} extra
  * @see [https://nodejs.org/api/child_process.html#child_processexecfilefile-args-options-callback ]
@@ -45,47 +45,46 @@ export async function runExecProcessOnUrl(url: string, extra: RequestInit | unde
   }
 
   return new Promise(async (good: PromiseSucceed<SimpleResponse>, bad: PromiseReject) => {
-
     function handler(error: Error, stdout: string, stderr: string): void {
       if (error) {
         console.error("cURL failed:", error.message);
         return bad(error);
       }
 
-    // stderr has headers
-    // stdout has response body
+      // stderr has headers
+      // stdout has response body
       let annoying1: string = (stdout as any) instanceof Buffer ? stdout.toString() : stdout;
       let annoying2: string = (stderr as any) instanceof Buffer ? stderr.toString() : stderr;
       let headers = parseHeaders(annoying2);
       let h2 = new Headers();
       try {
-          for (let i in headers.resp) {
-        if(i && i.length>3 ) {
-          if( i.indexOf('HTTP/') ===0 ) {
-            // the parseInt is to cleanly strip whitespace
-            h2.append("status", ""+parseInt(i.substring( i.indexOf(' ') ), 10));
-          } else {
-            h2.append(i, headers.resp[i]);
+        for (let i in headers.resp) {
+          if (i && i.length > 3) {
+            if (i.indexOf("HTTP/") === 0) {
+              // the parseInt is to cleanly strip whitespace
+              h2.append("status", "" + parseInt(i.substring(i.indexOf(" ")), 10));
+            } else {
+              h2.append(i, headers.resp[i]);
+            }
           }
         }
-      }
-    } catch(e:unknown) {
+      } catch (e: unknown) {
         console.error("cURL failed: header not dealt with:", (e as Error).message);
-    }
+      }
 
-       let exit: SimpleResponse = {
+      let exit: SimpleResponse = {
         body: annoying1.trim(),
         headers: h2,
-        ok: Math.floor(parseInt(h2.get('status') ??"", 10) / 100) === 2,
-        status: parseInt(h2.get('status') ?? "", 10),
+        ok: Math.floor(parseInt(h2.get("status") ?? "", 10) / 100) === 2,
+        status: parseInt(h2.get("status") ?? "", 10),
       } as SimpleResponse;
       return good(exit);
     }
 
-    let args: Array<string> = [ "-k", "-v", "-m1", url];  
+    let args: Array<string> = ["-k", "-v", "-m1", url];
     if (extra && "method" in extra && extra["method"]) {
-      if( extra["method"].toLowerCase()==="head" ) {
-        args.push("-I");      
+      if (extra["method"].toLowerCase() === "head") {
+        args.push("-I");
       } else {
         args.push("-X" + extra["method"].toUpperCase());
       }
@@ -105,45 +104,42 @@ export async function runExecProcessOnUrl(url: string, extra: RequestInit | unde
   });
 }
 
-
-
-
- /**
+/**
    * parseHeaders
    * Translate flat plain-text of cURL output into a struct
- 
+
    * @param {string} str
    * @public
-   * @returns {RunExecReturn } 
+   * @returns {RunExecReturn }
    */
-    function parseHeaders(str: string): RunExecReturn {
-      let bits: Array<string> = str.split("\n");
-      let out:RunExecReturn = { reqt: {}, resp: {} } as RunExecReturn;
+function parseHeaders(str: string): RunExecReturn {
+  let bits: Array<string> = str.split("\n");
+  let out: RunExecReturn = { reqt: {}, resp: {} } as RunExecReturn;
 
-      for (let i = 0; i < bits.length; i++) {
-        switch (bits[i][0]) {
-          case ">": {
-            let annoying = parseHeader2(bits[i]);
-            out.reqt[annoying[0]] = annoying[1];
-            break;
-          }
-          case "<": {
-            let annoying = parseHeader2(bits[i]);
-            out.resp[annoying[0]] = annoying[1];
-            break;
-          }
-          default:
-            break;
-        }
+  for (let i = 0; i < bits.length; i++) {
+    switch (bits[i][0]) {
+      case ">": {
+        let annoying = parseHeader2(bits[i]);
+        out.reqt[annoying[0]] = annoying[1];
+        break;
       }
-      return out;
+      case "<": {
+        let annoying = parseHeader2(bits[i]);
+        out.resp[annoying[0]] = annoying[1];
+        break;
+      }
+      default:
+        break;
     }
+  }
+  return out;
+}
 
-    /**
+/**
    * parseHeader2
    * Tokenise a single header into a more useful structure
 
-   * Nopte two odf cases, in HTTP2 look like this: 	 
+   * Nopte two odf cases, in HTTP2 look like this:
   // > GET /api/shared-state HTTP/2
   // < HTTP/2 200
       "HTTP/1.1 404 Not Found"
@@ -152,21 +148,81 @@ export async function runExecProcessOnUrl(url: string, extra: RequestInit | unde
    * @public
    * @returns {Array<string>}
    */
-    function parseHeader2(str: string): Array<string> {
-      str = str.trim();
-      let str2 = str.substring(1, str.length);
-      str2 = str2.trim();
-      if (str2.indexOf(":") === -1) {
-        if (str.indexOf("HTTP/") === 0) {
-          return ["status", str2.substring(str2.indexOf(" ") + 1, str2.length).trim()];
-        } else if (str.match(/^[A-Z]{3,} \//))   {
-          return ["method", str.substring(0, str.indexOf(" "))];
-        } else {
-          return [str2];
-        }
-      } else {
-        return [str2.substring(0, str2.indexOf(":")).trim(), str2.substring(str2.indexOf(":") + 2, str2.length).trim()];
-      }
+function parseHeader2(str: string): Array<string> {
+  str = str.trim();
+  let str2 = str.substring(1, str.length);
+  str2 = str2.trim();
+  if (str2.indexOf(":") === -1) {
+    if (str.indexOf("HTTP/") === 0) {
+      return ["status", str2.substring(str2.indexOf(" ") + 1, str2.length).trim()];
+    } else if (str.match(/^[A-Z]{3,} \//)) {
+      return ["method", str.substring(0, str.indexOf(" "))];
+    } else {
+      return [str2];
+    }
+  } else {
+    return [str2.substring(0, str2.indexOf(":")).trim(), str2.substring(str2.indexOf(":") + 2, str2.length).trim()];
+  }
+}
+
+/**
+    *  RegulatedNetworking 
+    * A class for tests, where I can disable requests like a JS level firewall
+ 
+    * @public
+    */
+export class RegulatedNetworking {
+  protected live: boolean;
+  protected OFFNET: Readonly<SimpleResponse>;
+
+  /**
+       * constructor
+       * Blah, con'tor
+ 
+       * @param {Readonly<SimpleResponse> } dat
+       * @public
+       * @returns {RegulatedNetworking  }
+       */
+  public constructor(dat: Readonly<SimpleResponse>) {
+    this.live = true;
+    this.OFFNET = dat;
+    this.runExecProcessOnUrl.bind(this);
+  }
+
+  /**
+       * setNetworkState
+       * A setter...
+ 
+       * @param {boolean}  active
+       * @public
+       * @returns {void}
+       */
+  public setNetworkState(active: boolean): void {
+    this.live = active;
+  }
+
+  /**
+ * runExecProcessOnUrl
+ * The wrapped function to pass into services that are in a test
+ 
+ * @param {string} url
+ * @param { RequestInit | undefined} extra
+ * @public
+ * @returns {Promise<SimpleResponse>}
+ */
+  async runExecProcessOnUrl(url: string, extra: RequestInit | undefined): Promise<SimpleResponse> {
+    if (!this.live) {
+      return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
+        good(this.OFFNET);
+      });
     }
 
-export const TEST_ONLY  ={ parseHeader2, parseHeaders, runExecProcessOnUrl };
+    if(typeof process!== "undefined" && process.env && process.env.NODE_ENV ) {
+      return runExecProcessOnUrl(url, extra); // these are async
+    } else {
+      return fetch(url, extra);
+    }
+  }
+}
+
+export const TEST_ONLY = { parseHeader2, parseHeaders, runExecProcessOnUrl, RegulatedNetworking };
