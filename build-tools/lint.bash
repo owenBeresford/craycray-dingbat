@@ -15,14 +15,15 @@ if [ `basename $PWD` != 'client-src' ]; then
 	cd client-src
 fi
 
-$NODEBIN $EXECDIR/prettier --write src
+$NODEBIN $EXECDIR/prettier --write src ../common
 ret=$?
 if [ $ret -ne 0 ]; then
 	echo "[step 1/4 client] Prettier tool exited $ret on src/* "
 	exit 1
 fi
 
-$NODEBIN $EXECDIR/eslint src/*.ts src/services/*.ts src/components/*.ts src/workers/*.ts  $args
+# listing ts files directly to skip over other assorted files
+$NODEBIN $EXECDIR/eslint src/*.ts src/services/*.ts src/components/*.ts src/workers/*.ts ../common*.ts ../common/types/*.ts $args
 ret=$?
 if [ $ret -ne 0 ]; then
 	echo "[step 2/4 client] Eslint tool exited $ret on the TS source"
