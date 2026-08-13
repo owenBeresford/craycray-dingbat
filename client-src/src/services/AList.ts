@@ -3,6 +3,7 @@ import { JsonSerializer, throwError, JsonProperty, JsonObject } from "typescript
 import { EMPTY_LIST_NAME, EMPTY_LIST_ID } from "../Constants";
 import type { InstanceListable, ListStruct, MatchedItems, ExtendedListable } from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
+import type { SaveStruct } from "../../../common/types/SaveStruct";
 
 /**
  * convertEpoch2Date
@@ -93,8 +94,8 @@ export class BaseList<T> implements InstanceListable<T>, ListStruct {
   public static importRemote<T, U extends BaseList<T>>(this: { new (): U }, origine: SaveStruct): U {
     const liste = new this();
     liste.nom = origine.name;
-    liste.créé = origine.created;
-    liste.modifié = origine.edited;
+    liste.créé = new Date(origine.created);
+    liste.modifié = new Date(origine.edited);
     liste.énumérer = origine.count;
     liste.id = origine.id;
     liste.éléments = [...(origine.list as Array<T>)];

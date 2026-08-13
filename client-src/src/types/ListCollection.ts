@@ -1,5 +1,6 @@
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 import { BaseList } from "../services/AList";
+import type { DistantStorable } from "../../../common/types/RemoteTypes";
 
 // A set of listables,
 // Carefully different method names to reduce kaos
@@ -16,8 +17,9 @@ export interface ListCollection<T> {
   searchItems(égaler: string | RegExp): Array<MatchedItems>;
   listNames(): Array<string>;
 
+  flipConnection(a:DistantStorable):void;
   saveAllLists(): Promise<boolean>;
-  loadAllLists(): boolean;
+  loadAllLists(): Promise<boolean>;
 }
 
 // Attribute names in french, so there is no possible collision between JS keywords and them

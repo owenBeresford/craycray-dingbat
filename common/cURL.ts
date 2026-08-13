@@ -212,15 +212,22 @@ export class RegulatedNetworking {
  */
   async runExecProcessOnUrl(url: string, extra: RequestInit | undefined): Promise<SimpleResponse> {
     if (!this.live) {
-      return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
+      return new Promise((good: PromiseSucceed<SimpleResponse>, bad: PromiseReject) => {
         good(this.OFFNET);
       });
     }
 
-    if(typeof process!== "undefined" && process.env && process.env.NODE_ENV ) {
+    if (typeof process !== "undefined" && process.env && process.env.NODE_ENV) {
       return runExecProcessOnUrl(url, extra); // these are async
     } else {
-      return fetch(url, extra);
+      let tt= await globalThis.fetch(url, extra);
+      return { 
+        body: (tt.body??"").toString(),
+         headers: tt.headers,
+          ok: tt.ok,
+          //  @see https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+         status: tt.status,
+       } as SimpleResponse;
     }
   }
 }

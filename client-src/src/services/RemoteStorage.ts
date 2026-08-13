@@ -20,7 +20,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
   private url: string;
   private other: RSRemoteConfig;
   private cease: boolean;
-  protected agent: any;
+  protected agent: any;  // IOIO XXX get a better type for here
   /* An accessible variable to classes know their name after minification */
   protected static _debugSymbol = Symbol("RemoteStorage");
 
@@ -74,11 +74,11 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
       return Promise.resolve(false);
     }
 
-    return new Promise(async (good: PromiseSucceed<boolean>, bad: PromiseReject) => {
+    return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject):void => {
       let sortie: NullableSysTimerType = globalThis.setTimeout(() => {
         didTimeOut = true;
         bad(EEE);
-      }, FETCH_TIMEOUT);
+      }, FETCH_TIMEOUT);  // do not block on this timeout here
 
       try {
         this.agent(this.url, REQT)
@@ -216,13 +216,15 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
 
             if (filet.json && (filet.headers.get("Content-Type") as string).startsWith("application/json")) {
               // this will happen in browser stack
-              await filet.json().then(function (text: string): void {
+              await filet.json().then(function (text: string): string {
                 good(transform2list(text));
+                return "This is discarded, but lint asked";
               });
             } else if (filet.text) {
               // this will happen in browser stack
-              await filet.text().then(function (text: string): void {
+              await filet.text().then(function (text: string): string {
                 good(transform2list(text));
+                return "This is discarded, but lint asked";
               });
             } else if (filet.body) {
               // this will happen in unit tests

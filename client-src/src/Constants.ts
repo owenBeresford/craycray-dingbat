@@ -1,6 +1,8 @@
 import type { RemoteConfig } from "../../common/types/RemoteTypes";
 import { RemoteStorage } from "./services/RemoteStorage";
 
+export declare const __STORYBOOK_MODULE_TEST__: Readonly<string>;
+
 /* TODO: You need to set this URL to your host where the app is run. */
 export const TEST_LOCATION_URL = "https://app.hiss:3001";
 

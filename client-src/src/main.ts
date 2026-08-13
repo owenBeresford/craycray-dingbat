@@ -1,14 +1,7 @@
 import { createApp, ref } from "vue";
 import type { Plugin, DirectiveBinding } from "vue";
 import { STORE } from "./services/Store";
-import {
-  APP_NAME,
-  ROOT_NODE,
-  MOBILE_LONGTAP,
-  DELAY_LONGTAP,
-  TTL_FOR_HELP,
-  DEFAULT_HELP_SHOW,
-} from "./Constants";
+import { APP_NAME, ROOT_NODE, MOBILE_LONGTAP, DELAY_LONGTAP, TTL_FOR_HELP, DEFAULT_HELP_SHOW } from "./Constants";
 
 import { isMobile } from "../../common/util";
 import { StaticRoutes } from "./components/Routing";
@@ -25,7 +18,17 @@ TOOL.use(StaticRoutes);
 TOOL.use(STORE);
 
 TOOL.directive("longpress", {
-  beforeMount(el: HTMLElement, binding: DirectiveBinding): void {
+  /**
+   * beforeMount
+   * Infra to support long clicks, either mobile or bigScreen
+	* See pointerevent fiasco
+ 
+   * @param {HTMLElement} el
+   * @param {DirectiveBinding} binding
+   * @public
+   * @returns {void}
+   */
+   beforeMount(el: HTMLElement, binding: DirectiveBinding): void {
     let pressTimer: NullableSysTimerType = undefined;
 
     const start = (e: MouseEvent): void => {

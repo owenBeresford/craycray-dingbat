@@ -53,7 +53,7 @@ async function testBody() {
   } as SimpleResponse;
   const NET: RegulatedNetworking = new RegulatedNetworking(defaultResp);
 
-  const LOC = new TestLocation(TEST_LOCATION_URL+"/api/shared-state");
+  const LOC = new TestLocation(TEST_LOCATION_URL + "/api/shared-state");
   let d3: RemoteConfig = {
     url: LOC.href,
     timeout: 500,
@@ -83,14 +83,14 @@ async function testBody() {
   d1 = new Date();
   expect(await OBJ1.loadAllLists()).toBe(true);
   d2 = new Date();
-     console.log("#86 loaded data ", d2.getTime() - d1.getTime());
+  console.log("#86 loaded data ", d2.getTime() - d1.getTime());
   expect(d2.getTime() - d1.getTime()).toBeLessThan(1500);
-  expect(OBJ1.count()).toBe(4);  // IOIO XXX The "empty list" is still present at the mo
+  expect(OBJ1.count()).toBe(4); // IOIO XXX The "empty list" is still present at the mo
   let tt = OBJ1.list();
   console.log("#90 downloaded list of data:", tt);
   expect(Array.isArray(tt)).toBe(true);
   // look at loaded values
-  
+
   NET.setNetworkState(false);
   d1 = new Date();
   expect(await OBJ1.poll()).toBe(false);
@@ -117,9 +117,8 @@ async function testBody() {
   d1 = new Date();
   expect(await OBJ1.loadAllLists()).toBe(true);
   d2 = new Date();
-     console.log("#120 loaded data ", d2.getTime() - d1.getTime());
+  console.log("#120 loaded data ", d2.getTime() - d1.getTime());
   expect(d2.getTime() - d1.getTime()).toBeLessThan(1500);
-
 
   // somehow migrate network conmnection
   // IOIO XXX I think add behaviour if poll() retval isn't as expected

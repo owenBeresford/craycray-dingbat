@@ -3,7 +3,7 @@ import type { Ref } from "vue";
 import { BaseActions } from "./BaseActions";
 
 import { StdList } from "./AList";
-import { MotionStream } from "./MotionStream";
+import type { MotionStream } from "./MotionStream";
 import { useLog } from "./LogStack";
 import { clearSelection } from "../../../common/util";
 import {

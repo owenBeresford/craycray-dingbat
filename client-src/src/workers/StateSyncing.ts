@@ -45,16 +45,22 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
     try {
       await STATE.pushWhenAble(transform2list(payload.data));
 
-      let tt2: ShippingStruct = packMsg("save-payload" as ActionEnum, {
-        wrote: payload.data.length,
-        duration: -1,
-      } as MSG_RETURN_SAVE);
+      let tt2: ShippingStruct = packMsg(
+        "save-payload" as ActionEnum,
+        {
+          wrote: payload.data.length,
+          duration: -1,
+        } as MSG_RETURN_SAVE
+      );
       self.postMessage(transform2text(tt2), undefined);
     } catch (e: unknown) {
-      let tt2: ShippingStruct = packMsg("error-payload" as ActionEnum, {
-        wrote: payload.data.length,
-        error: (e as Error).message,
-      } as MSG_RETURN_ERROR);
+      let tt2: ShippingStruct = packMsg(
+        "error-payload" as ActionEnum,
+        {
+          wrote: payload.data.length,
+          error: (e as Error).message,
+        } as MSG_RETURN_ERROR
+      );
       self.postMessage(transform2text(tt2), undefined);
     }
     isDone = true;
@@ -65,7 +71,10 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
       let tt2: ShippingStruct = packMsg("ret-payload" as ActionEnum, tt1);
       self.postMessage(transform2text(tt2), undefined);
     } catch (e: unknown) {
-      let tt2: ShippingStruct = packMsg("error-payload" as ActionEnum, { wrote: 0, error: (e as Error).message } as MSG_RETURN_ERROR);
+      let tt2: ShippingStruct = packMsg(
+        "error-payload" as ActionEnum,
+        { wrote: 0, error: (e as Error).message } as MSG_RETURN_ERROR
+      );
       self.postMessage(transform2text(tt2), undefined);
     }
 
@@ -75,10 +84,13 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
     if (import.meta.env.VITEST) {
       console.log("CODE under TEST got message ", JSON.stringify(payload));
     }
-    let tt2: ShippingStruct = packMsg("status-payload" as ActionEnum, {
-      duration: -1,
-      status: "running" as ActionEnum,
-    } as MSG_RETURN_STATUS);
+    let tt2: ShippingStruct = packMsg(
+      "status-payload" as ActionEnum,
+      {
+        duration: -1,
+        status: "running" as ActionEnum,
+      } as MSG_RETURN_STATUS
+    );
     self.postMessage(transform2text(tt2), undefined);
     // in other platforms, I would include session hashes, so these events can be graphed over a long timescale,
     // I do not see this adds value here.

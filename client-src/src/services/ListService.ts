@@ -8,6 +8,7 @@ import type { Loggable } from "../types/Loggable";
 import type { ListCollection, ListStruct, MatchedItems } from "../types/ListCollection";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 import type { NotifyType } from "../types/Actionables";
+import type { DistantStorable } from "../../../common/types/RemoteTypes";
 
 const log: Loggable = useLog();
 /**
@@ -265,8 +266,11 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
    * @public
    * @returns {boolean}
    */
-  public async loadAllLists(): boolean {
+  public async loadAllLists(): Promise<boolean> {
     let out = true;
     return out;
   }
+
+  flipConnection(a:DistantStorable):void { }
+  
 }

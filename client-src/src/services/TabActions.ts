@@ -218,7 +218,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
     } else {
       LOG.addRaw("Attempt duplicate list? BUT list not found for '" + this.store.state.currentId + "'.", "warn");
     }
-    this.allRoutes.push({ name: "list-everything" });
+    this.allRoutes.push({ name: "list-everything" });  // lint said to add the await.
   }
 
   /**
@@ -230,7 +230,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
    * @public
    * @returns {Promise<boolean>}
    */
-  public onSave(ignored: GuessEvent, ctx: TabBarCtx): void {
+  public async onSave(ignored: GuessEvent, ctx: TabBarCtx): Promise<void> {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     if (this.loadedStateKey === hashState(this.data.currentData!.list())) {
       LOG.addRaw("Data is identical as last save. Nothing done", "info");
@@ -254,7 +254,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
    * @public
    * @returns {Promise<boolean>}
    */
-  public onRevert(ignored: GuessEvent, ctx: TabBarCtx): void {
+  public async onRevert(ignored: GuessEvent, ctx: TabBarCtx): Promise<void> {
     // @ts-ignore  - there are no undef() at runtime after the con'tor.
     if (this.loadedStateKey === hashState(this.data.currentData!.list())) {
       LOG.addRaw("Data is identical to initial state. Nothing done", "info");

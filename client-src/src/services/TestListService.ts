@@ -4,6 +4,7 @@ import type { ListCollection } from "../types/ListCollection";
 import type { TestDataSchema } from "../../../common/types/TestDataSchema";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 import type { NotifyType } from "../types/Actionables";
+import type { DistantStorable } from "../../../common/types/RemoteTypes";
 
 /**
  * TestListService
@@ -32,6 +33,10 @@ export class TestListService extends ListService implements ListCollection<strin
       this.put(i + 1, StdList.importTest(src[i]));
     }
     console.debug(`Imported a initial state of ${src.length} TEST items.`);
+  }
+
+  public flipConnection(a:DistantStorable):void {
+    // do nout, do dep clases
   }
 
   /**
