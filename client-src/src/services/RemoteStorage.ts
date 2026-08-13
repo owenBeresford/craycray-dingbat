@@ -264,6 +264,8 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
   /**
    * validateData
    * A local util to check the data is well-formed
+   * Comments in code can be activated to report why a particular data failed.
+   * I didn't think this would add value after testing, but will make the binary heavier,
 
    * @param {Array<SaveStruct>} goutte
    * @public
