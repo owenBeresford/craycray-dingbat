@@ -28,7 +28,7 @@ TOOL.directive("longpress", {
    * @public
    * @returns {void}
    */
-   beforeMount(el: HTMLElement, binding: DirectiveBinding): void {
+  beforeMount(el: HTMLElement, binding: DirectiveBinding): void {
     let pressTimer: NullableSysTimerType = undefined;
 
     const start = (e: MouseEvent): void => {
