@@ -54,6 +54,8 @@ smaller goals:
 - There is an install thread that caches the code into your phones Caches object for offline use.  Not needed for use if you have a Wifi connection to the server.
 - There is a fairly standard API accessible via /api/*, using JSON. #blah.  No auth process as LAN only.
 - There is a network wrapper in a Worker thread that attempts to ensure user sync requests are performed to this API.  This class doesn't hold data.   Data may be transitorily held in buffers between the threads.
+   - There is a standard service if you happen to be on WiFi.
+   - I have shown I can swap network modalities (technically some objects might get cached).
 - There is an optional LocalStorage cache, that can hold data between app restarts if there is network isolation
    - The API assumes multiple people who have write permission, so does a merge, sorting on time.  The local cache just overwrites whatever is already present, as your current self should be more correct than your older self.
 - The text items are stored in a localisation cache (that could be a config file).

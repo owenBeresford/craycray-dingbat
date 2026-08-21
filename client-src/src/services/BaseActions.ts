@@ -9,6 +9,7 @@ import type { FactoryArtefact } from "./DataFactory";
 import type { ExternalMethods, UserAction, CBType } from "../types/Actionables";
 import { useLog } from "./LogStack";
 
+// Needs to be a Singleton
 const LOG = useLog();
 
 /**
