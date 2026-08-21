@@ -20,7 +20,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
   private url: string;
   private other: RSRemoteConfig;
   private cease: boolean;
-  protected agent: any;  // IOIO XXX get a better type for here
+  protected agent: any; // IOIO XXX get a better type for here
   /* An accessible variable to classes know their name after minification */
   protected static _debugSymbol = Symbol("RemoteStorage");
 
@@ -74,11 +74,11 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
       return Promise.resolve(false);
     }
 
-    return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject):void => {
+    return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject): void => {
       let sortie: NullableSysTimerType = globalThis.setTimeout(() => {
         didTimeOut = true;
         bad(EEE);
-      }, FETCH_TIMEOUT);  // do not block on this timeout here
+      }, FETCH_TIMEOUT); // do not block on this timeout here
 
       try {
         this.agent(this.url, REQT)

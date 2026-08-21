@@ -271,6 +271,5 @@ export class ListService extends AbstractSelfNameClass implements ListCollection
     return out;
   }
 
-  flipConnection(a:DistantStorable):void { }
-  
+  flipConnection(a: DistantStorable): void {}
 }

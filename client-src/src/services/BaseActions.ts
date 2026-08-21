@@ -49,7 +49,7 @@ export abstract class BaseActions<I> implements ExternalMethods<I> {
               i++;
               return tmp;
             } else {
-              return { value:undefined, done: true };
+              return { value: undefined, done: true };
             }
           },
         };

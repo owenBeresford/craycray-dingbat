@@ -218,7 +218,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
     } else {
       LOG.addRaw("Attempt duplicate list? BUT list not found for '" + this.store.state.currentId + "'.", "warn");
     }
-    this.allRoutes.push({ name: "list-everything" });  // lint said to add the await.
+    this.allRoutes.push({ name: "list-everything" }); // lint said to add the await.
   }
 
   /**

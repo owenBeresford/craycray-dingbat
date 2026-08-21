@@ -46,7 +46,7 @@ export interface FactoryArtefact {
   currentData: ListCollection<string> | undefined;
   updateData(a: ListCollection<string>): void;
   initData(loc: Location | MockLocation, n: NotifyType): void;
-  flipConnection(isLive: boolean, loc: Location ): void;
+  flipConnection(isLive: boolean, loc: Location): void;
 }
 
 /** A module-wide collection of known variables
@@ -211,12 +211,14 @@ export function createEmptyFactory(): FactoryArtefact {
    * @returns {void}
    */
   function flipConnection(isLive: boolean, loc: Location = location): void {
-    if(! retour.currentData) { return; }
+    if (!retour.currentData) {
+      return;
+    }
 
     if (isLive) {
       retour.currentData.flipConnection(createRemoteService(loc));
     } else {
-      let temp:DistantStorable = useMsgDistrib();
+      let temp: DistantStorable = useMsgDistrib();
 
       retour.currentData.flipConnection(temp);
       (temp as unknown as BasicThreadable).forkThread();
@@ -269,7 +271,7 @@ function setupCurrentList(itinéraire: undefined | RouteLocationNormalizedLoaded
       console.log("KKK setupCurrentList currentData id:", idOf(currentData), " AND ", id);
     }
   } catch (e) {
-    console.log("M<anaged execption"+(e as Error).message);
+    console.log("M<anaged execption" + (e as Error).message);
     let backupId = 0;
     if (currentData) {
       backupId = currentData.create("New list");

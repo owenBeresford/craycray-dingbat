@@ -48,7 +48,9 @@ export class NetworkedListService extends ListService {
       );
     } else {
       // This is async washed, but works in practice.
-      setTimeout( async ()=> {await this.loadAllLists(); }, 1);
+      setTimeout(async () => {
+        await this.loadAllLists();
+      }, 1);
     }
   }
 
@@ -166,7 +168,7 @@ export class NetworkedListService extends ListService {
     } else {
       let temp = useMsgDistrib();
       this.flipConnection(temp);
-     ( temp as unknown as BasicThreadable).forkThread();
+      (temp as unknown as BasicThreadable).forkThread();
       await inner();
     }
 
@@ -197,7 +199,7 @@ export class NetworkedListService extends ListService {
         console.warn("Unpacked list [" + i + "] has no name; Que?");
       } else {
         this.catalog[noms.indexOf(liste[i].name)].éléments = [...liste[i].list];
-        this.catalog[noms.indexOf(liste[i].name)].modifié =new Date(liste[i].edited);
+        this.catalog[noms.indexOf(liste[i].name)].modifié = new Date(liste[i].edited);
       }
     }
   }

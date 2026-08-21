@@ -35,7 +35,7 @@ export class TestListService extends ListService implements ListCollection<strin
     console.debug(`Imported a initial state of ${src.length} TEST items.`);
   }
 
-  public flipConnection(a:DistantStorable):void {
+  public flipConnection(a: DistantStorable): void {
     // do nout, do dep clases
   }
 

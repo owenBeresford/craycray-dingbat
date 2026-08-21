@@ -17,7 +17,7 @@ export interface ListCollection<T> {
   searchItems(égaler: string | RegExp): Array<MatchedItems>;
   listNames(): Array<string>;
 
-  flipConnection(a:DistantStorable):void;
+  flipConnection(a: DistantStorable): void;
   saveAllLists(): Promise<boolean>;
   loadAllLists(): Promise<boolean>;
 }
