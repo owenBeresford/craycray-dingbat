@@ -57,8 +57,6 @@
     "@vitest/browser-playwright": "^4.0.18",
     "@vitest/coverage-v8": "^4.0.18",
     "@vitest/web-worker": "^4.1.0",
-    "@vue/cli-plugin-babel": "^5.0.9",
-    "@vue/cli-service": "~5.0.0",
     "@vue/compiler-sfc": "^3.2.33",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^10.0.0",
@@ -77,11 +75,11 @@
     "jsdoc": "^4.0.5",
     "node-localstorage": "^2.2.1",
     "playwright": "^1.58.2",
+    "postcss": "^8.5.26",
     "prettier": "^2.6.2",
     "prettier-plugin-vue": "^1.1.6",
     "storybook": "^10.3.1",
     "storybook-vue3-router": "^7.0.0",
-    "testing-library": "^0.0.2",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
     "tslib": "^2.8.1",
@@ -108,5 +106,12 @@
     "offline"
   ],
   "license": "AGPL-3.0-or-later",
-  "readme": "less ./README.md"
+  "readme": "less ./README.md",
+  "overrides": {
+    "postcss": "^8.5.26",
+	 "minimatch": "10.2.6",
+    "@vue/component-compiler-utils": {
+      "postcss": "^8.5.26"
+    }
+  }
 }
