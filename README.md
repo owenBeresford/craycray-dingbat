@@ -41,6 +41,7 @@ smaller goals:
 - Small installation footprint, negligible CPU usage when backgrounded, quite low when active.
 - Similar ideas to a BASE DB, an eventually present data collections.   Implemented with few _await_ delays, but this arch is fiddly to author.   Later devs should use the public facade class to _just_ and easily access data.  
 - No marketing or 3rd party platforms involved, as unneeded in narrow scope.   
+- On publication of this sentence, a project with "npm audit =0".  I suspect it won't last though.
 - Types allow extendable data and features.   This concept is abit over-engineered, as though I was thinking in languages with better type systems. . . . I am.  
 - Classes that can name themselves, aside from a toString(), which fails after a minify.   This is useful for logging and is trivial in Python or PHP, but harder in TS.   An attempt at logging RAM used, available in tests.
 - Like Google todo list app, there is no id/ account /login / auth steps in the app.   You are an anon local user.  I never know that you exist.  
@@ -135,6 +136,7 @@ As a data architecture, my Vue components should have:
 - For better readability, I moved many local variable names to a non-English lang ~ fr-FR ~ so there is no clash with JS keywords.    Public symbols should be in en-UK.   This convention isn't global, but its not bad spelling.   JS does allow UTF-8 in variable names.
 - Node supports a different Thread implementation to browsers.  I could make some more of my tests work, but that is adding code to pass test env that cannot be used outside of tests.  This is not productive.
 - Build tools will complain "Failed to load source map" for ./client-src/src/assets/foundation.min.css.  Yes this file is absent.  
+- I like the idea of Storybook, I dislike the implementation of Storybook.  They import too many incompatible build-tools(Vite, webpack, babel and more).
 
 
 ### User interactions
