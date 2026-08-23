@@ -38,7 +38,7 @@ describe("Client-side aaset URLs are valid...", (): void => {
   it("urls drilldown ", async (): Promise<boolean> => {
     for (let i = 0; i < FILE_URLS.length; i++) {
       let resp: SimpleResponse = await runExecProcessOnUrl(FILE_URLS[i], undefined);
-      console.log(resp);
+//      console.log("First test block," + FILE_URLS[i], resp);
       expect(resp.ok).toBe(true);
       expect(typeof resp.headers.get("content-type")).toBe("string");
       expect(resp.headers.get("content-type").length).toBeGreaterThan(5);

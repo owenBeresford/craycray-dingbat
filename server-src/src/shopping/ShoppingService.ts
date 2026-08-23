@@ -192,7 +192,7 @@ export class ShoppingService {
    * @return {Promise<string>}
    */
   public async save(left: Array<SaveStruct>): Promise<string> {
-    if (!Array.isArray(left)) {
+    if (!Array.isArray(left) || left.length==0) {
       throw new Error("Malformed data as param " + left);
     }
 
