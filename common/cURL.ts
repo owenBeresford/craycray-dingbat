@@ -81,7 +81,7 @@ export async function runExecProcessOnUrl(url: string, extra: RequestInit | unde
       return good(exit);
     }
 
-    let args: Array<string> = ["-k", "-v", "-m1", url];
+    let args: Array<string> = ["-k", "-v", "-m"+(extra.timeout/1000), url];
     if (extra && "method" in extra && extra["method"]) {
       if (extra["method"].toLowerCase() === "head") {
         args.push("-I");
