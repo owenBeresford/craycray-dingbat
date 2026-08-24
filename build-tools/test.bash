@@ -5,8 +5,14 @@ EXECDIR=node_modules/.bin
 export NODE_ENV=development
 APIPID=~/shopping.pid
 SVRBIN=./dist/main.min.mjs
+
+STARTDIR=`pwd`
+if [ `basename $PWD` == "server-src" -o  `basename $PWD` == "client-src" ]; then
+	cd ..
+fi
 if [ ! -f "$SVRBIN" ]; then
 	echo "Compile the source first."
+	pwd; ls ./dist;  
 	exit 1
 fi	
 
