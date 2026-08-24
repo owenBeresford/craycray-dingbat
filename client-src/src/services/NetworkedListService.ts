@@ -2,6 +2,7 @@ import { StdList } from "./AList";
 import { ListService } from "./ListService";
 import type { RemoteStorage } from "./RemoteStorage";
 import { useMsgDistrib } from "./MessageDistribution";
+import { useLog } from './LogStack';
 
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { LocalCopy } from "./LocalCopy";
@@ -11,6 +12,8 @@ import type { PromiseSucceed, PromiseReject } from "../../../common/types/promis
 import type { NotifyType } from "../types/Actionables";
 import type { BasicThreadable } from "../types/BasicThreadable";
 
+// no export 
+const LOG=useLog();
 /**
  * ListService
  * ListService, the class to mediate List storage
@@ -70,6 +73,14 @@ export class NetworkedListService extends ListService {
     }
   }
 
+  /**
+   * flipConnection
+   * A setter, blah
+ 
+   * @param {DistantStorable} loin
+   * @public
+   * @returns {void}
+   */
   public flipConnection(loin: DistantStorable): void {
     this.remote = undefined as unknown as DistantStorable; // I hope there are no hanging Refs to that object
     this.remote = loin;
@@ -119,6 +130,7 @@ export class NetworkedListService extends ListService {
       await this.remote.saveState(valeur);
     } else {
       let temp = useMsgDistrib();
+      LOG.addRaw("Changed remote connection to thread, as WiFi not found", "debug");
       this.flipConnection(temp);
       (temp as unknown as BasicThreadable).forkThread();
       await this.remote.saveState(valeur);
@@ -166,6 +178,7 @@ export class NetworkedListService extends ListService {
     if (await this.poll()) {
       await inner();
     } else {
+      LOG.addRaw("Changed remote connection to thread, as WiFi not found", "debug");
       let temp = useMsgDistrib();
       this.flipConnection(temp);
       (temp as unknown as BasicThreadable).forkThread();
