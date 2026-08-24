@@ -9,7 +9,7 @@ import { TestLocation } from "../MockLocation";
 import { RemoteStorage } from "../../services/RemoteStorage";
 import type { RemoteConfig } from "../../../../common/types/RemoteTypes";
 
-function useSSW(loc: Location | WorkerLocation): DataPipeline {
+function useTestSSW(loc: Location | WorkerLocation): DataPipeline {
   let d3: RemoteConfig = {
     url: loc.protocol + "//" + loc.hostname + ":" + loc.port + "/api/shared-state",
     timeout: API_RETRY,
@@ -21,12 +21,13 @@ function useSSW(loc: Location | WorkerLocation): DataPipeline {
   };
 
   return new SharedStateWorker(new RemoteStorage(d3), exponentialDelay);
+  //  direct connecxtion, no threads
 }
 
 describe("test on SharedStateWorker ", () => {
   it("Can create SharedStateWorker ", () => {
     const LOC = new TestLocation(TEST_LOCATION_URL);
-    let txt = useSSW(LOC);
+    let txt = useTestSSW(LOC);
     expect(typeof txt).toBe("object");
 
     assertType<DataPipeline>(txt);
@@ -35,7 +36,7 @@ describe("test on SharedStateWorker ", () => {
 
   it("Can use SharedStateWorker pushWhenAble ", async () => {
     const LOC = new TestLocation(TEST_LOCATION_URL);
-    let txt = useSSW(LOC);
+    let txt = useTestSSW(LOC);
     expect(typeof txt).toBe("object");
 
     let dat: Array<SaveStruct> = [
@@ -121,7 +122,7 @@ describe("test on SharedStateWorker ", () => {
 
   it("Can use SharedStateWorker pullWhenAble", async () => {
     const LOC = new TestLocation(TEST_LOCATION_URL);
-    let txt = useSSW(LOC);
+    let txt = useTestSSW(LOC);
     expect(typeof txt).toBe("object");
 
     let dat: Array<SaveStruct> = [
@@ -170,7 +171,7 @@ describe("test on SharedStateWorker ", () => {
 
   it("Can use SharedStateWorker push empty data", async () => {
     try {
-      let txt = useSSW(new TestLocation(TEST_LOCATION_URL));
+      let txt = useTestSSW(new TestLocation(TEST_LOCATION_URL));
       expect(typeof txt).toBe("object");
       // IOIO start thread first
       let dat: Array<SaveStruct> = [];
@@ -186,7 +187,7 @@ describe("test on SharedStateWorker ", () => {
   it("Can use SharedStateWorker (ERRR for URL)", async () => {
     try {
       const url = "http://app.hiss:8080/thing";
-      let txt = useSSW(new TestLocation(url));
+      let txt = useTestSSW(new TestLocation(url));
       expect(typeof txt).toBe("object");
       // IOIO start thread first
       let dat: Array<SaveStruct> = [];
