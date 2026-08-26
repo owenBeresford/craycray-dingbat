@@ -30,6 +30,7 @@ smaller goals:
 > Storybook by default loads on a different domain to the app ~ that needs to be accessible via mobile.  Please read about [state partitioning](https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/State_Partitioning), and set details or the test cannot run properly. 
 >
 
+
 ### Technical deliveries
 
 
@@ -46,7 +47,7 @@ smaller goals:
 - Classes that can name themselves, aside from a toString(), which fails after a minify.   This is useful for logging and is trivial in Python or PHP, but harder in TS.   An attempt at logging RAM used, available in tests.
 - Like Google todo list app, there is no id/ account /login / auth steps in the app.   You are an anon local user.  I never know that you exist.  
    - Note: NPM might know the person that installed the app exists.  
-- Note there are **no access** restrictions to the data in this app.  You can access anything via XHR, or via HTTPS (just not HTTP).   
+- Note there are **no access restrictions** to the data in this app.  You can access anything via XHR, or via HTTPS (just not HTTP).   
 
 
 ### Data caching
@@ -85,7 +86,7 @@ smaller goals:
 - Think about creating a 'home page link' if the tools is useful see [Android chrome guide](https://support.google.com/chrome/answer/9658361?hl=en&co=GENIE.Platform%3DAndroid),, [Or a second guide](https://support.google.com/chrome/answer/15085120?hl=en&co=GENIE.Platform%3DAndroid).  This is 2 taps, and not automatable from normal JS for security reasons. 
    - If you favour android/firefox, there is a menu option in the normal browser menus. 
 - To be able to delete the installed version please scan [Deleting cached files in Chrome](https://support.google.com/chrome/answer/2392709?hl=en&co=GENIE.Platform%3DAndroid&sjid=5819306311445701255-EU#zippy=%2Cdata-that-doesnt-get-deleted%2Cdata-that-can-be-deleted).  I think purge/ delete capacity should be outside the app, so you don't run an app you just removed. 
-- WARN: DO NOT edit code-base without an IDE. (I'm  using glyths that are not found on a EN-US keyboard, so you need auto-complete).   Config/ Constant files are in ASCII 127 to be be more broadly compatible.   
+- WARN: DO NOT edit code-base without an IDE. (I'm  using glyths that are not found on a EN-US keyboard, so you need auto-complete).   Config/ Constant files are in ASCII 127 to be more broadly compatible.   
 
 
 ### Basic file system
@@ -119,8 +120,9 @@ smaller goals:
 	- random config and notes
 
 As a data architecture, my Vue components should have:
-- a stateKey that is an easy summary of current state, so Vue can see if the state has changed cheaply.  This should mention network status as a component.
-- a testId for every HTML element that may need to be directly accessed (mostly used in tests).  This mean multiple testId per component.
+- a stateKey that is an easy summary of current state, so Vue can see if the state has changed cheaply.  This should mention network status as part of the key.
+- a testId for every HTML element that may need to be directly accessed (mostly used in tests).  This mean multiple testId exist per component.
+- possibly a list id, used to identify and access data from the DataFactory.
 
 
 ### Warnings / Caveats
@@ -131,7 +133,7 @@ As a data architecture, my Vue components should have:
    - See revised [checksum script](./build-toolsi/checksum.bash), I have updated this.   Please read the script before running it.
 - If you talk HTTP/0.9 or HTTP/1.0, or HTTP/1.1 to the API you get TCP transit, and nothing on higher protocols.  This is HTTPS and HTTP/2 only service, your browser _should_ default to HTTPS and ALN upgrade steps, so this is invisible to you.   
 - I strongly recommend applying a local domain name to the IP that runs this service, for UX.  Details will vary, please consult your docs.   My router creates a local name for each machine that uses DHCP by default, yours might too. 
-- This project likes Node24, no warranty on older versions as I expect NPM will make your life very hard.  Package.json includes some magic for getting Node24, but that tech is very frail as it moves version of NPM.  #leSigh.
+- This project likes Node24+, no warranty on older versions as I expect NPM will make your life very hard.  Package.json includes some magic for getting Node24, but that tech is very frail as it moves version of NPM.  #leSigh.
    - Assuming you are a techie, adopt/ deploy NVM to have flexibility.
 - For better readability, I moved many local variable names to a non-English lang ~ fr-FR ~ so there is no clash with JS keywords.    Public symbols should be in en-UK.   This convention isn't global, but its not bad spelling.   JS does allow UTF-8 in variable names.
 - Node supports a different Thread implementation to browsers.  I could make some more of my tests work, but that is adding code to pass test env that cannot be used outside of tests.  This is not productive.

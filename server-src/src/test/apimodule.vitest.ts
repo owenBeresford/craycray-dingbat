@@ -14,7 +14,7 @@ describe("I can use API module", () => {
 
   it("can GET the API", async () => {
     const res: SimpleResponse = await runExecProcessOnUrl(TARGET, undefined);
-    expect(res.ok);
+    expect(res.ok).toBeTruthy();
     expect(res.status).toBe(200);
     expect(res.headers.get("Content-Type")).toMatch(/json/);
     assertType<Array<SaveStruct>>(res.body);
@@ -28,7 +28,7 @@ describe("I can use API module", () => {
       body: JSON.stringify(transform2SaveStruct(fixture1())),
       headers: { "Content-Type": "application/json; charset=utf-8" },
     });
-    expect(res.ok);
+    expect(res.ok).toBeTruthy();
     expect(res.status).toBe(201);
     expect(res.headers.get("Content-Type")).toMatch(/json/);
     try {
@@ -47,7 +47,7 @@ describe("I can use API module", () => {
       body: JSON.stringify(transform2SaveStruct(fixture1())),
       headers: { "Content-Type": "application/json; charset=utf-8", Accept: "application/json; charset=utf-8" },
     });
-    expect(res.ok);
+    expect(res.ok).toBeTruthy();
     expect(res.status).toBe(201);
     expect(res.headers.get("Content-Type")).toMatch(/json/);
     try {
@@ -63,7 +63,7 @@ describe("I can use API module", () => {
     }
 
     res = await runExecProcessOnUrl(TARGET, undefined);
-    expect(res.ok);
+    expect(res.ok).toBeTruthy();
     expect(res.status).toBe(200);
     expect(res.headers.get("Content-Type")).toMatch(/json/);
     // assertType<Array<SaveStruct>>(res.body);
@@ -74,7 +74,7 @@ describe("I can use API module", () => {
       body: JSON.stringify(transform2SaveStruct(fixture3())),
       headers: { "Content-Type": "application/json; charset=utf-8", Accept: "application/json; charset=utf-8" },
     });
-    expect(res.ok);
+    expect(res.ok).toBeTruthy();
     expect(res.status).toBe(201);
     expect(res.headers.get("Content-Type")).toMatch(/json/);
     try {
@@ -90,7 +90,7 @@ describe("I can use API module", () => {
     }
 
     res = await runExecProcessOnUrl(TARGET, undefined);
-    expect(res.ok);
+    expect(res.ok).toBeTruthy();
     expect(res.status).toBe(200);
     expect(res.headers.get("Content-Type")).toMatch(/json/);
     assertType<Array<SaveStruct>>(res.body);

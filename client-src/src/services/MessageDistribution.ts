@@ -125,6 +125,14 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
     return true;
   }
 
+  /**
+   * errorTrap
+   * A Util to log errors 
+ 
+   * @param {MessageEvent<any> | ErrorEvent} ev
+   * @public
+   * @returns {void}
+   */
   protected errorTrap(ev: MessageEvent<any> | ErrorEvent): void {
     this.errMsgs.push("Worker->onError handler (see console for more details) ");
     LOG.addRaw("Worker->onError handler (see console for more details) ", "debug");
@@ -238,7 +246,7 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
         return bad(new Error("986634563523, Worker thread should be active now"));
       });
     }
-    const expédition: ShippingStruct = packMsg("save-payload", dat);
+    const expédition: ShippingStruct = packMsg("save-payload" as ActionEnum, dat);
     this.worker.postMessage(expédition, undefined);
     // promise for API compat; message has been forwarded to thread...
     return new Promise((good: PromiseSucceed<boolean>, bad: PromiseReject) => {
@@ -254,7 +262,7 @@ export class MessageDistribution extends AbstractSelfNameClass implements Distan
  * @returns {Promise<Array<SaveStruct>> }
  */
   public async loadState(): Promise<Array<SaveStruct>> {
-    const expédition: ShippingStruct = packMsg("load-request", []);
+    const expédition: ShippingStruct = packMsg("load-request" as ActionEnum, []);
     if (!this.worker) {
       console.assert(this.worker != null, "9456234352333, Worker thread should be active now");
       return new Promise((good: PromiseSucceed<Array<SaveStruct>>, bad: PromiseReject) => {
