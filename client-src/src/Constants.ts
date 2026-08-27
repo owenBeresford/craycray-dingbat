@@ -3,7 +3,8 @@ import { RemoteStorage } from "./services/RemoteStorage";
 
 export declare const __STORYBOOK_MODULE_TEST__: Readonly<string>;
 
-/* TODO: You need to set this URL to your host where the app is run. */
+/* TODO: You need to set this URL to your host where the app is run. 
+ maybe it would be nice to have an install script for this line */
 export const TEST_LOCATION_URL = "https://app.hiss:3001";
 
 /**
@@ -16,43 +17,58 @@ export const TEST_LOCATION_URL = "https://app.hiss:3001";
 export function REMOTE_HOST(): string {
   if (globalThis.__STORYBOOK_MODULE_TEST__) {
     // IOIO XXX #FIXME YOU MUST UPDATE THIS TO YOUR LOCAL MACHINE NAME
-    // when storybookj is running, need to use a different value
+    // when storybook is running, need to use a different value
     return "app.hiss:3001";
   }
   // outside of storybook tests, there is only 1 stack, and this works fins
   return location.hostname + ":" + location.port;
 }
-// maybe MSG_THREAD should start https://...
+
+// relative URL to asset from same host, for worker thread js
 export const MSG_THREAD = /* @vite-ignore */ new URL("/asset/worker1.es.min.mjs", import.meta.url);
 export const MSG_THREAD_SB = /* @vite-ignore */ new URL("https://localhost:6006/sb-asset/worker1.es.min.mjs");
 
 // networking values + postMessages
 export const APP_NAME = "shopping";
-export const APP_VERSION = "0.0.1";
+export const APP_VERSION = "0.0.2";
 
+// value in localStorage
 export const INSTALLED = "local-shopping";
-export const API_RETRY = 500;
+// value in base index.html
 export const ROOT_NODE = "#app";
+// localisation
+export const SUPPORTED_LANGUAGE = "en-GB";
+export const KNOWN_PHONE = "shopping-known"; // may get localised
+export const LOGO_PATH = "/asset/logo.png";  // hopefully clear enough
 
-// this is outside of localisatuon at present,
-// all phones must be in the same languages at the same time, or matching to ths doesnt work.
+// in the same request, pause 500ms then try again
+export const API_RETRY = 500;
+// if no network found, try after 30s
+export const API_DELAY=30_000;
+
+// This is outside of localisation at present,
+// All phones must be in the same languages at the same time, or matching to ths doesnt work.
 export const EMPTY_LIST_NAME = "New Empty list";
+// the static id in the collection
+export const EMPTY_LIST_ID = 0; 
 
 // used in MessageDistribution
-export const PMQUE_TIMER = 300;
-export const PMQUE_ATTEMPTS = 10;
+export const PMQUE_TIMER = 300; // ms
+export const PMQUE_ATTEMPTS = 10; // count
 
-// URLs used
-export const WORKER_NAME = "NUDGE";
-export const LOGO_PATH = "/asset/logo.png";
+export const WORKER_NAME = "NUDGE";  // I think this doesnt do anything
 
+
+// Text displayed for drag handles, 
+// not currentlky loalised as cannot be a long DE compound word (etc)
 // https://symbl.cc/en/unicode/blocks/domino-tiles/
 export const DRAG_HANDLE_SYMBOL = "🁻";
 
 // values for MotionStream
-export const MOBILE_THRESHOLD = 60;
-export const BIG_THRESHOLD = 15; // buttons are currently 13px tall
+export const MOBILE_THRESHOLD = 60; // px
+export const BIG_THRESHOLD = 15; // in px, buttons are currently 13px tall
 export const ANGLE_ACCURACY = 20.0; // I might need to split mobile and desktop here
+// strings used for representation of motion
 export const CSS_SYMBOL_REMOVE = "swipe";
 export const CSS_SYMBOL_ORDER = "move";
 export const CSS_SYMBOL_RECEIPT = "receipt";
@@ -60,23 +76,27 @@ export const CSS_SYMBOL_UP = "upwards";
 export const CSS_SYMBOL_DOWN = "dwnwards";
 export const CSS_SYMBOL_LANDED = "itemLanded";
 
-// localisation
-export const SUPPORTED_LANGUAGE = "en-GB";
-export const KNOWN_PHONE = "shopping-known"; // may get localised
-export const TTL_FOR_HELP = 5_000; // ms
+
+export const TTL_FOR_HELP = 5_000; // in ms,  the duration the helpo text is showen for
+// by default the help is visible or not
 export const DEFAULT_HELP_SHOW = false;
 
+// how long a fetch() call may block for, in lowest level of networking
+// as LAN only, this is very generous
 export const FETCH_TIMEOUT = 500; // ms
+
 export const DELAY_FOR_API = 500; // ms
 
 // for **mouse** longtaps, that edit an item
 export const DELAY_LONGTAP = 700; // ms
 export const MOBILE_LONGTAP = 1100; // ms
 
-export const MAX_LOG_LENGTH = 150;
+// logging feature is ON | OFF
 export const LOGGING_ENABLED = true;
+// in log messages, trim() after X chars
+export const MAX_LOG_LENGTH = 150;
 
-export const EMPTY_LIST_ID = 0;
+
 
 if (typeof globalThis.fetch === "undefined" || !globalThis.fetch) {
   throw new Error("73453894563453 Fetch() not found.  BAILING OUT");
