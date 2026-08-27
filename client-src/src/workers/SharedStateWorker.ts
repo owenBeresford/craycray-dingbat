@@ -11,16 +11,15 @@ import type { RemoteStorage } from "../services/RemoteStorage";
 import type { DelayCallbackType, DataPipeline } from "../types/Saveable";
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
-import { createRemoteService } from "../Constants";
+import { createRemoteService, API_DELAY } from "../Constants";
 import type { TestLocation } from "../test/MockLocation";
 import type { NullableSysTimerType } from "../../../common/types/Timer";
-// import type { BasicThreadable } from "../types/BasicThreadable";
-
+ 
 /**
  * useSSW
  * A util to create this service
 
- * @param {Location} loc
+ * @param { Location | WorkerLocation | TestLocation} loc
  * @public
  * @returns {DataPipeline}
  */
@@ -52,7 +51,8 @@ export class SharedStateWorker implements DataPipeline {
   public constructor(rs: RemoteStorage, delay: DelayCallbackType) {
     this.conn = rs;
     this.delay = delay;
-    this.currentDelay = 30_000;
+    this.currentDelay = API_DELAY;
+    
     // there won't be vast numbers of this class made
     this.pushWhenAble.bind(this);
     this.pullWhenAble.bind(this);
@@ -73,6 +73,7 @@ export class SharedStateWorker implements DataPipeline {
       const ATTEMPT = async (good: PromiseSucceed<boolean>, bad: PromiseReject): Promise<void> => {
         let access = await SELF.conn.poll();
         if (access) {
+          SELF.currentDelay = API_DELAY;
           SELF.conn
             .saveState(json)
             .then((dat: boolean): boolean => {
@@ -122,6 +123,7 @@ export class SharedStateWorker implements DataPipeline {
         let access = await SELF.conn.poll();
 
         if (access) {
+          SELF.currentDelay = API_DELAY;
           SELF.conn
             .loadState()
             .then((out: Array<SaveStruct>) => {
