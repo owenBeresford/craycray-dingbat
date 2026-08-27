@@ -69,7 +69,6 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
     const REQT: RequestInit = Object.assign(this.other, { method: "HEAD", body: null }) as RequestInit;
     const EEE = new Error("572357653453653 Request timed out for " + this.url);
     // EEE is named after the whine of over-used/ over-heated electrical equipment
-    // const SELF = this;
     if (this.cease) {
       return Promise.resolve(false);
     }
@@ -78,7 +77,7 @@ export class RemoteStorage extends AbstractSelfNameClass implements Storable, Di
       let sortie: NullableSysTimerType = globalThis.setTimeout(() => {
         didTimeOut = true;
         bad(EEE);
-      }, FETCH_TIMEOUT); // do not block on this timeout here
+      }, FETCH_TIMEOUT); // do not block/ await on this timeout here
 
       try {
         this.agent(this.url, REQT)

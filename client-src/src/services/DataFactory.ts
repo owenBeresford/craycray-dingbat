@@ -6,7 +6,7 @@ import { extractId } from "./util";
 import { StdList, EMPTY_LIST } from "./AList";
 import { useLocal, LocalCopy } from "./LocalCopy";
 import { useMsgDistrib, MessageDistribution } from "./MessageDistribution";
-import { createRemoteService, DELAY_FOR_API } from "../Constants";
+import { createRemoteService } from "../Constants";
 import { TestListService } from "./TestListService";
 import { NetworkedListService } from "./NetworkedListService";
 import { RemoteStorage } from "./RemoteStorage";

@@ -129,6 +129,8 @@ export class NetworkedListService extends ListService {
     if (await this.poll()) {
       await this.remote.saveState(valeur);
     } else {
+      // poll() will only fail when there is insufficent networking.
+      // A thread [at present] will not fail poll() unless the app is shutting down.
       let temp = useMsgDistrib();
       LOG.addRaw("Changed remote connection to thread, as WiFi not found", "debug");
       this.flipConnection(temp);

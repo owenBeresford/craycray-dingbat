@@ -100,7 +100,7 @@ async function testBody() {
 
   // empty list?
   d1 = new Date();
-  // there is no network at this step, shown by the aboce poll()
+  // there is no network at this step, shown by the above poll()
   expect(await OBJ1.loadAllLists()).toBe(false);
   d2 = new Date();
   console.log("#106 loaded data ", d2.getTime() - d1.getTime());

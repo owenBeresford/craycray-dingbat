@@ -34,7 +34,7 @@
 import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
 
-import { DELAY_FOR_API, LOGO_PATH } from "../Constants";
+import { LOGO_PATH } from "../Constants";
 import { useStore, type COMPLETE_STORE } from "../services/Store";
 import { mapURL } from "../services/URLs";
 import InterstitialView from "./InterstitialView.vue";
