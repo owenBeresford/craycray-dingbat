@@ -3,6 +3,8 @@ import { assert, describe, it, expect, assertType, beforeAll, afterAll } from "v
 import type { PromiseSucceed, PromiseReject } from "../../../common/types/promises";
 import { runExecProcessOnUrl } from "../../../common/cURL";
 import type { SimpleResponse } from "../../../common/util";
+import {  TEST_LOCATION_URL } from "../Constants";
+
 
 // import supertest from "supertest";
 // https://scribe.rip/@azizzouaghia/setting-up-basic-api-testing-with-supertest-cucumber-jest-and-typescript-8c6a23c045a1
@@ -10,29 +12,28 @@ import type { SimpleResponse } from "../../../common/util";
 // import { Test } from "@nestjs/testing";
 
 describe("Client-side aaset URLs are valid...", (): void => {
-  const PREFIX: string = "https://app.hiss:3001";
   const FILE_URLS: Array<string> = [
-    PREFIX + "/",
-    PREFIX + "/asset/manifest.json",
-    PREFIX + "/asset/favicon.ico",
-    PREFIX + "/asset/logo.png",
-    PREFIX + "/asset/shopping.min.css",
-    PREFIX + "/asset/shopping.es.min.mjs",
-    PREFIX + "/asset/worker1.es.min.mjs",
+    TEST_LOCATION_URL + "/",
+    TEST_LOCATION_URL + "/asset/manifest.json",
+    TEST_LOCATION_URL + "/asset/favicon.ico",
+    TEST_LOCATION_URL + "/asset/logo.png",
+    TEST_LOCATION_URL + "/asset/shopping.min.css",
+    TEST_LOCATION_URL + "/asset/shopping.es.min.mjs",
+    TEST_LOCATION_URL + "/asset/worker1.es.min.mjs",
   ];
   const APP_URLS: Array<string> = [
-    PREFIX + "/",
-    PREFIX + "/list-all",
-    PREFIX + "/list/1",
-    PREFIX + "/api/shared-state",
+    TEST_LOCATION_URL + "/",
+    TEST_LOCATION_URL + "/list-all",
+    TEST_LOCATION_URL + "/list/1",
+    TEST_LOCATION_URL + "/api/shared-state",
   ];
   const BAD_URLS: Array<string> = [
-    PREFIX + "/dfsdfsfsdfs",
-    PREFIX + "/list/gdgdfg/ddgdfgd/",
-    PREFIX + "/dgdgd/asset/logo.png",
-    PREFIX + "/asset/drtgdgdfgdfgdfg.png",
-    PREFIX + "/list/-8",
-    PREFIX + "/list/0",
+    TEST_LOCATION_URL + "/dfsdfsfsdfs",
+    TEST_LOCATION_URL + "/list/gdgdfg/ddgdfgd/",
+    TEST_LOCATION_URL + "/dgdgd/asset/logo.png",
+    TEST_LOCATION_URL + "/asset/drtgdgdfgdfgdfg.png",
+    TEST_LOCATION_URL + "/list/-8",
+    TEST_LOCATION_URL + "/list/0",
   ];
 
   it("urls drilldown ", async (): Promise<boolean> => {

@@ -27,20 +27,9 @@ import type { SecureVersion, TLSSocket } from "node:tls";
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 
 import { ShoppingModule } from "./shopping/shopping-module";
+import { TEMP_DIR, VALID_ROUTES, HOST_NAME } from "./Constants";
 const { __dirname, __filename } = getGlobals(import.meta.url);
 
-// Currently all the files in the App
-const VALID_ROUTES = [
-  "/",
-  "/index.html",
-  "/asset/favicon.ico",
-  "/asset/manifest.json",
-  "/asset/shopping.min.css",
-  "/asset/shopping.es.min.mjs",
-  "/asset/logo.png",
-  "/asset/worker1.es.min.mjs",
-  "/api/shared-state",
-];
 
 // At runtime the values are forced to be int or string
 // so for example bash functions get mashed into strings, and the Node process will crash.
@@ -68,9 +57,9 @@ function extractEnv(env: NodeJS.ProcessEnv): ControlledEnv {
 
   let out = {
     SPort: 3001,
-    SIpAddr: "app.hiss",
-    SSLkey: "/tmp/",
-    SSLcert: "/tmp/",
+    SIpAddr: HOST_NAME.split(':')[0],
+    SSLkey: TEMP_DIR,
+    SSLcert: TEMP_DIR,
     passphrase: "enter a password",
   };
 
@@ -91,7 +80,7 @@ function extractEnv(env: NodeJS.ProcessEnv): ControlledEnv {
   if (env.SHOPPING_CERT) {
     out.SSLcert = "" + env.SHOPPING_CERT;
   }
-  if (out.SSLkey === "/tmp/" || out.SSLcert === "/tmp/" || out.passphrase === "enter a password") {
+  if (out.SSLkey === TEMP_DIR || out.SSLcert === TEMP_DIR || out.passphrase === "enter a password") {
     throw new Error("For production, you must specify both the CA and the cert... $SHOPPING_KEY, $SHOPPING_CERT ");
   }
   return out;

@@ -3,7 +3,7 @@ import { assert, describe, expect, vi, it, expectTypeOf, assertType } from "vite
 import { SharedStateWorker, exponentialDelay } from "../../workers/SharedStateWorker";
 import type { DelayCallbackType, DataPipeline } from "../../types/Saveable";
 import type { SaveStruct } from "../../../../common/types/SaveStruct";
-import { TEST_LOCATION_URL, API_RETRY } from "../../Constants";
+import { TEST_LOCATION_URL, API_RETRY, HOST_NAME } from "../../Constants";
 import { runExecProcessOnUrl } from "../../../../common/cURL";
 import { TestLocation } from "../MockLocation";
 import { RemoteStorage } from "../../services/RemoteStorage";
@@ -186,7 +186,7 @@ describe("test on SharedStateWorker ", () => {
 
   it("Can use SharedStateWorker (ERRR for URL)", async () => {
     try {
-      const url = "http://app.hiss:8080/thing";
+      const url = "http://"+HOST_NAME+"/thing";
       let txt = useTestSSW(new TestLocation(url));
       expect(typeof txt).toBe("object");
       // IOIO start thread first

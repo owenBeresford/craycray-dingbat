@@ -5,7 +5,10 @@ export declare const __STORYBOOK_MODULE_TEST__: Readonly<string>;
 
 /* TODO: You need to set this URL to your host where the app is run. 
  maybe it would be nice to have an install script for this line */
-export const TEST_LOCATION_URL = "https://app.hiss:3001";
+export const HOST_NAME= "app.hiss:3001";
+export const HOST_NAME_SB="localhost:6006";
+export const TEST_LOCATION_URL = "https://"+HOST_NAME;
+export const APP_DEFAULT_API= "https://"+HOST_NAME+"/api/shared-state";
 
 /**
  * REMOTE_HOST
@@ -18,7 +21,7 @@ export function REMOTE_HOST(): string {
   if (globalThis.__STORYBOOK_MODULE_TEST__) {
     // IOIO XXX #FIXME YOU MUST UPDATE THIS TO YOUR LOCAL MACHINE NAME
     // when storybook is running, need to use a different value
-    return "app.hiss:3001";
+    return HOST_NAME;
   }
   // outside of storybook tests, there is only 1 stack, and this works fins
   return location.hostname + ":" + location.port;

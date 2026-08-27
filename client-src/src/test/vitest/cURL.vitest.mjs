@@ -9,7 +9,7 @@ import {
 } from "vitest";
 
 import { TEST_ONLY } from "../../../../common/cURL";
-import { TEST_LOCATION_URL } from "../../Constants";
+import { TEST_LOCATION_URL, HOST_NAME } from "../../Constants";
 
 const fixture1 = [
   "HTTP/2 200 \r\n" +
@@ -41,7 +41,7 @@ const fixture1 = [
 ];
 const fixture2 = [
   "HEAD /api/shared-state HTTP/\r\n" +
-    "Host: app.hiss:3001\r\n" + // cant map to const
+    "Host: "+HOST_NAME+"\r\n" +  
     "accept: */*\r\n" +
     "accept-language: en-GB,en;q=0.9,nl;q=0.8,de-DE;q=0.7,de;q=0.6\r\n" +
     "cache-control: no-cache\r\n" +

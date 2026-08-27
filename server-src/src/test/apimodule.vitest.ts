@@ -1,19 +1,19 @@
 import { assert, describe, it, expect, assertType, beforeAll, afterAll } from "vitest";
 // https://scribe.rip/@azizzouaghia/setting-up-basic-api-testing-with-supertest-cucumber-jest-and-typescript-8c6a23c045a1
 
-import { delay } from "../../../common/util";
-import { runExecProcessOnUrl } from "../../../common/cURL";
+import { delay, runExecProcessOnUrl } from "../../../common/cURL";
 import { ShoppingBE } from "../shopping/ShoppingBE";
 import { ShoppingService } from "../shopping/ShoppingService";
-import { SaveStruct } from "../../../common/types/SaveStruct";
 import { fixture1, fixture2, fixture3, transform2SaveStruct } from "../../../common/fixture-lists";
+import {  APP_DEFAULT_API } from "../Constants";
+
+import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { SimpleResponse } from "../../../common/util";
 
 describe("I can use API module", () => {
-  const TARGET: string = "https://app.hiss:3001/api/shared-state";
-
+ 
   it("can GET the API", async () => {
-    const res: SimpleResponse = await runExecProcessOnUrl(TARGET, undefined);
+    const res: SimpleResponse = await runExecProcessOnUrl(APP_DEFAULT_API, undefined);
     expect(res.ok).toBeTruthy();
     expect(res.status).toBe(200);
     expect(res.headers.get("Content-Type")).toMatch(/json/);
@@ -23,7 +23,7 @@ describe("I can use API module", () => {
 
   it("can POST the API", async () => {
     // made data from fixture...
-    let res: SimpleResponse = await runExecProcessOnUrl(TARGET, {
+    let res: SimpleResponse = await runExecProcessOnUrl(APP_DEFAULT_API, {
       method: "POST",
       body: JSON.stringify(transform2SaveStruct(fixture1())),
       headers: { "Content-Type": "application/json; charset=utf-8" },
@@ -42,7 +42,7 @@ describe("I can use API module", () => {
 
   it("more complex API session [1]", async () => {
     // made data from fixture...
-    let res: SimpleResponse = await runExecProcessOnUrl(TARGET, {
+    let res: SimpleResponse = await runExecProcessOnUrl(APP_DEFAULT_API, {
       method: "POST",
       body: JSON.stringify(transform2SaveStruct(fixture1())),
       headers: { "Content-Type": "application/json; charset=utf-8", Accept: "application/json; charset=utf-8" },
@@ -62,14 +62,14 @@ describe("I can use API module", () => {
       expect(false).toBe(true);
     }
 
-    res = await runExecProcessOnUrl(TARGET, undefined);
+    res = await runExecProcessOnUrl(APP_DEFAULT_API, undefined);
     expect(res.ok).toBeTruthy();
     expect(res.status).toBe(200);
     expect(res.headers.get("Content-Type")).toMatch(/json/);
     // assertType<Array<SaveStruct>>(res.body);
     expect(res.body.length).toBeGreaterThan(3);
 
-    res = await runExecProcessOnUrl(TARGET, {
+    res = await runExecProcessOnUrl(APP_DEFAULT_API, {
       method: "post",
       body: JSON.stringify(transform2SaveStruct(fixture3())),
       headers: { "Content-Type": "application/json; charset=utf-8", Accept: "application/json; charset=utf-8" },
@@ -89,7 +89,7 @@ describe("I can use API module", () => {
       expect(false).toBe(true);
     }
 
-    res = await runExecProcessOnUrl(TARGET, undefined);
+    res = await runExecProcessOnUrl(APP_DEFAULT_API, undefined);
     expect(res.ok).toBeTruthy();
     expect(res.status).toBe(200);
     expect(res.headers.get("Content-Type")).toMatch(/json/);
