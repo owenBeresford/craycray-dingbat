@@ -68,7 +68,7 @@ export const DRAG_HANDLE_SYMBOL = "🁻";
 export const MOBILE_THRESHOLD = 60; // px
 export const BIG_THRESHOLD = 15; // in px, buttons are currently 13px tall
 export const ANGLE_ACCURACY = 20.0; // I might need to split mobile and desktop here
-// strings used for representation of motion
+// Following are strings used for representation of motion
 export const CSS_SYMBOL_REMOVE = "swipe";
 export const CSS_SYMBOL_ORDER = "move";
 export const CSS_SYMBOL_RECEIPT = "receipt";
@@ -76,8 +76,8 @@ export const CSS_SYMBOL_UP = "upwards";
 export const CSS_SYMBOL_DOWN = "dwnwards";
 export const CSS_SYMBOL_LANDED = "itemLanded";
 
-
-export const TTL_FOR_HELP = 5_000; // in ms,  the duration the helpo text is showen for
+//  the duration the helpo text is showen for
+export const TTL_FOR_HELP = 5_000; // in ms, 
 // by default the help is visible or not
 export const DEFAULT_HELP_SHOW = false;
 
@@ -85,10 +85,9 @@ export const DEFAULT_HELP_SHOW = false;
 // as LAN only, this is very generous
 export const FETCH_TIMEOUT = 500; // ms
 
-export const DELAY_FOR_API = 500; // ms
-
-// for **mouse** longtaps, that edit an item
+// duraton for **mouse** longtaps, that edit an item
 export const DELAY_LONGTAP = 700; // ms
+// and mobile
 export const MOBILE_LONGTAP = 1100; // ms
 
 // logging feature is ON | OFF
