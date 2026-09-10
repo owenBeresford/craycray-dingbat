@@ -190,6 +190,7 @@ export async function runFetch(url: string, trap: boolean, extra: RequestInit | 
       ok: true,
       status: trans.status,
     } as SimpleResponse;
+    
   } catch (e: unknown) {
     return returnBad(
       trap,

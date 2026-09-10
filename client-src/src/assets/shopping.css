@@ -285,7 +285,6 @@
 
 .wholePage:has(dialog[open]) {
   background-color: var(--colour-disabled);
-
 }
 
 /* the children do */

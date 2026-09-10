@@ -6,22 +6,19 @@
 
 
 - ESLINT ON VUE FILES
-- increase tests - need to show CORS is correct, from another host #leSigh
+- IMPORTANT: Tests that change the central API store, must put the initial value back, or the other tests break.
+- IMPORTANT: Storybook "run tests" on page load
 - think about best name for ShopState
 - Make better favico, consider badges, 
 - May be need to re-add STORE.getters
-- Storybook "run tests" on page load
 - Workout if should cache list data in browser cache?
 - Simplify initGeneratedMethods
 - maybe lineup state-keys to show net status in later builds :: NetworkedListService->reportConnections 
 - list sorting? a-z
-- test showing transition between network modalities correctly
-- long tap on list name to rename
-- Add cache event messages in localStorage, so can restart app
-- Tests that change the central API store, must put the initial value back, or the other tests break.
-- FIX Property "info" was accessed during render but is not defined on instance. App.vue
-- If bigScreen, add "export data" menu option
-- Find a markdown editor and viewer that doesn't crash or hang.  This will reduce number number of 1line changes, as "in public" is my _current_ only viewer.
+- Add cache event messages in localStorage, so can restart app, *and* add purge feature :-)
+- In the API, trap connect as IP, as this breaks CSP. also filter by x-forwarded-host 
+- When menu open, suppress tabBar buttons etc  filter:  .menuTrigger[aria-pressed="true"] 
+- Migrate useUIText to a provide/ inject tuple in Main, so sole copy better
 
 
 ### LOW IMPACT, nioce to haves
@@ -41,8 +38,10 @@
 - implement my DOCS file (JSON validation)
 - Auto restart scripting (eg service files, or init.d files)?
 - look at atomic IO in Node.  #leSigh.  A write isn't likely to collide with a read, but if it did the reader gets a mess.
+- long tap on list name to rename
 - Maybe lineup state-keys to show net status in later builds
 - update Localisation to a better string storage, I discover <i18n> feature 
+- If bigScreen, add "export data" menu option
 - Check other means to engineer MotionStream
 - Implement document.addEventListener('visibilitychange'  to use network most wisely
 - Add the better validation on transform2list

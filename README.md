@@ -74,6 +74,7 @@ smaller goals:
 - Clone repo to a big screen device
 - Read build-tools/checksum.bash, then run it.  This creates certs and runs `npm i` twice
 - **OR** run `npm i` in each package directory, and build your own certs 
+- Patch each Constants.ts file with your service names.
 - run `npm run build:app`
 - To have a cert-error free experience, it is still necessary to update your phone with an extra rootCA. #leSigh.  There are notes [AlekEagle for Chrome](https://gist.github.com/AlekEagle/af90e75b77533b020a66cb0b3c910d77), [Jeroen HD for Firefox]( https://blog.jeroenhd.nl/article/firefox-for-android-using-a-custom-certificate-authority)   ~ I might need to extend this line.   This is not a limit of my app, its a requirement for local-net tools.  
 - run `npm run app`
@@ -128,15 +129,17 @@ As a data architecture, my Vue components should have:
 ### Warnings / Caveats
 
 
-- I am not accountable or responsible for anything NPM decides.   Do not run it as root or admin.  
+- I am not accountable or responsible for anything NPM decides.   Do not run it as root or admin user accounts.  
 - RESOLVED ISSUE: Due the way that security theatre and SSL are designed, "low risk" URLs local to your own hardware will require fiddling to be accessed.  Browsers are not happy with HTTP, or HTTPS self signed for good general reasons.  However this doesn't make sense for local domains.  Some browsers often do not read the local hosts file to eliminate virus's on win32. 
    - See revised [checksum script](./build-toolsi/checksum.bash), I have updated this.   Please read the script before running it.
 - If you talk HTTP/0.9 or HTTP/1.0, or HTTP/1.1 to the API you get TCP transit, and nothing on higher protocols.  This is HTTPS and HTTP/2 only service, your browser _should_ default to HTTPS and ALN upgrade steps, so this is invisible to you.   
-- I strongly recommend applying a local domain name to the IP that runs this service, for UX.  Details will vary, please consult your docs.   My router creates a local name for each machine that uses DHCP by default, yours might too. 
+- I strongly recommend applying a local domain name to the IP that runs this service, for UX.  Details will vary, please consult your docs.   My router creates a local name for each machine that uses DHCP by default, yours might too.  TODO It would be nice if an installer patched the host name values to _your_ LAN.
+   - I set a CSP header, just because.  You need to access the service by a host name or this breaks everything (not IP). 
 - This project likes Node24+, no warranty on older versions as I expect NPM will make your life very hard.  Package.json includes some magic for getting Node24, but that tech is very frail as it moves version of NPM.  #leSigh.
    - Assuming you are a techie, adopt/ deploy NVM to have flexibility.
 - For better readability, I moved many local variable names to a non-English lang ~ fr-FR ~ so there is no clash with JS keywords.    Public symbols should be in en-UK.   This convention isn't global, but its not bad spelling.   JS does allow UTF-8 in variable names.
 - Node supports a different Thread implementation to browsers.  I could make some more of my tests work, but that is adding code to pass test env that cannot be used outside of tests.  This is not productive.
+- The software will fork a thread to attempt to communicate in no-network situations.  This uses setTimeout with exponential delay to schedule comms with the server.  During a longer delay, it would be nice to interrupt the long delay when the network becomes available.  I currently have no sensible plan on this.  #TODO I should also ensure there are not multiple threads.
 - Build tools will complain "Failed to load source map" for ./client-src/src/assets/foundation.min.css.  Yes this file is absent.  
 - I like the idea of Storybook, I dislike the implementation of Storybook.  They import too many incompatible build-tools(Vite, webpack, babel and more).
 

@@ -1,7 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import { ValidationPipe, ConsoleLogger } from "@nestjs/common";
 import { FastifyAdapter } from "@nestjs/platform-fastify";
-import fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 import http2 from "node:http2";
 import fs from "node:fs";

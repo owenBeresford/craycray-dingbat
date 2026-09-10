@@ -255,6 +255,7 @@ function setupCurrentList(itinéraire: undefined | RouteLocationNormalizedLoaded
   let id: number = 0;
   let liste = EMPTY_LIST;
   let currentData: ListCollection<string> | undefined;
+  console.warn("DataFacrtory->setupCurrentList(): This call is deprecated");
   // let currentData:ListCollection|undefined =ListData.currentData;
   try {
     if (!itinéraire) {

@@ -85,8 +85,6 @@ export class ThislistActions extends BaseActions<ThisListCtx> implements Externa
         `For list ${ctx.listRef.value.nom}, removed item #${this.offset} '${ctx.listRef.value.éléments[this.offset]}'`,
         "info"
       );
-      // } else {
-      //  console.info(`Cannot delete this offset ${this.offset}`);
     }
   }
 
@@ -256,7 +254,6 @@ export class ThislistActions extends BaseActions<ThisListCtx> implements Externa
     // new MouseEvent(typeArg, mouseEventInit);
     let e3: HTMLElement = e.relatedTarget as HTMLElement;
     if (!ctx.draggingRef.value[this.offset]) {
-      //  console.debug("RANDOM [big screen] Stop a drag event on ", this.offset);
       return;
     }
     this.activateMotion(e3, ctx, "drag exit (delete?)", false);

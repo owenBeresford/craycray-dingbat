@@ -3,7 +3,6 @@ import type { RouteLocationNormalizedLoadedGeneric, Router } from "vue-router";
 import { BaseActions } from "./BaseActions";
 import { StdList } from "./AList";
 import type { CacheWrapper } from "../workers/InstallWorker";
-// import { StaticRoutes } from "../components/Routing";
 import { hashState } from "../../../common/util";
 import { extractId } from "./util";
 import { useUIText } from "./Localisation";
@@ -56,7 +55,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
   protected cache: CacheWrapper;
   protected data: FactoryArtefact;
   protected allRoutes: Router;
-
+ 
   public loadedStateKey: string;
 
   /**
@@ -103,7 +102,8 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
     if (this.store.state.currentURL !== this.route.path) {
       this.store.commit("setPath", this.route.path);
     }
-    if (this.store.state.currentId < 0) {
+    // this should never trip outside of tests, but the later module state needs initialising
+    if (this.store.state.currentId < 0 && this.route.params) {
       this.store.commit("setId", extractId(this.route.params.index));
     }
   }
