@@ -1,7 +1,7 @@
 <template>
   <VErrorBoundary
     :fall-back="safeFailover"
-    :params="{ testid: 'eb-failOver1', currentStateKey: currentStateKey, error_info: info }"
+    :params="{ testid: 'eb-failOver1', currentStateKey: currentStateKey, error_info: 'info', id:listId }"
     v-slot="{ error }"
     stop-propagation
   >
@@ -10,7 +10,7 @@
         <div class="wholePage" :data-testid="instanceId" :key="currentStateKey">
           <TabBar currentStateKey="tabar1" :data-testid="tabId" />
           <router-view class="view" />
-          <MessageBar :msgs="log" :testId="msgId" :currentStateKey="msgState" :enabled="loggingEnabled" />
+          <MessageBar :msgs="LOG" :testId="msgId" :currentStateKey="msgState" :enabled="loggingEnabled" />
         </div>
       </template>
 
@@ -22,12 +22,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Suspense, shallowRef } from "vue";
+import { defineComponent, Suspense, shallowRef, inject, onErrorCaptured } from "vue";
+import { useRoute } from "vue-router";
 import VErrorBoundary from "vue-error-boundary";
 
 import { LOGGING_ENABLED } from "./Constants";
-import { useLog } from "./services/LogStack";
-import type { MainAppProps, MainAppStaticData } from "./types/ComponentProps";
+import type { MainAppProps, MainAppStaticData, MainAppState } from "./types/ComponentProps";
+import type { Loggable } from "./types/Loggable";
 
 import TabBar from "./components/TabBar.vue";
 import MessageBar from "./components/MessageBar.vue";
@@ -51,23 +52,32 @@ export default defineComponent({
     currentStateKey: { type: String, default: "root1" },
     instanceId: { type: String, required: true },
   } satisfies MainAppProps,
-
+ 
   data(): MainAppStaticData {
     // IOIO XXX maybe lineup state-keys to show net status in later builds
     return {
-      //  fallBack: Failover,
-      log: useLog(),
-
       tabId: this.$props.instanceId + "TabBar1",
       msgId: this.$props.instanceId + "Msg1",
       msgState: this.$props.currentStateKey + "Msg1",
       loggingEnabled: LOGGING_ENABLED,
     } satisfies MainAppStaticData;
   },
-  setup() {
+  setup():MainAppState {
     const safeFailover = shallowRef(Failover);
+    const LOG:Loggable =inject<Loggable>('log');
+    const ROUTE=  useRoute();
+    onErrorCaptured((err:Error):boolean => {
+      console.warn("BASIC  OWN code reporter", err.message);
+      // Return false to stop propagation (default is true to propagate)
+      return false;
+    })
+    
+    let id=0;
+    if(ROUTE.params && ROUTE.params.index) {
+      id=parseInt(ROUTE.params.index, 10);
+    }
 
-    return { safeFailover };
+    return { safeFailover, LOG, listId:id };
   },
 });
 </script>

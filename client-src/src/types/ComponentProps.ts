@@ -1,9 +1,10 @@
 import type { RouteRecordNormalized, RouteLocationNormalizedLoadedGeneric } from "vue-router";
 import type { Component } from "vue";
-import type { MethodOptions, Ref } from "vue";
+import type { MethodOptions, Ref, ShallowRef } from "vue";
 
 import { StdList, SearchList } from "../services/AList";
 import { CacheWrapper } from "../workers/InstallWorker";
+import Failover from '../components/Failover';
 
 import type { InstanceListable, ListStruct, ListCollection } from "./ListCollection";
 import type { Loggable } from "./Loggable";
@@ -198,6 +199,12 @@ export interface MainAppStaticData {
   msgState: string;
   loggingEnabled: boolean;
   fallBack: Component;
+}
+
+export interface MainAppState {
+  safeFailover:ShallowRef<Failover>;
+  LOG:Loggable; 
+  listId: number;
 }
 
 export interface MainAppSetup {
