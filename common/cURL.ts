@@ -1,6 +1,8 @@
 import type { SaveStruct } from "./types/SaveStruct";
 import type { PromiseSucceed, PromiseReject } from "./types/promises";
 import type { SimpleResponse } from "./util";
+import type { RemoteConfig } from "./types/RemoteTypes";
+
 
 // I extracted Struct to make the code easier, so I had named fields.
 export interface FileExecFlags {
@@ -33,7 +35,7 @@ interface RunExecReturn {
  * @public
  * @returns {Promise<SimpleResponse>}
  */
-export async function runExecProcessOnUrl(url: string, extra: RequestInit | undefined): Promise<SimpleResponse> {
+export async function runExecProcessOnUrl(url: string, extra: RemoteConfig | undefined): Promise<SimpleResponse> {
   var execFile: Function;
   if (typeof process !== "object") {
     throw new Error("Runtime: runExecProcessOnUrl() should only be used inside Node"); // a browser
@@ -81,7 +83,8 @@ export async function runExecProcessOnUrl(url: string, extra: RequestInit | unde
       return good(exit);
     }
 
-    let args: Array<string> = ["-k", "-v", "-m"+(extra.timeout/1000), url];
+    let annoying:RemoteConfig=extra ?? { timeout:10_000_000} as RemoteConfig;
+    let args: Array<string> = ["-k", "-v", "-m"+ ( annoying.timeout /1_000), url];
     if (extra && "method" in extra && extra["method"]) {
       if (extra["method"].toLowerCase() === "head") {
         args.push("-I");
@@ -166,9 +169,9 @@ function parseHeader2(str: string): Array<string> {
 }
 
 /**
-    *  RegulatedNetworking 
+    *  RegulatedNetworking
     * A class for tests, where I can disable requests like a JS level firewall
- 
+
     * @public
     */
 export class RegulatedNetworking {
@@ -178,7 +181,7 @@ export class RegulatedNetworking {
   /**
        * constructor
        * Blah, con'tor
- 
+
        * @param {Readonly<SimpleResponse> } dat
        * @public
        * @returns {RegulatedNetworking  }
@@ -192,7 +195,7 @@ export class RegulatedNetworking {
   /**
        * setNetworkState
        * A setter...
- 
+
        * @param {boolean}  active
        * @public
        * @returns {void}
@@ -204,13 +207,13 @@ export class RegulatedNetworking {
   /**
  * runExecProcessOnUrl
  * The wrapped function to pass into services that are in a test
- 
+
  * @param {string} url
  * @param { RequestInit | undefined} extra
  * @public
  * @returns {Promise<SimpleResponse>}
  */
-  async runExecProcessOnUrl(url: string, extra: RequestInit | undefined): Promise<SimpleResponse> {
+  async runExecProcessOnUrl(url: string, extra: RemoteConfig | undefined): Promise<SimpleResponse> {
     if (!this.live) {
       return new Promise((good: PromiseSucceed<SimpleResponse>, bad: PromiseReject) => {
         good(this.OFFNET);
@@ -220,7 +223,16 @@ export class RegulatedNetworking {
     if (typeof process !== "undefined" && process.env && process.env.NODE_ENV) {
       return runExecProcessOnUrl(url, extra); // these are async
     } else {
-      let tt = await globalThis.fetch(url, extra);
+      // https://developer.mozilla.org/en-US/docs/Web/API/RequestInit
+      let annoying:RequestInit={
+          cache:"no-cache",
+          credentials: extra.credentials,
+          headers: extra.headers,
+          keepalive: true,
+          targetAddressSpace:"local",   // IOIO XXX I think this may cause explosions
+          mode: "same-origin",
+                  } as RequestInit;
+      let tt = await globalThis.fetch(url, annoying );
       return {
         body: (tt.body ?? "").toString(),
         headers: tt.headers,
