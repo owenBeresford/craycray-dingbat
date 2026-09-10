@@ -56,6 +56,11 @@ TOOL.directive("longpress", {
     el.addEventListener("pointerleave", cancel);
   },
 });
+TOOL.config.errorHandler = (err:Error, instance:Object, info:string):void => {
+// possibly convert to LOG, but low likelyhood of that working   
+  console.error('Global error handler', err, info);
+}
+
 console.time("boot-data-connection");
 const data: FactoryArtefact = createEmptyFactory();
 const listCountRef = ref<number>(0);
