@@ -2,7 +2,7 @@
   <VErrorBoundary
     :fall-back="safeFailover"
     :params="{ testid: 'eb-failOver1', currentStateKey: currentStateKey, error_info: 'info', id:listId }"
-    v-slot="{ error }"
+    :on-error="tellMeMore"
     stop-propagation
   >
     <Suspense :key="currentStateKey">
@@ -66,8 +66,9 @@ export default defineComponent({
     const safeFailover = shallowRef(Failover);
     const LOG:Loggable =inject<Loggable>('log');
     const ROUTE=  useRoute();
+
     onErrorCaptured((err:Error):boolean => {
-      console.warn("BASIC  OWN code reporter", err.message);
+      console.warn("BASIC OWN code reporter", err.message);
       // Return false to stop propagation (default is true to propagate)
       return false;
     })
@@ -76,8 +77,13 @@ export default defineComponent({
     if(ROUTE.params && ROUTE.params.index) {
       id=parseInt(ROUTE.params.index, 10);
     }
-
     return { safeFailover, LOG, listId:id };
   },
+  methods:{
+    tellMeMore(error:Error, instance:Object, info:string):void {
+      console.warn("TRY HARDER ", error, info);
+    }
+
+  }
 });
 </script>

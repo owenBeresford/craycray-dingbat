@@ -69,7 +69,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, inject } from "vue";
+import { defineComponent, ref, inject, watch, toRaw } from "vue";
 import { useRoute, type RouteLocationNormalizedLoadedGeneric } from "vue-router";
 import type { Ref } from "vue";
 
@@ -92,11 +92,6 @@ import type { ExternalMethods, CBType, ThisListCtx } from "../types/Actionables"
 import type { ThisListStaticData, ThisListProps, ThisListSetupValues } from "../types/ComponentProps";
 
 const TEXT = useUIText();
-
-// This class is using a shared function pointer, as in vue2 the event bus is too slow.
-// If you do parent state updates via it; they take 100ms to propagate, and you see flickers.
-// It is possible that vue3 event bus is faster.
-
 /**
    * Thislist
    * A component to render the currently edited list.
@@ -127,7 +122,7 @@ export default defineComponent({
     const itinéraire: RouteLocationNormalizedLoadedGeneric = useRoute();
     const listData: FactoryArtefact = inject<FactoryArtefact>("listData");
 
-    const log: Loggable = inject<Loggable>("log");
+    const LOG: Loggable = inject<Loggable>("log");
     const dataOnLoad: Ref<number> = inject<Ref<number>>("dataOnLoad").listCountRef;
 
     const ttl: number = inject<number>("ttl");
@@ -141,8 +136,18 @@ export default defineComponent({
     let stack: ExternalMethods;
     try {
       const flux = new MotionStream<ThisListCtx>();
-      const liste: StdList = listData.currentData.get(extractId(itinéraire.params.index ?? EMPTY_LIST_ID)); // ?? EMPTY_LIST;
-
+      let liste: StdList ;
+      // #leSigh on the last clause.
+      if(!("index"  in itinéraire.params) || parseInt(itinéraire.params.index, 10)===0 ) {
+        liste=EMPTY_LIST;
+      } else {
+        liste= listData.currentData.get(extractId(itinéraire.params.index ));
+      }
+      if(liste===null || liste===undefined ) {  
+        LOG.addRaw("Unable to get a valid ID "+itinéraire.params.index , "error");
+        throw new Error("Failed to get a valid list id, so failed to make a list");
+      }
+     
       const listRef: Ref<StdList> = ref<StdList>(liste);
       let dragging: Array<boolean> = Array(liste.énumérer);
       dragging.fill(false);
@@ -151,16 +156,38 @@ export default defineComponent({
       gesture.fill("");
       const gestureRef: Ref<Array<string>> = ref<Array<string>>(gesture);
 
+      // possibly it would be nice to support an exported fucntion to make this change, rather than needing to edit the Location object.
+      watch(
+        ():string => String(itinéraire.params.index),
+        (id:string, oldId:string):void => {
+          try {
+            if(id=="0") {
+              listRef.value = Object.assign({}, EMPTY_LIST);
+            } else {
+              let tt=extractId( id);  // may throw
+              listRef.value = listData.currentData.get(tt); // will not
+            }
+            LOG.addRaw("Changed Thislist data to show "+listRef.value.nom+" ["+id+"}", "debug"); 
+
+          } catch(e:unknown) {
+            LOG.addRaw("Unknown list id "+id+" supplied, no change applied ", "warn"); 
+          }
+        },
+        { immediate: true, deep: true } // deep: true (is expensive)
+    );
+
       stack = useThisListActions(flux, listData);
       return {
         extraMethods: stack.mount(
           { getInputRef, CBRef, draggingRef, canSeeInputRef, listRef, gestureRef } satisfies ThisListCtx,
           stack
         ),
+        itinéraire,
         helpText,
         canSeeHelp,
         listRef,
         ttl,
+        listData,
         draggingRef,
         dataOnLoad, // this is a Ref
         gestureRef,
@@ -168,7 +195,7 @@ export default defineComponent({
       } satisfies ThisListSetupValues;
     } catch (e: unknown) {
       console.warn("ThisList.setup():", (e as Error).message, (e as Error).stack.substring(0, 200));
-      log.addRaw("ThisList.setup():" + (e as Error).message + "  " + (e as Error).stack.substring(0, 200), "error");
+      LOG.addRaw("ThisList.setup():" + (e as Error).message + "  " + (e as Error).stack.substring(0, 200), "error");
     }
   },
 
@@ -177,14 +204,18 @@ export default defineComponent({
       console.debug("KKK ThisList global scope ListData id:", idOf(this.listData));
     }
     this.initGeneratedMethods();
-  },
+   },
   mounted() {
     if (this.shopStore) {
       const itinéraire = useRoute();
       this.shopStore.commit("setPath", itinéraire.path);
-      this.id = extractId(itinéraire.params.index) ?? EMPTY_LIST_ID;
-
-      this.shopStore.commit("setId", extractId(itinéraire.params.index) ?? EMPTY_LIST_ID);
+      if( !itinéraire.params || itinéraire.params.index === "0" ) {
+        this.shopStore.commit("setId", EMPTY_LIST_ID );
+ 
+      } else {
+        this.id = extractId(itinéraire.params.index) ;
+        this.shopStore.commit("setId", this.id);
+      }
     } else {
       console.assert(this.shopStore, "ThisList: At mounted() stage, do not have a state storage?!");
     }
@@ -212,9 +243,12 @@ export default defineComponent({
     helpId(): string {
       return this.$props.currentStateKey + "view";
     },
+
     actualList(): Array<string> {
-      if (this.listRef) {
-        return this.listRef.export<string>();
+      // IOIO XXX using ref() is destroying the methods.  
+      // I should rewrite this small function, but for today this should work.
+       if (this.listRef) {
+        return [ ...this.listRef.éléments];
       }
       return [] as Array<string>;
     },
