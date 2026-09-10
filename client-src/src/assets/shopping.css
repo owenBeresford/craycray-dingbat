@@ -289,12 +289,18 @@
 }
 
 /* the children do */
-.wholePage:has(dialog[open]) :not(dialog, dialog *) {
+.wholePage:has(dialog[open]) :not(dialog, dialog *),
+.wholePage:has(dialog[open]) ul.aList li span.button.info 
+{
    pointer-events: none;
  }
 
-.wholePage:has(dialog[open]) .button {
+.wholePage:has(dialog[open]) .button,
+.wholePage:has(dialog[open]) ul.aList li span.button.info {
   background:rgba(23, 121, 186, 0.3); /* same colour, but 'alphed down' */
+}
+.wholePage:has(dialog[open]) ul.aList li span.button.info {
+    border-bottom: var(--colour-disabled) .8em solid;
 }
 
 .wholePage:has(dialog[open]) img {
