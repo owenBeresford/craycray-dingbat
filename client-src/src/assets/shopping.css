@@ -254,6 +254,7 @@
   justify-content: space-evenly;
   align-items: center;
   height: calc(100vh - 4.5em);
+  width:100%;
 }
 .unknownRoute .error {
   font-size: 300%;
@@ -274,7 +275,6 @@
 }
 
 /* ********************************************************* */
-
 .enterInput {
   width: 20em;
   z-index: 2;
@@ -283,18 +283,28 @@
   border: 1em var(--colour-standout) solid;
 }
 
-/* IOIO XXX update to better visual effect */
-/* the lowest item doesn't have interactive elements */
 .wholePage:has(dialog[open]) {
   background-color: var(--colour-disabled);
-  opacity: 0.8;
+
 }
 
 /* the children do */
 .wholePage:has(dialog[open]) :not(dialog, dialog *) {
-  opacity: 0.8;
-  pointer-events: none;
-  background-color: var(--colour-disabled);
+   pointer-events: none;
+ }
+
+.wholePage:has(dialog[open]) .button {
+  background:rgba(23, 121, 186, 0.3); /* same colour, but 'alphed down' */
+}
+
+.wholePage:has(dialog[open]) img {
+   filter: alpha(opacity=30);
+}
+
+.wholePage:has(dialog[open]) dialog, .wholePage:has(dialog[open]) dialog * {
+ 
+	pointer-events:all;
+    background-color: var(--colour-maxcontrast);
 }
 
 .wholePage:has(dialog[open]) div.aList {
