@@ -41,7 +41,9 @@ const fixture1 = [
 ];
 const fixture2 = [
   "HEAD /api/shared-state HTTP/\r\n" +
-    "Host: "+HOST_NAME+"\r\n" +  
+    "Host: " +
+    HOST_NAME +
+    "\r\n" +
     "accept: */*\r\n" +
     "accept-language: en-GB,en;q=0.9,nl;q=0.8,de-DE;q=0.7,de;q=0.6\r\n" +
     "cache-control: no-cache\r\n" +

@@ -14,7 +14,7 @@ import type { PromiseSucceed, PromiseReject } from "../../../common/types/promis
 import { createRemoteService, API_DELAY } from "../Constants";
 import type { TestLocation } from "../test/MockLocation";
 import type { NullableSysTimerType } from "../../../common/types/Timer";
- 
+
 /**
  * useSSW
  * A util to create this service
@@ -52,7 +52,7 @@ export class SharedStateWorker implements DataPipeline {
     this.conn = rs;
     this.delay = delay;
     this.currentDelay = API_DELAY;
-    
+
     // there won't be vast numbers of this class made
     this.pushWhenAble.bind(this);
     this.pullWhenAble.bind(this);

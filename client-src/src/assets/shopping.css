@@ -254,7 +254,7 @@
   justify-content: space-evenly;
   align-items: center;
   height: calc(100vh - 4.5em);
-  width:100%;
+  width: 100%;
 }
 .unknownRoute .error {
   font-size: 300%;
@@ -289,27 +289,26 @@
 
 /* the children do */
 .wholePage:has(dialog[open]) :not(dialog, dialog *),
-.wholePage:has(dialog[open]) ul.aList li span.button.info 
-{
-   pointer-events: none;
- }
+.wholePage:has(dialog[open]) ul.aList li span.button.info {
+  pointer-events: none;
+}
 
 .wholePage:has(dialog[open]) .button,
 .wholePage:has(dialog[open]) ul.aList li span.button.info {
-  background:rgba(23, 121, 186, 0.3); /* same colour, but 'alphed down' */
+  background: rgba(23, 121, 186, 0.3); /* same colour, but 'alphed down' */
 }
 .wholePage:has(dialog[open]) ul.aList li span.button.info {
-    border-bottom: var(--colour-disabled) .8em solid;
+  border-bottom: var(--colour-disabled) 0.8em solid;
 }
 
 .wholePage:has(dialog[open]) img {
-   filter: alpha(opacity=30);
+  filter: alpha(opacity=30);
 }
 
-.wholePage:has(dialog[open]) dialog, .wholePage:has(dialog[open]) dialog * {
- 
-	pointer-events:all;
-    background-color: var(--colour-maxcontrast);
+.wholePage:has(dialog[open]) dialog,
+.wholePage:has(dialog[open]) dialog * {
+  pointer-events: all;
+  background-color: var(--colour-maxcontrast);
 }
 
 .wholePage:has(dialog[open]) div.aList {

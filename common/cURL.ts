@@ -3,7 +3,6 @@ import type { PromiseSucceed, PromiseReject } from "./types/promises";
 import type { SimpleResponse } from "./util";
 import type { RemoteConfig } from "./types/RemoteTypes";
 
-
 // I extracted Struct to make the code easier, so I had named fields.
 export interface FileExecFlags {
   cwd?: string | URL;
@@ -83,8 +82,8 @@ export async function runExecProcessOnUrl(url: string, extra: RemoteConfig | und
       return good(exit);
     }
 
-    let annoying:RemoteConfig=extra ?? { timeout:10_000_000} as RemoteConfig;
-    let args: Array<string> = ["-k", "-v", "-m"+ ( annoying.timeout /1_000), url];
+    let annoying: RemoteConfig = extra ?? ({ timeout: 10_000_000 } as RemoteConfig);
+    let args: Array<string> = ["-k", "-v", "-m" + annoying.timeout / 1_000, url];
     if (extra && "method" in extra && extra["method"]) {
       if (extra["method"].toLowerCase() === "head") {
         args.push("-I");
@@ -224,15 +223,15 @@ export class RegulatedNetworking {
       return runExecProcessOnUrl(url, extra); // these are async
     } else {
       // https://developer.mozilla.org/en-US/docs/Web/API/RequestInit
-      let annoying:RequestInit={
-          cache:"no-cache",
-          credentials: extra.credentials,
-          headers: extra.headers,
-          keepalive: true,
-          targetAddressSpace:"local",   // IOIO XXX I think this may cause explosions
-          mode: "same-origin",
-                  } as RequestInit;
-      let tt = await globalThis.fetch(url, annoying );
+      let annoying: RequestInit = {
+        cache: "no-cache",
+        credentials: extra.credentials,
+        headers: extra.headers,
+        keepalive: true,
+        targetAddressSpace: "local", // IOIO XXX I think this may cause explosions
+        mode: "same-origin",
+      } as RequestInit;
+      let tt = await globalThis.fetch(url, annoying);
       return {
         body: (tt.body ?? "").toString(),
         headers: tt.headers,

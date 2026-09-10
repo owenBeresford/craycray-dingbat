@@ -136,18 +136,18 @@ export default defineComponent({
     let stack: ExternalMethods;
     try {
       const flux = new MotionStream<ThisListCtx>();
-      let liste: StdList ;
+      let liste: StdList;
       // #leSigh on the last clause.
-      if(!("index"  in itinéraire.params) || parseInt(itinéraire.params.index, 10)===0 ) {
-        liste=EMPTY_LIST;
+      if (!("index" in itinéraire.params) || parseInt(itinéraire.params.index, 10) === 0) {
+        liste = EMPTY_LIST;
       } else {
-        liste= listData.currentData.get(extractId(itinéraire.params.index ));
+        liste = listData.currentData.get(extractId(itinéraire.params.index));
       }
-      if(liste===null || liste===undefined ) {  
-        LOG.addRaw("Unable to get a valid ID "+itinéraire.params.index , "error");
+      if (liste === null || liste === undefined) {
+        LOG.addRaw("Unable to get a valid ID " + itinéraire.params.index, "error");
         throw new Error("Failed to get a valid list id, so failed to make a list");
       }
-     
+
       const listRef: Ref<StdList> = ref<StdList>(liste);
       let dragging: Array<boolean> = Array(liste.énumérer);
       dragging.fill(false);
@@ -158,23 +158,22 @@ export default defineComponent({
 
       // possibly it would be nice to support an exported fucntion to make this change, rather than needing to edit the Location object.
       watch(
-        ():string => String(itinéraire.params.index),
-        (id:string, oldId:string):void => {
+        (): string => String(itinéraire.params.index),
+        (id: string, oldId: string): void => {
           try {
-            if(id=="0") {
+            if (id == "0") {
               listRef.value = Object.assign({}, EMPTY_LIST);
             } else {
-              let tt=extractId( id);  // may throw
+              let tt = extractId(id); // may throw
               listRef.value = listData.currentData.get(tt); // will not
             }
-            LOG.addRaw("Changed Thislist data to show "+listRef.value.nom+" ["+id+"}", "debug"); 
-
-          } catch(e:unknown) {
-            LOG.addRaw("Unknown list id "+id+" supplied, no change applied ", "warn"); 
+            LOG.addRaw("Changed Thislist data to show " + listRef.value.nom + " [" + id + "}", "debug");
+          } catch (e: unknown) {
+            LOG.addRaw("Unknown list id " + id + " supplied, no change applied ", "warn");
           }
         },
         { immediate: true, deep: true } // deep: true (is expensive)
-    );
+      );
 
       stack = useThisListActions(flux, listData);
       return {
@@ -204,16 +203,15 @@ export default defineComponent({
       console.debug("KKK ThisList global scope ListData id:", idOf(this.listData));
     }
     this.initGeneratedMethods();
-   },
+  },
   mounted() {
     if (this.shopStore) {
       const itinéraire = useRoute();
       this.shopStore.commit("setPath", itinéraire.path);
-      if( !itinéraire.params || itinéraire.params.index === "0" ) {
-        this.shopStore.commit("setId", EMPTY_LIST_ID );
- 
+      if (!itinéraire.params || itinéraire.params.index === "0") {
+        this.shopStore.commit("setId", EMPTY_LIST_ID);
       } else {
-        this.id = extractId(itinéraire.params.index) ;
+        this.id = extractId(itinéraire.params.index);
         this.shopStore.commit("setId", this.id);
       }
     } else {
@@ -245,10 +243,10 @@ export default defineComponent({
     },
 
     actualList(): Array<string> {
-      // IOIO XXX using ref() is destroying the methods.  
+      // IOIO XXX using ref() is destroying the methods.
       // I should rewrite this small function, but for today this should work.
-       if (this.listRef) {
-        return [ ...this.listRef.éléments];
+      if (this.listRef) {
+        return [...this.listRef.éléments];
       }
       return [] as Array<string>;
     },

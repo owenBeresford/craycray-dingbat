@@ -2,7 +2,7 @@ import { StdList } from "./AList";
 import { ListService } from "./ListService";
 import type { RemoteStorage } from "./RemoteStorage";
 import { useMsgDistrib } from "./MessageDistribution";
-import { useLog } from './LogStack';
+import { useLog } from "./LogStack";
 
 import type { SaveStruct } from "../../../common/types/SaveStruct";
 import type { LocalCopy } from "./LocalCopy";
@@ -12,8 +12,8 @@ import type { PromiseSucceed, PromiseReject } from "../../../common/types/promis
 import type { NotifyType } from "../types/Actionables";
 import type { BasicThreadable } from "../types/BasicThreadable";
 
-// no export 
-const LOG=useLog();
+// no export
+const LOG = useLog();
 /**
  * ListService
  * ListService, the class to mediate List storage

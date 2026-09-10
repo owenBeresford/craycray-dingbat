@@ -1,7 +1,7 @@
 <template>
   <VErrorBoundary
     :fall-back="safeFailover"
-    :params="{ testid: 'eb-failOver1', currentStateKey: currentStateKey, error_info: 'info', id:listId }"
+    :params="{ testid: 'eb-failOver1', currentStateKey: currentStateKey, error_info: 'info', id: listId }"
     :on-error="tellMeMore"
     stop-propagation
   >
@@ -52,7 +52,7 @@ export default defineComponent({
     currentStateKey: { type: String, default: "root1" },
     instanceId: { type: String, required: true },
   } satisfies MainAppProps,
- 
+
   data(): MainAppStaticData {
     // IOIO XXX maybe lineup state-keys to show net status in later builds
     return {
@@ -62,28 +62,27 @@ export default defineComponent({
       loggingEnabled: LOGGING_ENABLED,
     } satisfies MainAppStaticData;
   },
-  setup():MainAppState {
+  setup(): MainAppState {
     const safeFailover = shallowRef(Failover);
-    const LOG:Loggable =inject<Loggable>('log');
-    const ROUTE=  useRoute();
+    const LOG: Loggable = inject<Loggable>("log");
+    const ROUTE = useRoute();
 
-    onErrorCaptured((err:Error):boolean => {
+    onErrorCaptured((err: Error): boolean => {
       console.warn("BASIC OWN code reporter", err.message);
       // Return false to stop propagation (default is true to propagate)
       return false;
-    })
-    
-    let id=0;
-    if(ROUTE.params && ROUTE.params.index) {
-      id=parseInt(ROUTE.params.index, 10);
-    }
-    return { safeFailover, LOG, listId:id };
-  },
-  methods:{
-    tellMeMore(error:Error, instance:Object, info:string):void {
-      console.warn("TRY HARDER ", error, info);
-    }
+    });
 
-  }
+    let id = 0;
+    if (ROUTE.params && ROUTE.params.index) {
+      id = parseInt(ROUTE.params.index, 10);
+    }
+    return { safeFailover, LOG, listId: id };
+  },
+  methods: {
+    tellMeMore(error: Error, instance: Object, info: string): void {
+      console.warn("TRY HARDER ", error, info);
+    },
+  },
 });
 </script>

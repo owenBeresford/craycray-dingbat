@@ -163,7 +163,7 @@ describe("I can use NetworkedListService", () => {
     // at present not async
 
     expect(globalThis.localStorage.length).toBe(0);
-    expect( CONN.loadAllLists()).toBeTruthy( );
+    expect(CONN.loadAllLists()).toBeTruthy();
     expect(CONN.count()).toBe(1); // the empty list
     await delay(1_000);
     expect(CONN.count()).toBe(5);

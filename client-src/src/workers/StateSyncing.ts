@@ -14,8 +14,8 @@ const STATE: DataPipeline = useSSW(new TestLocation(TEST_LOCATION_URL));
 // "self" refers to current thread, this should only be run after forking.
 // this module is a Worker object, and runs as a second thread in the browser.
 // The UI thread drives MessageDistribution
- if (import.meta.env.VITEST) {
-  console.log("CODE under TEST started " + process.pid );
+if (import.meta.env.VITEST) {
+  console.log("CODE under TEST started " + process.pid);
 }
 
 /**
@@ -32,7 +32,7 @@ self.onmessage = async function (ev: MessageEvent): Promise<void> {
     ev,
     (ev.data as ShippingStruct).action,
     (ev.data as ShippingStruct).data,
-    "isolated",
+    "isolated"
   );
 
   const payload: ShippingStruct = ev.data as ShippingStruct;

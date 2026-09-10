@@ -186,7 +186,7 @@ describe("test on SharedStateWorker ", () => {
 
   it("Can use SharedStateWorker (ERRR for URL)", async () => {
     try {
-      const url = "http://"+HOST_NAME+"/thing";
+      const url = "http://" + HOST_NAME + "/thing";
       let txt = useTestSSW(new TestLocation(url));
       expect(typeof txt).toBe("object");
       // IOIO start thread first

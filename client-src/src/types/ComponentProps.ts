@@ -4,7 +4,7 @@ import type { MethodOptions, Ref, ShallowRef } from "vue";
 
 import { StdList, SearchList } from "../services/AList";
 import { CacheWrapper } from "../workers/InstallWorker";
-import Failover from '../components/Failover';
+import Failover from "../components/Failover";
 
 import type { InstanceListable, ListStruct, ListCollection } from "./ListCollection";
 import type { Loggable } from "./Loggable";
@@ -202,8 +202,8 @@ export interface MainAppStaticData {
 }
 
 export interface MainAppState {
-  safeFailover:ShallowRef<Failover>;
-  LOG:Loggable; 
+  safeFailover: ShallowRef<Failover>;
+  LOG: Loggable;
   listId: number;
 }
 

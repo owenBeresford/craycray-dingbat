@@ -55,7 +55,7 @@ export class TabActions extends BaseActions<TabBarCtx> implements ExternalMethod
   protected cache: CacheWrapper;
   protected data: FactoryArtefact;
   protected allRoutes: Router;
- 
+
   public loadedStateKey: string;
 
   /**

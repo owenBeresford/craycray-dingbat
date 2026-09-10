@@ -8,7 +8,7 @@
     </p>
 
     <p>Returning to the <router-link class="button" :to="linkAll"> catalogue screen</router-link> may have data.</p>
-    <p v-if="id>-1">
+    <p v-if="id > -1">
       Alternatively you where previously on
       <router-link class="button" :to="singleListURL"> a list edit screen</router-link>
     </p>
@@ -38,7 +38,8 @@ export default defineComponent({
     if (this.$props.id != undefined) {
       id = this.$props.id;
     } else if (itinéraire.name === "a-list") {
-      if (itinéraire.params.index >= 0) { // allow EMPTY_LIST
+      if (itinéraire.params.index >= 0) {
+        // allow EMPTY_LIST
         id = extractId(itinéraire.params.index);
       }
     }
