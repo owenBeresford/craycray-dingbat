@@ -49,7 +49,7 @@ export default defineComponent({
     // keying structure isnt complex, BUT logging shouldnt change, so keys shouldnt change
     messages: function (): Array<string> {
       if (this.msgs) {
-        return this.msgs.readWhole().log;
+        return this.msgs.readWhole();
       } else {
         return [];
       }
