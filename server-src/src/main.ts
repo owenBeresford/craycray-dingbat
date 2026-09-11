@@ -37,7 +37,7 @@ interface ControlledEnv {
   SIpAddr: string;
   SSLkey: string;
   SSLcert: string;
-  passphrase: string;
+  passPhrase: string;
 }
 
 /**
@@ -54,12 +54,12 @@ function extractEnv(env: NodeJS.ProcessEnv): ControlledEnv {
     throw new Error("Must have an env");
   }
 
-  let out = {
-    SPort: 3001,
+  let out:ControlledEnv = {
+    SPort: parseInt(HOST_NAME.split(':')[1], 10),
     SIpAddr: HOST_NAME.split(':')[0],
     SSLkey: TEMP_DIR,
     SSLcert: TEMP_DIR,
-    passphrase: "enter a password",
+    passPhrase: "enter a password",
   };
 
   if (env.SHOPPING_PORT) {
@@ -74,12 +74,12 @@ function extractEnv(env: NodeJS.ProcessEnv): ControlledEnv {
   // in theory I want a password on the cert.   So this code supports it
   // in practice, its less use, and am using PK8 files that doesnt include it (so storybook works cleanly)
   if ("SHOPPING_PASSPHRASE" in env) {
-    out.passphrase = "" + env.SHOPPING_PASSPHRASE;
+    out.passPhrase = "" + env.SHOPPING_PASSPHRASE;
   }
   if (env.SHOPPING_CERT) {
     out.SSLcert = "" + env.SHOPPING_CERT;
   }
-  if (out.SSLkey === TEMP_DIR || out.SSLcert === TEMP_DIR || out.passphrase === "enter a password") {
+  if (out.SSLkey === TEMP_DIR || out.SSLcert === TEMP_DIR || out.passPhrase === "enter a password") {
     throw new Error("For production, you must specify both the CA and the cert... $SHOPPING_KEY, $SHOPPING_CERT ");
   }
   return out;
@@ -97,7 +97,7 @@ function extractEnv(env: NodeJS.ProcessEnv): ControlledEnv {
 function createSocket(httpsOptions: SecureServerOptions): Http2SecureServer {
   const server: Http2SecureServer = http2.createSecureServer(httpsOptions);
   server.on("error", function (e: Error): void {
-    console.warn("ERROR:", e.message);
+    console.warn("ERROR: ", e.message);
   });
   server.on("clientError", (e: Error, socket): void => {
     console.warn("Have a client error (think malformed HTTP request)", e.message);
@@ -112,13 +112,11 @@ function createSocket(httpsOptions: SecureServerOptions): Http2SecureServer {
   server.on("secureConnection", (tlsSocket: TLSSocket): void => {
     // in practice this CB only means anything if you are unable to inject env.NODE_DEBUG
     // this CB is only triggered if there are no cert issues, which is what the below is looking at.
-    console.debug("VVVVV Protocol:", tlsSocket.getProtocol());
-    console.debug("Cipher:", tlsSocket.getCipher());
-    console.debug("ALPN:", tlsSocket.alpnProtocol);
+    console.debug("TLS Protocol: "+ tlsSocket.getProtocol(), "current Cypher: " + tlsSocket.getCipher(), "ALPN: "+ tlsSocket.alpnProtocol );
   });
 
   server.on("upgrade", (req: Request, socket, head: Headers): void => {
-    console.debug("VVVVVV Running upgrade CB");
+    console.debug("RARE Running upgrade header CB");
     socket.write("HTTP/1.1 101 Web Socket Protocol Handshake\r\n" + "Connection: Upgrade\r\n" + "\r\n");
     socket.pipe(socket);
   });
@@ -160,14 +158,9 @@ function createstaticAssets(httpsOptions: SecureServerOptions): FastifyAdapter {
 
   inst.addHook("onRequest", (req: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction): void => {
     if (!VALID_ROUTES.includes(req.url)) {
-      console.warn("ALERT ALERT " + new Date().toISOString() + " UNKNOWN REQUEST URL ", req.host, req.url, req.headers);
-      // this should fall though to the default route...
+      console.warn("ALERT ALERT " + new Date().toISOString() + " UNKNOWN REQUEST URL ", req.host, req.url );
     }
-    /* // when I looked more, it was the client setting this header,. so dont need this step.
-    if( req.headers["content-type"]?.startsWith("image") ) {
-      reply.removeHeader("pragma");
-    }
-*/
+
     done();
   });
 
@@ -187,18 +180,16 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
   const httpsOptions: SecureServerOptions = {
     key: fs.readFileSync(vars.SSLkey as string, "utf8"),
     cert: fs.readFileSync(vars.SSLcert as string, "utf8"),
-    passphrase: vars.passphrase as string,
-    //    allowHTTP1: true, // the bot is really keen on this.  I would like not have it
+    passphrase: vars.passPhrase as string,
+    //    allowHTTP1: true,   // the bot is really keen on this.  I would like not have it
   };
 
-  const fast = createstaticAssets(httpsOptions);
-
+  const fast:FastifyAdapter = createstaticAssets(httpsOptions);
   const app: NestFastifyApplication = await NestFactory.create<NestFastifyApplication>(
     ShoppingModule,
     fast, // FastifyHttp2SecureOptions
     { logger: new ConsoleLogger({ json: true, prefix: "shop", colors: false }) },
   );
- //  app.enableCors({ credentials: true });
   app.enableCors({
             allowedHeaders: 'Content-Type,Accept,Authorization,Observe', 
       // REQT hedaers  accept-language, accept-encoding, upgrade-insecure-requests
@@ -215,7 +206,6 @@ export async function bootstrapHTTPS(vars: ControlledEnv): Promise<void> {
   app.use((req:Request, res:NestResponse, next:Function):void => {
 // https://dev.to/dan9el8/implementing-cookies-with-nestjs-c0e
 // https://expressjs.com/en/5x/api/response/  
-console.log("NEST API cookie is", res.cookie );
     const originalCookie = res.cookie; //.bind(res);
     res.cookie = function (name:string, value:string, options:Object = {}) {
       return originalCookie(name, value, {
@@ -236,16 +226,15 @@ console.log("NEST API cookie is", res.cookie );
   );
 
   await app.init();
-
   // https://dev.to/axiom_agent/nodejs-graceful-shutdown-the-right-way-sigterm-connection-draining-and-kubernetes-fp8
   const DYING = function (): void {
-    console.log("Closing service on " + vars.SIpAddr + ":" + vars.SPort);
+    console.log("Closing service, closing service on " + vars.SIpAddr + ":" + vars.SPort);
     // this was closing the socket, but then that was migrated into the framework, so gone
     process.exit(127); // or the terminal isn't returned
   };
 
-  process.on("uncaughtException", async function (err: Error): Promise<void> {
-    console.error("Unexpected exception, panic!!", err.message, err.stack);
+  process.on("uncaughtException", async function(err: Error): Promise<void> {
+    console.error("Unexpected exception, panic!!", err.message);
     DYING();
   });
   process.on("SIGTERM", DYING);

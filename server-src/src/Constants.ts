@@ -3,7 +3,7 @@
  maybe it would be nice to have an install script for this line 
  See also the client-src Constants with the same data in it */
 export const HOST_NAME= "app.hiss:3001";
-export const HOST_NAME_SB="localhost:6006";
+export const HOST_NAME_SB="localhost:6006";  // SB == storybook
 export const TEST_LOCATION_URL = "https://"+HOST_NAME;
 export const APP_DEFAULT_API= "https://"+HOST_NAME+"/api/shared-state";
 
