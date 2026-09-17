@@ -4,7 +4,8 @@
 
 
 A simple and facile app for shopping lists, or lists in general.  To run on our phones.  
-This is not a product engineer project, I am adding strong process.
+This is not a product engineer project, I am adding strong process.  
+Note, as there is no plan, or any team, I have used less project management than I would in a work space.  My initial goal was being able to use tools better. 
 
 
 ## "business english" goals
@@ -23,7 +24,7 @@ smaller goals:
 - Write some code that people can see, its not ground breaking.
 
 > [!NOTE] 
-> The commit log doesn't show in github as I am not making branches per feature, as I am just iteratively patching.   I think that's why.   This project is >300 commits in 2026.  
+> The commit log doesn't show in github as I am not making branches per feature, as I am just iteratively patching.  This project is >300 commits in 2026.  
 > In a work env, I would have less exploration and more PM time-structures.
 
 > [!NOTE]

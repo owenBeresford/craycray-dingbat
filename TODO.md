@@ -11,14 +11,14 @@
 - think about best name for ShopState
 - Make better favico, consider badges, 
 - May be need to re-add STORE.getters
-- Workout if should cache list data in browser cache?
+- look at interstitial time code, it was correct earlier
 - Simplify initGeneratedMethods
 - maybe lineup state-keys to show net status in later builds :: NetworkedListService->reportConnections 
 - list sorting? a-z
 - Add cache event messages in localStorage, so can restart app, *and* add purge feature :-)
 - In the API, trap connect as IP, as this breaks CSP. also filter by x-forwarded-host 
 - When menu open, suppress tabBar buttons etc  filter:  .menuTrigger[aria-pressed="true"] 
-- Migrate useUIText to a provide/ inject tuple in Main, so sole copy better
+- Migrate useUIText to a provide/ inject tuple in Main, so sole copy works better
 
 
 ### LOW IMPACT, nioce to haves
