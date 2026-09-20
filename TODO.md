@@ -19,6 +19,7 @@
 - In the API, trap connect as IP, as this breaks CSP. also filter by x-forwarded-host 
 - When menu open, suppress tabBar buttons etc  filter:  .menuTrigger[aria-pressed="true"] 
 - Migrate useUIText to a provide/ inject tuple in Main, so sole copy works better
+- A way to test the whole swipe interaction in one hit (via FAKE JS events)  or only choice is per phone manual testing is left.
 
 
 ### LOW IMPACT, nioce to haves
