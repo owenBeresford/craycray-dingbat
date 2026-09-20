@@ -413,6 +413,12 @@ dialog[open] * {
   list-style-type: none;
 }
 
+@media screen and (max-width: 480px) {
+  .msgBar li {
+      white-space: normal;
+  }
+}
+
 /* I think popup need data first */
 
 /* ********************************************************* */
