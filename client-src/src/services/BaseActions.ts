@@ -43,6 +43,10 @@ export abstract class BaseActions<I> implements ExternalMethods<I> {
         const ar = Object.values(this);
         let i = 0;
         return {
+          [Symbol.iterator]():ExternalMethods<I> {
+            return ar.pop() as ExternalMethods<I>;
+          },
+
           next(): IteratorResult<ExternalMethods<I>> {
             if (i < ar.length) {
               let tmp = { value: ar[i], done: false } as IteratorResult<ExternalMethods<I>>;
