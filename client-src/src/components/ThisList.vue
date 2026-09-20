@@ -27,6 +27,7 @@
     />
     <ul class="aList" :data-testId="aListId">
       <li v-for="(i, j) in actualList" :key="j" :title="text.currentTitle" class="flex-container">
+        <span class="emptySpace"></span>
         <span
           :id="`dragHandler${j}`"
           v-html="dragSymbol"

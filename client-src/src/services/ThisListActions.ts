@@ -14,7 +14,7 @@ import {
   CSS_SYMBOL_LANDED,
   EMPTY_LIST_ID,
 } from "../Constants";
-
+ 
 import type { FactoryArtefact } from "./DataFactory";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { ExternalMethods, CBType, ThisListCtx } from "../types/Actionables";
@@ -73,7 +73,7 @@ export class ThislistActions extends BaseActions<ThisListCtx> implements Externa
     this.flux.register("270", this.onDragUPFinalise.bind(this));
     this.flux.register("-90", this.onDragUPFinalise.bind(this));
     // this is swipe left
-    this.flux.register("180", this.onSwipeOffFinalise.bind(this));
+    this.flux.register("0", this.onSwipeOffFinalise.bind(this));
     LOG.addRaw("Thislist has Event logging and swipe action are engaged", "debug");
   }
 
