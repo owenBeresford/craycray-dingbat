@@ -56,9 +56,18 @@ TOOL.directive("longpress", {
     el.addEventListener("pointerleave", cancel);
   },
 });
+  /**
+   * errorHandler 
+ 
+   * @param {unknown} err - this is an Error, but frameworks, #leSigh
+   * @param {Object} instance - I think a component, not used in my code
+   * @param {string} info - 
+   * @public
+   * @returns {void}
+   */
 TOOL.config.errorHandler = (err: unknown, instance: Object, info: string): void => {
   // possibly convert to LOG, but low likelyhood of that working
-  console.error("Global error handler", (err as Error), info);
+  console.error("Global error handler", err as Error, info);
 };
 
 console.time("boot-data-connection");

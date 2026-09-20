@@ -218,8 +218,8 @@ export class RegulatedNetworking {
         good(this.OFFNET);
       });
     }
-    if(!extra) {
-      extra={ credentials:{}, headers:{} } as Partial<RemoteConfig>;
+    if (!extra) {
+      extra = { credentials: {}, headers: {} } as Partial<RemoteConfig>;
     }
 
     if (typeof process !== "undefined" && process.env && process.env.NODE_ENV) {
@@ -228,8 +228,8 @@ export class RegulatedNetworking {
       // https://developer.mozilla.org/en-US/docs/Web/API/RequestInit
       let annoying: RequestInit = {
         cache: "no-cache",
-        credentials: extra.credentials ,
-        headers: extra.headers ,
+        credentials: extra.credentials,
+        headers: extra.headers,
         keepalive: true,
         targetAddressSpace: "local", // IOIO XXX I think this may cause explosions
         mode: "same-origin",

@@ -14,7 +14,7 @@ import {
   CSS_SYMBOL_LANDED,
   EMPTY_LIST_ID,
 } from "../Constants";
- 
+
 import type { FactoryArtefact } from "./DataFactory";
 import type { GuessEvent } from "../../../common/types/infill-DOM-types-for-tests";
 import type { ExternalMethods, CBType, ThisListCtx } from "../types/Actionables";

@@ -88,6 +88,7 @@ export class MotionStream<T> implements Motionable<T> {
     if (!this.active) {
       return false;
     }
+
     this.stack.push(new Vector(e.clientX, e.clientY));
     this.active = false;
     let offset = 1;

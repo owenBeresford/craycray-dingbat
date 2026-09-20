@@ -415,7 +415,7 @@ dialog[open] * {
 
 @media screen and (max-width: 480px) {
   .msgBar li {
-      white-space: normal;
+    white-space: normal;
   }
 }
 
@@ -488,12 +488,18 @@ ul.aList li span.dragstr {
   display: inline-block;
 }
 /* this element exists to swipe left have somthing to swipe into */
-ul.aList li span.emptySpace { width:2em; display:inline-block; height:auto; }
+ul.aList li span.emptySpace {
+  width: 2em;
+  display: inline-block;
+  height: auto;
+}
 @media screen and (max-width: 480px) {
   ul.aList li span.dragstr {
     font-weight: 700;
   }
-  ul.aList li span.dragstr {  margin-left:0px; }
+  ul.aList li span.dragstr {
+    margin-left: 0px;
+  }
 }
 
 ul.aList > li:has(.dragstr[aria-selected="true"]) {
